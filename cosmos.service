@@ -1,0 +1,13 @@
+[Unit]
+Description=Cosmos
+After=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/tc-discord-bot
+ExecStart=/usr/bin/python3.6 /root/tc-discord-bot
+User=root
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
