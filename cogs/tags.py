@@ -28,7 +28,6 @@ class Tags(object):
             await ctx.send("Tag not found.")
             return
         await ctx.send(tag)
-        #get tag
 
     @tag.command(name="create", aliases=["add"])
     async def create_tag(self, ctx, name, *, content: commands.clean_content):
