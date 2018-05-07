@@ -409,3 +409,29 @@ async def disable_sc(ctx):
     else:
         guild = motor_client.guilds[str(ctx.guild.id)]
         await guild.update_one({'_id': 'settings'}, {'$set': {"sc.enabled": False}})
+
+async def create_tag(guild_id, user_id, tag_name, content):
+    guild = motor_client.guilds[str(guild_id)]
+    if await count_points(guild)==0:
+        await insert(guild, {'_id': 'user'})
+    await guild.update({'_id': 'user'}, {'$set': {str(user_id)+".tags."+tag_name: content}})
+
+async def get_tag(guild_id, user_id, tag_name):
+    guild = motor_client.guilds[str(guild_id)]
+    p = await guild.find_one({'_id': 'user'})
+    try:
+        return str(p[str(user_id)]["tags"][tag_name])
+    except:
+        return None
+
+async def get_tags(guild_id, user_id):
+    guild = motor_client.guilds[str(guild_id)]
+    p = await guild.find_one({'_id': 'user'})
+    try:
+        return p[str(user_id)]["tags"]
+    except:
+        return None
+
+async def remove_tag(guild_id, user_id, tag_name, content):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'role-shop'}, {'$unset': {str(user_id)+".tags."+tag_name: content}})

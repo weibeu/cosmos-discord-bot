@@ -1,1 +1,3 @@
-print(bot.guilds)
+from cogs.utils import db
+a = await db.get_tags(ctx.guild.id, ctx.author.id)
+print(a)

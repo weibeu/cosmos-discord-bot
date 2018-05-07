@@ -3,7 +3,7 @@
     "client_id": "390176338729893889",
     "description": "Hey! I am bot cosmos",
     "status": "use ;help",
-    "prefixes": [";", "cosmos ", "cosmos", "cosmo ", "cosmo", "Cosmos ", "Cosmo ", "COSMO ", "COSMOS ", "Cosmos", "Cosmo", "COSMO", "COSMOS"],
+    "prefixes": [",", "cosmos ", "cosmos", "cosmo ", "cosmo", "Cosmos ", "Cosmo ", "COSMO ", "COSMOS ", "Cosmos", "Cosmo", "COSMO", "COSMOS"],
     "SENTRY_DSN": "https://1d882968a4c84e6a9e776ffccf038fcc:1a20593fb2314ac5a72f94d748cfd7de@sentry.io/274485",
     "MONGOHQ_URL": "mongodb://thecosmos:I2vhyffcplsVoAbr@tc-discord-bot-shard-00-00-i4l5o.mongodb.net:27017,tc-discord-bot-shard-00-01-i4l5o.mongodb.net:27017,tc-discord-bot-shard-00-02-i4l5o.mongodb.net:27017/test?ssl=true&replicaSet=tc-discord-bot-shard-0&authSource=admin",
 	  "custom_search_engine": "004004154518333828490:gtukjoqi4gg",
