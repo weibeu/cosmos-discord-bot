@@ -804,7 +804,7 @@ class Guild_Admin(object):
         await ctx.message.delete()'''
 
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.is_owner()
     async def rules(self, ctx):
         await ctx.message.delete()

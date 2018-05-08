@@ -337,7 +337,7 @@ class Fun:
                                 pass
             else:
                 await ctx.send("Channel not found.")
-        await asyncio.sleep(13)
+        await asyncio.sleep(9)
         await message.clear_reactions()
 
     @commands.cooldown(rate=1, per=180, type=BucketType.user)

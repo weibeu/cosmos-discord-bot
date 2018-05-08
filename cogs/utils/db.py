@@ -420,7 +420,7 @@ async def get_tag(guild_id, user_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
     p = await guild.find_one({'_id': 'members'})
     try:
-        return str(p[str(user_id)]["tags"][tag_name])
+        return p[str(user_id)]["tags"][tag_name]
     except:
         return None
 
@@ -435,3 +435,30 @@ async def get_tags(guild_id, user_id):
 async def remove_tag(guild_id, user_id, tag_name, content):
     guild = motor_client.guilds[str(guild_id)]
     await guild.update_one({'_id': 'members'}, {'$unset': {str(user_id)+".tags."+tag_name: content}})
+
+async def create_tag_box(guild_id, tag_name, content):
+    guild = motor_client.guilds[str(guild_id)]
+    if await count_points(guild)==0:
+        await insert(guild, {'_id': 'members'})
+    await guild.update({'_id': 'tag-box'}, {'$set': {tag_name: content}})
+
+async def get_tag_box(guild_id, tag_name):
+    guild = motor_client.guilds[str(guild_id)]
+    p = await guild.find_one({'_id': 'tag-box'})
+    try:
+        return p[tag_name]
+    except:
+        return None
+
+async def get_tags_box(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    p = await guild.find_one({'_id': 'tag-box'})
+    p.pop('_id')
+    try:
+        return p
+    except:
+        return None
+
+async def remove_tag_box(guild_id, tag_name, content):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'tag-box'}, {'$unset': {tag_name: content}})
