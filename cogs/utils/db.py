@@ -20,6 +20,9 @@ async def count_user_roles(col):
 async def count_settings(col):
     return await col.find({'_id': 'settings'}).count()
 
+async def count_tag_box(col):
+    return await col.find({'_id': 'tag-box'}).count()
+
 async def insert(col, doc):
     await col.insert_one(doc)
 
@@ -438,8 +441,8 @@ async def remove_tag(guild_id, user_id, tag_name, content):
 
 async def create_tag_box(guild_id, tag_name, content):
     guild = motor_client.guilds[str(guild_id)]
-    if await count_points(guild)==0:
-        await insert(guild, {'_id': 'members'})
+    if await count_tag_box(guild)==0:
+        await insert(guild, {'_id': 'tag-box'})
     await guild.update({'_id': 'tag-box'}, {'$set': {tag_name: content}})
 
 async def get_tag_box(guild_id, tag_name):
@@ -453,8 +456,8 @@ async def get_tag_box(guild_id, tag_name):
 async def get_tags_box(guild_id):
     guild = motor_client.guilds[str(guild_id)]
     p = await guild.find_one({'_id': 'tag-box'})
-    p.pop('_id')
     try:
+        p.pop('_id')
         return p
     except:
         return None
