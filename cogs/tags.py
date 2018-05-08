@@ -3,6 +3,7 @@ from discord.ext import commands
 from cogs.utils import db
 from cogs.utils.paginator import Pages
 from cogs.utils.rmenu import Menu, confirm_menu
+from cogs.utils import checks
 
 class Tags(object):
 
