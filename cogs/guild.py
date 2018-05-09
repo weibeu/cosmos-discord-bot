@@ -99,7 +99,7 @@ class Guild(object):
         e.add_field(name='Created', value=member.created_at)
         e.add_field(name='Voice', value=voice)
         e.add_field(name='Roles', value=', '.join(roles) if len(roles) < 10 else f'{len(roles)} roles')
-        nicks = await db.get_nicks(ctx.guild.id, ctx.author.id)
+        nicks = await db.get_nicks(ctx.guild.id, member.id)
         if nicks != []:
             s = ''
             for nick in nicks:
@@ -108,7 +108,7 @@ class Guild(object):
                 else:
                     s += nick
             e.add_field(name='Nicks', value=s)
-        usernames = await db.get_usernames(ctx.guild.id, ctx.author.id)
+        usernames = await db.get_usernames(ctx.guild.id, member.id)
         if usernames != []:
             s = ''
             for username in usernames:
