@@ -3,6 +3,7 @@ from cogs.utils import db, util
 from cogs.utils import checks
 from cogs.utils.util import get_random_color, get_random_embed_color
 from cogs.utils.rmenu import Menu, confirm_menu
+import re
 import discord
 import asyncio
 import time

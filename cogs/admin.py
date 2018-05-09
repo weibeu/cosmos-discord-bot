@@ -76,7 +76,7 @@ class Admin(object):
         await self.bot.logout()
         os._exit(0)
 
-    @commands.command(rest_is_raw=True, hidden=True)
+    @commands.command(rest_is_raw=True, hidden=True, aliases=["say", "vomit"])
     @commands.is_owner()
     async def echo(self, ctx, *, content):
         await ctx.message.delete()
