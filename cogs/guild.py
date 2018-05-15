@@ -18,7 +18,7 @@ class Guild(object):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=["nick", "nickname", "nicknames"])
     @commands.guild_only()
     async def nicks(self, ctx, *, user:discord.User = None):
         """Displays past Nicknames of user since bot was added on guild."""
@@ -37,7 +37,7 @@ class Guild(object):
             p = Pages(ctx, entries=nicks, per_page=7)
             await p.paginate()
 
-    @commands.command()
+    @commands.command(aliases=["username", "name", "names"])
     @commands.guild_only()
     async def usernames(self, ctx, *, user:discord.User = None):
         """Displays past Usernames of user since bot was added on guild."""
