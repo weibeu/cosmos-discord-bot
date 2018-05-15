@@ -7,7 +7,7 @@ class TAD(object):
     def __init__(self, bot):
         self.bot = bot
 
-    async def on_message(message):
+    async def on_message(self, message):
 
         if message.author.id == 280883146872979456 and message.attachments != []:
             await message.delete()
