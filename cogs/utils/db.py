@@ -47,7 +47,7 @@ async def get_role_shop_buy_dict(ctx):
     for i in r:
         if i not in p_r:
             role = discord.utils.get(ctx.guild.roles, id=int(i))
-            roles[i] = "\t|\t__**"+role.mention+"**__\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*21+";"
+            roles[i] = "\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*21+";"
     return roles
 
 async def get_user_roles_equipped_list(ctx):
@@ -90,7 +90,7 @@ async def get_role_shop_list(ctx):
     roles = []
     for i in r:
         role = discord.utils.get(ctx.guild.roles, id=int(i))
-        roles.append("\t|\t__**"+role.mention+"**__\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*16+";")
+        roles.append("\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*16+";")
     return roles
 
 async def get_role_shop_embed(ctx):

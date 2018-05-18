@@ -129,7 +129,7 @@ class Role_Shop(object):
         entries = []
         for r in roles:
             role = discord.utils.get(ctx.guild.roles, id=int(r))
-            entries.append("\t|\t__**"+role.mention+"**__\n\n\t\t\t\t`POINTS:`  **"+r_d[r]+"**\n"+"\t"*21+";")
+            entries.append("\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r_d[r]+"**\n"+"\t"*21+";")
         menu = Menu(ctx, entries=entries, per_page=5)
         index = await menu.paginate()
         try:
