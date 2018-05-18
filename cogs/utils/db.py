@@ -47,7 +47,7 @@ async def get_role_shop_buy_dict(ctx):
     for i in r:
         if i not in p_r:
             role = discord.utils.get(ctx.guild.roles, id=int(i))
-            roles[i] = "\t|\t__**"+role.name+"**__\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*21+";"
+            roles[i] = "\t|\t__**"+role.mention+"**__\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*21+";"
     return roles
 
 async def get_user_roles_equipped_list(ctx):
@@ -90,7 +90,7 @@ async def get_role_shop_list(ctx):
     roles = []
     for i in r:
         role = discord.utils.get(ctx.guild.roles, id=int(i))
-        roles.append("\t|\t__**"+role.name+"**__\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*16+";")
+        roles.append("\t|\t__**"+role.mention+"**__\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*16+";")
     return roles
 
 async def get_role_shop_embed(ctx):
@@ -104,7 +104,7 @@ async def get_role_shop_embed(ctx):
     count = 1
     for i in r:
         role = discord.utils.get(ctx.guild.roles, id=int(i))
-        embed.description += "["+str(count)+"]\t> "+role.name+"\n\t\t\tPOINTS:  "+r[i]+"\n\n"
+        embed.description += "["+str(count)+"]\t> "+role.mention+"\n\t\t\tPOINTS:  "+r[i]+"\n\n"
         count+=1
     embed.description += "```"
     return embed
@@ -122,7 +122,7 @@ async def get_purchased_roles_embed(ctx):
     for i in r:
         if i in p_r:
             role = discord.utils.get(ctx.guild.roles, id=int(i))
-            embed.description += "["+str(count)+"]\t> "+role.name+"\n\t\t\tPOINTS:  "+r[i]+"\n\n"
+            embed.description += "["+str(count)+"]\t> "+role.mention+"\n\t\t\tPOINTS:  "+r[i]+"\n\n"
             count+=1
     embed.description += "```"
     return embed
@@ -140,7 +140,7 @@ async def get_unequipped_roles_embed(ctx):
     for i in r:
         if i not in e_r:
             role = discord.utils.get(ctx.guild.roles, id=int(i))
-            embed.description += "["+str(count)+"]\t> "+role.name+"\n\t\t\tPOINTS:  "+roles[i]+"\n\n"
+            embed.description += "["+str(count)+"]\t> "+role.mention+"\n\t\t\tPOINTS:  "+roles[i]+"\n\n"
             count+=1
     embed.description += "```"
     return embed
@@ -156,7 +156,7 @@ async def get_equipped_roles_embed(ctx):
     count = 1
     for i in e_r:
         role = discord.utils.get(ctx.guild.roles, id=int(i))
-        embed.description += "["+str(count)+"]\t> "+role.name+"\n\t\t\tPOINTS:  "+roles[i]+"\n\n"
+        embed.description += "["+str(count)+"]\t> "+role.mention+"\n\t\t\tPOINTS:  "+roles[i]+"\n\n"
         count+=1
     embed.description += "```"
     return embed
@@ -174,10 +174,10 @@ async def get_role_shop_buy_embed(ctx):
     for i in r:
         if i not in p_r:
             role = discord.utils.get(ctx.guild.roles, id=int(i))
-            embed.description += "["+str(count)+"]\t> "+role.name+"\n\t\t\tPOINTS:  "+r[i]+"\n\n"
+            embed.description += "["+str(count)+"]\t> "+role.mention+"\n\t\t\tPOINTS:  "+r[i]+"\n\n"
             count+=1
     embed.description += "```"
-    return embed
+    return embeds
 
 async def role_shop_create(ctx, role, points):
     guild = motor_client.guilds[str(ctx.guild.id)]
