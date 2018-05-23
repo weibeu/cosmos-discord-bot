@@ -116,6 +116,7 @@ class Menu(object):
             if reaction.emoji == emoji:
                 self.match = func
                 return True
+
         if reaction.emoji in list(self.choices.keys()) or reaction.emoji.name+":"+str(reaction.emoji.id) in list(self.choices.keys()):
             return True
 
@@ -181,22 +182,24 @@ class Menu(object):
             await self.match()
 
 async def confirm_menu(ctx, message, custom_message=False):
-    def react_check(reaction, user):
-        if user is None or user.id != ctx.author.id:
-            return False
 
-        if reaction.message.id != ctx.message.id:
-            return False
-
-        if reaction.emoji.name+":"+str(reaction.emoji.id) in util.get_reaction_yes_no():
-            return True
-
-        return False
-        
     if custom_message:
         m = message
     else:
         m = await ctx.send(message)
+
+    def react_check(reaction, user):
+        if user is None or user.id != ctx.author.id:
+            return False
+
+        if reaction.message.id != m.id:
+            return False
+
+        if reaction.emoji.name+":"+str(reaction.emoji.id) in list(util.get_reaction_yes_no().values()):
+            return True
+
+        return False
+
     for choice in util.get_reaction_yes_no():
         await m.add_reaction(util.get_reaction_yes_no()[choice])
     try:
