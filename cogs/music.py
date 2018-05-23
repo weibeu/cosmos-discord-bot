@@ -494,6 +494,8 @@ class Music:
     async def stop_player(self, ctx):
         """Stops the player and clears the queue."""
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
         player = self.get_player(ctx)
 
         player.killing = True
@@ -545,6 +547,8 @@ class Music:
     async def pause_song(self, ctx):
         """Pause the currently playing song."""
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
 
         if vc.is_paused():
             return await ctx.send('I am already paused.', delete_after=20)
@@ -561,6 +565,8 @@ class Music:
     async def resume_song(self, ctx):
         """Resume a song if it is currently paused."""
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
 
         if vc is None or not vc.is_connected():
             return await ctx.send('I am not currently playing anything.', delete_after=20)
@@ -576,6 +582,8 @@ class Music:
     async def skip_song(self, ctx):
         """Skip the current song."""
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
 
         if vc is None or not vc.is_connected():
             return await ctx.send('I am not currently playing anything.', delete_after=20)
@@ -601,10 +609,13 @@ class Music:
     async def adjust_volume(self, ctx, *, vol: int):
         """Adjust the player volume."""
 
-        if not 0 < vol < 101:
-            return await ctx.send('Please enter a value between 1 and 100.')
 
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
+
+        if not 0 < vol < 101:
+            return await ctx.send('Please enter a value between 1 and 100.')
 
         if vc is None:
             return await ctx.send('I am not currently connected to voice.')
@@ -627,6 +638,8 @@ class Music:
 
         player = self.get_player(ctx)
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
 
         orig = int(player.volume * 100)
         vol_in = int(math.ceil((orig - 10) / 10.0)) * 10
@@ -648,6 +661,8 @@ class Music:
 
         player = self.get_player(ctx)
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
 
         orig = int(player.volume * 100)
         vol_in = int(math.ceil((orig + 10) / 10.0)) * 10
@@ -668,6 +683,8 @@ class Music:
         """Shuffle all songs in your Queue."""
 
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
         player = self.get_player(ctx)
 
         if vc is None:
@@ -706,6 +723,8 @@ class Music:
     async def repeat_song(self, ctx):
         """Repeat/Replay the current song."""
         vc = ctx.guild.voice_client
+        if ctx.author not in vc.channel.members:
+            return
 
         if vc is None:
             return await ctx.send('**I am not currently playing anything.**', delete_after=15)
