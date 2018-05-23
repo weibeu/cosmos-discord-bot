@@ -129,7 +129,7 @@ class Menu(object):
             def check(reaction, user):
                 return user == self.author
             try:
-                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120.0)
+                reaction, user = await self.bot.wait_for('reaction_add', check=self.react_check, timeout=120.0)
             except asyncio.TimeoutError:
                 try:
                     await self.message.clear_reactions()
@@ -181,8 +181,18 @@ class Menu(object):
             await self.match()
 
 async def confirm_menu(ctx, message, custom_message=False):
-    def check(reaction, user):
-        return user == ctx.author
+    def react_check(reaction, user):
+        if user is None or user.id != ctx.author.id:
+            return False
+
+        if reaction.message.id != ctx.message.id:
+            return False
+
+        if reaction.emoji.name+":"+str(reaction.emoji.id) in util.get_reaction_yes_no():
+            return True
+
+        return False
+        
     if custom_message:
         m = message
     else:
@@ -190,7 +200,7 @@ async def confirm_menu(ctx, message, custom_message=False):
     for choice in util.get_reaction_yes_no():
         await m.add_reaction(util.get_reaction_yes_no()[choice])
     try:
-        choice, user = await ctx.bot.wait_for('reaction_add', timeout=120.0, check=check)
+        choice, user = await ctx.bot.wait_for('reaction_add', timeout=120.0, check=react_check)
     except asyncio.TimeoutError:
         await ctx.send("Reaction Timeout")
     if choice.emoji.name+":"+str(choice.emoji.id) == util.get_reaction_yes_no()["yes"]:
@@ -202,5 +212,5 @@ async def confirm_menu(ctx, message, custom_message=False):
         return False
     else:
         await m.delete()
-        await ctx.send("Some problem with yes/no reactions in confirm_menu, please report to support asap.")
+        await ctx.send("Some problem with yes/no reactions in confirm_menu.")
         return False
