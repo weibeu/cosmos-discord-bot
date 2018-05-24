@@ -9,9 +9,9 @@ class TAD(object):
 
     async def on_message(self, message):
 
-        if message.author.id == 280883146872979456 and message.attachments != []:
+        '''if message.author.id == 280883146872979456 and message.attachments != []:
             await message.delete()
-            await message.channel.send("lol steve fuck off")
+            await message.channel.send("lol steve fuck off")'''
 
 def setup(bot):
     bot.add_cog(TAD(bot))

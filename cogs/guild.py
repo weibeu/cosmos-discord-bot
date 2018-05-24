@@ -27,14 +27,14 @@ class Guild(object):
             if nicks == []:
                 await ctx.send("This user has no recorded nicknames.")
                 return
-            p = Pages(ctx, entries=nicks, per_page=7)
+            p = Pages(ctx, entries=nicks, per_page=10)
             await p.paginate()
         else:
             nicks = await db.get_nicks(ctx.guild.id, user.id)
             if nicks == []:
                 await ctx.send("This user has no recorded nicknames.")
                 return
-            p = Pages(ctx, entries=nicks, per_page=7)
+            p = Pages(ctx, entries=nicks, per_page=10)
             await p.paginate()
 
     @commands.command(aliases=["username", "name", "names"])
@@ -46,14 +46,14 @@ class Guild(object):
             if usernames == []:
                 await ctx.send("This user has no recorded usernames.")
                 return
-            p = Pages(ctx, entries=usernames, per_page=7)
+            p = Pages(ctx, entries=usernames, per_page=10)
             await p.paginate()
         else:
             usernames = await db.get_nicks(ctx.guild.id, user.id)
             if usernames == []:
                 await ctx.send("This user has no recorded usernames.")
                 return
-            p = Pages(ctx, entries=nicks, per_page=7)
+            p = Pages(ctx, entries=usernames, per_page=10)
             await p.paginate()
 
     async def on_member_update(self, before, after):
@@ -107,6 +107,8 @@ class Guild(object):
                     s += nick+", "
                 else:
                     s += nick
+            if len(s) >= 1024:
+                s = member.name+" has too many nicks."
             e.add_field(name='Nicks', value=s)
         usernames = await db.get_usernames(ctx.guild.id, member.id)
         if usernames != []:
@@ -116,6 +118,8 @@ class Guild(object):
                     s += username+", "
                 else:
                     s += username
+            if len(s) >= 1024:
+                s = member.name+" has too many usernames."
             e.add_field(name='Usernames', value=s)
         if member.avatar:
             e.set_thumbnail(url=member.avatar_url)
