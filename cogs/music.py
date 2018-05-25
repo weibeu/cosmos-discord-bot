@@ -541,6 +541,10 @@ class Music:
             inact.cancel()
         except Exception as e:
             print(e)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='pause')
     @commands.cooldown(5, 60, commands.BucketType.user)
@@ -560,6 +564,11 @@ class Music:
         player = self.get_player(ctx)
 
         player.paused_msg = await ctx.send(f'{ctx.author.mention} has paused the song.')
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='resume')
     async def resume_song(self, ctx):
@@ -576,6 +585,11 @@ class Music:
             player = self.get_player(ctx)
 
             await player.paused_msg.edit(content=f'{ctx.author.mention} has resumed the song.', delete_after=15)
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='skip')
     @commands.cooldown(5, 60, commands.BucketType.user)
@@ -603,6 +617,11 @@ class Music:
         if vcheck:
             vc.stop()
             return await ctx.send('**Vote to skip has passed...** Skipping the song!', delete_after=10)
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='volume', aliases=['vol'])
     @commands.cooldown(5, 30, commands.BucketType.user)
@@ -630,6 +649,11 @@ class Music:
         finally:
             player.volume = adj
             await ctx.send(f'Changed player volume to: **{vol}%**')
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='vol_down', hidden=True)
     @commands.cooldown(7, 30, commands.BucketType.user)
@@ -653,6 +677,11 @@ class Music:
             player.volume = vol
         except AttributeError:
             await ctx.send('**I am not currently playing anything.**')
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='vol_up', aliases=['vup', 'up'], hidden=True)
     @commands.cooldown(7, 30, commands.BucketType.user)
@@ -676,6 +705,11 @@ class Music:
             player.volume = vol
         except AttributeError:
             await ctx.send('**I am not currently playing anything.**')
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='shuffle', aliases=['mix'])
     @commands.cooldown(3, 120, commands.BucketType.user)
@@ -775,6 +809,11 @@ class Music:
             await ctx.invoke(self._now_playing)
 
         player.shuffling = False
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='nowplaying', aliases=['playing', 'current', 'currentsong', 'np'])
     @commands.cooldown(3, 30, commands.BucketType.guild)
@@ -795,6 +834,11 @@ class Music:
                                   f' Please retry the command there.')
 
         await player.playing_controller(player.entry)
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='queue', aliases=['q'])
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -842,6 +886,11 @@ class Music:
         await ctx.send(f'{ctx.author.mention} has voted to {name}. **{need}** more votes required.',
                        delete_after=30)
         return False
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.command(name='fstop', hidden=True)
     async def force_stop(self, ctx):
@@ -893,6 +942,11 @@ class Music:
             await ctx.send(f'The following errors occurred while forcing a stop.'
                            f' Errors are not indicative of failure:\n'
                            f'```css\n[{errors}]\n```')
+        await asyncio.sleep(3)
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
 
     @commands.group(name='dj', invoke_without_command=True)
     async def _dj(self, ctx):
