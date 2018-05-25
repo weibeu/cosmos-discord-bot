@@ -4,6 +4,7 @@ import os
 from .utils.paginators import SimplePaginator, HelpPaginator
 import inspect
 import traceback
+import git
 
 from cogs.utils.rmenu import Menu
 
@@ -12,8 +13,10 @@ class Admin(object):
     def __init__(self, bot):
         self.bot = bot
 
+    async def __local_check(self, ctx):
+        return ctx.author.id in [331793750273687553]
+
     @commands.command(hidden=True)
-    @commands.is_owner()
     async def cog(self, ctx, arg, *cogs):
         """`cog <load/l> <cogs separated by comma>` : loads specified cogs from /cogs directory.
         `cog <unload/u> <cogs separated by comma>` : unloads specified cogs from bot."""
@@ -47,7 +50,6 @@ class Admin(object):
             await ctx.send("unknown argument provided.")
 
     @commands.command(hidden=True)
-    @commands.is_owner()
     async def cog_reload(self, ctx):
         for c in self.bot.cog_list:
             try:
@@ -61,7 +63,6 @@ class Admin(object):
                 await ctx.send("cog `{0}` reload failed".format(c))
 
     @commands.command(hidden=True)
-    @commands.is_owner()
     async def restart(self, ctx):
         """Logouts using bot.logout(), executes loop.py and restarts the bot"""
         await ctx.send("Restarting.....")
@@ -69,7 +70,6 @@ class Admin(object):
         await ctx.bot.shutdown(restart=True)
 
     @commands.command(hidden=True)
-    @commands.is_owner()
     async def quit(self, ctx, ):
         "Shut Downs the bot"
         await ctx.send("Bot shutdown.....")
@@ -77,10 +77,14 @@ class Admin(object):
         os._exit(0)
 
     @commands.command(rest_is_raw=True, hidden=True, aliases=["say", "vomit"])
-    @commands.is_owner()
     async def echo(self, ctx, *, content):
         await ctx.message.delete()
         await ctx.send(content)
+
+    #@commands.command(hidden=True)
+    #async def update(self, ctx):
+        #"""Command which pulls new update from repository."""
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))
