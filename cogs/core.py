@@ -50,7 +50,7 @@ class Core(object):
             plural = '' if total_usage == 1 else 's'
             most_used_cmd = '{} - {} use{}'.format(cmd_name, total_usage, plural)
         if embed_perms(ctx.message):
-            em = discord.Embed(title='Bot Stats', color=0x32441c)
+            em = discord.Embed(title='Bot Stats', color=get_random_embed_color())
             em.add_field(name=u'\U0001F553 Uptime', value=time, inline=False)
             em.add_field(name=u'\u2328 Most Used Cmd', value=most_used_cmd, inline=False)
             em.add_field(name=u'\u2694 Servers', value=str(len(self.bot.guilds)))
@@ -64,6 +64,7 @@ class Core(object):
                 # OS doesn't support retrieval of USS (probably BSD or Solaris)
                 mem_usage = '{:.2f} MiB'.format(__import__('psutil').Process().memory_full_info().rss / 1024 ** 2)
             em.add_field(name=u'\U0001F4BE Memory usage:', value=mem_usage)
+            em.add_field(name='🔺 discord.py version', value=discord.__version__)
             await ctx.send(content=None, embed=em)
         else:
             msg = '**Bot Stats:** ```Uptime: %s\nguilds: %s\nGame: %s```' % (
