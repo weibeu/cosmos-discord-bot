@@ -81,7 +81,10 @@ class Admin(object):
         await ctx.message.delete()
         await ctx.send(content)
 
-    
+    @commands.command(hidden=True)
+    async def update(self, ctx):
+        """Command which pulls new update from repository."""
+        
 
 
 def setup(bot):
