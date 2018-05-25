@@ -4,7 +4,8 @@ import os
 from .utils.paginators import SimplePaginator, HelpPaginator
 import inspect
 import traceback
-import git
+import subprocess
+from cogs.utils.util import get_reaction_yes_no
 
 from cogs.utils.rmenu import Menu
 
@@ -67,7 +68,7 @@ class Admin(object):
         """Logouts using bot.logout(), executes loop.py and restarts the bot"""
         await ctx.send("Restarting.....")
         print("Restarting bot...")
-        await ctx.bot.shutdown(restart=True)
+        await self.bot.logout()
 
     @commands.command(hidden=True)
     async def quit(self, ctx, ):
@@ -84,8 +85,12 @@ class Admin(object):
     @commands.command(hidden=True)
     async def update(self, ctx):
         """Command which pulls new update from repository."""
-        
-
+        m1 = await ctx.send("Pulling new updates.")
+        process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
+        output = process.communicate()[0]
+        await m1.add_reaction(get_reaction_yes_no()["yes"])
+        m2 = await ctx.send("Restarting.")
+        await self.bot.logout()
 
 def setup(bot):
     bot.add_cog(Admin(bot))

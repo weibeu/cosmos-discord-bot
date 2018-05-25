@@ -7,7 +7,7 @@ Type=simple
 WorkingDirectory=/root/tc-discord-bot
 ExecStart=python3.6 /root/tc-discord-bot/run.py
 User=root
-Restart=on-failure
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
