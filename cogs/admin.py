@@ -92,5 +92,6 @@ class Admin(object):
         m2 = await ctx.send("Restarting.")
         await self.bot.logout()
 
+
 def setup(bot):
     bot.add_cog(Admin(bot))
