@@ -648,7 +648,7 @@ class Music:
             pass
         finally:
             player.volume = adj
-            await ctx.send(f'Changed player volume to: **{vol}%**')
+            await ctx.send(f'Changed player volume to: **{vol}%**', delete_after=7)
         await asyncio.sleep(3)
         try:
             await ctx.message.delete()
