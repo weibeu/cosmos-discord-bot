@@ -69,6 +69,7 @@ class Admin(object):
         await ctx.send("Restarting.....")
         print("Restarting bot.")
         await self.bot.logout()
+        os.system("systemctl restart cosmos.service")
         os._exit(0)
 
     @commands.command(hidden=True)
@@ -87,13 +88,14 @@ class Admin(object):
     @commands.command(hidden=True)
     async def update(self, ctx):
         """Command which pulls new update from repository."""
-        m1 = await ctx.send("Pulling new updates.")
+        m1 = await ctx.send("Pulling up new updates.")
         process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
         output = process.communicate()[0]
         await m1.add_reaction(get_reaction_yes_no()["yes"])
         m2 = await ctx.send("Restarting.")
         await self.bot.logout()
+        os.system("systemctl restart cosmos.service")
         os._exit(0)
-        
+
 def setup(bot):
     bot.add_cog(Admin(bot))
