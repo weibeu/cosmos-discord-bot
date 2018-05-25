@@ -5,7 +5,7 @@ After=multi-user.target
 [Service]
 Type=simple
 WorkingDirectory=/root/tc-discord-bot
-ExecStart=python3.6 /root/tc-discord-bot/run.py
+ExecStart=/usr/bin/python3.6 /root/tc-discord-bot/run.py
 User=root
 Restart=always
 

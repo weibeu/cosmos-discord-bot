@@ -67,14 +67,16 @@ class Admin(object):
     async def restart(self, ctx):
         """Logouts using bot.logout(), executes loop.py and restarts the bot"""
         await ctx.send("Restarting.....")
-        print("Restarting bot...")
+        print("Restarting bot.")
         await self.bot.logout()
+        os._exit(0)
 
     @commands.command(hidden=True)
     async def quit(self, ctx, ):
         "Shut Downs the bot"
-        await ctx.send("Bot shutdown.....")
+        await ctx.send("Logging out and stopping `cosmos.service`.")
         await self.bot.logout()
+        os.system("systemctl stop cosmos.service")
         os._exit(0)
 
     @commands.command(rest_is_raw=True, hidden=True, aliases=["say", "vomit"])
@@ -91,6 +93,7 @@ class Admin(object):
         await m1.add_reaction(get_reaction_yes_no()["yes"])
         m2 = await ctx.send("Restarting.")
         await self.bot.logout()
-
+        os._exit(0)
+        
 def setup(bot):
     bot.add_cog(Admin(bot))
