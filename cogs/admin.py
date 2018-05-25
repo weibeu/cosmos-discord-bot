@@ -92,7 +92,7 @@ class Admin(object):
         process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
         output = process.communicate()[0]
         await m1.add_reaction(get_reaction_yes_no()["yes"])
-        m2 = await ctx.send("Restarting.")
+        m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
         await self.bot.logout()
         os.system("systemctl restart cosmos.service")
         os._exit(0)
