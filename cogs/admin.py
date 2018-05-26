@@ -100,6 +100,10 @@ class Admin(object):
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
             embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
             embed.add_field(name="Description", value=new_repo.commit.message)
+            changed_files = ''
+            for item in git.Repo(os.getcwd()).index.diff(None):
+                changed_files += item.a_path+'\n'
+            embed.add_field(name='Changed Files', value=changed_files)
             await ctx.send(embed=embed)
             m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
             await self.bot.logout()
@@ -119,6 +123,10 @@ class Admin(object):
         embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
         embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
         embed.add_field(name="Description", value=new_repo.commit.message)
+        changed_files = ''
+        for item in git.Repo(os.getcwd()).index.diff(None):
+            changed_files += item.a_path+'\n'
+        embed.add_field(name='Changed Files', value=changed_files)
         await ctx.send(embed=embed)
 
 def setup(bot):
