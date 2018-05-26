@@ -97,8 +97,7 @@ class Admin(object):
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
-            embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`."
-            embed.add_field(name="Description", value=new_repo.commit.message, inline=False)
+            embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`.\n**Description:**\t`"+new_repo.commit.message+"`.\n\n\t__**Changed Files:**__"
             for file in new_repo.commit.stats.files:
                 try:
                     embed.add_field(name=file, value="`Insertions:`\t"+str(new_repo.commit.stats.files[file]['insertions'])+"\n`Deletions:`\t"+str(new_repo.commit.stats.files[file]['deletions'])+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
