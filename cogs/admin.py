@@ -91,19 +91,15 @@ class Admin(object):
         """Command which pulls new update from repository and restarts `cosmos.service`."""
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(color=get_random_embed_color())
-            old_repo = git.Repo(os.getcwd()).head.reference
             m1 = await ctx.send("Pulling up new updates.")
             process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
             output = process.communicate()[0]
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
-            embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
+            embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`."
             embed.add_field(name="Description", value=new_repo.commit.message)
-            changed_files = ''
-            for item in git.Repo(os.getcwd()).index.diff(None):
-                changed_files += item.a_path+'\n'
-            embed.add_field(name='Changed Files', value=changed_files)
+            embed.add_field(name="Changed files", value=new_repo.commit.stats.files)
             await ctx.send(embed=embed)
             m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
             await self.bot.logout()
@@ -121,12 +117,9 @@ class Admin(object):
         await m1.add_reaction(get_reaction_yes_no()["yes"])
         new_repo = git.Repo(os.getcwd()).head.reference
         embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
-        embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
+        embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`."
         embed.add_field(name="Description", value=new_repo.commit.message)
-        changed_files = ''
-        for item in git.Repo(os.getcwd()).index.diff(None):
-            changed_files += item.a_path+'\n'
-        embed.add_field(name='Changed Files', value=changed_files)
+        embed.add_field(name="Changed files", value=new_repo.commit.stats.files)
         await ctx.send(embed=embed)
 
 def setup(bot):
