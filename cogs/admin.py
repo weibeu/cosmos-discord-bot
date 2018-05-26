@@ -92,7 +92,7 @@ class Admin(object):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(color=get_random_embed_color())
             old_repo = git.Repo(os.getcwd()).head.reference
-            m1 = await ctx.send("Pulling up new updates for soft update.")
+            m1 = await ctx.send("Pulling up new updates.")
             process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
             output = process.communicate()[0]
             await m1.add_reaction(get_reaction_yes_no()["yes"])
@@ -111,7 +111,7 @@ class Admin(object):
         """Updates the files without restarting `cosmos.service`."""
         embed = discord.Embed(color=get_random_embed_color())
         old_repo = git.Repo(os.getcwd()).head.reference
-        m1 = await ctx.send("Pulling up new updates.")
+        m1 = await ctx.send("Pulling up new updates and making soft update.")
         process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
         output = process.communicate()[0]
         await m1.add_reaction(get_reaction_yes_no()["yes"])
