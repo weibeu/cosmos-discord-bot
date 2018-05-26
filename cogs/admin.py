@@ -90,6 +90,13 @@ class Admin(object):
     async def update(self, ctx):
         """Command which pulls new update from repository and restarts `cosmos.service`."""
         if ctx.invoked_subcommand is None:
+            repo = git.Repo(".")
+            commits_behind = repo.iter_commits('master..origin/master')
+            commits_ahead = repo.iter_commits('origin/master..master')
+            count = sum(1 for c in commits_ahead)
+            if not count:
+                await ctx.send("No updates found.")
+                return
             embed = discord.Embed(color=get_random_embed_color())
             m1 = await ctx.send("Pulling up new updates.")
             process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
@@ -115,6 +122,13 @@ class Admin(object):
     @update.command(name="soft")
     async def update_soft(self, ctx):
         """Updates the files without restarting `cosmos.service`."""
+        repo = git.Repo(".")
+        commits_behind = repo.iter_commits('master..origin/master')
+        commits_ahead = repo.iter_commits('origin/master..master')
+        count = sum(1 for c in commits_ahead)
+        if not count:
+            await ctx.send("No updates found.")
+            return
         embed = discord.Embed(color=get_random_embed_color())
         old_repo = git.Repo(os.getcwd()).head.reference
         m1 = await ctx.send("Pulling up new updates and making soft update.")
