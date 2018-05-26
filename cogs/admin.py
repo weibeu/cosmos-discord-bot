@@ -1,13 +1,14 @@
 import discord
-from discord.ext import commands
-import os
-from .utils.paginators import SimplePaginator, HelpPaginator
 import inspect
 import traceback
 import subprocess
+import os
+import git
+
+from discord.ext import commands
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
 from cogs.utils.rmenu import Menu
-import git
+from .utils.paginators import SimplePaginator, HelpPaginator
 
 class Admin(object):
 
