@@ -97,7 +97,7 @@ class Admin(object):
         await m1.add_reaction(get_reaction_yes_no()["yes"])
         new_repo = git.Repo(os.getcwd()).head.reference
         embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
-        embed.description = "Updating from commit `"+old_repo.ccommit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
+        embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
         embed.add_field(name="Description", value=new_repo.commit.message)
         await ctx.send(embed=embed)
         m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
@@ -116,7 +116,7 @@ class Admin(object):
         await m1.add_reaction(get_reaction_yes_no()["yes"])
         new_repo = git.Repo(os.getcwd()).head.reference
         embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
-        embed.description = "Updating from commit `"+old_repo.ccommit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
+        embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
         embed.add_field(name="Description", value=new_repo.commit.message)
         await ctx.send(embed=embed)
 
