@@ -6,7 +6,6 @@ import inspect
 import traceback
 import subprocess
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
-
 from cogs.utils.rmenu import Menu
 import git
 
