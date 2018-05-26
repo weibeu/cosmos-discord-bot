@@ -99,8 +99,12 @@ class Admin(object):
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
             embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`."
             embed.add_field(name="Description", value=new_repo.commit.message)
-            embed.add_field(name="Changed files", value=new_repo.commit.stats.files)
-            await ctx.send(embed=embed)
+            for file in new_repo.commit.stats.files:
+                embed.add_field(name=file, value="`"+new_repo.commit.stats.files[file]+"`")
+            try:
+                await ctx.send(embed=embed)
+            except:
+                pass
             m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
             await self.bot.logout()
             os.system("systemctl restart cosmos.service")
@@ -119,8 +123,12 @@ class Admin(object):
         embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
         embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`."
         embed.add_field(name="Description", value=new_repo.commit.message)
-        embed.add_field(name="Changed files", value=new_repo.commit.stats.files)
-        await ctx.send(embed=embed)
+        for file in new_repo.commit.stats.files:
+            embed.add_field(name=file, value="`"+new_repo.commit.stats.files[file]+"`")
+        try:
+            await ctx.send(embed=embed)
+        except:
+            pass
 
 def setup(bot):
     bot.add_cog(Admin(bot))
