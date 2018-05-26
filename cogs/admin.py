@@ -100,7 +100,7 @@ class Admin(object):
             embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`."
             embed.add_field(name="Description", value=new_repo.commit.message)
             for file in new_repo.commit.stats.files:
-                embed.add_field(name=file, value="`"+new_repo.commit.stats.files[file]+"`")
+                embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions']+"\n`Lines:`\t"+new_repo.commit.stats.files[file]["lines"])
             try:
                 await ctx.send(embed=embed)
             except:
@@ -124,7 +124,7 @@ class Admin(object):
         embed.description = "Updating to commit `"+new_repo.commit.hexsha+"`."
         embed.add_field(name="Description", value=new_repo.commit.message)
         for file in new_repo.commit.stats.files:
-            embed.add_field(name=file, value="`"+new_repo.commit.stats.files[file]+"`")
+            embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions']+"\n`Lines:`\t"+new_repo.commit.stats.files[file]["lines"])
         try:
             await ctx.send(embed=embed)
         except:
