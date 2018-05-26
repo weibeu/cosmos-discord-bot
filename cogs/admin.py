@@ -1,14 +1,13 @@
 import discord
+from discord.ext import commands
+import os
+from .utils.paginators import SimplePaginator, HelpPaginator
 import inspect
 import traceback
 import subprocess
-import os
-import git
-
-from .utils.paginators import SimplePaginator, HelpPaginator
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
 from cogs.utils.rmenu import Menu
-from discord.ext import commands
+import git
 
 class Admin(object):
 
@@ -101,7 +100,7 @@ class Admin(object):
             embed.add_field(name="Description", value=new_repo.commit.message)
             for file in new_repo.commit.stats.files:
                 try:
-                    embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions'])
+                    embed.add_field(name=file, value="`Insertions:`\t"+str(new_repo.commit.stats.files[file]['insertions'])+"\n`Deletions:`\t"+str(new_repo.commit.stats.files[file]['deletions'])+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
                 except:
                     pass
             try:
@@ -128,7 +127,7 @@ class Admin(object):
         embed.add_field(name="Description", value=new_repo.commit.message)
         for file in new_repo.commit.stats.files:
             try:
-                embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions'])
+                embed.add_field(name=file, value="`Insertions:`\t"+str(new_repo.commit.stats.files[file]['insertions'])+"\n`Deletions:`\t"+str(new_repo.commit.stats.files[file]['deletions'])+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
             except:
                 pass
         try:
