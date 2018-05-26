@@ -101,7 +101,7 @@ class Admin(object):
             embed.add_field(name="Description", value=new_repo.commit.message)
             for file in new_repo.commit.stats.files:
                 try:
-                    embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions']+"\n`Lines:`\t"+new_repo.commit.stats.files[file]["lines"])
+                    embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions']+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
                 except:
                     pass
             try:
@@ -128,7 +128,7 @@ class Admin(object):
         embed.add_field(name="Description", value=new_repo.commit.message)
         for file in new_repo.commit.stats.files:
             try:
-                embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions']+"\n`Lines:`\t"+new_repo.commit.stats.files[file]["lines"])
+                embed.add_field(name=file, value="`Insertions:`\t"+new_repo.commit.stats.files[file]['insertions']+"\n`Deletions:`\t"+new_repo.commit.stats.files[file]['deletions']+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
             except:
                 pass
         try:
