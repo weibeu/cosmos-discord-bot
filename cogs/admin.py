@@ -89,21 +89,22 @@ class Admin(object):
     @commands.group(hidden=True)
     async def update(self, ctx):
         """Command which pulls new update from repository and restarts `cosmos.service`."""
-        embed = discord.Embed(color=get_random_embed_color())
-        old_repo = git.Repo(os.getcwd()).head.reference
-        m1 = await ctx.send("Pulling up new updates.")
-        process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
-        output = process.communicate()[0]
-        await m1.add_reaction(get_reaction_yes_no()["yes"])
-        new_repo = git.Repo(os.getcwd()).head.reference
-        embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
-        embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
-        embed.add_field(name="Description", value=new_repo.commit.message)
-        await ctx.send(embed=embed)
-        m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
-        await self.bot.logout()
-        os.system("systemctl restart cosmos.service")
-        os._exit(0)
+        if ctx.invoked_subcommand is None:
+            embed = discord.Embed(color=get_random_embed_color())
+            old_repo = git.Repo(os.getcwd()).head.reference
+            m1 = await ctx.send("Pulling up new updates for soft update.")
+            process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
+            output = process.communicate()[0]
+            await m1.add_reaction(get_reaction_yes_no()["yes"])
+            new_repo = git.Repo(os.getcwd()).head.reference
+            embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
+            embed.description = "Updating from commit `"+old_repo.commit.hexsha+"` to `"+new_repo.commit.hexsha+"`."
+            embed.add_field(name="Description", value=new_repo.commit.message)
+            await ctx.send(embed=embed)
+            m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
+            await self.bot.logout()
+            os.system("systemctl restart cosmos.service")
+            os._exit(0)
 
     @update.command(name="soft")
     async def update_soft(self, ctx):
