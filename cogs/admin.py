@@ -102,7 +102,7 @@ class Admin(object):
                 try:
                     embed.add_field(name=file, value="`Insertions:`\t"+str(new_repo.commit.stats.files[file]['insertions'])+"\n`Deletions:`\t"+str(new_repo.commit.stats.files[file]['deletions'])+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
                 except:
-                    pass
+                    embed.add_field(name="⚠ No new updates found", value="Everything is up to date.")
             try:
                 await ctx.send(embed=embed)
             except:
@@ -128,7 +128,8 @@ class Admin(object):
             try:
                 embed.add_field(name=file, value="`Insertions:`\t"+str(new_repo.commit.stats.files[file]['insertions'])+"\n`Deletions:`\t"+str(new_repo.commit.stats.files[file]['deletions'])+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
             except:
-                pass
+                embed.add_field(name="⚠ No new updates found", value="Everything is up to date.")
+
         try:
             await ctx.send(embed=embed)
         except:
