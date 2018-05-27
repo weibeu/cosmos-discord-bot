@@ -108,12 +108,11 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.filename = filename
 
     @classmethod
-    async def from_url(cls, entry, *, loop=None, player=None):
+    async def from_url(cls, entry, *, loop=None, player=None, stream=False):
         loop = loop or asyncio.get_event_loop()
         url = entry.query
         chan = entry.channel
         playl_msg = None
-
         opts = {
             'format': 'bestaudio/best',
             'outtmpl': f'{chan.id}/{outtmpl_seed()}%(extractor)s_%(id)s.%(ext)s',
@@ -128,7 +127,17 @@ class YTDLSource(discord.PCMVolumeTransformer):
             'playlistend': 50,
             'source_address': '0.0.0.0'
         }
+
         ytdl = youtube_dl.YoutubeDL(opts)
+
+        if stream:
+            data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
+            if 'entries' in data:
+                # take first item from a playlist
+                data = data['entries'][0]
+
+            filename = data['url'] if stream else ytdl.prepare_filename(data)
+            return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data, filename=filename, volume=1)
 
         ytdl.params['extract_flat'] = True
         ef_info = ytdl.extract_info(download=False, url=url)
@@ -488,6 +497,31 @@ class Music:
             self.bot.loop.create_task(YTDLSource.from_url(entry, loop=self.bot.loop, player=player))
 
         #  self.bot._counter_songs += 1
+
+    @commands.command(name='stream')
+    @commands.cooldown(30, 30, commands.BucketType.guild)
+    async def stream_song(self, ctx, *, query: str):
+        """Stream a song directly from youtube of provided url."""
+        try:
+            await ctx.message.delete()
+        except discord.HTTPException:
+            pass
+
+        vc = ctx.guild.voice_client
+
+        if vc is None:
+            await ctx.invoke(self.voice_connect)
+            if not ctx.guild.voice_client:
+                return
+        else:
+            if ctx.author not in vc.channel.members:
+                return await ctx.send(f'You must be in **{vc.channel}** to request songs.', delete_after=30)
+        entry = MusicEntry(ctx, query)
+        async with ctx.typing():
+            player = await YTDLSource.from_url(entry, loop=self.bot.loop, stream=True)
+            ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+
+        await ctx.send('Now streaming: {}'.format(player.title), delete_after=7)
 
     @commands.command(name='stop')
     @commands.cooldown(4, 120, commands.BucketType.guild)
