@@ -66,7 +66,7 @@ class Core(object):
                 mem_usage = '{:.2f} MiB'.format(__import__('psutil').Process().memory_full_info().rss / 1024 ** 2)
             em.add_field(name=u'\U0001F4BE Memory usage:', value=mem_usage)
             em.add_field(name='🔺 discord.py version', value=discord.__version__)
-            em.add_field(name='📈 CPU usage', value=str(psutil.cpu_percent()))
+            em.add_field(name='📈 CPU usage', value=str(psutil.cpu_percent()+" %"))
             await ctx.send(content=None, embed=em)
         else:
             msg = '**Bot Stats:** ```Uptime: %s\nguilds: %s\nGame: %s```' % (
