@@ -528,7 +528,7 @@ class Music:
             player = await YTDLSource.from_url(entry, loop=self.bot.loop, stream=True)
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
 
-        await ctx.send('Now streaming: {}'.format(player.title), delete_after=7)
+        await ctx.send('Now streaming: {}'.format(player.title))
 
     @commands.command(name='stop')
     @commands.cooldown(4, 120, commands.BucketType.guild)
