@@ -81,7 +81,8 @@ class Guild_Admin(object):
             role_id = list(roles.keys())[index]
             role = discord.utils.get(ctx.guild.roles, id=int(role_id))
             if await confirm_menu(ctx, "Are you sure to delete __**"+role.name+"**__?"):
-                await db.remove_role(ctx.guild.id, role.id)
+                await db.remove_role(ctx.guild.id, role.id) #deleting role from role shop db
+                await db.remove_deleted_purchased_role(ctx.guild.id, role.id) #deleting role from members document in db
                 await role.delete(reason="Delete role from Role-Shop")
                 td = self.guilds_rs_roles[str(ctx.guild.id)] #runtime dict
                 try:
