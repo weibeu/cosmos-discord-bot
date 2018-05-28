@@ -1,3 +1,1 @@
-from cogs.utils import db
-a = await db.get_tags(ctx.guild.id, ctx.author.id)
-print(a)
+return discord.utils.get(ctx.guild.roles, name="Black Hole").id

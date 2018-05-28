@@ -47,7 +47,10 @@ async def get_role_shop_buy_dict(ctx):
     for i in r:
         if i not in p_r:
             role = discord.utils.get(ctx.guild.roles, id=int(i))
-            roles[i] = "\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*21+";"
+            try:
+                roles[i] = "\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*21+";"
+            except:
+                pass
     return roles
 
 async def get_user_roles_equipped_list(ctx):
@@ -73,6 +76,21 @@ async def get_user_roles_purchased_list(ctx):
     except KeyError:
         return []
 
+async def get_users_roles_purchased_list(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    d = await guild.find_one({'_id': 'members'})
+    roles = {}
+    try:
+        d.pop("_id")
+    except:
+        return {}
+    for user_id in d:
+        try:
+            roles[str(user_id)] = list(d[str(user_id)]["roles-rs"].keys())
+        except:
+            pass
+    return roles
+
 async def get_user_roles_unequipped_list(ctx):
     p_l = await get_user_roles_purchased_list(ctx)
     e_l =await get_user_roles_equipped_list(ctx)
@@ -90,8 +108,27 @@ async def get_role_shop_list(ctx):
     roles = []
     for i in r:
         role = discord.utils.get(ctx.guild.roles, id=int(i))
-        roles.append("\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*16+";")
+        try:
+            roles.append("\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*16+";")
+        except:
+            pass
     return roles
+
+async def get_guilds_rs_roles(guilds):
+    """Returns dict of role shop roles id of all guilds."""
+    guilds_roles = {}
+    for g in guilds:
+        guild = motor_client.guilds[str(g.id)]
+        s = await guild.find_one({'_id': 'role-shop'})
+        if s is None:
+            pass
+        else:
+            try:
+                s.pop("_id")
+                guilds_roles[str(g.id)] = s
+            except:
+                continue
+    return guilds_roles
 
 async def get_role_shop_embed(ctx):
     """Returns discord.Embed() class which can be sent through send(embed=embed)"""
@@ -185,9 +222,16 @@ async def role_shop_create(ctx, role, points):
         await insert(guild, {'_id': 'role-shop'})
     await guild.update_one({'_id': 'role-shop'}, {'$set': {str(role.id): points}})
 
-async def remove_role(ctx, role_id, points):
-    guild = motor_client.guilds[str(ctx.guild.id)]
-    await guild.update_one({'_id': 'role-shop'}, {'$unset': {str(role_id): str(points)}})
+async def remove_role(guild_id, role_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'role-shop'}, {'$unset': {str(role_id): ""}})
+
+async def remove_deleted_purchased_role(guild_id, role_id):
+    roles = await get_users_roles_purchased_list(guild_id)
+    guild = motor_client.guilds[str(guild_id)]
+    for user_id in roles:
+        if str(role_id) in roles[user_id]:
+            await guild.update_one({'_id': 'members'}, {'$unset': {str(user_id)+".roles-rs."+str(role_id): ""}})
 
 async def give_points(guild_id, user_id, points):
     guild = motor_client.guilds[str(guild_id)]
@@ -307,11 +351,11 @@ async def shutup_bot(guild_id, channel_id):
         await insert(guild, {'_id': 'settings'})
     await guild.update_one({'_id': 'settings'}, {'$addToSet': {"shutup-channels": str(channel_id)}})
 
-async def unshutup_bot(guild_id, channel_id):
+async def unshutup_bot(guild_id):
     guild = motor_client.guilds[str(guild_id)]
     if await count_settings(guild)==0:
         await insert(guild, {'_id': 'settings'})
-    await guild.update_one({'_id': 'settings'}, {'$unset': {"shutup-channels": str(channel_id)}})
+    await guild.update_one({'_id': 'settings'}, {'$unset': {"shutup-channels": ""}})
 
 async def get_shutup_channels(guild_id):
     guild = motor_client.guilds[str(guild_id)]
@@ -435,9 +479,9 @@ async def get_tags(guild_id, user_id):
     except:
         return None
 
-async def remove_tag(guild_id, user_id, tag_name, content):
+async def remove_tag(guild_id, user_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
-    await guild.update_one({'_id': 'members'}, {'$unset': {str(user_id)+".tags."+tag_name: content}})
+    await guild.update_one({'_id': 'members'}, {'$unset': {str(user_id)+".tags."+tag_name: ""}})
 
 async def create_tag_box(guild_id, tag_name, content):
     guild = motor_client.guilds[str(guild_id)]
@@ -462,6 +506,6 @@ async def get_tags_box(guild_id):
     except:
         return None
 
-async def remove_tag_box(guild_id, tag_name, content):
+async def remove_tag_box(guild_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
-    await guild.update_one({'_id': 'tag-box'}, {'$unset': {tag_name: content}})
+    await guild.update_one({'_id': 'tag-box'}, {'$unset': {tag_name: ""}})

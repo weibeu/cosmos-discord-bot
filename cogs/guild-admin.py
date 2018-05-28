@@ -23,6 +23,7 @@ class Guild_Admin(object):
         self.r_s = {}
         self.omjcd_settings = {}
         self.sc_settings = {}
+        self.guilds_rs_roles = {}
         bot.loop.create_task(self.get_guild_settings())
 
     async def get_guild_settings(self):
@@ -30,6 +31,7 @@ class Guild_Admin(object):
         self.r_s = await db.get_reactor_settings(self.bot.guilds)
         self.omjcd_settings = await db.get_omjcd_settings(self.bot.guilds)
         self.sc_settings = await db.get_sc_settings(self.bot.guilds)
+        self.guilds_rs_roles = await db.get_guilds_rs_roles(self.bot.guilds)
 
     @commands.group(hidden=True, name="rsa")
     @commands.has_permissions(manage_roles=True)
@@ -52,6 +54,9 @@ class Guild_Admin(object):
             if points.isnumeric():
                 r = await ctx.guild.create_role(name=role, reason="Role Shop")
                 await db.role_shop_create(ctx, r, points)
+                td = self.guilds_rs_roles[str(ctx.guild.id)] #runtime dict
+                td[str(r.id)] = str(points)
+                self.guilds_rs_roles[str(ctx.guild.id)] = td
                 await ctx.send("Role `"+role+"` created worth `"+points+"` points.")
             else:
                 await ctx.send("Points should be numeric.")
@@ -76,8 +81,14 @@ class Guild_Admin(object):
             role_id = list(roles.keys())[index]
             role = discord.utils.get(ctx.guild.roles, id=int(role_id))
             if await confirm_menu(ctx, "Are you sure to delete __**"+role.name+"**__?"):
-                await db.remove_role(ctx, role.id, roles[str(role.id)])
+                await db.remove_role(ctx.guild.id, role.id)
                 await role.delete(reason="Delete role from Role-Shop")
+                td = self.guilds_rs_roles[str(ctx.guild.id)] #runtime dict
+                try:
+                    td.pop(str(role.id))
+                except:
+                    pass
+                self.guilds_rs_roles[str(ctx.guild.id)] = td
                 await ctx.send("role, `"+role.name+"` removed.")
         except:
             pass
@@ -351,6 +362,13 @@ class Guild_Admin(object):
                 except:
                     pass
 
+    async def on_guild_role_delete(self, role):
+        if str(role.guild.id) in self.guilds_rs_roles and str(role.id) in self.guilds_rs_roles[str(role.guild.id)]:
+            await db.remove_role(role.guild.id, role.id)
+            #remove from purchased roles as well
+            await db.remove_deleted_purchased_role(role.guild.id, role.id)
+
+
     '''@commands.guild_only()
     @commands.has_permissions(administrator=True)
     @commands.command(aliases=["shut-up", "shut up"])
@@ -372,7 +390,7 @@ class Guild_Admin(object):
             channel = ctx.channel
         else:
             channel = discord.utils.get(ctx.guild.channels, id=int(channel_id))
-        await db.unshutup_bot(ctx.guild.id, channel.id)
+        await db.unshutup_bot(ctx.guild.id)
         await ctx.send("Cosmos unmuted in `"+channel.name+"`.")'''
 
     @commands.group(hidden=True, aliases=["omjcd", "cdomj"], name="on_member_join_cooldown")

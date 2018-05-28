@@ -52,7 +52,7 @@ class Tags(object):
             except:
                 pass
         if await confirm_menu(ctx, "Are you sure to remove tag __**"+name+"**__?"):
-            await db.remove_tag(ctx.guild.id, ctx.author.id, name, tags[name])
+            await db.remove_tag(ctx.guild.id, ctx.author.id, name)
             await ctx.send("Tag `"+name+"` removed.")
 
     @commands.group(name="TagBox", aliases=["tb"])
@@ -100,7 +100,7 @@ class Tags(object):
             except:
                 pass
         if await confirm_menu(ctx, "Are you sure to remove tag __**"+name+"**__?"):
-            await db.remove_tag_box(ctx.guild.id, name, tags[name])
+            await db.remove_tag_box(ctx.guild.id, name)
             await ctx.send("Tag `"+name+"` removed.")
 
 def setup(bot):
