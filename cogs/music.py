@@ -71,17 +71,19 @@ class MusicSource(discord.PCMVolumeTransformer):
         super().__init__(source, volume)
 
         self.data = data
+        try:
+            self.title = data.get('title')
+            self.url = data.get('url')
+            self.duration = data.get('duration') or get_duration(data.get('url'))
+            self.weburl = data.get('webpage_url')
+            self.views = data.get('view_count')
+            self.thumb = data.get('thumbnail')
+            self.requester = data.get('requester')
+            self.channel = data.get('channel')
 
-        self.title = data.get('title')
-        self.url = data.get('url')
-        self.duration = data.get('duration') or get_duration(data.get('url'))
-        self.weburl = data.get('webpage_url')
-        self.views = data.get('view_count')
-        self.thumb = data.get('thumbnail')
-        self.requester = data.get('requester')
-        self.channel = data.get('channel')
-
-        self.filename = filename
+            self.filename = filename
+        except:
+            pass
 
     @classmethod
     async def from_filename(cls, *, data, filename, volume):
