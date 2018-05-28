@@ -25,10 +25,14 @@ def get_duration(url):
     process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = process.communicate()
     data = json.loads(output)
-    duration = data['format']['duration']
-    process.kill()
+    try:
+        duration = data['format']['duration']
 
-    return math.ceil(float(duration))
+        process.kill()
+
+        return math.ceil(float(duration))
+    except:
+        pass
 
 
 def outtmpl_seed():
@@ -71,19 +75,17 @@ class MusicSource(discord.PCMVolumeTransformer):
         super().__init__(source, volume)
 
         self.data = data
-        try:
-            self.title = data.get('title')
-            self.url = data.get('url')
-            self.duration = data.get('duration') or get_duration(data.get('url'))
-            self.weburl = data.get('webpage_url')
-            self.views = data.get('view_count')
-            self.thumb = data.get('thumbnail')
-            self.requester = data.get('requester')
-            self.channel = data.get('channel')
 
-            self.filename = filename
-        except:
-            pass
+        self.title = data.get('title')
+        self.url = data.get('url')
+        self.duration = data.get('duration') or get_duration(data.get('url'))
+        self.weburl = data.get('webpage_url')
+        self.views = data.get('view_count')
+        self.thumb = data.get('thumbnail')
+        self.requester = data.get('requester')
+        self.channel = data.get('channel')
+
+        self.filename = filename
 
     @classmethod
     async def from_filename(cls, *, data, filename, volume):
@@ -100,12 +102,15 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
         self.title = data.get('title')
         self.url = data.get('url')
-        self.duration = data.get('duration') or get_duration(data.get('url'))
-        self.weburl = data.get('webpage_url')
-        self.views = data.get('view_count')
-        self.thumb = data.get('thumbnail')
-        self.requester = data.get('requester')
-        self.channel = data.get('channel')
+        try:
+            self.duration = data.get('duration') or get_duration(data.get('url'))
+            self.weburl = data.get('webpage_url')
+            self.views = data.get('view_count')
+            self.thumb = data.get('thumbnail')
+            self.requester = data.get('requester')
+            self.channel = data.get('channel')
+        except:
+            pass
 
         self.filename = filename
 
