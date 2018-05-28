@@ -58,6 +58,7 @@ class Core(object):
             g = u'\U0001F3AE Game'
             if '=' in game: g = '\ud83c\udfa5 Stream'
             em.add_field(name=g, value=game)
+            em.add_field(name="⚙ Logical CPUs Cores", value=str(psutil.cpu_count()))
             try:
                 mem_usage = '{:.2f} MiB'.format(__import__('psutil').Process().memory_full_info().uss / 1024 ** 2)
             except AttributeError:
@@ -65,6 +66,7 @@ class Core(object):
                 mem_usage = '{:.2f} MiB'.format(__import__('psutil').Process().memory_full_info().rss / 1024 ** 2)
             em.add_field(name=u'\U0001F4BE Memory usage:', value=mem_usage)
             em.add_field(name='🔺 discord.py version', value=discord.__version__)
+            em.add_field(name='📈 CPU usage', value=str(psutil.cpu_percent()))
             await ctx.send(content=None, embed=em)
         else:
             msg = '**Bot Stats:** ```Uptime: %s\nguilds: %s\nGame: %s```' % (

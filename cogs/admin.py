@@ -131,7 +131,6 @@ class Admin(object):
                 embed.add_field(name=file, value="`Insertions:`\t"+str(new_repo.commit.stats.files[file]['insertions'])+"\n`Deletions:`\t"+str(new_repo.commit.stats.files[file]['deletions'])+"\n`Lines:`\t"+str(new_repo.commit.stats.files[file]["lines"]))
             except:
                 pass
-
         try:
             await ctx.send(embed=embed)
         except:
