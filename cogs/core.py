@@ -53,6 +53,7 @@ class Core(object):
             em = discord.Embed(title='Bot Stats', color=get_random_embed_color())
             em.add_field(name=u'\U0001F553 Uptime', value=time, inline=False)
             em.add_field(name=u'\u2328 Most Used Cmd', value=most_used_cmd, inline=False)
+            em.add_field(name='🔺 discord.py version', value=discord.__version__)
             em.add_field(name=u'\u2694 Servers', value=str(len(self.bot.guilds)))
             em.add_field(name=u'\ud83d\udcd1 Channels', value=str(channel_count))
             g = u'\U0001F3AE Game'
@@ -65,7 +66,6 @@ class Core(object):
                 # OS doesn't support retrieval of USS (probably BSD or Solaris)
                 mem_usage = '{:.2f} MiB'.format(__import__('psutil').Process().memory_full_info().rss / 1024 ** 2)
             em.add_field(name=u'\U0001F4BE Memory usage:', value=str(mem_usage)+" / "+str(round(psutil.virtual_memory().used/1024**2, 3))+" MiB")
-            em.add_field(name='🔺 discord.py version', value=discord.__version__)
             em.add_field(name='📈 CPU usage', value=str(psutil.cpu_percent())+" %")
             await ctx.send(content=None, embed=em)
         else:
