@@ -181,7 +181,7 @@ class Menu(object):
 
             await self.match()
 
-class FieldPages(Pages):
+class FieldPages(Menu):
     """Similar to Pages except entries should be a list of
     tuples having (key, value) to show as embed fields instead.
     """
