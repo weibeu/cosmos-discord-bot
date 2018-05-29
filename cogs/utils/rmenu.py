@@ -181,6 +181,46 @@ class Menu(object):
 
             await self.match()
 
+class FieldPages(Pages):
+    """Similar to Pages except entries should be a list of
+    tuples having (key, value) to show as embed fields instead.
+    """
+    async def show_page(self, page, *, first=False):
+        self.current_page = page
+        entries = self.get_page(page)
+
+        self.embed.clear_fields()
+        self.embed.description = discord.Embed.Empty
+
+        for key, value in entries:
+            self.embed.add_field(name=key, value=value, inline=False)
+
+        if self.maximum_pages > 1:
+            if self.show_entry_count:
+                text = f'Page {page}/{self.maximum_pages} ({len(self.entries)} entries)'
+            else:
+                text = f'Page {page}/{self.maximum_pages}'
+
+            self.embed.set_footer(text=text)
+
+        if not self.paginating:
+            self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
+            return await self.channel.send(embed=self.embed)
+
+        if not first:
+            await self.message.edit(embed=self.embed)
+            return
+        self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
+        self.message = await self.channel.send(embed=self.embed)
+        for (reaction, _) in self.reaction_emojis:
+            if self.maximum_pages == 2 and reaction in ('\u23ed', '\u23ee'):
+                # no |<< or >>| buttons if we only have two pages
+                # we can't forbid it if someone ends up using it but remove
+                # it from the default set
+                continue
+
+            await self.message.add_reaction(reaction)
+
 async def confirm_menu(ctx, message, custom_message=False):
 
     if custom_message:
