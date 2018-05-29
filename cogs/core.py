@@ -64,7 +64,7 @@ class Core(object):
             except AttributeError:
                 # OS doesn't support retrieval of USS (probably BSD or Solaris)
                 mem_usage = '{:.2f} MiB'.format(__import__('psutil').Process().memory_full_info().rss / 1024 ** 2)
-            em.add_field(name=u'\U0001F4BE Memory usage:', value=str(mem_usage)+" / "+round(psutil.virtual_memory().used/1024**2, 3)+" MiB")
+            em.add_field(name=u'\U0001F4BE Memory usage:', value=str(mem_usage)+" / "+str(round(psutil.virtual_memory().used/1024**2, 3))+" MiB")
             em.add_field(name='🔺 discord.py version', value=discord.__version__)
             em.add_field(name='📈 CPU usage', value=str(psutil.cpu_percent())+" %")
             await ctx.send(content=None, embed=em)
