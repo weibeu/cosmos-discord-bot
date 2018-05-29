@@ -315,7 +315,7 @@ class Debugger:
         """Redirect STDOUT and STDERR to a channel for debugging purposes."""
         sys.stdout = self.stream
         sys.stderr = self.stream
-        self.channel = ctx.message.channel
+        self.channel = self.bot.get_channel(int(self.bot.config["stdout_stderr_channel"])
         await ctx.send("Successfully redirected STDOUT and STDERR to the current channel!")
 
     @commands.command(pass_context=True, hidden=True)

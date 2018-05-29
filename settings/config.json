@@ -10,5 +10,6 @@
     "google_api_key": "AIzaSyDC6K5sbA4GyAFDj7bpcen4brrR3E6dW3U",
     "giphy_api_key": "mcmwX204gcTtGkRumGiGdvx4iILPmtRY",
 	  "show_search_term": "True",
-    "ascii_font": "big"
+    "ascii_font": "big",
+    "stdout_stderr_channel": "432077087378243594"
 }
