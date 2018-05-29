@@ -52,7 +52,7 @@ class Core(object):
         if embed_perms(ctx.message):
             em = discord.Embed(title='Bot Stats', color=get_random_embed_color())
             em.add_field(name=u'\U0001F553 Uptime', value=time, inline=False)
-            em.add_field(name=u'\u2328 Most Used Cmd', value=most_used_cmd, inline=False)
+            em.add_field(name=u'\u2328 Most Used Cmd', value=most_used_cmd)
             em.add_field(name='🔺 discord.py version', value=discord.__version__)
             em.add_field(name=u'\u2694 Servers', value=str(len(self.bot.guilds)))
             em.add_field(name=u'\ud83d\udcd1 Channels', value=str(channel_count))
