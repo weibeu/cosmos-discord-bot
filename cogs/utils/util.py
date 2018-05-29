@@ -28,7 +28,7 @@ def get_random_gif():
 
 def get_gif(query):
     try:
-        response = giphy.gifs_search_get(giphy_api_key, query)
+        response = giphy.gifs_search_get(giphy_api_key, query, limit=7)
     except Exception as e:
         print("Error fetching {0} gif from giphy".format(query))
     return choice(response.data)._images.original.url
