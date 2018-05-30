@@ -1,1 +1,4 @@
-return discord.utils.get(ctx.guild.roles, name="Black Hole").id
+from cogs.utils.rmenu import FieldMenu
+p = FieldMenu(ctx, entries=[("Role1", 1200), ("role2", 1000), ("role3", 1000), ("role4", 2000), ("Role1", 1200), ("role2", 1000), ("role3", 1000), ("role4", 2000)], inline=True)
+a = await p.paginate()
+return a

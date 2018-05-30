@@ -5,7 +5,7 @@ from cogs.utils import util
 class Menu(object):
     """Reaction based menu."""
 
-    def __init__(self, ctx, *, entries, per_page=7, show_entry_count=True):
+    def __init__(self, ctx, *, entries, per_page=7, show_entry_count=True, inline=False):
         self.ctx = ctx
         self.bot = ctx.bot
         self.entries = entries
@@ -27,6 +27,7 @@ class Menu(object):
         ]
         self.reaction_emojis = util.get_reaction_numbers()
         self.choices = {}
+        self.inline = inline
 
     def get_page(self, page):
         base = (page - 1) * self.per_page
@@ -46,6 +47,7 @@ class Menu(object):
                 text = f'Page {page}/{self.max_pages} ({len(self.entries)} entries)'
             else:
                 text = f'Page {page}/{self.max_pages}'
+            self.embed.colour = util.get_random_embed_color()
             self.embed.set_footer(text=text)
         if not self.paginating:
             self.embed.description = '\n'.join(p)
@@ -181,19 +183,22 @@ class Menu(object):
 
             await self.match()
 
-class FieldPages(Menu):
+class FieldMenu(Menu):
     """Similar to Pages except entries should be a list of
     tuples having (key, value) to show as embed fields instead.
     """
     async def show_page(self, page, *, first=False):
         self.current_page = page
         entries = self.get_page(page)
-
+        remojis = []
         self.embed.clear_fields()
         self.embed.description = discord.Embed.Empty
-
+        index = 1 + ((page - 1) * self.per_page)
         for key, value in entries:
-            self.embed.add_field(name=key, value=value, inline=False)
+            self.embed.add_field(name=key, value=value, inline=self.inline)
+            self.choices[self.reaction_emojis[str(index)]] = index
+            remojis.append(self.reaction_emojis[str(index)])
+            index += 1
 
         if self.max_pages > 1:
             if self.show_entry_count:
@@ -202,17 +207,33 @@ class FieldPages(Menu):
                 text = f'Page {page}/{self.max_pages}'
 
             self.embed.set_footer(text=text)
-
+        self.embed.colour = util.get_random_embed_color()
         if not self.paginating:
             self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
-            return await self.channel.send(embed=self.embed)
+            self.message = await self.channel.send(embed=self.embed)
+            for r in remojis:
+                await self.message.add_reaction(r)
+            await self.message.add_reaction('\N{BLACK SQUARE FOR STOP}')
+            return self.message
 
         if not first:
             await self.message.edit(embed=self.embed)
+            for r in remojis:
+                await self.message.add_reaction(r)
+            for (reaction, _) in self.nav_emojis:
+                if self.max_pages == 2 and reaction in ('\u23ed', '\u23ee'):
+                    # no |<< or >>| buttons if we only have two pages
+                    # we can't forbid it if someone ends up using it but remove
+                    # it from the default set
+                    continue
+
+                await self.message.add_reaction(reaction)
             return
         self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
         self.message = await self.channel.send(embed=self.embed)
-        for (reaction, _) in self.reaction_emojis:
+        for r in remojis:
+            await self.message.add_reaction(r)
+        for (reaction, _) in self.nav_emojis:
             if self.max_pages == 2 and reaction in ('\u23ed', '\u23ee'):
                 # no |<< or >>| buttons if we only have two pages
                 # we can't forbid it if someone ends up using it but remove
