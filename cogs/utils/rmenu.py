@@ -195,7 +195,7 @@ class FieldMenu(Menu):
         self.embed.description = discord.Embed.Empty
         index = 1 + ((page - 1) * self.per_page)
         for key, value in entries:
-            self.embed.add_field(name=key, value=value, inline=self.inline)
+            self.embed.add_field(name="<:"+self.reaction_emojis[str(index)]+"> "+str(key), value=str(value), inline=self.inline)
             self.choices[self.reaction_emojis[str(index)]] = index
             remojis.append(self.reaction_emojis[str(index)])
             index += 1

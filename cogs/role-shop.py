@@ -1,7 +1,7 @@
 from discord.ext import commands
 from cogs.utils import db, util
-from cogs.utils.paginator import Pages
-from cogs.utils.rmenu import Menu, confirm_menu
+from cogs.utils.paginator import Pages, FieldPages
+from cogs.utils.rmenu import Menu, confirm_menu, FieldMenu
 import discord
 import asyncio
 import time
@@ -45,7 +45,9 @@ class Role_Shop(object):
             if roles == []:
                 await ctx.send("No roles created yet for role shop.")
                 return
-            p = Pages(ctx, entries=roles, per_page=7)
+            p = FieldPages(ctx, entries=roles, per_page=7, inline=True)
+            p.embed.title = "Role Shop"
+            p.embed.description = "```css\n List of purchasable roles created for role shop which can be purchased by earned points.```"
             await p.paginate()
 
     @role_shop.command(aliases=["purchase"])

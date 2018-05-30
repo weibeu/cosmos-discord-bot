@@ -30,7 +30,7 @@ class Pages:
     permissions: discord.Permissions
         Our permissions for the channel.
     """
-    def __init__(self, ctx, *, entries, per_page=12, show_entry_count=True):
+    def __init__(self, ctx, *, entries, per_page=12, show_entry_count=True, inline=False):
         self.bot = ctx.bot
         self.entries = entries
         self.message = ctx.message
@@ -44,6 +44,7 @@ class Pages:
         self.embed = discord.Embed(colour=get_random_embed_color())
         self.paginating = len(entries) > per_page
         self.show_entry_count = show_entry_count
+        self.inline = inline
         self.reaction_emojis = [
             ('\N{BLACK LEFT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}', self.first_page),
             ('\N{BLACK LEFT-POINTING TRIANGLE}', self.previous_page),
@@ -89,7 +90,7 @@ class Pages:
                 text = f'Page {page}/{self.maximum_pages} ({len(self.entries)} entries)'
             else:
                 text = f'Page {page}/{self.maximum_pages}'
-
+            self.embed.colour = get_random_embed_color()
             self.embed.set_footer(text=text)
 
         if not self.paginating:
@@ -241,12 +242,11 @@ class FieldPages(Pages):
     async def show_page(self, page, *, first=False):
         self.current_page = page
         entries = self.get_page(page)
-
+        self.embed.colour = get_random_embed_color()
         self.embed.clear_fields()
-        self.embed.description = discord.Embed.Empty
 
         for key, value in entries:
-            self.embed.add_field(name=key, value=value, inline=False)
+            self.embed.add_field(name=key, value=value, inline=self.inline)
 
         if self.maximum_pages > 1:
             if self.show_entry_count:

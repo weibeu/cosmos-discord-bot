@@ -109,7 +109,8 @@ async def get_role_shop_list(ctx):
     for i in r:
         role = discord.utils.get(ctx.guild.roles, id=int(i))
         try:
-            roles.append("\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*16+";")
+            entry = ("\t\t**"+role.name+"**", "`POINTS:`"+r[i])
+            roles.append(entry)
         except:
             pass
     return roles
