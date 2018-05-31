@@ -506,7 +506,7 @@ class Guild_Admin(object):
         if str(member.guild.id) in list(self.omjcd_settings.keys()) and self.omjcd_settings[str(member.guild.id)]["enabled"]:   #member was part of guild with these settings and omjcd mode is enabled
                 role = discord.utils.get(member.guild.roles, id=int(self.omjcd_settings[str(member.guild.id)]["role"]))
                 await member.add_roles(role, reason="For cooldown on member join.")
-                await asyncio.sleep(int(self.omjcd_settings[str(member.guild.id)]["cooldown"])*60)
+                await asyncio.sleep(float(self.omjcd_settings[str(member.guild.id)]["cooldown"])*60)
                 await member.remove_roles(role, reason="Removing cooldown role.")
 
     @commands.group(hidden=True, aliases=["secret-confessions", "sc"])
