@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from cogs.utils import checks
 from cogs.utils import db
-from cogs.utils.paginator import Pages
+from cogs.utils.paginator import Pages, FieldPages
 from cogs.utils.util import get_random_embed_color, tick
 from collections import Counter
 
@@ -234,7 +234,7 @@ class Guild(object):
         member = ctx.guild.me
         await self.say_permissions(ctx, member, channel)
 
-    '''@commands.group(aliases=['leaderboards', 'lb'])
+    @commands.group(aliases=['leaderboards', 'lb'])
     @commands.guild_only()
     async def leaderboard(self, ctx):
         """Get different leaderboards."""
@@ -249,14 +249,14 @@ class Guild(object):
         for p in top_points:
             try:
                 user = self.bot.get_user(int(points[p]))
-                entries.append("\t|\t__**"+user.name+"**__`#"+str(user.discriminator)+"`\n\n\t\t\t\t`POINTS:`  **"+str(p)+"**\n"+"\t"*16+";")
+                entries.append(("\t\t**"+user.name+"**`#"+str(user.discriminator)+"`", "`POINTS:` **"+str(p)+"**"))
                 if user.id == ctx.author.id:
                     title = "You rank: "+str(top_points.index(p)+1)+"/"+str(len(top_points))
             except:
                 pass
-        p = Pages(ctx, entries=entries, per_page=10)
+        p = FieldPages(ctx, entries=entries, per_page=10)
         p.embed.title = title
-        await p.paginate()'''
+        await p.paginate()
 
     '''@commands.group(name='prefix', invoke_without_command=True)
     async def prefix(self, ctx):
