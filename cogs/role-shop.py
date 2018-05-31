@@ -99,7 +99,7 @@ class Role_Shop(object):
             if role in roles:
                 r = discord.utils.get(ctx.guild.roles, id=int(role))
                 entries.append(("\t\t**"+r.name+"**", "`POINTS:` "+roles_dict[role]))
-        p = FieldPages(ctx, entries=entries, per_page=8)
+        p = FieldPages(ctx, entries=entries, per_page=8, inline=True)
         p.embed.title = "Purchased Roles - Role Shop"
         p.embed.description = "```css\n Here is list of your purchased roles from your guild role shop.```"
         await p.paginate()
