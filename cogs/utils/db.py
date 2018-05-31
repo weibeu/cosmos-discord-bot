@@ -48,7 +48,7 @@ async def get_role_shop_buy_dict(ctx):
         if i not in p_r:
             role = discord.utils.get(ctx.guild.roles, id=int(i))
             try:
-                roles[i] = "\t|\t"+role.mention+"\n\n\t\t\t\t`POINTS:`  **"+r[i]+"**\n"+"\t"*21+";"
+                roles[i] = ("\t\t**"+role.name+"**", "`POINTS:`"+r[i])
             except:
                 pass
     return roles

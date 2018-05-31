@@ -2,7 +2,7 @@ from discord.ext import commands
 from cogs.utils import db, util
 from cogs.utils import checks
 from cogs.utils.util import get_random_color, get_random_embed_color
-from cogs.utils.rmenu import Menu, confirm_menu
+from cogs.utils.rmenu import Menu, confirm_menu, FieldMenu
 import re
 import discord
 import asyncio
@@ -45,7 +45,7 @@ class Guild_Admin(object):
     async def create_role(self, ctx, role, points):
         """Creates a role for role shop worth provided number of points.
         Note: If your role name contains space or gap in between words, consider putting it into quotes.
-        rn you can create maximum 50 roles."""
+        rn you can create maximum 50 roles.\nFor best appearence of role shop, consider keeping even number of roles in your role shop."""
         roles = await db.get_role_shop_dict(ctx)
         if len(roles) == 50:
             await ctx.send("Sorry, but rn you can't create more than 50 roles.")
@@ -64,8 +64,14 @@ class Guild_Admin(object):
     @role_shop_admin.command()
     async def roles(self, ctx):
         """View all created roles and required points to purchase."""
-        embed = await db.get_role_shop_embed(ctx)
-        await ctx.send(embed=embed)
+        roles = await db.get_role_shop_list(ctx)
+        if roles == []:
+            await ctx.send("No roles created yet for role shop.")
+            return
+        p = FieldPages(ctx, entries=roles, per_page=8, inline=True)
+        p.embed.title = "Role Shop"
+        p.embed.description = "```css\n List of purchasable roles created for role shop.```"
+        await p.paginate()
 
     @role_shop_admin.command(name="remove")
     async def remove_role(self, ctx):
@@ -74,16 +80,18 @@ class Guild_Admin(object):
         entries = []
         for r in roles:
             role = discord.utils.get(ctx.guild.roles, id=int(r))
-            entries.append("    |    __**"+role.name+"**__\n\n                `POINTS:`  **"+roles[r]+"**\n"+"    "*21+";")
-        menu = Menu(ctx, entries=entries, per_page=5)
+            entries.append(("\t\t**"+role.name+"**", "`POINTS:` "+roles[r]))
+        menu = FieldMenu(ctx, entries=entries, per_page=6, inline=True)
+        menu.embed.title = "Remove Role Menu - Role Shop Admin"
+        menu.embed.description = "```css\n React with corresponding emoji to remove that role.```"
         index = await menu.paginate()
         try:
             role_id = list(roles.keys())[index]
             role = discord.utils.get(ctx.guild.roles, id=int(role_id))
             if await confirm_menu(ctx, "Are you sure to delete __**"+role.name+"**__?"):
+                await role.delete(reason="Delete role from Role-Shop")
                 await db.remove_role(ctx.guild.id, role.id) #deleting role from role shop db
                 await db.remove_deleted_purchased_role(ctx.guild.id, role.id) #deleting role from members document in db
-                await role.delete(reason="Delete role from Role-Shop")
                 td = self.guilds_rs_roles[str(ctx.guild.id)] #runtime dict
                 try:
                     td.pop(str(role.id))
@@ -101,8 +109,10 @@ class Guild_Admin(object):
         entries = []
         for r in roles:
             role = discord.utils.get(ctx.guild.roles, id=int(r))
-            entries.append("    |    __**"+role.name+"**__\n\n                `POINTS:`  **"+roles[r]+"**\n"+"    "*21+";")
-        menu = Menu(ctx, entries=entries, per_page=5)
+            entries.append(("\t\t**"+role.name+"**", "`POINTS:` "+roles[r]))
+        menu = FieldMenu(ctx, entries=entries, per_page=6, inline=True)
+        menu.embed.title = "Role Modification Menu - Role Shop Admin"
+        menu.embed.description = "```css\n React with corresponding emoji and send new points for the role to modify it.```"
         index = await menu.paginate()
         try:
             role_id = list(roles.keys())[index]
@@ -113,7 +123,7 @@ class Guild_Admin(object):
             return new_points.author == ctx.author
         def check2(choice, user):
             return user == ctx.author
-        m = await ctx.send("Reply with new points of role `"+modify_role.name+"`")
+        m = await ctx.send("Reply with new points for role `"+modify_role.name+"`")
         try:
             new_points = await self.bot.wait_for('message', timeout=120.0, check=check1)
         except asyncio.TimeoutError:

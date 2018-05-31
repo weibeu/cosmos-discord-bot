@@ -1,7 +1,2 @@
-from cogs.utils.rmenu import FieldMenu
-p = FieldMenu(ctx, entries=[("Role1", 1200), ("role2", 1000), ("role3", 1000), ("role4", 2000), ("Role1", 1200), ("role2", 1000), ("role3", 1000), ("role4", 2000)], inline=True)
-p.embed.description = """```css\n blah blah List of purchasable roles created for role shop which can be purchased by earned points.
-```
-
-"""
-await p.paginate()
+from cogs.utils import db
+return await db.get_role_shop_buy_dict(ctx)
