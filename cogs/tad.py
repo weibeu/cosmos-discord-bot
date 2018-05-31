@@ -9,7 +9,7 @@ class TAD(object):
         self.bot = bot
 
     async def __local_check(self, ctx):
-        return ctx.guild.id == 244998983112458240
+        return ctx.guild.id in [244998983112458240, 434065022000431124]
 
     async def on_message(self, message):
 
