@@ -31,6 +31,7 @@ class Pages:
         Our permissions for the channel.
     """
     def __init__(self, ctx, *, entries, per_page=12, show_entry_count=True, inline=False, timeout=120, show_author=True):
+        self.ctx = ctx
         self.bot = ctx.bot
         self.entries = entries
         self.message = ctx.message
@@ -102,7 +103,8 @@ class Pages:
             self.embed.description = '\n'.join(p)
             if self.show_author:
                 self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
-            return await self.channel.send(embed=self.embed)
+            async with self.ctx.typing:
+                return await self.channel.send(embed=self.embed)
 
         if not first:
             self.embed.description = '\n'.join(p)
@@ -113,7 +115,8 @@ class Pages:
         self.embed.description = '\n'.join(p)
         if self.show_author:
             self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
-        self.message = await self.channel.send(embed=self.embed)
+        async with self.ctx.typing:
+            self.message = await self.channel.send(embed=self.embed)
         for (reaction, _) in self.reaction_emojis:
             if self.maximum_pages == 2 and reaction in ('\u23ed', '\u23ee'):
                 # no |<< or >>| buttons if we only have two pages
@@ -266,14 +269,16 @@ class FieldPages(Pages):
         if not self.paginating:
             if self.show_author:
                 self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
-            return await self.channel.send(embed=self.embed)
+            async with self.ctx.typing:
+                return await self.channel.send(embed=self.embed)
 
         if not first:
             await self.message.edit(embed=self.embed)
             return
         if self.show_author:
             self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
-        self.message = await self.channel.send(embed=self.embed)
+        async with self.ctx.typing:
+            self.message = await self.channel.send(embed=self.embed)
         for (reaction, _) in self.reaction_emojis:
             if self.maximum_pages == 2 and reaction in ('\u23ed', '\u23ee'):
                 # no |<< or >>| buttons if we only have two pages
@@ -446,12 +451,14 @@ class HelpPaginator(Pages):
             self.embed.set_author(name=f'Page {page}/{self.maximum_pages} ({self.total} commands)')
 
         if not self.paginating:
-            return await self.channel.send(embed=self.embed)
+            async with self.ctx.typing:
+                return await self.channel.send(embed=self.embed)
 
         if not first:
             await self.message.edit(embed=self.embed)
             return
-        self.message = await self.channel.send(embed=self.embed)
+        async with self.ctx.typing:
+            self.message = await self.channel.send(embed=self.embed)
         for (reaction, _) in self.reaction_emojis:
             if self.maximum_pages == 2 and reaction in ('\u23ed', '\u23ee'):
                 # no |<< or >>| buttons if we only have two pages

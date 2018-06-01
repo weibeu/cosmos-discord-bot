@@ -19,5 +19,4 @@ class Genius(object):
         self.page = Pages(self.ctx, entries=self.song.lyrics.split("\n"), show_entry_count=False, timeout=300, show_author=False, per_page=27)
         self.page.embed.title = f"{self.song.title} - Lyrics"
         self.page.embed.set_author(name=self.song.artist, icon_url=self.song.song_art_image_url)
-        async with self.ctx.typing():
-            await self.page.paginate()
+        await self.page.paginate()
