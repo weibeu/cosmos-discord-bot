@@ -45,7 +45,7 @@ class Role_Shop(object):
             if roles == []:
                 await ctx.send("No roles created yet for role shop.")
                 return
-            p = FieldPages(ctx, entries=roles, per_page=8, inline=True)
+            p = FieldPages(ctx, entries=roles, per_page=12, inline=True)
             p.embed.title = "Role Shop"
             p.embed.description = "```css\n List of purchasable roles created for role shop which can be purchased by earned points.```"
             await p.paginate()
@@ -99,7 +99,7 @@ class Role_Shop(object):
             if role in roles:
                 r = discord.utils.get(ctx.guild.roles, id=int(role))
                 entries.append(("\t\t**"+r.name+"**", "`POINTS:` "+roles_dict[role]))
-        p = FieldPages(ctx, entries=entries, per_page=8, inline=True)
+        p = FieldPages(ctx, entries=entries, per_page=12, inline=True)
         p.embed.title = "Purchased Roles - Role Shop"
         p.embed.description = "```css\n Here is list of your purchased roles from your guild role shop.```"
         await p.paginate()

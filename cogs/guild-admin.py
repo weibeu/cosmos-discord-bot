@@ -69,7 +69,7 @@ class Guild_Admin(object):
         if roles == []:
             await ctx.send("No roles created yet for role shop.")
             return
-        p = FieldPages(ctx, entries=roles, per_page=8, inline=True)
+        p = FieldPages(ctx, entries=roles, per_page=12, inline=True)
         p.embed.title = "Role Shop"
         p.embed.description = "```css\n List of purchasable roles created for role shop.```"
         await p.paginate()
