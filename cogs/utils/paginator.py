@@ -30,7 +30,7 @@ class Pages:
     permissions: discord.Permissions
         Our permissions for the channel.
     """
-    def __init__(self, ctx, *, entries, per_page=12, show_entry_count=True, inline=False, timeout=120):
+    def __init__(self, ctx, *, entries, per_page=12, show_entry_count=True, inline=False, timeout=120, show_author=True):
         self.bot = ctx.bot
         self.entries = entries
         self.message = ctx.message
@@ -46,6 +46,7 @@ class Pages:
         self.show_entry_count = show_entry_count
         self.inline = inline
         self.timeout = timeout
+        self.show_author = show_author
         self.reaction_emojis = [
             ('\N{BLACK LEFT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}', self.first_page),
             ('\N{BLACK LEFT-POINTING TRIANGLE}', self.previous_page),
@@ -99,7 +100,8 @@ class Pages:
 
         if not self.paginating:
             self.embed.description = '\n'.join(p)
-            self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
+            if self.show_author:
+                self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
             return await self.channel.send(embed=self.embed)
 
         if not first:
@@ -109,7 +111,8 @@ class Pages:
 
         p.append('')
         self.embed.description = '\n'.join(p)
-        self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
+        if self.show_author:
+            self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
         self.message = await self.channel.send(embed=self.embed)
         for (reaction, _) in self.reaction_emojis:
             if self.maximum_pages == 2 and reaction in ('\u23ed', '\u23ee'):
@@ -261,13 +264,15 @@ class FieldPages(Pages):
             self.embed.set_footer(text=text)
 
         if not self.paginating:
-            self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
+            if self.show_author:
+                self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
             return await self.channel.send(embed=self.embed)
 
         if not first:
             await self.message.edit(embed=self.embed)
             return
-        self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
+        if self.show_author:
+            self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
         self.message = await self.channel.send(embed=self.embed)
         for (reaction, _) in self.reaction_emojis:
             if self.maximum_pages == 2 and reaction in ('\u23ed', '\u23ee'):
@@ -427,7 +432,8 @@ class HelpPaginator(Pages):
         self.embed.clear_fields()
         self.embed.description = self.description
         self.embed.title = self.title
-        self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
+        if self.show_author:
+            self.embed.set_author(name=self.author.name, icon_url=self.author.avatar_url)
 
         self.embed.set_footer(text=f'Use "{self.prefix}help command" for more info on a command.')
 

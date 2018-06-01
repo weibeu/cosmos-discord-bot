@@ -1040,8 +1040,7 @@ class Music:
                 query = player.entry.title
 
         genius = Genius(ctx, query)
-        async with ctx.typing():
-            await genius.show_song_lyrics()
+        await genius.show_song_lyrics()
 
 
 def setup(bot):
