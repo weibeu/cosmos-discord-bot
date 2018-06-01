@@ -1030,7 +1030,7 @@ class Music:
     @commands.command(name='lyrics')
     @commands.cooldown(10, 30, commands.BucketType.user)
     async def get_lyrics(self, ctx, *, query=None):
-        """Get lyrics of song."""
+        """Get lyrics of provided song. If no query is provided then, tries to search lyrics of now playing song."""
         if query is None:
             player = self.get_player(ctx)
             if ctx.guild.voice_client is None or not ctx.guild.voice_client.is_playing():
@@ -1040,7 +1040,8 @@ class Music:
                 query = player.entry.title
 
         genius = Genius(ctx, query)
-        await genius.show_song_lyrics()
+        async with ctx.typing():
+            await genius.show_song_lyrics()
 
 
 def setup(bot):

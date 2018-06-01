@@ -30,7 +30,7 @@ class Pages:
     permissions: discord.Permissions
         Our permissions for the channel.
     """
-    def __init__(self, ctx, *, entries, per_page=12, show_entry_count=True, inline=False):
+    def __init__(self, ctx, *, entries, per_page=12, show_entry_count=True, inline=False, timeout=120):
         self.bot = ctx.bot
         self.entries = entries
         self.message = ctx.message
@@ -45,6 +45,7 @@ class Pages:
         self.paginating = len(entries) > per_page
         self.show_entry_count = show_entry_count
         self.inline = inline
+        self.timeout = timeout
         self.reaction_emojis = [
             ('\N{BLACK LEFT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}', self.first_page),
             ('\N{BLACK LEFT-POINTING TRIANGLE}', self.previous_page),
@@ -221,7 +222,7 @@ class Pages:
 
         while self.paginating:
             try:
-                reaction, user = await self.bot.wait_for('reaction_add', check=self.react_check, timeout=120.0)
+                reaction, user = await self.bot.wait_for('reaction_add', check=self.react_check, timeout=self.timeout)
             except asyncio.TimeoutError:
                 self.paginating = False
                 try:
