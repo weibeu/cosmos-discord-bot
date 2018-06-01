@@ -1029,7 +1029,7 @@ class Music:
 
     @commands.command(name='lyrics')
     @commands.cooldown(10, 30, commands.BucketType.user)
-    async def get_lyrics(self, ctx, query=None):
+    async def get_lyrics(self, ctx, *, query=None):
         """Get lyrics of song."""
         if query is None:
             player = self.get_player(ctx)

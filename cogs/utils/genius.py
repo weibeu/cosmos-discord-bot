@@ -2,9 +2,11 @@ import lyricsgenius as genius
 from cogs.utils import util
 from cogs.utils.paginator import Pages
 
+
+_CAT = util.get_config()["GENIUS_CLIENT_ACCESS_TOKEN"]
+
 class Genius(object):
     """Fetch lyrics, artists and song info from Genius."""
-    _CAT = util.get_config()["GENIUS_CLIENT_ACCESS_TOKEN"]
 
     def __init__(self, ctx, query):
         self.client = genius.Genius(_CAT)
@@ -18,4 +20,3 @@ class Genius(object):
         self.page.embed.title = f"{self.song.title} - Lyrics"
         self.page.embed.set_author(name=self.song.artist, icon_url=self.song.song_art_image_url)
         await self.page.paginate()
-        
