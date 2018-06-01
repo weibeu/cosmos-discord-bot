@@ -19,3 +19,4 @@ pytz==2017.2
 PyGithub==1.34
 giphy_client
 motor
+lyricsgenius
