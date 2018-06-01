@@ -16,6 +16,7 @@ import youtube_dl
 from itertools import islice
 from .utils.handler import DownloadError
 from .utils.paginators import SimplePaginator
+from cogs.utils.genius import Genius
 
 if not discord.opus.is_loaded():
     discord.opus.load_opus('libopus.so')
@@ -204,7 +205,7 @@ class MusicPlayer:
         self.guild = ctx.guild
         self.default_chan = ctx.channel
         self.dj = None
-        self.volume = .4
+        self.volume = 1
 
         self.waiting = None
         self.now_playing = None
@@ -1025,6 +1026,21 @@ class Music:
 
         await ctx.send(f'{orig.mention} has been removed from the DJ role... The new DJ is: {player.dj.mention}',
                        delete_after=45)
+
+    @commands.command(name='lyrics')
+    @commands.cooldown(10, 30, commands.BucketType.user)
+    async def get_lyrics(self, ctx, query=None):
+        """Get lyrics of song."""
+        if query is None:
+            player = self.get_player(ctx)
+            if ctx.guild.voice_client is None or not ctx.guild.voice_client.is_playing():
+                await ctx.send("I am not playing anything, please providesong to search its lyrics.")
+                return
+            else:
+                query = player.entry.title
+
+        genius = Genius(ctx, query)
+        await genius.show_song_lyrics()
 
 
 def setup(bot):
