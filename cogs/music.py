@@ -1039,6 +1039,7 @@ class Music:
             else:
                 query = player.entry.title
 
+        await ctx.trigger_typing()
         genius = Genius(ctx, query)
         await genius.show_song_lyrics()
 
