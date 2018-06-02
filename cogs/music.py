@@ -1035,7 +1035,7 @@ class Music:
         if query is None:
             if ctx.author.activity.type.value == 2:
                 query = ctx.author.activity.title
-                artist_name = ctx.author.activity.artist
+                artist_name = ctx.author.activity.artist.split(";")[0]
             else:
                 player = self.get_player(ctx)
                 if ctx.guild.voice_client is None or not ctx.guild.voice_client.is_playing():
