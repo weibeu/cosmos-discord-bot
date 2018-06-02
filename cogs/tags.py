@@ -22,7 +22,7 @@ class Tags(object):
 
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
-    async def tag(self, ctx, name):
+    async def tag(self, ctx, *, name):
         """Tag any text to retrieve it later.\nIf sub command is not called, then this will search for provided tag."""
         tag = await db.get_tag(ctx.guild.id, ctx.author.id, name)
         if tag is None:
@@ -68,7 +68,7 @@ class Tags(object):
             await p.paginate()
 
     @tag_box.command(name="tag")
-    async def tag_box_tag(self, ctx, name):
+    async def tag_box_tag(self, ctx, *, name):
         """Retrieve a tag from tag box."""
         tag = await db.get_tag_box(ctx.guild.id, name)
         if tag is None:
