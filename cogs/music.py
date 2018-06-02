@@ -1031,11 +1031,9 @@ class Music:
     @commands.cooldown(10, 30, commands.BucketType.user)
     async def get_lyrics(self, ctx, *, query=None):
         """Get lyrics of provided song or song you're listening on spotify or in voice channel.\nIf no query is provided then it tries to search lyrics of now playing song on spotify or in voice channel\n**Note:** For getting lyrics of spotify song you listening to, you must have spotify integrated with your discord account."""
-        artist_name = None
         if query is None:
             if ctx.author.activity.type.value == 2:
-                query = ctx.author.activity.title
-                artist_name = ctx.author.activity.artist.split(";")[0]
+                query = ctx.author.activity.title+" "+ctx.author.activity.artist.split(";")[0]
             else:
                 player = self.get_player(ctx)
                 if ctx.guild.voice_client is None or not ctx.guild.voice_client.is_playing():
@@ -1045,10 +1043,7 @@ class Music:
                     query = player.entry.title
 
         await ctx.trigger_typing()
-        if artist_name is None:
-            genius = Genius(ctx, query)
-        else:
-            genius = Genius(ctx, query, artist_name=artist_name)
+        genius = Genius(ctx, query)
         await genius.show_song_lyrics()
 
 
