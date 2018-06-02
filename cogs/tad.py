@@ -34,7 +34,7 @@ class TAD(object):
 
 
     @commands.command(hidden=True)
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     async def rules(self, ctx):
         await ctx.message.delete()
         embed = discord.Embed()
@@ -55,8 +55,8 @@ class TAD(object):
         await ctx.send(embed=embed)
 
     @commands.command(hidden=True)
-    @commands.is_owner()
-    async def rules(self, ctx):
+    @commands.has_permissions(administrator=True)
+    async def punishments(self, ctx):
         await ctx.message.delete()
         embed = discord.Embed()
         embed.title = "PUNISHMENTS"
