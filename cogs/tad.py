@@ -63,6 +63,7 @@ class TAD(object):
         embed.description = "If one or more of the rules are broken by a member, the staff will be obligated to follow the bad doggo protocol:\n\t<a:arrow:437323076330586113> 😟 = First warning, lasts for 10 days. `+15 mins Doggo`\n\t<a:arrow:437323076330586113> 😠 = Second warning, lasts for 20 days. `3 hours Doggo`\n\t<a:arrow:437323076330586113> 😡 = Third warning, lasts for 40 days. `24 hours Doggo`\n\n__ If a member breaks the rules after being given 3rd warning, they will receive a **permanent ban**.__\n**Note:**\tA member may get banned despite not having above three warnings if their stay here causes a severe harm to the server or members in any possible manner."
         embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
         embed.colour=int("0x"+"E91E63", 16)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(TAD(bot))
