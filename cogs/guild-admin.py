@@ -804,6 +804,8 @@ class Guild_Admin(object):
             except:
                 pass
             embed.description = description
+            if await confirm_menu(ctx, "Ping `@everyone`?"):
+                embed.description += "\n"+ctx.guild.default_role
             embed.title = title
             embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
             embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
