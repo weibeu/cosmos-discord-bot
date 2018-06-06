@@ -1,3 +1,4 @@
+git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py[voice]
 raven
 pymongo
 humanize
@@ -21,3 +22,4 @@ giphy_client
 motor
 lyricsgenius
 yarl<1.2
+psutil
