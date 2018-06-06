@@ -6,8 +6,8 @@ youtube_dl
 PyNacl
 opuslib
 prettytable==0.7.2
-requests==2.12.4
-beautifulsoup4==4.5.3
+requests==2.18.1
+beautifulsoup4==4.6.0
 strawpy==1.1
 lxml==3.8.0
 PythonGists==1.1.3
