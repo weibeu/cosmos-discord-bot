@@ -60,7 +60,7 @@ class Role_Shop(object):
             await ctx.send("No roles created yet for role shop.")
             return
         menu = FieldMenu(ctx, entries=list(roles.values()), per_page=6, inline=True)
-        menu.embed.title = "Buy Meny - Role Shop"
+        menu.embed.title = "Buy Menu - Role Shop"
         menu.embed.description = "```css\n React with corresponding emoji to purchase that role with your earned points in guild.```"
         index = await menu.paginate()
         try:
