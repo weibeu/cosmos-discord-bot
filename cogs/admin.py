@@ -68,6 +68,19 @@ class Admin(object):
     @commands.command(hidden=True)
     async def restart(self, ctx):
         """Logouts using bot.logout(), executes loop.py and restarts the bot"""
+        await ctx.send("Forcing pending jobs to complete.")
+        #force complete pending jobs
+        #   removing on member join cooldown role if any has
+        omjcd_settings = await db.get_omjcd_settings(self.bot.guilds)
+        for guild_id in omjcd_settings:
+            guild  = discord.utils.get(self.bot.guilds, id=int(guild_id))
+            role = discord.utils.get(guild.roles, id=int(omjcd_settings[guild_id]["role"]))
+            for member in role.members:
+                try:
+                    await member.remove_roles(role, reason="Removed cooldown role.")
+                except:
+                    pass
+        await ctx.send("All jobs completed.")
         await ctx.send("Restarting.....")
         print("Restarting bot.")
         await self.bot.logout()
@@ -122,6 +135,20 @@ class Admin(object):
                 await ctx.send(embed=embed)
             except:
                 pass
+            await ctx.send("Forcing pending jobs to complete.")
+            #force complete pending jobs
+            #   removing on member join cooldown role if any has
+            omjcd_settings = await db.get_omjcd_settings(self.bot.guilds)
+            for guild_id in omjcd_settings:
+                guild = discord.utils.get(self.bot.guilds, id=int(guild_id))
+                role = discord.utils.get(guild.roles, id=int(
+                    omjcd_settings[guild_id]["role"]))
+                for member in role.members:
+                    try:
+                        await member.remove_roles(role, reason="Removed cooldown role.")
+                    except:
+                        pass
+            await ctx.send("All jobs completed.")
             m2 = await ctx.send("Logging out and restarting `cosmos.service`.")
             await self.bot.logout()
             os.system("systemctl restart cosmos.service")
