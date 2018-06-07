@@ -9,6 +9,7 @@ from discord.ext import commands
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
 from cogs.utils.rmenu import Menu
 from .utils.paginators import SimplePaginator, HelpPaginator
+from cogs.utils import db
 
 class Admin(object):
 
@@ -76,6 +77,19 @@ class Admin(object):
     @commands.command(hidden=True)
     async def quit(self, ctx, ):
         "Shut Downs the bot"
+        await ctx.send("Forcing pending jobs to complete.")
+        #force complete pending jobs
+        #   removing on member join cooldown role if any has
+        omjcd_settings = await db.get_omjcd_settings(self.bot.guilds)
+        for guild_id in omjcd_settings:
+            guild  = discord.utils.get(self.bot.guilds, id=int(guild_id))
+            role = discord.utils.get(guild.roles, id=int(omjcd_settings[guild_id]["role"]))
+            for member in role.members:
+                try:
+                    await member.remove_roles(role, reason="Removed cooldown role.")
+                except:
+                    pass
+        await ctx.send("All jobs completed.")
         await ctx.send("Logging out and stopping `cosmos.service`.")
         await self.bot.logout()
         os.system("systemctl stop cosmos.service")
