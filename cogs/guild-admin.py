@@ -792,6 +792,7 @@ class Guild_Admin(object):
     async def announce(self, ctx, *, content):
         """Make cool embed announcements in guild.\nFormat: `;announce <content> | [title] | [image url]`\nTo skip say `title`: `;announce <content> | | [image url]`"""
         if ctx.invoked_subcommand is None:
+            await ctx.message.delete()
             embed = discord.Embed()
             embed.colour = get_random_embed_color()
             description = content.split("|")[0]
@@ -811,7 +812,6 @@ class Guild_Admin(object):
             embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
             message = await ctx.send(embed=embed)
             start_time = time.time()
-            await ctx.message.delete()
             while time.time() - start_time <= 270:
                 embed.colour = get_random_embed_color()
                 await message.edit(embed=embed)
@@ -835,6 +835,19 @@ class Guild_Admin(object):
         embed.title = title
         await old_announcement.edit(embed=embed)
         await ctx.message.delete()'''
+
+    @commands.command(hidden=True, name="privatemessage", aliases=['pm'])
+    @checks.is_mod()
+    async def private_message(self, ctx, member:discord.Member, *, message):
+        """Send private message to specified user."""
+        embed = discord.Embed()
+        embed.colour = get_random_embed_color
+        try:
+            embed.set_author(name=message, icon_url=ctx.guid.icon_url)
+        except:
+            embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+            embed.description = message
+        await member.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Guild_Admin(bot))
