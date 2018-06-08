@@ -845,7 +845,7 @@ class Guild_Admin(object):
     async def private_message(self, ctx, member:discord.Member, *, message):
         """Send private message to specified user."""
         embed = discord.Embed()
-        embed.colour = get_random_embed_color
+        embed.colour = get_random_embed_color()
         try:
             embed.set_author(name=message, icon_url=ctx.guid.icon_url)
         except:
