@@ -7,10 +7,10 @@ class Moderation(object):
 
     def __init__(self, bot):
         self.bot = bot
-        self.soft_muted = []
+        self.soft_muted = {}
 
     async def on_message(self, message):
-        if message.author.id in self.soft_muted:
+        if message.guild.id in self.soft_muted and message.author.id in self.soft_muted[message.guild.id]:
             await message.delete()
 
     @commands.group(hidden=True)
@@ -23,7 +23,9 @@ class Moderation(object):
     async def mute_soft(self, ctx, member:discord.Member):
         """Soft mutes a member - deletes each and every message sent by member."""
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
-        self.soft_muted.append(member.id)
+        if ctx.guild.id not in self.soft_muted:
+            self.soft_muted[ctx.guild.id] = []
+        self.soft_muted[ctx.guild.id].append(member.id)
 
     @commands.group(hidden=True)
     @commands.has_permissions(administrator=True)
@@ -34,7 +36,7 @@ class Moderation(object):
     @unmute.command(name="soft")
     async def unmute_soft(self, ctx, member:discord.Member):
         """Unmute soft muted member."""
-        self.soft_muted.remove(member.id)
+        self.soft_muted[ctx.guild.id].remove(member.id)
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
 
 def setup(bot):
