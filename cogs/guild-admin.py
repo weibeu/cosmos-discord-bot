@@ -846,11 +846,8 @@ class Guild_Admin(object):
         """Send private message to specified user."""
         embed = discord.Embed()
         embed.colour = get_random_embed_color()
-        try:
-            embed.set_author(name=message, icon_url=ctx.guild.icon_url)
-        except:
-            embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
-            embed.description = message
+        embed.description = message
+        embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await member.send(embed=embed)
 
 def setup(bot):
