@@ -847,7 +847,7 @@ class Guild_Admin(object):
         embed = discord.Embed()
         embed.colour = get_random_embed_color()
         try:
-            embed.set_author(name=message, icon_url=ctx.guid.icon_url)
+            embed.set_author(name=message, icon_url=ctx.guild.icon_url)
         except:
             embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
             embed.description = message
