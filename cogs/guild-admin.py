@@ -34,6 +34,10 @@ class Guild_Admin(object):
         self.sc_settings = await db.get_sc_settings(self.bot.guilds)
         self.guilds_rs_roles = await db.get_guilds_rs_roles(self.bot.guilds)
 
+    """async def on_member_update(self, before, after):
+        if before.roles != after.roles and list(set(after.roles)-set(before.roles))[0].id in self.guilds_rs_roles:
+            """
+
     @commands.group(hidden=True, name="rsa")
     @commands.has_permissions(manage_roles=True)
     @commands.guild_only()
