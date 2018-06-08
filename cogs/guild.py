@@ -255,7 +255,10 @@ class Guild(object):
             except:
                 pass
         p = FieldPages(ctx, entries=entries, per_page=10)
-        p.embed.title = title
+        try:
+            p.embed.title = title
+        except:
+            pass
         await p.paginate()
 
     '''@commands.group(name='prefix', invoke_without_command=True)
