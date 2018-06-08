@@ -23,7 +23,7 @@ class Moderation(object):
     async def mute_soft(self, ctx, member:discord.Member):
         """Soft mutes a member - deletes each and every message sent by member."""
         self.soft_muted.append(member.id)
-        await ctx.message.add_reaction(get_reaction_yes_no["yes"])
+        await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
 
     @commands.group(hidden=True)
     @commands.has_permissions(administrator=True)
