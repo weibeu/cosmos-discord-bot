@@ -35,7 +35,7 @@ class Moderation(object):
     async def unmute_soft(self, ctx, member:discord.Member):
         """Unmute soft muted member."""
         self.soft_muted.remove(member.id)
-        await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
+        await ctx.message.add_reaction(get_reaction_yes_no["yes"])
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
