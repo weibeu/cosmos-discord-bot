@@ -24,7 +24,6 @@ class Tags(object):
     @commands.guild_only()
     async def tag(self, ctx, *, name):
         """Tag any text to retrieve it later.\nIf sub command is not called, then this will search for provided tag."""
-        await ctx.message.delete()
         tag = await db.get_tag(ctx.guild.id, ctx.author.id, name)
         if tag is None:
             await ctx.send("Tag not found.")
@@ -71,7 +70,6 @@ class Tags(object):
     @tag_box.command(name="tag")
     async def tag_box_tag(self, ctx, *, name):
         """Retrieve a tag from tag box."""
-        await ctx.message.delete()
         tag = await db.get_tag_box(ctx.guild.id, name)
         if tag is None:
             await ctx.send("Tag not found.")

@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bd6cb9d6-4df9-46aa-91d8-b7591575207f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/tc-discord-bot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tc-discord-bot.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/guild-admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/guild-admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/role-shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/role-shop.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/tags.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/utils/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/utils/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/utils/temp.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/utils/temp.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/settings/config.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -50,23 +42,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tags.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tags.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cogs/tags.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="91" column="19" lean-forward="true" selection-start-line="91" selection-start-column="19" selection-end-line="91" selection-end-column="19" />
+            <state relative-caret-position="297">
+              <caret line="71" column="42" selection-start-line="71" selection-start-column="42" selection-end-line="71" selection-end-column="42" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.json" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/settings/config.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="73" selection-start-line="1" selection-start-column="73" selection-end-line="1" selection-end-column="73" />
             </state>
           </provider>
         </entry>
@@ -105,8 +88,8 @@
         <option value="$PROJECT_DIR$/cogs/utils/db.py" />
         <option value="$PROJECT_DIR$/cogs/guild-admin.py" />
         <option value="$PROJECT_DIR$/cogs/tad.py" />
-        <option value="$PROJECT_DIR$/cogs/tags.py" />
         <option value="$PROJECT_DIR$/settings/config.json" />
+        <option value="$PROJECT_DIR$/cogs/tags.py" />
       </list>
     </option>
   </component>
@@ -256,7 +239,7 @@
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.7007874" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3498452" />
       <window_info id="Structure" order="1" sideWeight="0.501548" side_tool="true" weight="0.25892857" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.4613003" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.4613003" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3978328" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -485,6 +468,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/settings/config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" column="73" selection-start-line="1" selection-start-column="73" selection-end-line="1" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cogs/guild-admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -497,18 +487,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cogs/tags.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="91" column="19" lean-forward="true" selection-start-line="91" selection-start-column="19" selection-end-line="91" selection-end-column="19" />
+        <state relative-caret-position="297">
+          <caret line="71" column="42" selection-start-line="71" selection-start-column="42" selection-end-line="71" selection-end-column="42" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings/config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="73" selection-start-line="1" selection-start-column="73" selection-end-line="1" selection-end-column="73" />
         </state>
       </provider>
     </entry>
