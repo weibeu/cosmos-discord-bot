@@ -10,6 +10,17 @@ import asyncio
 import time
 import argparse, shlex
 
+class MEMBER(object):
+    def __init__(self, name=None, joined_at=None, status=None, mention=None, display_name=None, avatar_url=None, discriminator=None, id=None):
+        self.name = name
+        self.joined_at = joined_at
+        self.status = status
+        self.mention = mention
+        self.display_name = display_name
+        self.avatar_url = avatar_url
+        self.discriminator = discriminator
+        self.id = id
+
 def check_pm(ctx):
     return ctx.guild is None
 
@@ -25,6 +36,7 @@ class Guild_Admin(object):
         self.omjcd_settings = {}
         self.sc_settings = {}
         self.guilds_rs_roles = {}
+        self.welcome_settings = {}
         bot.loop.create_task(self.get_guild_settings())
 
     async def get_guild_settings(self):
@@ -33,6 +45,7 @@ class Guild_Admin(object):
         self.omjcd_settings = await db.get_omjcd_settings(self.bot.guilds)
         self.sc_settings = await db.get_sc_settings(self.bot.guilds)
         self.guilds_rs_roles = await db.get_guilds_rs_roles(self.bot.guilds)
+        self.welcome_settings = await db.get_welcome_settings(self.bot.guilds)
 
     """async def on_member_update(self, before, after):
         if before.roles != after.roles and list(set(after.roles)-set(before.roles))[0].id in self.guilds_rs_roles:
@@ -507,11 +520,33 @@ class Guild_Admin(object):
         '''
 
     async def on_member_join(self, member):
+        M = MEMBER(name=member.name, joined_at=member.joined_at, status=member.status, mention=member.mention, display_name=member.display_name, avatar_url=member.avatar_url, discriminator=member.discriminator, id=member.id)
+        try:
+            if str(member.guild.id) in self.welcome_settings and self.welcome_settings[str(member.guild.id)]['private']['enabled']:
+                template = self.welcome_settings[str(member.guild.id)]['private']['message']
+                message = template.format(**M.__dict__)
+                await member.send(message)
+        except:
+            pass
         if str(member.guild.id) in list(self.omjcd_settings.keys()) and self.omjcd_settings[str(member.guild.id)]["enabled"]:   #member was part of guild with these settings and omjcd mode is enabled
                 role = discord.utils.get(member.guild.roles, id=int(self.omjcd_settings[str(member.guild.id)]["role"]))
                 await member.add_roles(role, reason="For cooldown on member join.")
                 await asyncio.sleep(float(self.omjcd_settings[str(member.guild.id)]["cooldown"])*60)
                 await member.remove_roles(role, reason="Removing cooldown role.")
+                if str(member.guild.id) in self.welcome_settings and self.welcome_settings[str(member.guild.id)]['channel']['enabled']:
+                    template = self.welcome_settings[str(member.guild.id)]['channel']['message']
+                    message = template.format(**M.__dict__)
+                    channel = discord.utils.get(member.guild.channels, id=int(self.welcome_settings[str(member.guild.id)]['channel']['channel']))
+                    await channel.send(message)
+        else:
+            try:
+                if str(member.guild.id) in self.welcome_settings and self.welcome_settings[str(member.guild.id)]['channel']['enabled']:
+                    template = self.welcome_settings[str(member.guild.id)]['channel']['message']
+                    message = template.format(**M.__dict__)
+                    channel = discord.utils.get(member.guild.channels, id=int(self.welcome_settings[str(member.guild.id)]['channel']['channel']))
+                    await channel.send(message)
+            except:
+                pass
 
     @commands.group(hidden=True, aliases=["secret-confessions", "sc"])
     @commands.has_permissions(administrator=True)
@@ -849,6 +884,129 @@ class Guild_Admin(object):
         embed.description = message
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await member.send(embed=embed)
+
+    @commands.group(name="welcome")
+    @commands.has_permissions(administrator=True)
+    async def welcome_message(self, ctx):
+        """Create customised welcome message for newly joined members.
+        Vars provided:
+        `name` ~ name of member
+        `joined_at` ~ datetime object of member join
+        `status` ~ current discord status of member
+        `mention` ~ string used to mention member
+        `display_name` ~ display name of member
+        `avatar_url` ~ direct avatar url of member
+        `discriminator` ~ discriminator of member
+        `id` ~ id of member
+        Use `{var}` in your custom message. Here is an example illustrating custom var in a message:
+        `Hi {name}! Welcome to Cosmos. {mention}`."""
+        if ctx.invoked_subcommand is None:
+            await ctx.send("No sub-command called.")
+            return
+
+    @welcome_message.group(name="private_message", aliases=['pm'])
+    async def welcome_private_message(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send("No sub-command called.")
+            return
+
+    @welcome_private_message.command(name="setup")
+    async def setup_welcome_private_message(self, ctx):
+        """Setup private welcome messages for new members."""
+        def check_message(m):
+            return ctx.author.id == m.author.id and ctx.channel.id == m.channel.id
+        await ctx.send("Reply with your custom message.")
+        try:
+            message = await self.bot.wait_for('message', check=check_message, timeout=120)
+        except asyncio.TimeoutError:
+            return
+        if await confirm_menu(ctx, message, custom_message=True):
+            if str(ctx.guild.id) not in self.welcome_settings:
+                self.welcome_settings[str(ctx.guild.id)] = {}
+            td = {"message": message.content, "enabled": False}   # runtime dict
+            self.welcome_settings[str(ctx.guild.id)]["private"] = td
+            await db.set_welcome_private_message(ctx.guild.id, message.content)
+            await ctx.send("Welcome message set to `"+message.content+"`.\nEnable it using `;welcome pm enable")
+
+    @welcome_private_message.command(name="enable", aliases=["on"])
+    async def enable_welcome_private_message(self, ctx):
+        """Enable previously set private messages on member join."""
+        self.welcome_settings[str(ctx.guild.id)]["private"]["enabled"] = True   # update runtime dict
+        await db.enable_welcome_private_message(ctx.guild.id)
+        await ctx.send("Private welcome messages enabled.")
+
+    @welcome_private_message.command(name="disable", aliases=["off"])
+    async def disable_welcome_private_message(self, ctx):
+        self.welcome_settings[str(ctx.guild.id)]["private"]["enabled"] = False  # update runtime dict
+        await db.disable_welcome_private_message(ctx.guild.id)
+        await ctx.send("Private welcome messages disabled.")
+
+    @welcome_message.group(name="channel")
+    async def welcome_channel_message(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send("No sub-command called.")
+            return
+
+    @welcome_channel_message.command(name="setup")
+    async def setup_channel_welcome_message(self, ctx):
+        """Setup custom welcome messages for new members which is sent in specified channel."""
+        def check_message(m):
+            return ctx.author.id == m.author.id and ctx.channel.id == m.channel.id
+        await ctx.send("Reply with your custom message.")
+        try:
+            message = await self.bot.wait_for('message', check=check_message)
+        except asyncio.TimeoutError:
+            return
+        if await confirm_menu(ctx, message, custom_message=True):
+            await ctx.send("Reply channel for welcome messages.")
+            try:
+                m = await self.bot.wait_for('message', check=check_message)
+                channel = m.channel_mentions[0]
+            except asyncio.TimeoutError:
+                return
+            except IndexError:
+                await ctx.send("No channel mentioned.\nStart setup again.")
+                return
+            if await confirm_menu(ctx, m, custom_message=True):
+                e = discord.Embed(colour=get_random_embed_color(), title="Recorded settings")
+                e.add_field(name="Message", value=message.content, inline=False)
+                e.add_field(name="Channel", value=channel.mention, inline=False)
+                e.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=e)
+                if await confirm_menu(ctx, "Confirm settings?"):
+                    if str(ctx.guild.id) not in self.welcome_settings:
+                        self.welcome_settings[str(ctx.guild.id)] = {}
+                    td = {"message": message.content, "channel": str(channel.id), "enabled": False} # runtime dict
+                    self.welcome_settings[str(ctx.guild.id)]["channel"] = td
+                    await db.set_welcome_channel_message(ctx.guild.id, message.content, channel.id)
+                    await ctx.send("Channel welcome message configured. Enable it using `;welcome channel enable`.")
+
+    @welcome_channel_message.command(name="enable", aliases=["on"])
+    async def enable_welcome_channel_message(self, ctx):
+        """Enable previously set channel messages on member join."""
+        self.welcome_settings[str(ctx.guild.id)]["channel"]["enabled"] = True  # update runtime dict
+        await db.enable_welcome_channel_message(ctx.guild.id)
+        await ctx.send("Channel welcome messages enabled.")
+
+    @welcome_channel_message.command(name="disable", aliases=["off"])
+    async def disable_welcome_channel_message(self, ctx):
+        """Disable previously set channel messages on member join."""
+        self.welcome_settings[str(ctx.guild.id)]["channel"]["enabled"] = False  # update runtime dict
+        await db.disable_welcome_channel_message(ctx.guild.id)
+        await ctx.send("Channel welcome messages disabled.")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def setup(bot):
     bot.add_cog(Guild_Admin(bot))

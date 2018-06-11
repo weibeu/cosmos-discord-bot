@@ -215,7 +215,7 @@ async def get_role_shop_buy_embed(ctx):
             embed.description += "["+str(count)+"]\t> "+role.mention+"\n\t\t\tPOINTS:  "+r[i]+"\n\n"
             count+=1
     embed.description += "```"
-    return embeds
+    return embed
 
 async def role_shop_create(ctx, role, points):
     guild = motor_client.guilds[str(ctx.guild.id)]
@@ -510,3 +510,57 @@ async def get_tags_box(guild_id):
 async def remove_tag_box(guild_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
     await guild.update_one({'_id': 'tag-box'}, {'$unset': {tag_name.lower(): ""}})
+
+async def set_welcome_private_message(guild_id, message):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"welcome.private.message": message}})
+
+async def enable_welcome_private_message(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"welcome.private.enabled": True}})
+
+async def disable_welcome_private_message(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"welcome.private.enabled": False}})
+
+async def set_welcome_channel_message(guild_id, message, channel_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"welcome.channel.message": message}})
+    await guild.update_one({'_id': 'settings'}, {'$set': {"welcome.channel.channel": str(channel_id)}})
+
+async def enable_welcome_channel_message(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"welcome.channel.enabled": True}})
+
+async def disable_welcome_channel_message(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"welcome.channel.enabled": False}})
+
+async def get_welcome_settings(guilds):
+    settings = {}
+    for g in guilds:
+        guild = motor_client.guilds[str(g.id)]
+        s = await guild.find_one({'_id': 'settings'})
+        if s is None:
+            pass
+        else:
+            try:
+                settings[str(g.id)] = s["welcome"]
+            except:
+                continue
+    return settings
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

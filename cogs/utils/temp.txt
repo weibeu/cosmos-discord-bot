@@ -1,2 +1,12 @@
-c = bot.get_channel(269610314578788363)
-await c.send(file=discord.File("roles.png"))
+settings = {}
+for g in bot.guilds:
+    guild = bot.db_client.guilds[str(g.id)]
+    s = await guild.find_one({'_id': 'settings'})
+    if s is None:
+        pass
+    else:
+        try:
+            settings[str(g.id)] = s["welcome"]
+        except:
+            continue
+return settings
