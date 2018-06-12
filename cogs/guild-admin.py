@@ -899,13 +899,15 @@ class Guild_Admin(object):
         `discriminator` ~ discriminator of member
         `id` ~ id of member
         Use `{var}` in your custom message. Here is an example illustrating custom var in a message:
-        `Hi {name}! Welcome to Cosmos. {mention}`."""
+        `Hi {name}! Welcome to Cosmos. {mention}`.
+        `Note:` If On Member join cooldown is enabled on your server then, channel welcome messages are sent when cooldown on member join gets over."""
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called.")
             return
 
     @welcome_message.group(name="private_message", aliases=['pm'])
     async def welcome_private_message(self, ctx):
+        """Manage private welcome messages settings."""
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called.")
             return
@@ -943,6 +945,7 @@ class Guild_Admin(object):
 
     @welcome_message.group(name="channel")
     async def welcome_channel_message(self, ctx):
+        """Manage channel welcome messages settings."""
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called.")
             return
