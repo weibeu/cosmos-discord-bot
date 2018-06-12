@@ -10,8 +10,11 @@ class Moderation(object):
         self.soft_muted = {}
 
     async def on_message(self, message):
-        if message.guild.id in self.soft_muted and message.author.id in self.soft_muted[message.guild.id]:
-            await message.delete()
+        try:
+            if message.guild.id in self.soft_muted and message.author.id in self.soft_muted[message.guild.id]:
+                await message.delete()
+        except:
+            pass
 
     @commands.group(hidden=True)
     @commands.has_permissions(administrator=True)

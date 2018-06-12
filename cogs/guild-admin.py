@@ -533,11 +533,14 @@ class Guild_Admin(object):
                 await member.add_roles(role, reason="For cooldown on member join.")
                 await asyncio.sleep(float(self.omjcd_settings[str(member.guild.id)]["cooldown"])*60)
                 await member.remove_roles(role, reason="Removing cooldown role.")
-                if str(member.guild.id) in self.welcome_settings and self.welcome_settings[str(member.guild.id)]['channel']['enabled']:
-                    template = self.welcome_settings[str(member.guild.id)]['channel']['message']
-                    message = template.format(**M.__dict__)
-                    channel = discord.utils.get(member.guild.channels, id=int(self.welcome_settings[str(member.guild.id)]['channel']['channel']))
-                    await channel.send(message)
+                try:
+                    if str(member.guild.id) in self.welcome_settings and self.welcome_settings[str(member.guild.id)]['channel']['enabled']:
+                        template = self.welcome_settings[str(member.guild.id)]['channel']['message']
+                        message = template.format(**M.__dict__)
+                        channel = discord.utils.get(member.guild.channels, id=int(self.welcome_settings[str(member.guild.id)]['channel']['channel']))
+                        await channel.send(message)
+                except:
+                    pass
         else:
             try:
                 if str(member.guild.id) in self.welcome_settings and self.welcome_settings[str(member.guild.id)]['channel']['enabled']:
