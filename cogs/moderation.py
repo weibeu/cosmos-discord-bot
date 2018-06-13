@@ -47,7 +47,7 @@ class Moderation(object):
     @checks.admin_or_permissions(move_members=True)
     async def mass_move(self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel):
         """Move all members in specified voice channel to another.
-        Requires Admins or move member permissions."""
+        Requires Admin or move member permissions."""
         try:
             voice_list = list(from_channel.members)
             for member in voice_list:
