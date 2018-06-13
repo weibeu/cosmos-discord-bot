@@ -43,7 +43,7 @@ class Moderation(object):
         self.soft_muted[ctx.guild.id].remove(member.id)
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
 
-    @commands.command(name="massmove", aliases=["move"])
+    @commands.command(name="massmove", aliases=["mm"])
     @checks.admin_or_permissions(move_members=True)
     async def mass_move(self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel):
         """Move all members in specified voice channel to another.
