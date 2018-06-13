@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from cogs.utils.util import get_reaction_yes_no
+from cogs.utils import checks
 
 class Moderation(object):
 
@@ -42,5 +43,45 @@ class Moderation(object):
         self.soft_muted[ctx.guild.id].remove(member.id)
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
 
+    @commands.command(name="massmove", aliases=["move"])
+    @checks.admin_or_permissions(move_members=True)
+    async def mass_move(self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel):
+        """Move all members in specified voice channel to another.
+        Requires Admins or move member permissions."""
+        try:
+            voice_list = list(from_channel.members)
+            for member in voice_list:
+                await member.move_to(to_channel)
+        except discord.Forbidden:
+            await ctx.send('I have no permission to move members.')
+        except discord.HTTPException:
+            await ctx.send('A error occured. Please try again')
+        await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
+
 def setup(bot):
     bot.add_cog(Moderation(bot))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
