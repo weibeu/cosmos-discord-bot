@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import asyncio
 
 from cogs.utils.util import get_reaction_yes_no
 from cogs.utils import checks
@@ -57,6 +58,8 @@ class Moderation(object):
         except discord.HTTPException:
             await ctx.send('A error occured. Please try again')
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
+        await asyncio.sleep(2.7)
+        await ctx.message.delete()
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
