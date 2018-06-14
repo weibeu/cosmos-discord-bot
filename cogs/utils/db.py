@@ -557,7 +557,18 @@ async def unequip_member_role(guild_id, member_id, role_id):
     guild = motor_client.guilds[str(guild_id)]
     await guild.update_one({'_id': 'members'}, {'$set': {str(member_id)+".roles-rs."+str(role_id): False}})
 
+async def equip_member_role(guild_id, member_id, role_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'members'}, {'$set': {str(member_id)+".roles-rs."+str(role_id): True}})
 
+async def get_member_roles_purchased_list(guild_id, member_id):
+    guild = motor_client.guilds[str(guild_id)]
+    d = await guild.find_one({'_id': 'members'})
+    try:
+        d.pop("_id")
+        return list(d[str(member_id)]["roles-rs"].keys())
+    except:
+        return []
 
 
 
