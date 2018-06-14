@@ -60,6 +60,9 @@ class Moderation(object):
                         await member.edit(mute=True)
                 except:
                     pass
+            await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
+            await asyncio.sleep(2.7)
+            await ctx.message.delete()
         except:
             await ctx.send("Something went wrong muting members.")
 
@@ -79,6 +82,9 @@ class Moderation(object):
                         await member.edit(mute=False)
                 except:
                     pass
+            await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
+            await asyncio.sleep(2.7)
+            await ctx.message.delete()
         except:
             await ctx.send("Something went wrong unmuting members.")
 
