@@ -19,7 +19,7 @@ class Moderation(object):
             pass
 
     @commands.group(hidden=True)
-    @commands.has_permissions(administrator=True)
+    @checks.is_mod()
     async def mute(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called.")
@@ -43,6 +43,45 @@ class Moderation(object):
         """Unmute soft muted member."""
         self.soft_muted[ctx.guild.id].remove(member.id)
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
+
+    @mute.command(name="voice")
+    async def mute_voice(self, ctx, channel: discord.VoiceChannel = None):
+        """Mutes all member present in current or specified Voice Channel except you."""
+        if channel is None:
+            try:
+                channel = ctx.author.voice.channel
+            except:
+                await ctx.send("You're not in Voice Channel at the moment. Please specify channel to mute members.")
+        try:
+            members = list(channel.members)
+            for member in members:
+                try:
+                    if member.id != ctx.author.id:
+                        await member.edit(mute=True)
+                except:
+                    pass
+        except:
+            await ctx.send("Something went wrong muting members.")
+
+    @unmute.command(name="voice")
+    async def unmute_voice(self, ctx, channel: discord.VoiceChannel = None):
+        """Unmutes all member present in current or specified Voice Channel."""
+        if channel is None:
+            try:
+                channel = ctx.author.voice.channel
+            except:
+                await ctx.send("You're not in Voice Channel at the moment. Please specify channel to mute members.")
+        try:
+            members = list(channel.members)
+            for member in members:
+                try:
+                    if member.id != ctx.author.id:
+                        await member.edit(mute=False)
+                except:
+                    pass
+        except:
+            await ctx.send("Something went wrong unmuting members.")
+
 
     @commands.command(name="massmove", aliases=["mm"])
     @checks.admin_or_permissions(move_members=True)
