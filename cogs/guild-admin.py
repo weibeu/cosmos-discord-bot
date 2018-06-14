@@ -573,6 +573,11 @@ class Guild_Admin(object):
         except:
             pass
 
+    async def on_guild_channel_create(self, channel):
+        if str(channel.guild.id) in list(self.omjcd_settings.keys()):   #channel was part of guild with these settings and omjcd mode is enabled
+            role = discord.utils.get(channel.guild.roles, id=int(self.omjcd_settings[str(channel.guild.id)]["role"]))
+            await channel.set_permissions(role, send_messages=False, read_messages=False, reason="On member join cooldown role permissions overrides.")
+
     @commands.group(hidden=True, aliases=["secret-confessions", "sc"])
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
