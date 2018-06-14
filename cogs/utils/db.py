@@ -72,7 +72,7 @@ async def get_user_roles_purchased_list(ctx):
     d = await guild.find_one({'_id': 'members'})
     try:
         d.pop("_id")
-        return d[str(ctx.author.id)]["roles-rs"].keys()
+        return list(d[str(ctx.author.id)]["roles-rs"].keys())
     except KeyError:
         return []
 
