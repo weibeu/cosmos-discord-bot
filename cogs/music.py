@@ -1033,15 +1033,17 @@ class Music:
         """Get lyrics of provided song or song you're listening on spotify or in voice channel.\nIf no query is provided then it tries to search lyrics of now playing song on spotify or in voice channel\n**Note:** For getting lyrics of spotify song you listening to, you must have spotify integrated with your discord account."""
         if query is None:
             try:
-                if ctx.author.activity.type.value == 2:
-                    query = ctx.author.activity.title+" "+ctx.author.activity.artist.split(";")[0]
-            except:
                 player = self.get_player(ctx)
                 if ctx.guild.voice_client is None or not ctx.guild.voice_client.is_playing():
-                    await ctx.send("I am not playing anything, please providesong to search its lyrics.")
-                    return
+                    try:
+                        if ctx.author.activity.type.value == 2:
+                            query = ctx.author.activity.title + " " + ctx.author.activity.artist.split(";")[0]
+                    except:
+                        pass
                 else:
                     query = player.entry.title
+            except:
+                await ctx.send("Unable to auto detect now playing song. Please provide query to find its lyrics.")
 
         await ctx.trigger_typing()
         genius = Genius(ctx, query)

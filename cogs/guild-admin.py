@@ -551,6 +551,11 @@ class Guild_Admin(object):
             except:
                 pass
 
+    async def on_member_remove(self, member):
+        for role in member.roles:
+            if str(role.id) in self.guilds_rs_roles[str(member.guild.id)]:
+                await db.unequip_member_role(member.guild.id, member.id, role.id)
+
     @commands.group(hidden=True, aliases=["secret-confessions", "sc"])
     @commands.has_permissions(administrator=True)
     @commands.guild_only()

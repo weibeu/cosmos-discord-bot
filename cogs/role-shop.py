@@ -52,7 +52,8 @@ class Role_Shop(object):
 
     @role_shop.command(aliases=["purchase"])
     async def buy(self, ctx):
-        """Opens an interactive menu to purchase roles fom role shop."""
+        """Opens an interactive menu to purchase roles fom role shop.
+        NOTE: Roles once purchased cannot be returned back for its equivalent points."""
         user_points = await db.get_points(ctx.guild.id, ctx.author.id)
         roles = await db.get_role_shop_buy_dict(ctx)
         role_shop = await db.get_role_shop_dict(ctx)
