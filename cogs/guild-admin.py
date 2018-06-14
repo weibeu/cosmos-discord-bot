@@ -552,22 +552,17 @@ class Guild_Admin(object):
                 pass
         try:
             roles = await db.get_member_roles_purchased_list(member.guild.id, member.id)
-            if roles != []:
+            if roles != {}:
                 for role_id in roles:
-                    role = discord.utils.get(member.guild.roles, id=int(role_id))
-                    try:
-                        await member.add_roles(role, reason="Role shop role added.")
-                        await db.equip_member_role(member.guild.id, member.id, role.id)
-                    except:
-                        pass
+                    if roles[role_id]:
+                        role = discord.utils.get(member.guild.roles, id=int(role_id))
+                        try:
+                            await member.add_roles(role, reason="Role shop role added.")
+                            await db.equip_member_role(member.guild.id, member.id, role.id)
+                        except:
+                            pass
         except:
             pass
-
-
-    async def on_member_remove(self, member):
-        for role in member.roles:
-            if str(role.id) in self.guilds_rs_roles[str(member.guild.id)]:
-                await db.unequip_member_role(member.guild.id, member.id, role.id)
 
     @commands.group(hidden=True, aliases=["secret-confessions", "sc"])
     @commands.has_permissions(administrator=True)

@@ -566,9 +566,9 @@ async def get_member_roles_purchased_list(guild_id, member_id):
     d = await guild.find_one({'_id': 'members'})
     try:
         d.pop("_id")
-        return list(d[str(member_id)]["roles-rs"].keys())
+        return d[str(member_id)]["roles-rs"]
     except:
-        return []
+        return {}
 
 
 
