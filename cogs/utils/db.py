@@ -385,6 +385,10 @@ async def setup_omjcd(guild_id, role_id, cooldown):
     await guild.update_one({'_id': 'settings'}, {'$set': {"omjcd.role": str(role_id)}})
     await guild.update_one({'_id': 'settings'}, {'$set': {"omjcd.cooldown": str(cooldown)}})
 
+async def remove_omjcd(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$unset': {"omjcd": ""}})
+
 async def get_omjcd_setting(guild_id):
     guild = motor_client.guilds[str(guild_id)]
     s = await guild.find_one({'_id': 'settings'})

@@ -406,6 +406,10 @@ class Guild_Admin(object):
             #remove from purchased roles as well
             await db.remove_deleted_purchased_role(role.guild.id, role.id)
 
+        elif str(role.id) in self.omjcd_settings[str(role.guild.id)]["role"]:
+            self.omjcd_settings.pop(str(role.guild.id))
+            await db.remove_omjcd(role.guild.id)
+
 
     '''@commands.guild_only()
     @commands.has_permissions(administrator=True)
@@ -505,6 +509,23 @@ class Guild_Admin(object):
                 td = {"enabled": False, "role": role.id, "cooldown": str(cooldown)}
                 self.omjcd_settings[str(ctx.guild.id)] = td #runtime dict
                 await ctx.send("Setup completed!\nYou can turn on cooldown mode for new users by `omjcd enable` command.")
+
+    @cooldown_on_member_join.command(name="remove")
+    async def remove_omjcd(self, ctx):
+        """Remove on member join cooldown settings from your guild including the role createed for on member join cooldown."""
+        if str(ctx.guild.id) in self.omjcd_settings:
+            if await confirm_menu(ctx, "Are you sure to remove OMJCD along with OMJCD role?"):
+                role = discord.utils.get(ctx.guild.roles, id=int(self.omjcd_settings[str(ctx.guild.id)]["role"]))
+                try:
+                    await role.delete(reason="Removing on member join cooldown role.")
+                except discord.Forbidden:
+                    await ctx.send("Cant remove `"+role.name+"` role. Missing perms.")
+                self.omjcd_settings.pop(str(ctx.guild.id))
+                await db.remove_omjcd(ctx.guild.id)
+                await ctx.send("OMJCD settings removed.")
+        else:
+            await ctx.send("You haven't setup OMJCD in your server yet. Use `;omjcd setup`.")
+
 
     @cooldown_on_member_join.command(name="enable")
     async def enable_omjcd(self, ctx):
