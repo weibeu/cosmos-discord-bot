@@ -251,7 +251,7 @@ class Fun:
         spaced_message = spaces.join(list(msg))
         await ctx.send(spaced_message)
 
-    # given String react_me, return a list of emojis that can construct the string with no duplicates (for the purpose of reacting)
+    '''# given String react_me, return a list of emojis that can construct the string with no duplicates (for the purpose of reacting)
     # TODO make it consider reactions already applied to the message
     @commands.cooldown(rate=1, per=1620, type=BucketType.user)
     @commands.command(aliases=['r'])
@@ -338,7 +338,7 @@ class Fun:
             else:
                 await ctx.send("Channel not found.")
         await asyncio.sleep(9)
-        await message.clear_reactions()
+        await message.clear_reactions()'''
 
     @commands.cooldown(rate=1, per=180, type=BucketType.user)
     @commands.command()
