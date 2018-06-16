@@ -19,12 +19,12 @@ class Moderation(object):
             pass
 
     @commands.group(hidden=True)
-    @checks.is_mod()
     async def mute(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called.")
 
     @mute.command(name="soft")
+    @commands.has_permissions(administrator=True)
     async def mute_soft(self, ctx, member:discord.Member):
         """Soft mutes a member - deletes each and every message sent by member."""
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
@@ -33,18 +33,19 @@ class Moderation(object):
         self.soft_muted[ctx.guild.id].append(member.id)
 
     @commands.group(hidden=True)
-    @commands.has_permissions(administrator=True)
     async def unmute(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called.")
 
     @unmute.command(name="soft")
+    @commands.has_permissions(administrator=True)
     async def unmute_soft(self, ctx, member:discord.Member):
         """Unmute soft muted member."""
         self.soft_muted[ctx.guild.id].remove(member.id)
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
 
     @mute.command(name="voice")
+    @checks.admin_or_permissions(mute=True)
     async def mute_voice(self, ctx, channel: discord.VoiceChannel = None):
         """Mutes all member present in current or specified Voice Channel except you."""
         if channel is None:
@@ -67,6 +68,7 @@ class Moderation(object):
             await ctx.send("Something went wrong muting members.")
 
     @unmute.command(name="voice")
+    @checks.admin_or_permissions(mute=True)
     async def unmute_voice(self, ctx, channel: discord.VoiceChannel = None):
         """Unmutes all member present in current or specified Voice Channel."""
         if channel is None:
@@ -87,7 +89,6 @@ class Moderation(object):
             await ctx.message.delete()
         except:
             await ctx.send("Something went wrong unmuting members.")
-
 
     @commands.command(name="massmove", aliases=["mm"])
     @checks.admin_or_permissions(move_members=True)
