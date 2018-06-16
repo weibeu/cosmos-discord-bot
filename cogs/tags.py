@@ -38,7 +38,7 @@ class Tags(object):
         await ctx.message.delete()
 
     @tag.command(name="remove", aliases=["delete", "drop"])
-    async def remove_tag(self, ctx, name=None):
+    async def remove_tag(self, ctx, *, name=None):
         """Remove created tag."""
         tags = await db.get_tags(ctx.guild.id, ctx.author.id)
         if tags is None:
@@ -86,7 +86,7 @@ class Tags(object):
 
     @tag_box.command(name="remove", aliases=["delete", "drop"])
     @checks.is_mod()
-    async def remove_tag_box(self, ctx, name=None):
+    async def remove_tag_box(self, ctx, *, name=None):
         """Remove tag from Tag Box.\ncan be only used by mods."""
         tags = await db.get_tags_box(ctx.guild.id)
         if tags is None:
