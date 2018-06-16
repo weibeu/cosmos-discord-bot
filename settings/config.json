@@ -6,11 +6,11 @@
     "prefixes": [";", "; ", "cosmos ", "cosmos", "cosmo ", "cosmo", "Cosmos ", "Cosmo ", "COSMO ", "COSMOS ", "Cosmos", "Cosmo", "COSMO", "COSMOS"],
     "SENTRY_DSN": "https://1d882968a4c84e6a9e776ffccf038fcc:1a20593fb2314ac5a72f94d748cfd7de@sentry.io/274485",
     "MONGOHQ_URL": "mongodb://thecosmos:I2vhyffcplsVoAbr@tc-discord-bot-shard-00-00-i4l5o.mongodb.net:27017,tc-discord-bot-shard-00-01-i4l5o.mongodb.net:27017,tc-discord-bot-shard-00-02-i4l5o.mongodb.net:27017/test?ssl=true&replicaSet=tc-discord-bot-shard-0&authSource=admin",
-	  "custom_search_engine": "004004154518333828490:gtukjoqi4gg",
+    "custom_search_engine": "004004154518333828490:gtukjoqi4gg",
     "google_api_key": "AIzaSyDC6K5sbA4GyAFDj7bpcen4brrR3E6dW3U",
     "giphy_api_key": "mcmwX204gcTtGkRumGiGdvx4iILPmtRY",
     "GENIUS_CLIENT_ACCESS_TOKEN": "JOHcP5e2mgPvL18thdztBPUxnS8uot5hfWN7wMYAZY0FXi2KdzfXilPiFASMRvCT",
-	  "show_search_term": "True",
+    "show_search_term": "True",
     "ascii_font": "big",
     "stdout_stderr_channel": "432077087378243594"
 }
