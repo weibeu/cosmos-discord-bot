@@ -23,6 +23,11 @@ class Moderation(object):
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called.")
 
+    @commands.group(hidden=True)
+    async def unmute(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send("No sub-command called.")
+
     @mute.command(name="soft")
     @commands.has_permissions(administrator=True)
     async def mute_soft(self, ctx, member:discord.Member):
@@ -32,11 +37,6 @@ class Moderation(object):
             self.soft_muted[ctx.guild.id] = []
         self.soft_muted[ctx.guild.id].append(member.id)
 
-    @commands.group(hidden=True)
-    async def unmute(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await ctx.send("No sub-command called.")
-
     @unmute.command(name="soft")
     @commands.has_permissions(administrator=True)
     async def unmute_soft(self, ctx, member:discord.Member):
@@ -45,7 +45,7 @@ class Moderation(object):
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
 
     @mute.command(name="voice")
-    @checks.admin_or_permissions(mute=True)
+    @checks.admin_or_permissions(mute_members=True)
     async def mute_voice(self, ctx, channel: discord.VoiceChannel = None):
         """Mutes all member present in current or specified Voice Channel except you."""
         if channel is None:
@@ -68,7 +68,7 @@ class Moderation(object):
             await ctx.send("Something went wrong muting members.")
 
     @unmute.command(name="voice")
-    @checks.admin_or_permissions(mute=True)
+    @checks.admin_or_permissions(mute_members=True)
     async def unmute_voice(self, ctx, channel: discord.VoiceChannel = None):
         """Unmutes all member present in current or specified Voice Channel."""
         if channel is None:
