@@ -6,7 +6,7 @@ import discord
 import asyncio
 import time
 
-class Role_Shop(object):
+class RoleShop(object):
     """Cog for guild role shop"""
     def __init__(self, bot):
         self.bot = bot
@@ -51,7 +51,7 @@ class Role_Shop(object):
             await p.paginate()
 
     @role_shop.command(aliases=["purchase"])
-    async def buy(self, ctx):
+    async def buy(self, ctx, *, role_name=None):
         """Opens an interactive menu to purchase roles fom role shop.
         NOTE: Roles once purchased cannot be returned back for its equivalent points."""
         user_points = await db.get_points(ctx.guild.id, ctx.author.id)
@@ -60,13 +60,25 @@ class Role_Shop(object):
         if roles == {}:
             await ctx.send("No roles created yet for role shop.")
             return
-        menu = FieldMenu(ctx, entries=list(roles.values()), per_page=6, inline=True)
-        menu.embed.title = "Buy Menu - Role Shop"
-        menu.embed.description = "```css\n React with corresponding emoji to purchase that role with your earned points in guild.```"
-        index = await menu.paginate()
+        if role_name is None:
+            menu = FieldMenu(ctx, entries=list(roles.values()), per_page=6, inline=True)
+            menu.embed.title = "Buy Menu - Role Shop"
+            menu.embed.description = "```css\n React with corresponding emoji to purchase that role with your earned points in guild.```"
+            index = await menu.paginate()
+            try:
+                role_id = list(roles.keys())[index]
+                role = discord.utils.get(ctx.guild.roles, id=int(role_id))
+            except:
+                pass
+        else:
+            role = discord.utils.find(lambda r: r.name.lower() == role_name.lower(), ctx.guild.roles)
+            if role is None or str(role.id) not in role_shop:
+                await ctx.send(f"Can't find `{role_name}` in role shop. Try using role shop buy menu [`;rs buy`].")
+                return
+            elif str(role.id) in role_shop and str(role.id) not in roles:
+                await ctx.send(f"You have already purchased `{role.name}`.")
+                return
         try:
-            role_id = list(roles.keys())[index]
-            role = discord.utils.get(ctx.guild.roles, id=int(role_id))
             if int(user_points) >= int(role_shop[str(role.id)]):
                 if await confirm_menu(ctx, "Are you sure to purchase role __**"+role.name+"**__ for ** "+str(role_shop[str(role.id)])+" ** points?"):
                     await db.buy_role(ctx, role.id)
@@ -79,7 +91,7 @@ class Role_Shop(object):
                     elif not c:
                         await ctx.send("Role not equipped, you may equip it using rs equip.")
                     else:
-                        ctx.send("Something went wrong.") #error code
+                        ctx.send("Something went wrong.")   #error code
             else:
                 await ctx.send("Sorry, but rn you don't have enough points to purchase `"+role.name+"`.")
         except discord.Forbidden:
@@ -106,7 +118,7 @@ class Role_Shop(object):
         await p.paginate()
 
     @role_shop.command()
-    async def equip(self, ctx):
+    async def equip(self, ctx, *, role_name=None):
         """Opens an interactive menu to equip purchased roles."""
         roles = await db.get_user_roles_unequipped_list(ctx)
         if roles == []:
@@ -117,12 +129,21 @@ class Role_Shop(object):
         for r in roles:
             role = discord.utils.get(ctx.guild.roles, id=int(r))
             entries.append(("\t\t**"+role.name+"**", "`POINTS:` "+r_d[r]))
-        menu = FieldMenu(ctx, entries=entries, per_page=6, inline=True)
-        menu.embed.title = "Roles Equip Menu - Role Shop"
-        menu.embed.description = "```css\n React with corresponding emoji to equip that role.```"
-        index = await menu.paginate()
+        if role_name is None:
+            menu = FieldMenu(ctx, entries=entries, per_page=6, inline=True)
+            menu.embed.title = "Roles Equip Menu - Role Shop"
+            menu.embed.description = "```css\n React with corresponding emoji to equip that role.```"
+            index = await menu.paginate()
+            try:
+                role = discord.utils.get(ctx.guild.roles, id=int(roles[index]))
+            except:
+                pass
+        else:
+            role = discord.utils.find(lambda r: r.name.lower() == role_name.lower(), ctx.guild.roles)
+            if role is None or str(role.id) not in roles:
+                await ctx.send(f"Can't find `{role_name}` from your unequipped role shop roles. Try using role equip menu [`;rs equip`].")
+                return
         try:
-            role = discord.utils.get(ctx.guild.roles, id=int(roles[index]))
             if await confirm_menu(ctx, "Are you sure to equip `"+role.name+"`?"):
                 await ctx.author.add_roles(role, reason="Role purchased from role shop")
                 await db.equip_user_role(ctx, role.id)
@@ -133,7 +154,7 @@ class Role_Shop(object):
             pass
 
     @role_shop.command()
-    async def unequip(self, ctx):
+    async def unequip(self, ctx, *, role_name=None):
         """Opens an interactive menu to unequip equipped roles."""
         roles = await db.get_user_roles_equipped_list(ctx)
         if roles == []:
@@ -144,12 +165,22 @@ class Role_Shop(object):
         for r in roles:
             role = discord.utils.get(ctx.guild.roles, id=int(r))
             entries.append(("\t\t**"+role.name+"**", "`POINTS:` "+r_d[r]))
-        menu = FieldMenu(ctx, entries=entries, per_page=6, inline=True)
-        menu.embed.title = "Roles Unequip Menu - Role Shop"
-        menu.embed.description = "```css\n React with corresponding emoji to unequip that role. You can always re-equip them later.```"
-        index = await menu.paginate()
+        if role_name is None:
+            menu = FieldMenu(ctx, entries=entries, per_page=6, inline=True)
+            menu.embed.title = "Roles Unequip Menu - Role Shop"
+            menu.embed.description = "```css\n React with corresponding emoji to unequip that role. You can always re-equip them later.```"
+            index = await menu.paginate()
+            try:
+                role = discord.utils.get(ctx.guild.roles, id=int(roles[index]))
+            except:
+                pass
+        else:
+            role = discord.utils.find(lambda r: r.name.lower() == role_name.lower(), ctx.guild.roles)
+            if role is None or str(role.id) not in roles:
+                await ctx.send(f"Can't find `{role_name}` from your equipped role shop roles. Try using role unequip menu [`;rs unequip`].")
+                return
+
         try:
-            role = discord.utils.get(ctx.guild.roles, id=int(roles[index]))
             if await confirm_menu(ctx, "Are you sure to unequip `"+role.name+"`?"):
                 await ctx.author.remove_roles(role, reason="Role Unequipped")
                 await db.unequip_user_role(ctx, role.id)
@@ -160,4 +191,4 @@ class Role_Shop(object):
             pass
 
 def setup(bot):
-    bot.add_cog(Role_Shop(bot))
+    bot.add_cog(RoleShop(bot))
