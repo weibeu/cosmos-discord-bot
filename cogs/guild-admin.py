@@ -54,11 +54,11 @@ class Guild_Admin(object):
                     await db.equip_member_role(before.guild.id, before.id, list(set(after.roles)-set(before.roles))[0].id)
             except:
                 pass
-            try:
+            '''try:
                 if str(list(set(before.roles)-set(after.roles))[0].id) in self.guilds_rs_roles[str(before.guild.id)]:
                     await db.unset_member_role(before.guild.id, before.id, list(set(before.roles)-set(after.roles))[0].id)
             except:
-                pass
+                pass'''
 
     @commands.group(hidden=True, name="rsa")
     @commands.has_permissions(manage_roles=True)
