@@ -121,7 +121,7 @@ class Admin(object):
             m1 = await ctx.send("Pulling up new updates.")
             process = subprocess.Popen(["git", "reset", "--hard", "HEAD^", "&&", "git", "clean", "-fd", "&&", "git", "pull"], stdout=subprocess.PIPE)
             output = process.communicate()[0]
-            await ctx.send(f"```css\n{output.title()}```")
+            await ctx.send(embed=discord.Embed(description=f"```css\n{output.title()}```", colour=get_random_embed_color()))
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
