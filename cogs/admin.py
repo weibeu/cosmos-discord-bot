@@ -1,14 +1,10 @@
 import discord
-import inspect
-import traceback
-import subprocess
+from subprocess import check_output
 import os
 import git
 
 from discord.ext import commands
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
-from cogs.utils.rmenu import Menu
-from .utils.paginators import SimplePaginator, HelpPaginator
 from cogs.utils import db
 
 class Admin(object):
@@ -119,9 +115,8 @@ class Admin(object):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(color=get_random_embed_color())
             m1 = await ctx.send("Pulling up new updates.")
-            process = subprocess.Popen(["git", "reset", "--hard", "HEAD^", "&&", "git", "clean", "-fd", "&&", "git", "pull"], stdout=subprocess.PIPE)
-            output = process.communicate()[0]
-            await ctx.send(embed=discord.Embed(description=f"```css\n{output.title()}```", colour=get_random_embed_color()))
+            output = check_output(["git", "reset", "--hard", "HEAD^", "&&", "git", "clean", "-fd", "&&", "git", "pull"])
+            await ctx.send(embed=discord.Embed(description=f"```css\n{output}```", colour=get_random_embed_color()))
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
