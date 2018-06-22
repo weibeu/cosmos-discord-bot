@@ -119,9 +119,9 @@ class Admin(object):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(color=get_random_embed_color())
             m1 = await ctx.send("Pulling up new updates.")
-            os.system("git reset --hard HEAD")
-            process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
+            process = subprocess.Popen(["git", "reset", "--hard", "HEAD^", "&&", "git", "clean", "-fd", "&&", "git", "pull"], stdout=subprocess.PIPE)
             output = process.communicate()[0]
+            await ctx.send(f"```css\n{output.title}```")
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
