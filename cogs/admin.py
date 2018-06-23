@@ -118,9 +118,9 @@ class Admin(object):
             process = subprocess.Popen(['git', 'reset', '--hard', 'HEAD^'], stdout=subprocess.PIPE)
             output = process.communicate()[0]
             process = subprocess.Popen(["git", "clean", "-fd"], stdout=subprocess.PIPE)
-            output += f"\n\n{process.communicate()[0]}"
+            output += process.communicate()[0]
             process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
-            output += f"\n\n{process.communicate()[0]}"
+            output += process.communicate()[0]
             await ctx.send(embed=discord.Embed(description=f"```css\n{output}```\n", colour=get_random_embed_color()))
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
@@ -160,9 +160,13 @@ class Admin(object):
         embed = discord.Embed(color=get_random_embed_color())
         old_repo = git.Repo(os.getcwd()).head.reference
         m1 = await ctx.send("Pulling up new updates and making soft update.")
-        os.system("git reset --hard HEAD")
-        process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
+        process = subprocess.Popen(['git', 'reset', '--hard', 'HEAD^'], stdout=subprocess.PIPE)
         output = process.communicate()[0]
+        process = subprocess.Popen(["git", "clean", "-fd"], stdout=subprocess.PIPE)
+        output += process.communicate()[0]
+        process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
+        output += process.communicate()[0]
+        await ctx.send(embed=discord.Embed(description=f"```css\n{output}```\n", colour=get_random_embed_color()))
         await m1.add_reaction(get_reaction_yes_no()["yes"])
         new_repo = git.Repo(os.getcwd()).head.reference
         embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
