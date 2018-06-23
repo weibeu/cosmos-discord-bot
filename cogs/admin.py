@@ -1,5 +1,5 @@
 import discord
-from subprocess import check_output
+import subprocess
 import os
 import git
 
@@ -115,8 +115,13 @@ class Admin(object):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(color=get_random_embed_color())
             m1 = await ctx.send("Pulling up new updates.")
-            output = check_output("git reset --hard HEAD^;git clean -fd;git pull")
-            await ctx.send(embed=discord.Embed(description=f"```css\n{output}```", colour=get_random_embed_color()))
+            process = subprocess.Popen(['git', 'reset', '--hard', 'HEAD^'], stdout=subprocess.PIPE)
+            output = process.communicate()[0]
+            process = subprocess.Popen(["git", "clean", "-fd"], stdout=subprocess.PIPE)
+            output += f"\n\n{process.communicate()[0]}"
+            process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
+            output += f"\n\n{process.communicate()[0]}"
+            await ctx.send(embed=discord.Embed(description=f"```css\n{output}```\n", colour=get_random_embed_color()))
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
@@ -131,7 +136,7 @@ class Admin(object):
             except:
                 pass
             await ctx.send("Forcing pending jobs to complete.")
-            #force complete pending jobs
+            #   force complete pending jobs
             #   removing on member join cooldown role if any has
             omjcd_settings = await db.get_omjcd_settings(self.bot.guilds)
             for guild_id in omjcd_settings:
