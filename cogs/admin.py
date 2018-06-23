@@ -115,7 +115,7 @@ class Admin(object):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(color=get_random_embed_color())
             m1 = await ctx.send("Pulling up new updates.")
-            output = check_output(["git", "reset", "--hard", "HEAD^", "&&", "git", "clean", "-fd", "&&", "git", "pull"])
+            output = check_output("git reset --hard HEAD^;git clean -fd;git pull")
             await ctx.send(embed=discord.Embed(description=f"```css\n{output}```", colour=get_random_embed_color()))
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
