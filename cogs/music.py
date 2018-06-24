@@ -134,7 +134,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             'quiet': True,
             'no_warnings': True,
             'default_search': 'auto',
-            'playlistend': 50,
+            'playlistend': 20,
             'source_address': '0.0.0.0'
         }
 
@@ -151,6 +151,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             data['channel'] = entry.channel
             filename = data['url'] if stream else ytdl.prepare_filename(data)
             await player.queue.put(cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data, filename=filename, volume=1))
+            await chan.send(f"```css\nAdded {data['title']} to queue.```")
             return
 
         ytdl.params['extract_flat'] = True
@@ -311,7 +312,7 @@ class MusicPlayer:
             pass
 
         if self.streaming:
-            tit = "Now Streaming"
+            tit = "🔴 | Now Streaming"
         else:
             tit = "Now Playing"
         embed = discord.Embed(title=tit, description=entry.title, colour=get_random_embed_color())
