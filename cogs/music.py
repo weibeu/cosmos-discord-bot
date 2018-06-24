@@ -86,7 +86,8 @@ class MusicSource(discord.PCMVolumeTransformer):
         self.thumb = data.get('thumbnail')
         self.requester = data.get('requester')
         self.channel = data.get('channel')
-
+        self.stream = data.get('stream')
+    
         self.filename = filename
 
     @classmethod
@@ -111,6 +112,10 @@ class YTDLSource(discord.PCMVolumeTransformer):
             self.thumb = data.get('thumbnail')
             self.requester = data.get('requester')
             self.channel = data.get('channel')
+        except:
+            pass
+        try:
+            self.stream = data.get('stream')
         except:
             pass
 
@@ -141,7 +146,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         ytdl = youtube_dl.YoutubeDL(opts)
 
         if stream:
-            player.streaming = True
+            entry.stream = True
             data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
             if 'entries' in data:
                 # take first item from a playlist
@@ -149,9 +154,15 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
             data['requester'] = entry.requester
             data['channel'] = entry.channel
+            data['stream'] = True
             filename = data['url'] if stream else ytdl.prepare_filename(data)
             await player.queue.put(cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data, filename=filename, volume=1))
-            await chan.send(f"```css\nAdded {data['title']} to queue.```")
+            await chan.send(f"```css\nAdded {data['title']} to queue.```", delete_after=7)
+            if not player.waiting:
+                return
+
+            if player.now_playing and player.queue.qsize() < 4:
+                await player.playing_controller(player.entry)
             return
 
         ytdl.params['extract_flat'] = True
@@ -182,6 +193,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
             data['requester'] = entry.requester
             data['channel'] = entry.channel
+            data['stream'] = False
 
             filename = ytdl.prepare_filename(data)
             await player.queue.put(cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data,
@@ -235,7 +247,6 @@ class MusicPlayer:
         self.skips = set()
         self.repeats = set()
         self.shuffles = set()
-        self.streaming = False
 
     async def inactive_check(self, ctx):
         ctx = ctx
@@ -311,7 +322,7 @@ class MusicPlayer:
         except AttributeError:
             pass
 
-        if self.streaming:
+        if entry.stream:
             tit = "🔴 | Now Streaming"
         else:
             tit = "Now Playing"
@@ -319,7 +330,8 @@ class MusicPlayer:
         embed.set_thumbnail(url=entry.thumb if entry.thumb is not None else 'http://i.imgur.com/EILyJR6.png')
         embed.add_field(name='Requested by', value=entry.requester.mention)
         embed.add_field(name='Video URL', value=f"[Click Here!]({entry.weburl})")
-        if not self.streaming:
+        if not entry.stream\
+                :
             embed.add_field(name='Duration', value=str(datetime.timedelta(seconds=int(entry.duration))))
         embed.add_field(name='Queue Length', value=f'{self.queue.qsize()}')
         if self.dj:
