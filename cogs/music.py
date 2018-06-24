@@ -17,6 +17,7 @@ from itertools import islice
 from .utils.handler import DownloadError
 from .utils.paginators import SimplePaginator
 from cogs.utils.genius import Genius
+from cogs.utils.util import get_random_embed_color
 
 if not discord.opus.is_loaded():
     discord.opus.load_opus('libopus.so')
@@ -120,6 +121,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         loop = loop or asyncio.get_event_loop()
         url = entry.query
         chan = entry.channel
+        ctx = entry.ctx
         playl_msg = None
         opts = {
             'format': 'bestaudio/best',
@@ -139,13 +141,17 @@ class YTDLSource(discord.PCMVolumeTransformer):
         ytdl = youtube_dl.YoutubeDL(opts)
 
         if stream:
+            player.streaming = True
             data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
             if 'entries' in data:
                 # take first item from a playlist
                 data = data['entries'][0]
 
+            data['requester'] = entry.requester
+            data['channel'] = entry.channel
             filename = data['url'] if stream else ytdl.prepare_filename(data)
-            return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data, filename=filename, volume=1)
+            await player.queue.put(cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data, filename=filename, volume=1))
+            return
 
         ytdl.params['extract_flat'] = True
         ef_info = ytdl.extract_info(download=False, url=url)
@@ -155,7 +161,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
             length = len(ef_info['entries'])
         else:
             length = 1
-
         for v in range(1, length + 1):
             try:
                 ytdl.params.update({'playlistend': v, 'playliststart': v})
@@ -229,6 +234,7 @@ class MusicPlayer:
         self.skips = set()
         self.repeats = set()
         self.shuffles = set()
+        self.streaming = False
 
     async def inactive_check(self, ctx):
         ctx = ctx
@@ -304,11 +310,16 @@ class MusicPlayer:
         except AttributeError:
             pass
 
-        embed = discord.Embed(title='Now Playing', description=entry.title, colour=0xDB7093)
+        if self.streaming:
+            tit = "Now Streaming"
+        else:
+            tit = "Now Playing"
+        embed = discord.Embed(title=tit, description=entry.title, colour=get_random_embed_color())
         embed.set_thumbnail(url=entry.thumb if entry.thumb is not None else 'http://i.imgur.com/EILyJR6.png')
         embed.add_field(name='Requested by', value=entry.requester.mention)
         embed.add_field(name='Video URL', value=f"[Click Here!]({entry.weburl})")
-        embed.add_field(name='Duration', value=str(datetime.timedelta(seconds=int(entry.duration))))
+        if not self.streaming:
+            embed.add_field(name='Duration', value=str(datetime.timedelta(seconds=int(entry.duration))))
         embed.add_field(name='Queue Length', value=f'{self.queue.qsize()}')
         if self.dj:
             embed.add_field(name='Current DJ:', value=self.dj.mention)
@@ -407,6 +418,7 @@ class MusicEntry:
         self.requester = ctx.author
         self.channel = ctx.channel
         self.query = query
+        self.ctx = ctx
 
 
 class Music:
@@ -524,12 +536,16 @@ class Music:
         else:
             if ctx.author not in vc.channel.members:
                 return await ctx.send(f'You must be in **{vc.channel}** to request songs.', delete_after=30)
+        player = self.get_player(ctx)
+
+        if not player.dj:
+            player.dj = ctx.author
+            await ctx.send(f'{ctx.author.mention} is the session DJ. Admins can change this.', delete_after=29)
+
         entry = MusicEntry(ctx, query)
         async with ctx.typing():
-            player = await YTDLSource.from_url(entry, loop=self.bot.loop, stream=True)
-            ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+            self.bot.loop.create_task(YTDLSource.from_url(entry, loop=self.bot.loop, stream=True, player=player))
 
-        await ctx.send('Now streaming: {}'.format(player.title))
 
     @commands.command(name='stop')
     @commands.cooldown(4, 120, commands.BucketType.guild)
