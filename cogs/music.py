@@ -139,6 +139,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             'quiet': True,
             'no_warnings': True,
             'default_search': 'auto',
+            'playlistend': 30,
             'source_address': '0.0.0.0'
         }
 
