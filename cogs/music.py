@@ -132,7 +132,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             'format': 'bestaudio/best',
             'outtmpl': f'{chan.id}/{outtmpl_seed()}%(extractor)s_%(id)s.%(ext)s',
             'restrictfilenames': True,
-            'noplaylist': True,
+            'noplaylist': False,
             'nocheckcertificate': True,
             'ignoreerrors': False,
             'logtostderr': False,
