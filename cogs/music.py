@@ -139,7 +139,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             'quiet': True,
             'no_warnings': True,
             'default_search': 'auto',
-            'playlistend': 20,
+            'playlistend': 25,
             'source_address': '0.0.0.0'
         }
 
@@ -199,11 +199,9 @@ class YTDLSource(discord.PCMVolumeTransformer):
             await player.queue.put(cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data,
                                        filename=filename, volume=player.volume))
 
-            if not player.waiting:
-                return
-
-            if player.now_playing and player.queue.qsize() < 4:
-                await player.playing_controller(player.entry)
+            if player.waiting:
+                if player.now_playing and player.queue.qsize() < 4:
+                    await player.playing_controller(player.entry)
 
 
 class MusicPlayer:
@@ -437,7 +435,7 @@ class MusicEntry:
 class Music:
     """A robust, easy to use Music Player with reaction controls.
     Play songs with an easy to use controller and fast, reliable playback.
-    Supports YouTube playlists (First 50 songs)."""
+    Supports YouTube playlists (First 25 songs)."""
 
     def __init__(self, bot):
         self.bot = bot
