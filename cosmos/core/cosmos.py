@@ -1,7 +1,7 @@
 import discord
 
 from discord.ext import commands
-from cosmos.core.config.config import Config
+from cosmos.core.configs.config import Config
 
 
 class Cosmos(commands.Bot):
