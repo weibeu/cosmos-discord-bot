@@ -21,6 +21,14 @@ class CosmosConfig(object):
             self.__setattr__(config, self.raw[config])
 
 
+class PluginsConfig(object):
+
+    def __init__(self, plugins_config):
+        self.raw = plugins_config
+        for config in self.raw:
+            self.__setattr__(config, self.raw[config])
+
+
 class Config(object):
 
     def __init__(self):
@@ -46,3 +54,11 @@ class Config(object):
         except IOError:
             print("Unable to find 'cfg/cosmos.json'.")
             raise IOError
+
+    def _get_plugins_config(self):
+        try:
+            with open("cfg/plugins.json") as config_file:
+                discord_config = json.load(config_file)
+                self.plugins = PluginsConfig(discord_config)
+        except IOError:
+            print("Unable to find 'cfg/plugins.json'.")
