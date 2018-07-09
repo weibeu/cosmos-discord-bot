@@ -1,7 +1,7 @@
 import discord
 
 from discord.ext import commands
-from cosmos.core.functions.configs.config import Config
+from cosmos.core.functions.configs.handler import ConfigHandler
 
 
 class Cosmos(commands.Bot):
@@ -18,7 +18,7 @@ class Cosmos(commands.Bot):
         super().__init__(command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes))
 
     def _init_configs(self):
-        self.configs = Config()
+        self.configs = ConfigHandler()
 
     def run(self):
         try:
