@@ -64,7 +64,7 @@ class Guild_Admin(object):
     @commands.has_permissions(manage_roles=True)
     @commands.guild_only()
     async def role_shop_admin(self, ctx):
-        """__**Role Shop Admin**__\n\nCommands to manange role shop"""
+        """__**Role Shop Admin**__\n\nCommands to manage role shop"""
         if ctx.invoked_subcommand is None:
             await ctx.send("No sub-command called")
 
