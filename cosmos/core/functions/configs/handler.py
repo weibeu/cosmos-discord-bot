@@ -8,6 +8,7 @@ class ConfigHandler(object):
     def __init__(self):
         self.discord = None
         self.cosmos = None
+        self.plugins = None
         self._get_discord_config()
         self._get_cosmos_config()
         self._get_plugins_config()

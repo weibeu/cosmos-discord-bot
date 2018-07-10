@@ -2,6 +2,7 @@ import discord
 
 from discord.ext import commands
 from cosmos.core.functions.configs.handler import ConfigHandler
+# from cosmos.core.functions.plugins.handler import PluginHandler
 
 
 class Cosmos(commands.Bot):
