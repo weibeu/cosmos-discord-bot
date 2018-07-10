@@ -352,7 +352,10 @@ class Guild_Admin(object):
             await db.toggle_reactor_on(ctx)
             t4 = await ctx.send("Reactor setup completed and reactor toggled to on.")
             td = {str(ctx.channel.id): {"is_on": True, "emojis": emojis}}
-            self.r_s[str(ctx.guild.id)] = td #runtime dict
+            if str(ctx.guild.id) in self.r_s:
+                self.r_s[str(ctx.guild.id)][str(ctx.channel.id)] = {"is_on": True, "emojis": emojis}
+            else:
+                self.r_s[str(ctx.guild.id)] = td #runtime dict
             await re.delete()
             await c.delete()
             await asyncio.sleep(2.7)
