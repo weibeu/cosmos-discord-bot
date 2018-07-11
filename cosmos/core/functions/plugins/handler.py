@@ -9,18 +9,23 @@ class PluginHandler(object):
         self.bot = bot
         self.fetched_plugins = []
         self.loaded_plugins = []
+        self.fetch_all()
 
     def fetch_all(self):
         for directory in self.bot.configs.plugins.raw:
-            for plugin_dir in os.listdir(self.bot.configs.plugins.raw[directory]):
-                if os.path.isdir(f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}"):
-                    if 'setup.py' in os.listdir(f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}"):
-                        plugin = Plugin()
-                        plugin.name = plugin_dir
-                        plugin.raw_path = f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}/setup.py"
-                        plugin.python_path = f"{plugin.raw_path.replace('/', '.')}"[:-3]
-                        plugin.category = directory
-                        self.fetched_plugins.append(plugin)
+            try:
+                for plugin_dir in os.listdir(self.bot.configs.plugins.raw[directory]):
+                    if os.path.isdir(f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}"):
+                        if 'setup.py' in os.listdir(f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}"):
+                            plugin = Plugin()
+                            plugin.name = plugin_dir
+                            plugin.raw_path = f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}/setup.py"
+                            plugin.python_path = f"{plugin.raw_path.replace('/', '.')}"[:-3]
+                            plugin.category = directory
+                            self.fetched_plugins.append(plugin)
+            except FileNotFoundError:
+                print(f"{self.bot.configs.plugins.raw[directory]} not found.")
+                raise FileNotFoundError
 
     def load(self, plugin):
         try:

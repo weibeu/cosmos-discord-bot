@@ -2,24 +2,26 @@ import discord
 
 from discord.ext import commands
 from cosmos.core.functions.configs.handler import ConfigHandler
-# from cosmos.core.functions.plugins.handler import PluginHandler
+from cosmos.core.functions.plugins.handler import PluginHandler
 
 
 class Cosmos(commands.Bot):
 
     def __init__(self, token=None, client_id=None, prefixes=None):
         self.configs = None
+        self.plugins = None
         self._init_configs()
-        if token is not None:
-            self.configs.discord.token = token
-        if client_id is not None:
-            self.configs.discord.client_id = client_id
-        if prefixes is not None:
-            self.configs.discord.prefixes = prefixes
+        self._init_plugins()
+        self.configs.discord.token = token or self.configs.discord.token
+        self.configs.discord.client_id = client_id or self.configs.discord.client_id
+        self.configs.discord.prefixes = prefixes or self.configs.cosmos.prefixes
         super().__init__(command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes))
 
     def _init_configs(self):
         self.configs = ConfigHandler()
+
+    def _init_plugins(self):
+        self.plugins = PluginHandler(self)
 
     def run(self):
         try:
