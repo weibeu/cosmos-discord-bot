@@ -92,5 +92,6 @@ async def tad_general_check(ctx):
         await ctx.message.add_reaction('👎')
         await ctx.message.delete()
         return False
+    return True
 
 bot.run(config["TOKEN"])
