@@ -10,8 +10,8 @@ class Logger(object):
         self.default_date_format = self.bot.configs.logger.date_format
         self.style = self.bot.configs.logger.style
         self.name = self.bot.configs.logger.name
-        self.path = self.bot.configs.logger.path
-        self.file_name = self.bot.configs.logger.file_name
+        self.path = self.bot.configs.logger.path.format(**self.bot.time.now().__dict__)
+        self.file_name = self.bot.configs.logger.file_name.format(**self.bot.time.now().__dict__)
         self.level = logging.DEBUG
         self._logger = logging.getLogger(self.name)
         self._logger.setLevel(self.level)
@@ -27,3 +27,21 @@ class Logger(object):
 
     def set_level(self, level):
         self._logger.setLevel(level)
+
+    def info(self, message: str):
+        return self._logger.info(message)
+
+    def debug(self, message: str):
+        return self._logger.debug(message)
+
+    def error(self, message: str):
+        return self._logger.error(message)
+
+    def warn(self, message: str):
+        return self.warning(message)
+
+    def warning(self, message: str):
+        return self._logger.warning(message)
+
+    def exception(self, message: str):
+        return self._logger.exception(message)
