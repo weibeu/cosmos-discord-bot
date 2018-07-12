@@ -1,0 +1,5 @@
+{
+  "name": "Cosmos",
+  "format": "[ {levelname:^8s} | {asctime:s} | {name:<25.25s} ] {message:s}",
+  "date_format": "%Y.%m.%d %H:%M:%S"
+}

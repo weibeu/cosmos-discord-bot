@@ -12,6 +12,7 @@ class ConfigHandler(object):
         self._get_discord_config()
         self._get_cosmos_config()
         self._get_plugins_config()
+        self._get_logger_config()
 
     @staticmethod
     def load(config_class, path):
@@ -31,3 +32,6 @@ class ConfigHandler(object):
 
     def _get_plugins_config(self):
         self.plugins = self.load(PluginsConfig, "cfg/plugins.json")
+
+    def _get_logger_config(self):
+        self.logger = self.load(LoggerConfig, "cfg/logger.json")

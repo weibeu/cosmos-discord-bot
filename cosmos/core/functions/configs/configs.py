@@ -23,3 +23,10 @@ class PluginsConfig(object):
         self.raw = plugins_config
         for config in self.raw:
             self.__setattr__(config, self.raw[config])
+
+class LoggerConfig(object):
+
+    def __init__(self, logger_config):
+        self.raw = logger_config
+        for config in self.raw:
+            self.__setattr__(config, self.raw[config])
