@@ -236,7 +236,7 @@ async def remove_deleted_purchased_role(guild_id, role_id):
 
 async def give_points(guild_id, user_id, points):
     guild = motor_client.guilds[str(guild_id)]
-    await guild.update({'_id': 'members'}, {'$inc': {str(user_id)+".points": points}})
+    await guild.update_one({'_id': 'members'}, {'$inc': {str(user_id)+".points": points}})
 
 async def get_points(guild_id, user_id):
     """Returns points of user_id in string"""
@@ -281,7 +281,7 @@ async def buy_role(ctx, role_id):
     guild = motor_client.guilds[str(ctx.guild.id)]
     roles = await get_role_shop_dict(ctx)
     point = int(roles[str(role_id)])
-    await guild.update({'_id': 'members'}, {'$inc': {str(ctx.author.id)+".points": -point}})
+    await guild.update_one({'_id': 'members'}, {'$inc': {str(ctx.author.id)+".points": -point}})
     await give_user_role(ctx, role_id) #finally adding role to user purchased list
 
 async def setup_reactor(ctx, emojis):
@@ -321,7 +321,7 @@ async def dump_nick(guild_id, user_id, nick):
     guild = motor_client.guilds[str(guild_id)]
     if await count_points(guild) == 0:
         await insert(guild, {'_id': 'members'})
-    await guild.update({'_id': 'members'}, {'$addToSet': {str(user_id)+".nicks": nick}})
+    await guild.update_one({'_id': 'members'}, {'$addToSet': {str(user_id)+".nicks": nick}})
 
 async def get_nicks(guild_id, user_id):
     guild = motor_client.guilds[str(guild_id)]
@@ -336,7 +336,7 @@ async def dump_username(guild_id, user_id, username):
     guild = motor_client.guilds[str(guild_id)]
     if await count_points(guild) == 0:
         await insert(guild, {'_id': 'members'})
-    await guild.update({'_id': 'members'}, {'$addToSet': {str(user_id)+".usernames": username}})
+    await guild.update_one({'_id': 'members'}, {'$addToSet': {str(user_id)+".usernames": username}})
 
 async def get_usernames(guild_id, user_id):
     guild = motor_client.guilds[str(guild_id)]
@@ -467,7 +467,7 @@ async def create_tag(guild_id, user_id, tag_name, content):
     guild = motor_client.guilds[str(guild_id)]
     if await count_points(guild)==0:
         await insert(guild, {'_id': 'members'})
-    await guild.update({'_id': 'members'}, {'$set': {str(user_id)+".tags."+tag_name.lower(): content}})
+    await guild.update_one({'_id': 'members'}, {'$set': {str(user_id)+".tags."+tag_name.lower(): content}})
 
 async def get_tag(guild_id, user_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
@@ -493,7 +493,7 @@ async def create_tag_box(guild_id, tag_name, content):
     guild = motor_client.guilds[str(guild_id)]
     if await count_tag_box(guild)==0:
         await insert(guild, {'_id': 'tag-box'})
-    await guild.update({'_id': 'tag-box'}, {'$set': {tag_name.lower(): content}})
+    await guild.update_one({'_id': 'tag-box'}, {'$set': {tag_name.lower(): content}})
 
 async def get_tag_box(guild_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
