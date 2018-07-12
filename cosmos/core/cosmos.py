@@ -12,8 +12,8 @@ class Cosmos(commands.Bot):
         self.configs = None
         self.plugins = None
         self._init_configs()
+        self._init_logger()
         self._init_plugins()
-        # self._init_logger()
         self.configs.discord.token = token or self.configs.discord.token
         self.configs.discord.client_id = client_id or self.configs.discord.client_id
         self.configs.discord.prefixes = prefixes or self.configs.cosmos.prefixes
@@ -22,11 +22,11 @@ class Cosmos(commands.Bot):
     def _init_configs(self):
         self.configs = ConfigHandler()
 
-    def _init_plugins(self):
-        self.plugins = PluginHandler(self)
-
     def _init_logger(self):
         self.logger = LoggerHandler(self)
+
+    def _init_plugins(self):
+        self.plugins = PluginHandler(self)
 
     def run(self):
         try:

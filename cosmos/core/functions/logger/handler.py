@@ -1,11 +1,9 @@
 from cosmos.core.functions.logger.logger import Logger
 
 
-class LoggerHandler(object):
+class LoggerHandler(Logger):
 
     def __init__(self, bot):
         self.bot = bot
-        self.logger = Logger(self.bot)
-
-    def create(self):
-        pass
+        super().__init__(self.bot)
+        self.set_file_handler()

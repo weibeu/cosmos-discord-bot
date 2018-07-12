@@ -25,7 +25,6 @@ class PluginHandler(object):
                             self.fetched_plugins.append(plugin)
             except FileNotFoundError:
                 print(f"{self.bot.configs.plugins.raw[directory]} not found.")
-                raise FileNotFoundError
 
     def load(self, plugin):
         try:

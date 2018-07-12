@@ -1,5 +1,8 @@
 {
   "name": "Cosmos",
   "format": "[ {levelname:^8s} | {asctime:s} | {name:<25.25s} ] {message:s}",
-  "date_format": "%Y.%m.%d %H:%M:%S"
+  "date_format": "%Y.%m.%d %H:%M:%S",
+  "style": "{",
+  "path": "logs/",
+  "file_name": "cosmos.log"
 }
