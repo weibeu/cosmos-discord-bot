@@ -22,7 +22,7 @@ class TAD(object):
         m_info = await self.server_guide.get_message(452822935049338881)'''
 
     async def __local_check(self, ctx):
-        return ctx.guild.id in [244998983112458240, 434065022000431124]
+        return ctx.guild.id in [244998983112458240]
 
     async def on_message(self, message):
 

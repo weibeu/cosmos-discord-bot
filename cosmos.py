@@ -86,4 +86,11 @@ async def shutup_bot(ctx):
             pass
         return str(ctx.channel.id) not in bot.guild_shutup_settings[str(ctx.guild.id)]"""
 
+@bot.check
+async def tad_general_check(ctx):
+    if ctx.message.channel.id == 244998983112458240:
+        await ctx.message.add_reaction('👎')
+        await ctx.message.delete()
+        return False
+
 bot.run(config["TOKEN"])
