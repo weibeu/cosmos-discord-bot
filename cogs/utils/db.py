@@ -9,19 +9,19 @@ def get_config():
 motor_client = motor.motor_asyncio.AsyncIOMotorClient(get_config()["MONGOHQ_URL"])
 
 async def count_role(col):
-    return await col.find({'_id': 'role-shop'}).count()
+    return await col.count_documents({'_id': 'role-shop'})
 
 async def count_points(col):
-    return await col.find({'_id': 'members'}).count()
+    return await col.count_documents({'_id': 'members'})
 
 async def count_user_roles(col):
-    return await col.find({'_id': 'members'}).count()
+    return await col.count_documents({'_id': 'members'})
 
 async def count_settings(col):
-    return await col.find({'_id': 'settings'}).count()
+    return await col.count_documents({'_id': 'settings'})
 
 async def count_tag_box(col):
-    return await col.find({'_id': 'tag-box'}).count()
+    return await col.count_documents({'_id': 'tag-box'})
 
 async def insert(col, doc):
     await col.insert_one(doc)
@@ -236,8 +236,6 @@ async def remove_deleted_purchased_role(guild_id, role_id):
 
 async def give_points(guild_id, user_id, points):
     guild = motor_client.guilds[str(guild_id)]
-    if await count_points(guild)==0:
-        await insert(guild, {'_id': 'members'})
     await guild.update({'_id': 'members'}, {'$inc': {str(user_id)+".points": points}})
 
 async def get_points(guild_id, user_id):
