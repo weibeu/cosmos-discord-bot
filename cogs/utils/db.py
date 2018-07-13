@@ -55,7 +55,7 @@ async def get_role_shop_buy_dict(ctx):
 
 async def get_user_roles_equipped_list(ctx):
     guild = motor_client.guilds[str(ctx.guild.id)]
-    d = await guild.find_one({'_id': 'members'})
+    d = await guild.find_one({'_id': 'members'}, {f'{str(ctx.author.id)}.roles-rs': '$'})
     l = []
     try:
         d.pop("_id")
@@ -69,7 +69,7 @@ async def get_user_roles_equipped_list(ctx):
 
 async def get_user_roles_purchased_list(ctx):
     guild = motor_client.guilds[str(ctx.guild.id)]
-    d = await guild.find_one({'_id': 'members'})
+    d = await guild.find_one({'_id': 'members'}, {f'{str(ctx.author.id)}.roles-rs': '$'})
     try:
         d.pop("_id")
         return list(d[str(ctx.author.id)]["roles-rs"].keys())
@@ -327,7 +327,7 @@ async def dump_nick(guild_id, user_id, nick):
 
 async def get_nicks(guild_id, user_id):
     guild = motor_client.guilds[str(guild_id)]
-    d = await guild.find_one({'_id': 'members'})
+    d = await guild.find_one({'_id': 'members'}, {f'{str(user_id)}.nicks': '$'})
     try:
         d.pop("_id")
         return d[str(user_id)]["nicks"]
@@ -342,7 +342,7 @@ async def dump_username(guild_id, user_id, username):
 
 async def get_usernames(guild_id, user_id):
     guild = motor_client.guilds[str(guild_id)]
-    d = await guild.find_one({'_id': 'members'})
+    d = await guild.find_one({'_id': 'members'}, {f'{str(user_id)}.usernames': '$'})
     try:
         d.pop("_id")
         return d[str(user_id)]["usernames"]
@@ -473,7 +473,7 @@ async def create_tag(guild_id, user_id, tag_name, content):
 
 async def get_tag(guild_id, user_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
-    p = await guild.find_one({'_id': 'members'})
+    p = await guild.find_one({'_id': 'members'}, {f'{str(user_id)}.tags.{tag_name.lower()}': '$'})
     try:
         return p[str(user_id)]["tags"][tag_name.lower()]
     except:
@@ -481,7 +481,7 @@ async def get_tag(guild_id, user_id, tag_name):
 
 async def get_tags(guild_id, user_id):
     guild = motor_client.guilds[str(guild_id)]
-    p = await guild.find_one({'_id': 'members'})
+    p = await guild.find_one({'_id': 'members'}, {f'{str(user_id)}.tags': '$'})
     try:
         return p[str(user_id)]["tags"]
     except:
@@ -499,7 +499,7 @@ async def create_tag_box(guild_id, tag_name, content):
 
 async def get_tag_box(guild_id, tag_name):
     guild = motor_client.guilds[str(guild_id)]
-    p = await guild.find_one({'_id': 'tag-box'})
+    p = await guild.find_one({'_id': 'tag-box'}, {tag_name.lower(): '$'})
     try:
         return p[tag_name.lower()]
     except:
@@ -567,7 +567,7 @@ async def equip_member_role(guild_id, member_id, role_id):
 
 async def get_member_roles_purchased_list(guild_id, member_id):
     guild = motor_client.guilds[str(guild_id)]
-    d = await guild.find_one({'_id': 'members'})
+    d = await guild.find_one({'_id': 'members'}, {f'{str(member_id)}.roles-rs': '$'})
     try:
         d.pop("_id")
         return d[str(member_id)]["roles-rs"]
