@@ -241,7 +241,9 @@ async def give_points(guild_id, user_id, points):
 async def get_points(guild_id, user_id):
     """Returns points of user_id in string"""
     guild = motor_client.guilds[str(guild_id)]
-    p = await guild.find_one({'_id': 'members'})
+    p = await guild.find_one({'_id': 'members'}, {f'{str(user_id)}.points': '$'})
+    if "points" not in p[str(user_id)]:
+        return "0"
     try:
         return str(p[str(user_id)]["points"])
     except:
