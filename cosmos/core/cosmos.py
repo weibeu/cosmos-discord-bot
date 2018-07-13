@@ -24,16 +24,27 @@ class Cosmos(commands.Bot):
         super().__init__(command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes))
 
     def _init_time(self):
+        print("Initialising Cosmos time.")
         self.time = Time()
+        print("Done.", end="\n\n")
 
     def _init_configs(self):
+        print("Initialising configs.")
+        start_time = self.time.time()
         self.configs = ConfigHandler()
+        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
 
     def _init_logger(self):
+        print("Initialising logger.")
+        start_time = self.time.time()
         self.logger = LoggerHandler(self)
+        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
 
     def _init_plugins(self):
+        print("Initialising plugins.")
+        start_time = self.time.time()
         self.plugins = PluginHandler(self)
+        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
 
     def run(self):
         try:
