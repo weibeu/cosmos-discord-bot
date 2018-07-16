@@ -53,6 +53,6 @@ class Cosmos(commands.Bot):
             print("Invalid token provided.")
 
     async def on_ready(self):
-        print(f"{self.user.name}#{self.user.discriminator} Ready!")
+        print(f"{self.user.name}#{self.user.discriminator} Ready! [{round(self.time.time(), 3)} seconds.]")
         print(f"User Id: {self.user.id}")
         print("-------")

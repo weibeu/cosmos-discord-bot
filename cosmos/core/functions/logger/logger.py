@@ -20,7 +20,7 @@ class Logger(object):
     def set_file_handler(self):
         if not os.path.exists(self.path):
             os.mkdir(self.path)
-        print(f"\t\tCreating log file '{os.path.join(self.path, self.file_name)}'.", end=" ")
+        print(f"Creating log file '{os.path.join(self.path, self.file_name)}'.", end=" ")
         self.handler = logging.FileHandler(filename=os.path.join(self.path, self.file_name), encoding="utf-8", mode="w")
         print("Done.")
         logger_format = logging.Formatter(fmt=self.default_format, datefmt=self.default_date_format, style=self.style)

@@ -2,5 +2,5 @@ from cosmos.core.cosmos import Cosmos
 
 if __name__ == "__main__":
     bot = Cosmos()
-    print("All initial tasks completed.")
+    print(f"All initial tasks completed. [{round(bot.time.time(), 3)} seconds.]")
     bot.run()
