@@ -62,7 +62,10 @@ class TAD(object):
         embed.add_field(name="Joined at", value=f"{member.joined_at.strftime('%d - %B - %Y | %H : %M (GMT)')}")
         embed.add_field(name="Created at", value=f"{member.created_at.strftime('%d - %B - %Y')}")
         if invite is not None:
-            embed.add_field(name="Invite", value=f"**URL:** {invite.url}\n**Inviter:** {invite.inviter.mention} | {invite.inviter}\n**Uses:** {invite.uses}\n**Created:** {invite.created_at.strftime('%d - %B - %Y | %H : %M (GMT)')}", inline=False)
+            if invite.created_at is not None:
+                embed.add_field(name="Invite", value=f"**URL:** {invite.url}\n**Inviter:** {invite.inviter.mention} | {invite.inviter}\n**Uses:** {invite.uses}\n**Created:** {invite.created_at.strftime('%d - %B - %Y | %H : %M (GMT)')}", inline=False)
+            else:
+                embed.add_field(name="Invite", value=f"**URL:** {invite.url}\n**Inviter:** {invite.inviter.mention} | {invite.inviter}\n**Uses:** {invite.uses}", inline=False)
         embed.set_thumbnail(url=member.avatar_url)
         log_channel = self.guild.get_channel(249313961458008065)
         await log_channel.send(embed=embed)
