@@ -29,3 +29,6 @@ class Time(object):
 
     def time(self):
         return time.time() - self.init_time
+
+    def round_time(self):
+        return round(self.time(), 3)
