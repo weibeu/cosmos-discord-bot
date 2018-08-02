@@ -1,4 +1,5 @@
 import os
+from cosmos.core.functions.exceptions.initial import FatalError
 
 class DiscordConfig(object):
 
@@ -30,3 +31,24 @@ class LoggerConfig(object):
         self.raw = logger_config
         for config in self.raw:
             self.__setattr__(config, self.raw[config])
+
+class DatabaseConfig(object):
+
+    def __init__(self, database_config):
+        self.username = None
+        self.password = None
+        self.host = None
+        self.port = None
+        self.uri = None
+        self.raw = database_config
+        for config in self.raw:
+            self.__setattr__(config, self.raw[config])
+        if "" not in [self.username, self.password, self.host, self.port]:
+            self.uri = f"mongodb://{self.username}:{self.password}@{self.host}:{self.port}/"
+        else:
+            self.__delattr__('username')
+            self.__delattr__('password')
+            self.__delattr__('host')
+            self.__delattr__('port')
+            if self.uri == "":
+                raise FatalError("No valid credentials found to connect to the database.")
