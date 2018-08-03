@@ -7,4 +7,4 @@ class FatalError(Exception):
     def __str__(self):
         print(self._message)
         if self.message is not None:
-            print(self._message)
+            print(self.message)
