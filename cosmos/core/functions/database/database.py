@@ -5,4 +5,4 @@ class Database(AsyncIOMotorClient):
 
     def __init__(self, bot):
         self.bot = bot
-        super.__init__(self.bot.configs.db.uri)
+        super().__init__(self.bot.configs.db.uri)
