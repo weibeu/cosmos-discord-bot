@@ -5,6 +5,7 @@ from cosmos.core.utilities.time import Time
 from cosmos.core.functions.configs.handler import ConfigHandler
 from cosmos.core.functions.logger.handler import LoggerHandler
 from cosmos.core.functions.plugins.handler import PluginHandler
+from cosmos.core.functions.database.database import Database
 
 
 class Cosmos(commands.Bot):
@@ -12,11 +13,13 @@ class Cosmos(commands.Bot):
     def __init__(self, token=None, client_id=None, prefixes=None):
         self.time = None
         self.configs = None
-        self.plugins = None
         self.logger = None
+        self.db = None
+        self.plugins = None
         self._init_time()
         self._init_configs()
         self._init_logger()
+        self._init_database()
         self._init_plugins()
         self.configs.discord.token = token or self.configs.discord.token
         self.configs.discord.client_id = client_id or self.configs.discord.client_id
@@ -38,6 +41,12 @@ class Cosmos(commands.Bot):
         print("Initialising logger.")
         start_time = self.time.time()
         self.logger = LoggerHandler(self)
+        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
+
+    def _init_database(self):
+        print("Initialising database.")
+        start_time = self.time.time()
+        self.db = Database(self)
         print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
 
     def _init_plugins(self):
