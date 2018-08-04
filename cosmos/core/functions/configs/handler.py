@@ -31,6 +31,7 @@ class ConfigHandler(object):
         self._get_plugins_config()
         self._get_logger_config()
         self._get_database_config()
+        self._get_sentry_config()
 
     def _get_discord_config(self):
         self.discord = self.load(DiscordConfig, "discord.json")
@@ -46,3 +47,6 @@ class ConfigHandler(object):
 
     def _get_database_config(self):
         self.db = self.load(DatabaseConfig, "database.json")
+
+    def _get_sentry_config(self):
+        self.sentry = self.load(SentryConfig, "sentry.json")

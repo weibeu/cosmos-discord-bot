@@ -59,3 +59,10 @@ class DatabaseConfig(object):
             self.__delattr__("port")
             if self.uri == "":
                 raise FatalError("No valid credentials found to connect to the database.")
+
+class SentryConfig(object):
+
+    def __init__(self, sentry_config):
+        self.raw = sentry_config
+        for config in self.raw:
+            self.__setattr__(config, self.raw[config])
