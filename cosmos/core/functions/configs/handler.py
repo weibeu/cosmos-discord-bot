@@ -11,6 +11,7 @@ class ConfigHandler(object):
         self.plugins = None
         self.logger = None
         self.db = None
+        self.sentry = None
         self._get_all()
 
     @staticmethod

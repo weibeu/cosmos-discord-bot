@@ -6,6 +6,7 @@ from cosmos.core.functions.configs.handler import ConfigHandler
 from cosmos.core.functions.logger.handler import LoggerHandler
 from cosmos.core.functions.plugins.handler import PluginHandler
 from cosmos.core.functions.database.database import Database
+from cosmos.core.functions.exceptions.handler import ExceptionHandler
 
 
 class Cosmos(commands.Bot):
@@ -13,11 +14,13 @@ class Cosmos(commands.Bot):
     def __init__(self, token=None, client_id=None, prefixes=None):
         self.time = None
         self.configs = None
+        self.eh = None
         self.logger = None
         self.db = None
         self.plugins = None
         self._init_time()
         self._init_configs()
+        self._init_exception_handler()
         self._init_logger()
         self._init_database()
         self._init_plugins()
@@ -35,6 +38,12 @@ class Cosmos(commands.Bot):
         print("Initialising configs.")
         start_time = self.time.time()
         self.configs = ConfigHandler()
+        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
+
+    def _init_exception_handler(self):
+        print("Initialising exception handler.")
+        start_time = self.time.time()
+        self.eh = ExceptionHandler(self)
         print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
 
     def _init_logger(self):
