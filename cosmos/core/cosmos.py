@@ -15,7 +15,7 @@ class Cosmos(commands.Bot):
         self.time = None
         self.configs = None
         self.eh = None
-        self.logger = None
+        self.log = None
         self.db = None
         self.plugins = None
         self._init_time()
@@ -49,7 +49,7 @@ class Cosmos(commands.Bot):
     def _init_logger(self):
         print("Initialising logger.")
         start_time = self.time.time()
-        self.logger = LoggerHandler(self)
+        self.log = LoggerHandler(self)
         print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
 
     def _init_database(self):
