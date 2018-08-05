@@ -24,22 +24,22 @@ class PluginHandler(object):
                             plugin.category = directory
                             self.fetched_plugins.append(plugin)
             except FileNotFoundError:
-                print(f"Directory '{self.bot.configs.plugins.raw[directory]}' not found.")
+                self.bot.log.info(f"Directory '{self.bot.configs.plugins.raw[directory]}' not found.")
 
     def load(self, plugin):
         try:
             self.bot.load_extension(plugin.python_path)
             self.loaded_plugins.append(plugin)
-            print(f"Plugin {plugin.name} loaded.")
+            self.bot.log.info(f"Plugin {plugin.name} loaded.")
         except ImportError:
-            print(f"Plugin {plugin.name} failed to load.")
+            self.bot.log.info(f"Plugin {plugin.name} failed to load.")
         except ClientException:
-            print(f"Can't find setup function in {plugin.name} plugin.")
+            self.bot.log.info(f"Can't find setup function in {plugin.name} plugin.")
 
     def unload(self, plugin):
         self.bot.unload_extension(plugin.python_path)
         self.loaded_plugins.remove(plugin)
-        print(f"Plugin {plugin.name} unloaded.")
+        self.bot.log.info(f"Plugin {plugin.name} unloaded.")
 
     def load_all(self):
         for plugin in self.fetched_plugins:

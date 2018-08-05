@@ -9,4 +9,4 @@ class ExceptionHandler(Client):
         try:
             super().__init__(self.bot.configs.sentry.dsn)
         except InvalidDsn:
-            print("Invalid sentry DSN provided.")
+            self.bot.log.error("Invalid sentry DSN provided.")

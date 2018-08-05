@@ -5,7 +5,8 @@ from cosmos.core.functions.configs.configs import *
 
 class ConfigHandler(object):
 
-    def __init__(self):
+    def __init__(self, bot):
+        self.bot = bot
         self.discord = None
         self.cosmos = None
         self.plugins = None
@@ -14,8 +15,7 @@ class ConfigHandler(object):
         self.sentry = None
         self._get_all()
 
-    @staticmethod
-    def load(config_class, path):
+    def load(self, config_class, path):
         if not path.startswith("cfg/"):
             path = f"cfg/{path}"
         try:

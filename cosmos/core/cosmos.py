@@ -20,8 +20,8 @@ class Cosmos(commands.Bot):
         self.plugins = None
         self._init_time()
         self._init_configs()
-        self._init_exception_handler()
         self._init_logger()
+        self._init_exception_handler()
         self._init_database()
         self._init_plugins()
         self.configs.discord.token = token or self.configs.discord.token
@@ -37,40 +37,40 @@ class Cosmos(commands.Bot):
     def _init_configs(self):
         print("Initialising configs.")
         start_time = self.time.time()
-        self.configs = ConfigHandler()
-        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
-
-    def _init_exception_handler(self):
-        print("Initialising exception handler.")
-        start_time = self.time.time()
-        self.eh = ExceptionHandler(self)
-        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
+        self.configs = ConfigHandler(self)
+        print(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def _init_logger(self):
         print("Initialising logger.")
         start_time = self.time.time()
         self.log = LoggerHandler(self)
-        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
+        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
+
+    def _init_exception_handler(self):
+        self.log.info("Initialising exception handler.")
+        start_time = self.time.time()
+        self.eh = ExceptionHandler(self)
+        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def _init_database(self):
-        print("Initialising database.")
+        self.log.info("Initialising database.")
         start_time = self.time.time()
         self.db = Database(self)
-        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
+        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def _init_plugins(self):
-        print("Initialising plugins.")
+        self.log.info("Initialising plugins.")
         start_time = self.time.time()
         self.plugins = PluginHandler(self)
-        print(f"Done. [{round(self.time.time() - start_time, 3)}s].", end="\n\n")
+        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def run(self):
         try:
             super().run(self.configs.discord.token)
         except discord.LoginFailure:
-            print("Invalid token provided.")
+            self.log.info("Invalid token provided.")
 
     async def on_ready(self):
-        print(f"{self.user.name}#{self.user.discriminator} Ready! [{self.time.round_time()} seconds.]")
-        print(f"User Id: {self.user.id}")
-        print("-------")
+        self.log.info(f"{self.user.name}#{self.user.discriminator} Ready! [{self.time.round_time()} seconds.]")
+        self.log.info(f"User Id: {self.user.id}")
+        self.log.info("-------")
