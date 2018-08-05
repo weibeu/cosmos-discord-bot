@@ -15,17 +15,20 @@ class Logger(object):
         self.level = logging.DEBUG
         self._logger = logging.getLogger(self.name)
         self._logger.setLevel(self.level)
-        self.handler = None
 
     def set_file_handler(self):
         if not os.path.exists(self.path):
             os.mkdir(self.path)
         print(f"Creating log file '{os.path.join(self.path, self.file_name)}'.", end=" ")
-        self.handler = logging.FileHandler(filename=os.path.join(self.path, self.file_name), encoding="utf-8", mode="w")
+        handler = logging.FileHandler(filename=os.path.join(self.path, self.file_name), encoding="utf-8", mode="w")
         print("Done.")
         logger_format = logging.Formatter(fmt=self.default_format, datefmt=self.default_date_format, style=self.style)
-        self.handler.setFormatter(logger_format)
-        self._logger.addHandler(self.handler)
+        handler.setFormatter(logger_format)
+        self._logger.addHandler(handler)
+
+    def set_stdout_handler(self):
+        handler = logging.StreamHandler()
+        self._logger.addHandler(handler)
 
     def set_level(self, level):
         self._logger.setLevel(level)

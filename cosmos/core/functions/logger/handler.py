@@ -7,3 +7,4 @@ class LoggerHandler(Logger):
         self.bot = bot
         super().__init__(self.bot)
         self.set_file_handler()
+        self.set_stdout_handler()
