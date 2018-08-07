@@ -20,6 +20,9 @@ class Cosmos(commands.Bot):
         self.plugins = None
         self._init_time()
         self._init_configs()
+        super().__init__(
+            command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes)
+        )
         self._init_logger()
         self._init_exception_handler()
         self._init_database()
@@ -27,7 +30,6 @@ class Cosmos(commands.Bot):
         self.configs.discord.token = token or self.configs.discord.token
         self.configs.discord.client_id = client_id or self.configs.discord.client_id
         self.configs.discord.prefixes = prefixes or self.configs.cosmos.prefixes
-        super().__init__(command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes))
 
     def _init_time(self):
         print("Initialising Cosmos time.")
