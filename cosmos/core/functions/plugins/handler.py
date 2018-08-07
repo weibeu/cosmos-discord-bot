@@ -14,6 +14,7 @@ class PluginHandler(object):
 
     def fetch_all(self):
         for directory in self.bot.configs.plugins.raw:
+            self.bot.log.info(f"Fetching '{directory}' plugins.")
             try:
                 for plugin_dir in os.listdir(self.bot.configs.plugins.raw[directory]):
                     if os.path.isdir(f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}"):
