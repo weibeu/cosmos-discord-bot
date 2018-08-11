@@ -38,24 +38,25 @@ class TAD(object):
 
     async def on_message(self, message):
 
-        '''if message.author.id == 280883146872979456 and message.attachments != []:
+        """if message.author.id == 280883146872979456 and message.attachments != []:
             await message.delete()
-            await message.channel.send("lol steve fuck off")'''
+            await message.channel.send("lol steve fuck off")"""
 
     async def on_member_join(self, member):
-        invite = None
-        invites = await self.guild.invites()
-        for i in invites:
-            for old_invite in self.invites:
-                if i.uses > old_invite.uses and i.id == old_invite.id:
-                    invite = i
-        if not invite:
-            async for entry in member.guild.audit_logs():
-                if entry.action == discord.AuditLogAction.invite_create:
-                    invite = entry.target
-                    break
+        if member.guild.id == 244998983112458240:
+            invite = None
+            invites = await self.guild.invites()
+            for i in invites:
+                for old_invite in self.invites:
+                    if i.uses > old_invite.uses and i.id == old_invite.id:
+                        invite = i
+            if not invite:
+                async for entry in member.guild.audit_logs():
+                    if entry.action == discord.AuditLogAction.invite_create:
+                        invite = entry.target
+                        break
 
-        await self.get_invites()
+            await self.get_invites()
 
         embed = discord.Embed(title="Member Joined", color=get_random_embed_color(), timestamp=member.joined_at)
         embed.add_field(name="Member", value=f"{member.mention} | {member}\n**ID:** `{member.id}`")
