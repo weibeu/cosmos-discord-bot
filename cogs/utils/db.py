@@ -236,7 +236,10 @@ async def remove_deleted_purchased_role(guild_id, role_id):
 
 async def give_points(guild_id, user_id, points):
     guild = motor_client.guilds[str(guild_id)]
-    await guild.update_one({'_id': 'members'}, {'$inc': {str(user_id)+".points": points}})
+    try:
+        await guild.update_one({'_id': 'members'}, {'$inc': {str(user_id)+".points": points}})
+    except:
+    pass
 
 async def get_points(guild_id, user_id):
     """Returns points of user_id in string"""
