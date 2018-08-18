@@ -244,7 +244,10 @@ class Guild(object):
     async def points(self, ctx):
         """"Displays guild points leaderboards."""
         points = await db.get_all_points(ctx.guild.id)
-        top_points = sorted(points, reverse=True)
+        try:
+            top_points = sorted(points, reverse=True)
+        except:
+            pass
         entries = []
         for p in top_points:
             try:
