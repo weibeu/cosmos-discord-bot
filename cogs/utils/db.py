@@ -239,7 +239,7 @@ async def give_points(guild_id, user_id, points):
     try:
         await guild.update_one({'_id': 'members'}, {'$inc': {str(user_id)+".points": points}})
     except:
-    pass
+        pass
 
 async def get_points(guild_id, user_id):
     """Returns points of user_id in string"""
