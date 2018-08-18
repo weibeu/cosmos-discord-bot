@@ -259,7 +259,8 @@ async def get_all_points(guild_id):
     p.pop("_id")
     for user_id in p:
         try:
-            points[p[user_id]["points"]] = user_id
+            a = int(p[user_id]["points"])
+            points[a] = user_id
         except:
             pass
     return points
