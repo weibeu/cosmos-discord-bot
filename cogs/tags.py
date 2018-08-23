@@ -33,6 +33,8 @@ class Tags(object):
     @tag.command(name="create", aliases=["add", "new"])
     async def create_tag(self, ctx, name, *, content):
         """Create a new guild specific tag owned by you."""
+        if "@everyone" in content:
+            return
         await db.create_tag(ctx.guild.id, ctx.author.id, name, content)
         await ctx.send("Tag `"+name+"` created.\nRetrieve it using `;tag "+name+"`.")
         await ctx.message.delete()
