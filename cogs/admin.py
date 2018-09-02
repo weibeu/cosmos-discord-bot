@@ -13,7 +13,7 @@ class Admin(object):
         self.bot = bot
 
     async def __local_check(self, ctx):
-        return ctx.author.id in [331793750273687553]
+        return ctx.author.id in [331793750273687553, 250900865446182922]
 
     @commands.command(hidden=True)
     async def cog(self, ctx, arg, *cogs):
