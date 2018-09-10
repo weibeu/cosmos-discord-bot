@@ -72,13 +72,14 @@ class TAD(object):
         await log_channel.send(embed=embed)
 
     async def on_member_remove(self, member):
-        embed = discord.Embed(title="Member Left", color=int("0xF44336", 16))
-        embed.add_field(name="Member", value=f"{member} | {member}\n**ID:** `{member.id}`")
-        embed.add_field(name="Joined at", value=f"{member.joined_at.strftime('%d - %B - %Y | %H : %M (GMT)')}")
-        embed.add_field(name="Created at", value=f"{member.created_at.strftime('%d - %B - %Y')}")
-        embed.set_thumbnail(url=member.avatar_url)
-        log_channel = self.guild.get_channel(249313961458008065)
-        await log_channel.send(embed=embed)
+        if member.guild.id == 244998983112458240:
+            embed = discord.Embed(title="Member Left", color=int("0xF44336", 16))
+            embed.add_field(name="Member", value=f"{member} | {member}\n**ID:** `{member.id}`")
+            embed.add_field(name="Joined at", value=f"{member.joined_at.strftime('%d - %B - %Y | %H : %M (GMT)')}")
+            embed.add_field(name="Created at", value=f"{member.created_at.strftime('%d - %B - %Y')}")
+            embed.set_thumbnail(url=member.avatar_url)
+            log_channel = self.guild.get_channel(249313961458008065)
+            await log_channel.send(embed=embed)
 
     @commands.group(hidden=True)
     async def study(self, ctx):
