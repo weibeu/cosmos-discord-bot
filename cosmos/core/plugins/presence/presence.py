@@ -11,3 +11,6 @@ class Presence(object):
             await self.bot.change_presence(activity=activity)
         except discord.errors.InvalidArgument:
             return
+
+    """async def rotate_presence(self):
+        # rotate presence on certain time interval."""
