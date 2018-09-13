@@ -42,6 +42,9 @@ class Debugger:
         self.channel = None
         self._last_result = None
 
+    async def __local_check(self, ctx):
+        return ctx.author.id in [331793750273687553, 250900865446182922]
+
     def cleanup_code(self, content):
         """Automatically removes code blocks from the code."""
         # remove ```py\n```
@@ -102,7 +105,6 @@ class Debugger:
                 await ctx.send("```\n```")
 
     @commands.command(hidden=True)
-    @commands.is_owner()
     async def debug(self, ctx, *, option: str = None):
         """Shows useful informations to people that try to help you."""
         try:
@@ -166,7 +168,7 @@ class Debugger:
                 await ctx.send('No permissions to embed debug info.')
         except:
             await ctx.send('``` %s ```'%format_exc())
-    @commands.is_owner()
+
     @commands.group(invoke_without_command=True, hidden=True)
     async def py(self, ctx, *, msg):
         """Python interpreter. See the wiki for more info."""
@@ -310,7 +312,6 @@ class Debugger:
 
 
     @commands.command(pass_context=True, hidden=True)
-    @commands.is_owner()
     async def redirect(self, ctx):
         """Redirect STDOUT and STDERR to a channel for debugging purposes."""
         sys.stdout = self.stream
@@ -325,7 +326,6 @@ class Debugger:
         await self.channel.send("Successfully redirected STDOUT and STDERR to the current channel!")
 
     @commands.command(pass_context=True, hidden=True)
-    @commands.is_owner()
     async def unredirect(self, ctx):
         """Redirect STDOUT and STDERR back to the console for debugging purposes."""
         sys.stdout = sys.__stdout__
