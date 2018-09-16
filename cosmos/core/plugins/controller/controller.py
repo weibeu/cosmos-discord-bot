@@ -4,6 +4,7 @@ import textwrap
 import io
 
 from contextlib import redirect_stdout
+from discord.ext import commands
 
 
 
