@@ -1,0 +1,3 @@
+# ! Plugins directories.
+
+core: "cosmos/core/plugins"
