@@ -1,0 +1,8 @@
+# ! Logger configs.
+
+name: "Cosmos"
+format: "[ {levelname:^8s} | {asctime:s} | {name:<8.7s} ] {message:s}"
+date_format: "%Y.%m.%d %H:%M:%S"
+style: "{"
+path: "logs/"
+file_name: "cosmos-[{year}-{month}-{date}-{hour}-{minute}-{second}].log"
