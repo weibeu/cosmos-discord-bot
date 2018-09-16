@@ -11,6 +11,7 @@ class Controller(object):
 
     def __init__(self, bot):
         self.bot = bot
+        self._last_result = None
 
     async def __local_check(self, ctx):
         return await self.bot.is_owner(ctx.author)
