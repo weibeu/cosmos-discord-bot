@@ -1,3 +1,4 @@
+import yaml
 import json
 
 from cosmos.core.functions.configs.configs import *
@@ -20,10 +21,15 @@ class ConfigHandler(object):
             path = f"cfg/{path}"
         try:
             with open(path) as config_file:
-                config = json.load(config_file)
+                if path.endswith(".json"):
+                    config = json.load(config_file)
+                elif path.endswith(".yaml") or path.endswith(".yml"):
+                    config = yaml.load(config_file)
+                else:
+                    print(f"Unsupported config file specified. Ignoring {path}.")
                 return config_class(config)
         except IOError:
-            print(f"Unable to find '{path}.")
+            print(f"Unable to find specified '{path}.")
             raise IOError
 
     def _get_all(self):
@@ -35,19 +41,19 @@ class ConfigHandler(object):
         self._get_sentry_config()
 
     def _get_discord_config(self):
-        self.discord = self.load(DiscordConfig, "discord.json")
+        self.discord = self.load(DiscordConfig, "core/discord.yaml")
 
     def _get_cosmos_config(self):
-        self.cosmos = self.load(CosmosConfig, "cosmos.json")
+        self.cosmos = self.load(CosmosConfig, "core/cosmos.yaml")
 
     def _get_plugins_config(self):
-        self.plugins = self.load(PluginsConfig, "plugins.json")
+        self.plugins = self.load(PluginsConfig, "core/plugins.yaml")
 
     def _get_logger_config(self):
-        self.logger = self.load(LoggerConfig, "logger.json")
+        self.logger = self.load(LoggerConfig, "core/logger.yaml")
 
     def _get_database_config(self):
-        self.db = self.load(DatabaseConfig, "database.json")
+        self.db = self.load(DatabaseConfig, "core/database.yaml")
 
     def _get_sentry_config(self):
-        self.sentry = self.load(SentryConfig, "sentry.json")
+        self.sentry = self.load(SentryConfig, "core/sentry.yaml")
