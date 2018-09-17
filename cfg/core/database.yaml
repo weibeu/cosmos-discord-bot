@@ -1,5 +1,6 @@
 # ! MongoDB configs.
 
+database: "cosmos_dev"
 requires_auth: Yes
 username: null
 password: null
