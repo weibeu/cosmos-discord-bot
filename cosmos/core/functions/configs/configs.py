@@ -1,12 +1,12 @@
 import os
+
+from cosmos.core.functions.configs.config import Config
 from cosmos.core.functions.exceptions.initial import FatalError
 
-class DiscordConfig(object):
+class DiscordConfig(Config):
 
     def __init__(self, client_config):
-        self.raw = client_config
-        for config in self.raw:
-            self.__setattr__(config, self.raw[config])
+        super().__init__(client_config)
         token = os.getenv("DiscordToken")   # Use token from environment if present.
         if token is not None:
             self.token = token
@@ -14,23 +14,17 @@ class DiscordConfig(object):
 class CosmosConfig(object):
 
     def __init__(self, cosmos_config):
-        self.raw = cosmos_config
-        for config in self.raw:
-            self.__setattr__(config, self.raw[config])
+        super().__init__(cosmos_config)
 
 class PluginsConfig(object):
 
     def __init__(self, plugins_config):
-        self.raw = plugins_config
-        for config in self.raw:
-            self.__setattr__(config, self.raw[config])
+        super().__init__(plugins_config)
 
 class LoggerConfig(object):
 
     def __init__(self, logger_config):
-        self.raw = logger_config
-        for config in self.raw:
-            self.__setattr__(config, self.raw[config])
+        super().__init__(logger_config)
 
 class DatabaseConfig(object):
 
@@ -41,11 +35,8 @@ class DatabaseConfig(object):
         self.host = None
         self.port = None
         self.uri = None
-        self.raw = database_config
-        for config in self.raw:
-            if self.raw[config] == "":
-                self.raw[config] = None
-            self.__setattr__(config, self.raw[config])
+        self.raw = None
+        super().__init__(database_config)
         if not self.requires_auth:
             self.uri = f"mongodb://{self.host}:{self.port}/"
             self.__delattr__("username")
@@ -63,6 +54,4 @@ class DatabaseConfig(object):
 class SentryConfig(object):
 
     def __init__(self, sentry_config):
-        self.raw = sentry_config
-        for config in self.raw:
-            self.__setattr__(config, self.raw[config])
+        super().__init__(sentry_config)
