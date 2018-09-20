@@ -38,6 +38,8 @@ class DatabaseConfig(Config):
         self.raw = None
         super().__init__(database_config)
         if not self.requires_auth:
+            self.host = self.host or 127.0.0.1
+            self.port = self.port or 27017
             self.uri = f"mongodb://{self.host}:{self.port}/"
             self.__delattr__("username")
             self.__delattr__("password")
