@@ -11,22 +11,22 @@ class DiscordConfig(Config):
         if token is not None:
             self.token = token
 
-class CosmosConfig(object):
+class CosmosConfig(Config):
 
     def __init__(self, cosmos_config):
         super().__init__(cosmos_config)
 
-class PluginsConfig(object):
+class PluginsConfig(Config):
 
     def __init__(self, plugins_config):
         super().__init__(plugins_config)
 
-class LoggerConfig(object):
+class LoggerConfig(Config):
 
     def __init__(self, logger_config):
         super().__init__(logger_config)
 
-class DatabaseConfig(object):
+class DatabaseConfig(Config):
 
     def __init__(self, database_config):
         self.requires_auth = None
@@ -51,7 +51,7 @@ class DatabaseConfig(object):
             if self.uri == "":
                 raise FatalError("No valid credentials found to connect to the database.")
 
-class SentryConfig(object):
+class SentryConfig(Config):
 
     def __init__(self, sentry_config):
         super().__init__(sentry_config)
