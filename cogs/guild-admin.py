@@ -909,11 +909,11 @@ class Guild_Admin(object):
             embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
             embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
             message = await ctx.send(embed=embed)
-            start_time = time.time()
+            """start_time = time.time()
             while time.time() - start_time <= 270:
                 embed.colour = get_random_embed_color()
                 await message.edit(embed=embed)
-                await asyncio.sleep(0.37)
+                await asyncio.sleep(0.37)"""
 
         '''@announce.command(name="edit")
     async def edit_announcement(self, ctx, announcement_id, *, new_content):
