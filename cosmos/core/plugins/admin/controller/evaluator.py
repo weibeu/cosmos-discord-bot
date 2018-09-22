@@ -8,7 +8,7 @@ from discord.ext import commands
 
 
 
-class Controller(object):
+class Evaluator(object):
 
     def __init__(self, bot):
         self.bot = bot
