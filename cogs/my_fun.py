@@ -6,7 +6,7 @@ class MyFun(object):
         self.bot = bot
 
     async def on_message(self, message):
-        if "shibu" in message.content.lower() and ("cosmos" in message.content.lower() or "cosmo" in message.content.lower()):
+        if ("shibu" in message.content.lower() or "bu" in message.content.lower()) and ("cosmos" in message.content.lower() or "cosmo" in message.content.lower()):
             await message.add_reaction('😡')
             await asyncio.sleep(7)
             await message.delete()
