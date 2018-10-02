@@ -1,3 +1,5 @@
+import asyncio
+
 class MyFun(object):
 
     def __init__(self, bot):
