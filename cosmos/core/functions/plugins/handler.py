@@ -49,6 +49,7 @@ class PluginHandler(object):
         self.bot.log.info(f"Plugin '{plugin.name}' unloaded.")
 
     def load_all(self):
+        self.bot.log.info("Loading fetched plugins.")
         for plugin in self.fetched_plugins:
             self.load_plugin(plugin)
 
