@@ -52,6 +52,10 @@ class Cosmos(commands.Bot):
         self.log.info("Initialising exception handler.")
         start_time = self.time.time()
         self.eh = ExceptionHandler(self)
+        try:
+            self.eh.sentry.init(self.bot.configs.sentry.dsn)
+        except self.eh.sentry.utils.BadDsn:
+            self.log.error("Invalid sentry DSN provided.")
         self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def _init_database(self):
