@@ -57,3 +57,6 @@ class SentryConfig(Config):
 
     def __init__(self, sentry_config):
         super().__init__(sentry_config)
+        if hasattr(self, "release"):
+            if self.release is None or "":
+                self.__delattr__("release")
