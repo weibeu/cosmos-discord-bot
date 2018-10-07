@@ -333,7 +333,7 @@ class Google:
 
             await ctx.send(msg)
 
-    @commands.command(pass_context=True, aliases=['image', 'img'])
+    """@commands.command(pass_context=True, aliases=['image', 'img'])
     async def i(self, ctx, *, query):
         """Google image search. [p]i Lillie pokemon sun and moon"""
         await ctx.message.delete()
@@ -366,7 +366,7 @@ class Google:
                         await ctx.send(content=None, embed=em)
                     else:
                         await ctx.send(result['items'][item]['link'])
-                        await ctx.send("Search term: \"" + query + "\"")
+                        await ctx.send("Search term: \"" + query + "\"")""" # mind nsfw
 
 
 def setup(bot):
