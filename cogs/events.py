@@ -34,16 +34,18 @@ class Event(object):
         if str(message.guild.id) in self.disabled_channels:
             if message.channel.id in self.disabled_channels[str(message.guild.id)]:
                 return
-        if time.time() - self.time < 5:
+        if time.time() - self.time < random.choice([120, 180, 240, 300]):
             return
-        if random.randint(1, 100) <= 50:
+        if random.randint(1, 100) <= 33:
             await message.add_reaction('🎃')
             try:
+                points = random.choice(range(50, 270))
                 reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=180)
-                await db.give_points(str(message.guild.id), str(message.author.id), 500)
-                await message.channel.send(f"{message.author.mention} 👌 + 500 points!")
+                await db.give_points(str(message.guild.id), str(message.author.id), points)
+                await message.channel.send(f"{message.author.mention} 👌 + {points} points!")
                 await message.clear_reactions()
-                await message.remove_reaction('🎃', reaction.author)
+                await message.remove_reaction('🎃', reaction.message.author)
+                self.time = time.time()
             except asyncio.TimeoutError:
                 await message.clear_reactions()
         
