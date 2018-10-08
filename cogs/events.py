@@ -43,6 +43,7 @@ class Event(object):
                 await db.give_points(str(message.guild.id), str(message.author.id), 500)
                 await message.channel.send(f"{message.author.mention} 👌 + 500 points!")
                 await message.clear_reactions()
+                await message.remove_reaction('🎃', reaction.author)
             except asyncio.TimeoutError:
                 await message.clear_reactions()
         
@@ -65,7 +66,6 @@ class Event(object):
             return
         self.disabled_channels[str(ctx.guild.id)] = l
         await ctx.send(f"Spook enabled in {channel.mention}.")
-        print(self.disabled_channels)
 
     @spook.command(name="disable")
     async def spook_disable(self, ctx, channel: discord.TextChannel = None):
