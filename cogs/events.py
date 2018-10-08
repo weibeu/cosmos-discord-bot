@@ -7,10 +7,6 @@ from cogs.utils import db
 from discord.ext import commands
 from cogs.utils import checks
 
-def check(reaction, user):
-    if reaction.emoji == '🎃' and not user.bot:
-        return True
-    return False
 
 class Event(object):
 
@@ -26,6 +22,13 @@ class Event(object):
         self.disabled_channels = await db.get_spook_data(self.bot.guilds)
 
     async def on_message(self, message):
+        def check(reaction, user):
+            if reaction.emoji != '🎃' and user.bot:
+                return False
+            if reaction.message.id != message.id:
+                return False
+            return True
+
         if str(message.guild.id) in self.disabled_channels:
             if message.channel.id in self.disabled_channels[str(message.guild.id)]:
                 return
@@ -36,7 +39,7 @@ class Event(object):
             reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=180)
             await message.clear_reactions()
             await db.give_points(str(message.guild.id), str(message.author.id), 500)
-            await message.channel.send(f"{message.author.mention} 👌. + 500 points.")
+            await message.channel.send(f"{message.author.mention} 👌 + 500 points!")
         
     @commands.group(name="spook")
     @checks.is_mod()
