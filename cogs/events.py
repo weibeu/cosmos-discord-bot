@@ -48,6 +48,11 @@ class Event(object):
         
     @commands.group(name="spook")
     @checks.is_mod()
+    async def spook(self, ctx):
+        """Festive reaction spawns which credits guild points."""
+        if ctx.invoked_subcommand is None:
+            return
+    @spook.command(name="enable")
     async def spook_enable(self, ctx, channel: discord.TextChannel = None):
         """Enable spooky reactions in current or specified channel."""
         channel = channel or ctx.channel
@@ -62,7 +67,7 @@ class Event(object):
         await ctx.send(f"Spook enabled in {channel.mention}.")
         print(self.disabled_channels)
 
-    @spook_enable.command(name="disable")
+    @spook.command(name="disable")
     async def spook_disable(self, ctx, channel: discord.TextChannel = None):
         """Disable spooky reactions in current or specified channel."""
         channel = channel or ctx.channel
