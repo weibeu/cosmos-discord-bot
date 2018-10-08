@@ -582,15 +582,29 @@ async def spook_enable(guild_id, channel_id):
     guild = motor_client.guilds[str(guild_id)]
     if await count_settings(guild)==0:
         await insert(guild, {'_id': 'settings'})
-    await guild.update_one({'_id': 'settings'}, {'$addToSet': {"not_spook.channels": str(ctx.channel.id)}})
+    await guild.update_one({'_id': 'settings'}, {'$pull': {"not_spook": str(channel_id)}})
     
 async def spook_disable(guild_id, channel_id):
     guild = motor_client.guilds[str(guild_id)]
     if await count_settings(guild)==0:
         await insert(guild, {'_id': 'settings'})
-    await guild.update_one({'_id': 'settings'}, {'$pull': {"not_spook.channels": str(ctx.channel.id)}})
+    r = await guild.find_one({'_id': 'settings'})
+    await guild.update_one({'_id': 'settings'}, {'$addToSet': {"not_spook": str(channel_id)}})
    
-
+async def get_spook_data(guilds):
+    spooks = {}
+    for g in guilds:
+        guild = motor_client.guilds[str(g.id)]
+        s = await guild.find_one({'_id': 'settings'}, {'not_spook': '$'})
+        if s is None:
+            pass
+        else:
+            try:
+                s.pop("_id")
+                spooks[str(g.id)] = s['not_spook']
+            except:
+                continue
+    return spooks    
 
 
 
