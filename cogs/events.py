@@ -27,6 +27,8 @@ class Event(object):
                 return False
             if reaction.message.id != message.id:
                 return False
+            if user.id == self.bot.user.id:
+                return False
             return True
 
         if str(message.guild.id) in self.disabled_channels:
