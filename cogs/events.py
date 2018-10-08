@@ -7,6 +7,11 @@ from cogs.utils import db
 from discord.ext import commands
 from cogs.utils import checks
 
+def check(reaction, user):
+    if reaction.emoji == '🎃' and not user.bot:
+        return True
+    return False
+
 class Event(object):
 
     def __init__(self, bot):
@@ -26,7 +31,11 @@ class Event(object):
                 return
         if time.time() - self.time < 5:
             return
-        
+        if random.randint(1, 100) <= 50:
+            await message.add_reaction('🎃')
+            reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=180)
+            await message.clear_reactions()
+            await db.give_points(str(message.guild.id), str(message.author.id), 500)
         
     @commands.group(name="spook")
     @checks.is_mod()
