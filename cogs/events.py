@@ -1,0 +1,56 @@
+import discord
+import asyncio
+import time
+import random
+
+from cogs.utils import db
+from discord.ext import commands
+from cogs.utils import checks
+
+class Event(object):
+
+    def __init__(self, bot):
+        self.bot = bot
+        self.messages = []
+        self.disabled_channels = {}
+        self.time = time.time()
+        bot.loop.create_task(self.get_settings())
+
+    async def get_settings(self):
+        await self.bot.wait_until_ready()
+        self.disabled_channels = await db.get_spook_data(self.bot.guilds)
+
+    async def on_message(message):
+        if str(message.guild.id) in self.disabled_channels:
+            if message.channel.id in self.disabled_channels[str(message.guild.id)]:
+                return
+        if time.time() - self.time < 5:
+            return
+        
+        
+    @commands.group(name="spook")
+    @checks.is_mod()
+    async def spook_enable(self, ctx, channel: discord.TextChannel = None):
+        """Enable spooky reactions in current or specified channel."""
+        channel = channel or ctx.channel
+        await db.spook_enable(str(ctx.guild.id), ctx.channel.id)
+        l = self.disabled_channels[str(ctx.guild.id)]
+        try:
+            l.remove(ctx.channel.id)
+        except ValueError:
+            await ctx.send("Spook is already enabled in current channel.")
+            return
+        self.disabled_channels[str(ctx.guild.id)] = l
+        await ctx.send(f"Spook enabled in {channel.mention}.")
+
+    @spook_enable.command(name="disable")
+    async def spook_disable(self, ctx, channel: discord.TextChannel = None):
+        """Disable spooky reactions in current or specified channel."""
+        channel = channel or ctx.channel
+        await db.spook_disable(str(ctx.guild.id), ctx.channel.id)
+        l = self.disabled_channels[str(ctx.guild.id)]
+        l.append(ctx.channel.id)
+        self.disabled_channels[str(ctx.guild.id)] = l
+
+def setup(bot):
+    bot.add_cog(Event(bot))
