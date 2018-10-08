@@ -578,8 +578,18 @@ async def get_member_roles_purchased_list(guild_id, member_id):
     except:
         return {}
 
-
-
+async def spook_enable(guild_id, channel_id):
+    guild = motor_client.guilds[str(guild_id)]
+    if await count_settings(guild)==0:
+        await insert(guild, {'_id': 'settings'})
+    await guild.update_one({'_id': 'settings'}, {'$addToSet': {"not_spook.channels": str(ctx.channel.id)}})
+    
+async def spook_disable(guild_id, channel_id):
+    guild = motor_client.guilds[str(guild_id)]
+    if await count_settings(guild)==0:
+        await insert(guild, {'_id': 'settings'})
+    await guild.update_one({'_id': 'settings'}, {'$pull': {"not_spook.channels": str(ctx.channel.id)}})
+   
 
 
 
