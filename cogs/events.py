@@ -38,10 +38,13 @@ class Event(object):
             return
         if random.randint(1, 100) <= 50:
             await message.add_reaction('🎃')
-            reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=180)
-            await message.clear_reactions()
-            await db.give_points(str(message.guild.id), str(message.author.id), 500)
-            await message.channel.send(f"{message.author.mention} 👌 + 500 points!")
+            try:
+                reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=180)
+                await db.give_points(str(message.guild.id), str(message.author.id), 500)
+                await message.channel.send(f"{message.author.mention} 👌 + 500 points!")
+                await message.clear_reactions()
+            except asyncio.TimeoutError:
+                await message.clear_reactions()
         
     @commands.group(name="spook")
     @checks.is_mod()
@@ -57,6 +60,7 @@ class Event(object):
             return
         self.disabled_channels[str(ctx.guild.id)] = l
         await ctx.send(f"Spook enabled in {channel.mention}.")
+        print(self.disabled_channels)
 
     @spook_enable.command(name="disable")
     async def spook_disable(self, ctx, channel: discord.TextChannel = None):
@@ -66,6 +70,7 @@ class Event(object):
         l = self.disabled_channels[str(ctx.guild.id)]
         l.append(ctx.channel.id)
         self.disabled_channels[str(ctx.guild.id)] = l
+        await ctx.send(f"Spook disabled in {channel.mention}.")
 
 def setup(bot):
     bot.add_cog(Event(bot))
