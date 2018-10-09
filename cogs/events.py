@@ -41,14 +41,14 @@ class Event(object):
             try:
                 points = random.choice(range(50, 270))
                 reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=180)
-                await db.give_points(str(message.guild.id), str(message.author.id), points)
-                await message.channel.send(f"{message.author.mention} 👌 + {points} points!")
+                await db.give_points(str(message.guild.id), str(member.id), points)
+                await message.channel.send(f"{member.mention} 👌 + {points} points!")
                 await message.clear_reactions()
                 await message.remove_reaction('🎃', reaction.message.author)
                 self.time = time.time()
             except asyncio.TimeoutError:
                 await message.clear_reactions()
-        
+
     @commands.group(name="spook")
     @checks.is_mod()
     async def spook(self, ctx):
