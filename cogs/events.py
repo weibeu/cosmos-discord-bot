@@ -36,7 +36,7 @@ class Event(object):
                 return
         if time.time() - self.time < random.choice([120, 180, 240, 300]):
             return
-        if random.randint(1, 100) <= 25
+        if random.randint(1, 100) <= 30
             await message.add_reaction('🎃')
             try:
                 points = random.choice(range(50, 270))
