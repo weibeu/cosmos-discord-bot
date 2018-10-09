@@ -190,5 +190,43 @@ class RoleShop(object):
         except:
             pass
 
+    @role_shop.command()
+    async def equipall(self, ctx):
+        """Equip all role shop purchased roles."""
+        roles = await db.get_user_roles_unequipped_list(ctx)
+        if roles == []:
+            await ctx.send("No uequipped roles found.")
+            return
+        try:
+            if await confirm_menu(ctx, "Are you sure to equip your all unequipped roles?"):
+                for role_id in roles:
+                    role = discord.utils.get(ctx.guild.roles, id=int(id))
+                    await ctx.author.add_roles(role, reason="Role equipped from role shop")
+                    await db.equip_user_role(ctx, role.id)
+                await ctx.send("All unequipped roles equipped.")
+        except discord.Forbidden:
+            await ctx.send("Missing Permissions. Maybe check roles hierarchy?")
+        except:
+            pass
+        
+    @role_shop.command()
+    async def unequipall(self, ctx):
+        """Unequip all equipped role shop roles."""
+        roles = await db.get_user_roles_equipped_list(ctx)
+        if roles == []:
+            await ctx.send("No equipped roles found.")
+            return
+        try:
+            if await confirm_menu(ctx, "Are you sure to unequip all equipped roles?"):
+                for id in roles:
+                    role = discord.utils.get(ctx.guild.roles, id=int(id))
+                    await ctx.author.remove_roles(role, reason="Role Unequipped")
+                    await db.unequip_user_role(ctx, role.id)
+                await ctx.send("All equipped roles unequipped.")
+        except discord.Forbidden:
+            await ctx.send("Missing Permissions. Maybe check roles hierarchy?")
+        except:
+            pass
+
 def setup(bot):
     bot.add_cog(RoleShop(bot))
