@@ -22,8 +22,18 @@ class Event(object):
         self.disabled_channels = await db.get_spook_data(self.bot.guilds)
 
     async def on_message(self, message):
+        if message.author.bot:
+            return
+        if message.attachments != []:
+            return
+        if str(message.guild.id) in self.disabled_channels:
+            if message.channel.id in self.disabled_channels[str(message.guild.id)]:
+                return
+        if time.time() - self.time < random.choice([90, 120, 160, 180, 240, 260, 300]):
+            return
+        
         def check(reaction, user):
-            if reaction.emoji != '🎃' and user.bot:
+            if reaction.emoji != '🎃' or user.bot:
                 return False
             if reaction.message.id != message.id:
                 return False
@@ -31,16 +41,15 @@ class Event(object):
                 return False
             return True
 
-        if str(message.guild.id) in self.disabled_channels:
-            if message.channel.id in self.disabled_channels[str(message.guild.id)]:
-                return
-        if time.time() - self.time < random.choice([120, 180, 240, 300]):
-            return
-        if random.randint(1, 100) <= 10:            
+        if random.randint(1, 100) <= 25:
             await message.add_reaction('🎃')
+            points_common = random.choice(range(50, 101))
+            points_uncommon = random.choice(range(101, 151))
+            points_rare = random.choice(range(151, 251))
+            points_leg = random.choice(range(251, 301))
+            points = random.choice([points_common]*60+[points_uncommon]*30+[points_rare]*9+[points_leg])
             try:
-                points = random.choice(range(50, 270))
-                reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=180)
+                reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=7)
                 await db.give_points(str(message.guild.id), str(member.id), points)
                 await message.channel.send(f"{member.mention} 👌 + {points} points!")
                 await message.clear_reactions()
