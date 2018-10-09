@@ -41,13 +41,13 @@ class Event(object):
                 return False
             return True
 
-        if random.randint(1, 100) <= 3:
+        if random.randint(1, 100) <= 2:
             await message.add_reaction('🎃')
             points_common = random.choice(range(50, 101))
             points_uncommon = random.choice(range(101, 151))
             points_rare = random.choice(range(151, 251))
             points_leg = random.choice(range(251, 301))
-            points = random.choice([points_common]*60+[points_uncommon]*30+[points_rare]*9+[points_leg])
+            points = random.choice([points_common]*90+[points_uncommon]*7+[points_rare]*2+[points_leg])
             try:
                 reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=7)
                 await db.give_points(str(message.guild.id), str(member.id), points)
