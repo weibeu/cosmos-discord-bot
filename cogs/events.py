@@ -41,7 +41,7 @@ class Event(object):
                 return False
             return True
 
-        if random.randint(1, 100) <= 25:
+        if random.randint(1, 100) <= 7:
             await message.add_reaction('🎃')
             points_common = random.choice(range(50, 101))
             points_uncommon = random.choice(range(101, 151))
