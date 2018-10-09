@@ -29,7 +29,7 @@ class Event(object):
         if str(message.guild.id) in self.disabled_channels:
             if message.channel.id in self.disabled_channels[str(message.guild.id)]:
                 return
-        if time.time() - self.time < random.choice([90, 120, 160, 180, 240, 260, 300]):
+        if time.time() - self.time < random.choice([240, 260, 300]):
             return
         
         def check(reaction, user):
