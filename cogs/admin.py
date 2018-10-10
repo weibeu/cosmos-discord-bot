@@ -121,7 +121,7 @@ class Admin(object):
             output += process.communicate()[0]
             process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
             output += process.communicate()[0]
-            await ctx.send(embed=discord.Embed(description=f"```css\n{output}```\n", colour=get_random_embed_color()))
+            await ctx.send(embed=discord.Embed(title="Console", description=output, colour=get_random_embed_color()))
             await m1.add_reaction(get_reaction_yes_no()["yes"])
             new_repo = git.Repo(os.getcwd()).head.reference
             embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
@@ -166,7 +166,7 @@ class Admin(object):
         output += process.communicate()[0]
         process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
         output += process.communicate()[0]
-        await ctx.send(embed=discord.Embed(description=f"```css\n{output}```\n", colour=get_random_embed_color()))
+        await ctx.send(embed=discord.Embed(title="Console", description=output, colour=get_random_embed_color()))
         await m1.add_reaction(get_reaction_yes_no()["yes"])
         new_repo = git.Repo(os.getcwd()).head.reference
         embed.set_author(name="Update info", icon_url=ctx.author.avatar_url)
