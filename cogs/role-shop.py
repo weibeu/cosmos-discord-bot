@@ -18,12 +18,12 @@ class RoleShop(object):
         if message.guild is None:
             return
         try:
-            if int(time.time()) - self.cd[message.author.id] > 30:
+            if int(time.time()) - self.cd[message.author.id] > 15:
                 await db.give_points(message.guild.id, message.author.id, 2)
                 self.cd[message.author.id] = int(time.time())
         except KeyError:
             self.cd[message.author.id] = int(time.time())
-
+                                                                         
     @commands.command()
     @commands.guild_only()
     async def points(self, ctx, *, user:discord.User = None):
