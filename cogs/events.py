@@ -29,9 +29,8 @@ class Event(object):
         if str(message.guild.id) in self.disabled_channels:
             if message.channel.id in self.disabled_channels[str(message.guild.id)]:
                 return
-        if time.time() - self.time < 1200:
+        if time.time() - self.time <= 2820:
             return
-        
         def check(reaction, user):
             if reaction.emoji != '🎃' or user.bot:
                 return False
