@@ -88,6 +88,7 @@ class Event(object):
         await ctx.send(f"Spook disabled in {channel.mention}.")
 
     @spook.command(name="spawn")
+    @commands.is_owner()
     async def spook_spawn(self, ctx, message: discord.Message = None):
         """Force spawn spooky reactions to current/provided message."""
         if message is None:
