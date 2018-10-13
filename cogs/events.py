@@ -87,5 +87,12 @@ class Event(object):
         self.disabled_channels[str(ctx.guild.id)] = l
         await ctx.send(f"Spook disabled in {channel.mention}.")
 
+    @spook.command(name="spawn")
+    async def spook_spawn(self, ctx, message: discord.Message = None):
+        """Force spawn spooky reactions to current/provided message."""
+        if message is None:
+            message = ctx.message
+        await message.add_reaction('🎃')
+
 def setup(bot):
     bot.add_cog(Event(bot))
