@@ -89,11 +89,33 @@ class Event(object):
 
     @spook.command(name="spawn")
     @commands.is_owner()
-    async def spook_spawn(self, ctx, message: discord.Message = None):
+    async def spook_spawn(self, ctx, points = None):
         """Force spawn spooky reactions to current/provided message."""
-        if message is None:
-            message = ctx.message
+        message = ctx.message
+        def check(reaction, user):
+            if reaction.emoji != '🎃' or user.bot:
+                return False
+            if reaction.message.id != message.id:
+                return False
+            if user.id == self.bot.user.id:
+                return False
+            return True
+
         await message.add_reaction('🎃')
+        points_common = random.choice(range(50, 61))
+        points_uncommon = random.choice(range(61, 101))
+        points_rare = random.choice(range(101, 200))
+        points_leg = random.choice(range(200, 301))
+        points = points or random.choice([points_common]*90+[points_uncommon]*7+[points_rare]*2+[points_leg])
+        try:
+            reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=7)
+            await db.give_points(str(message.guild.id), str(member.id), points)
+            await message.channel.send(f"{member.mention} 👌 + {points} points!")
+            await message.clear_reactions()
+            await message.remove_reaction('🎃', reaction.message.author)
+            self.time = time.time()
+        except asyncio.TimeoutError:
+            await message.clear_reactions()
 
 def setup(bot):
     bot.add_cog(Event(bot))
