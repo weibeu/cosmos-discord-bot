@@ -19,7 +19,7 @@ class PluginHandler(object):
                 for plugin_dir in os.listdir(self.bot.configs.plugins.raw[directory]):
                     if os.path.isdir(f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}"):
                         if 'setup.py' in os.listdir(f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}"):
-                            plugin = Plugin()
+                            plugin = Plugin(self.bot)
                             plugin.name = plugin_dir
                             plugin.raw_path = f"{self.bot.configs.plugins.raw[directory]}/{plugin_dir}/setup.py"
                             plugin.python_path = f"{plugin.raw_path.replace('/', '.')}"[:-3]
