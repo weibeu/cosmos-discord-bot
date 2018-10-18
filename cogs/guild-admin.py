@@ -566,11 +566,12 @@ class Guild_Admin(object):
                 role = discord.utils.get(member.guild.roles, id=int(self.omjcd_settings[str(member.guild.id)]["role"]))
                 await member.add_roles(role, reason="For cooldown on member join.")
                 await asyncio.sleep(float(self.omjcd_settings[str(member.guild.id)]["cooldown"])*60)
+                mroles = member.roles
                 try:
-                    for r in member.roles:
+                    for r in mroles:
                         if r.id == role.id:
-                            member.roles.remove(r)
-                    await member.edit(roles=member.roles, reason="Removing cooldown role.") # changed to this way to be 100% accurate
+                            mroles.remove(r)
+                    await member.edit(roles=mroles, reason="Removing cooldown role.") # changed to this way to be 100% accurate
                     # await member.remove_roles(role, reason="Removing cooldown role.")
                 except discord.errors.NotFound:
                     pass
