@@ -10,6 +10,7 @@ import asyncio
 import time
 import argparse, shlex
 
+
 class MEMBER(object):
     def __init__(self, name=None, joined_at=None, status=None, mention=None, display_name=None, avatar_url=None, discriminator=None, id=None):
         self.name = name
