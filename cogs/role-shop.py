@@ -18,8 +18,8 @@ class RoleShop(object):
         if message.guild is None:
             return
         try:
-            if int(time.time()) - self.cd[message.author.id] > 15:
-                await db.give_points(message.guild.id, message.author.id, 2)
+            if int(time.time()) - self.cd[message.author.id] > 10:
+                await db.give_points(message.guild.id, message.author.id, 1)
                 self.cd[message.author.id] = int(time.time())
         except KeyError:
             self.cd[message.author.id] = int(time.time())
