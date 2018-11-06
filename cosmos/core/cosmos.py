@@ -7,9 +7,10 @@ from cosmos.core.functions.logger.handler import LoggerHandler
 from cosmos.core.functions.plugins.handler import PluginHandler
 from cosmos.core.functions.database.database import Database
 from cosmos.core.functions.exceptions.handler import ExceptionHandler
+from cosmos.core.utilities.handler import Utility
 
 
-class Cosmos(commands.Bot):
+class Cosmos(commands.AutoShardedBot):
 
     def __init__(self, token=None, client_id=None, prefixes=None):
         self.time = None
@@ -19,6 +20,7 @@ class Cosmos(commands.Bot):
         self.db = None
         self.plugins = None
         self._init_time()
+        self._init_utilities()
         self._init_configs()
         super().__init__(
             command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes)
@@ -35,6 +37,12 @@ class Cosmos(commands.Bot):
         print("Initialising Cosmos time.")
         self.time = Time()
         print("Done.", end="\n\n")
+
+    def _init_utilities(self):
+        print("Initialising utilities.")
+        start_time = self.time.time()
+        self.utilities = Utility(self)
+        print(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def _init_configs(self):
         print("Initialising configs.")
@@ -74,7 +82,8 @@ class Cosmos(commands.Bot):
         try:
             super().run(self.configs.discord.token)
         except discord.LoginFailure:
-            self.log.info("Invalid token provided.")
+            self.log.error("Invalid token provided.")
+            raise discord.LoginFailure
 
     async def on_ready(self):
         self.log.info(f"{self.user.name}#{self.user.discriminator} Ready! [{self.time.round_time()} seconds.]")
