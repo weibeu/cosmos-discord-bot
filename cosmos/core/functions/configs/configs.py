@@ -3,6 +3,7 @@ import os
 from cosmos.core.functions.configs.config import Config
 from cosmos.core.functions.exceptions.initial import FatalError
 
+
 class DiscordConfig(Config):
 
     def __init__(self, client_config):
@@ -11,20 +12,24 @@ class DiscordConfig(Config):
         if token is not None:
             self.token = token
 
+
 class CosmosConfig(Config):
 
     def __init__(self, cosmos_config):
         super().__init__(cosmos_config)
+
 
 class PluginsConfig(Config):
 
     def __init__(self, plugins_config):
         super().__init__(plugins_config)
 
+
 class LoggerConfig(Config):
 
     def __init__(self, logger_config):
         super().__init__(logger_config)
+
 
 class DatabaseConfig(Config):
 
@@ -52,6 +57,7 @@ class DatabaseConfig(Config):
             self.__delattr__("port")
             if self.uri == "":
                 raise FatalError("No valid credentials found to connect to the database.")
+
 
 class SentryConfig(Config):
 
