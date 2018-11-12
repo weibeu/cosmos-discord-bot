@@ -1,6 +1,5 @@
 import os
 
-from discord import ClientException
 from cosmos.core.functions.plugins.plugin import Plugin
 
 
@@ -11,7 +10,6 @@ class PluginHandler(object):
         self.fetched = []
         self.loaded = []
         self.fetch_all()
-        self.load_all()
 
     def fetch_all(self):
         for directory in self.bot.configs.plugins.raw:
