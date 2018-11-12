@@ -37,8 +37,10 @@ class Plugin(object):
                 self.bot.log.info(f"Plugin '{self.name}' is already loaded.")
         except ImportError:
             self.bot.log.info(f"Plugin '{self.name}' failed to load.")
-        except ClientException:
-            self.bot.log.info(f"Can't find setup function in '{self.name}' plugin.")
+        except ClientException as e:
+            self.bot.log.info(f"Something went wrong loading '{self.name}' plugin.")
+            self.bot.log.info(e)
+            self.bot.eh.sentry.capture_exception()
 
     def unload(self):
         if self in self.bot.plugins.loaded:
