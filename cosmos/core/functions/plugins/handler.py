@@ -32,10 +32,11 @@ class PluginHandler(object):
                 self.bot.log.info(f"Directory '{self.bot.configs.plugins.raw[directory]}' not found.")
 
     @staticmethod
-    def load(self, plugin):
+    def load(plugin):
         plugin.load()
 
-    def unload(self, plugin):
+    @staticmethod
+    def unload(plugin):
         plugin.unload()
 
     def load_all(self):
