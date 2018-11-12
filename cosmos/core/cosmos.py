@@ -76,6 +76,7 @@ class Cosmos(commands.AutoShardedBot):
         self.log.info("Initialising plugins.")
         start_time = self.time.time()
         self.plugins = PluginHandler(self)
+        self.plugins.load_all()    # Here since Plugin requires self.bot.plugins to load itself.
         self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def run(self):
