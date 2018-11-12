@@ -29,15 +29,21 @@ class Plugin(object):
 
     def load(self):
         try:
-            self.bot.load_extension(self.python_path)
-            self.bot.plugins.loaded.append(self)
-            self.bot.log.info(f"Plugin '{self.name}' loaded.")
+            if self not in self.bot.plugins.loaded:
+                self.bot.load_extension(self.python_path)
+                self.bot.plugins.loaded.append(self)
+                self.bot.log.info(f"Plugin '{self.name}' loaded.")
+            else:
+                self.bot.log.info(f"Plugin '{self.name}' is already loaded.")
         except ImportError:
             self.bot.log.info(f"Plugin '{self.name}' failed to load.")
         except ClientException:
             self.bot.log.info(f"Can't find setup function in '{self.name}' plugin.")
 
     def unload(self):
-        self.bot.unload_extension(self.python_path)
-        self.bot.plugins.loaded.remove(self)
-        self.bot.log.info(f"Plugin '{self.name}' unloaded.")
+        if self in self.bot.plugins.loaded:
+            self.bot.unload_extension(self.python_path)
+            self.bot.plugins.loaded.remove(self)
+            self.bot.log.info(f"Plugin '{self.name}' unloaded.")
+        else:
+            self.bot.log.info(f"Plugin '{self.name}' isn't loaded.")
