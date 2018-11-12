@@ -30,7 +30,7 @@ class Plugin(object):
     def load(self):
         try:
             self.bot.load_extension(self.python_path)
-            self.bot.plugins.loaded_plugins.append(self)
+            self.bot.plugins.loaded.append(self)
             self.bot.log.info(f"Plugin '{self.name}' loaded.")
         except ImportError:
             self.bot.log.info(f"Plugin '{self.name}' failed to load.")
@@ -39,5 +39,5 @@ class Plugin(object):
 
     def unload(self):
         self.bot.unload_extension(self.python_path)
-        self.bot.plugins.loaded_plugins.remove(self)
+        self.bot.plugins.loaded.remove(self)
         self.bot.log.info(f"Plugin '{self.name}' unloaded.")
