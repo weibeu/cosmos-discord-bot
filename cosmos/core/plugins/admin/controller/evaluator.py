@@ -1,11 +1,9 @@
-import discord
 import traceback
 import textwrap
 import io
 
 from contextlib import redirect_stdout
 from discord.ext import commands
-
 
 
 class Evaluator(object):
@@ -17,7 +15,8 @@ class Evaluator(object):
     async def __local_check(self, ctx):
         return await self.bot.is_owner(ctx.author)
 
-    def cleanup_code(self, content):
+    @staticmethod
+    def cleanup_code(content):
         """Automatically removes code blocks from the code."""
         # remove ```py\n```
         if content.startswith('```') and content.endswith('```'):
@@ -26,6 +25,7 @@ class Evaluator(object):
         # remove `foo`
         return content.strip('` \n')
 
+    # noinspection PyBroadException
     @commands.command(hidden=True, name='eval')
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""

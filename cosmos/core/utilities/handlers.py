@@ -8,6 +8,7 @@ class FileHandler(object):
         self.bot = bot
 
     def get_file_data(self, path):
+        file_data = None
         try:
             file = open(path)
             if path.endswith(".json"):
@@ -19,7 +20,9 @@ class FileHandler(object):
             return file_data    # dict
         except FileNotFoundError:
             self.bot.log.error(f"Unable to find specified file '{path}'.")
+            self.bot.eh.sentry.capture_exception()
             return
         except IsADirectoryError:
             self.bot.log.error(f"'{path}' must be path to data file not directory.")
+            self.bot.eh.sentry.capture_exception()
             return

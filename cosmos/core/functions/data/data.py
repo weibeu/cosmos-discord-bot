@@ -32,12 +32,8 @@ class Data(object):
         else:
             try:    # Treat self.raw as file object.
                 self.fetch_file(self.raw.name)
-            except FileNotFoundError:
-                pass
-            except IsADirectoryError:
-                pass
-            else:
-                pass    # Mystery.
+            except (FileNotFoundError, IsADirectoryError):
+                self.bot.eh.sentry.capture_exception()
 
     def __setattr(self):
         for data in self.data:

@@ -37,6 +37,7 @@ class Plugin(object):
                 self.bot.log.info(f"Plugin '{self.name}' is already loaded.")
         except ImportError:
             self.bot.log.info(f"Plugin '{self.name}' failed to load.")
+            self.bot.eh.sentry.capture_exception()
         except ClientException as e:
             self.bot.log.info(f"Something went wrong loading '{self.name}' plugin.")
             self.bot.log.info(e)
