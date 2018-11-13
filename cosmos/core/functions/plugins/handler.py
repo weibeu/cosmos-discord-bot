@@ -1,5 +1,6 @@
 import os
 
+from discord.utils import get as get_object
 from cosmos.core.functions.plugins.plugin import Plugin
 
 
@@ -28,6 +29,9 @@ class PluginHandler(object):
                         pass    # Not a plugin directory rather maybe a plugin.py file.
             except FileNotFoundError:
                 self.bot.log.info(f"Directory '{self.bot.configs.plugins.raw[directory]}' not found.")
+
+    def get(self, **kwargs):
+        return get_object(self.fetched, **kwargs)
 
     @staticmethod
     def load(plugin):
