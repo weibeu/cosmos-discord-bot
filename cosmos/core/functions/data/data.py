@@ -1,17 +1,25 @@
 import os
 
 
+class DataEntry(object):
+
+    def __init__(self, data):
+        for attr in data:
+            self.__setattr__(attr, data[attr])
+
+
 class Data(object):
 
     def __init__(self, bot, data):
         self.bot = bot
         self.raw = data    # Universe.
-        self.data = []    # List of dicts.
+        self.data = {}    # Dict of filename and their corresponding data.
         self.fetch_raw_data()
         self.__setattr()
 
     def fetch_file(self, file_path):
-        self.data.append(self.bot.utilities.file_handler.get_file_data(file_path))
+        base = os.path.basename((file_path))
+        self.data[os.path.splitext(base)[0]] = self.bot.utilities.file_handler.get_file_data(file_path)
 
     def fetch_raw_data(self):
         """Converts raw data to data."""
@@ -26,7 +34,7 @@ class Data(object):
                 if os.path.isfile(self.raw):    # File.
                     self.fetch_file(self.raw)
         elif isinstance(self.raw, dict):    # self.raw is not raw.
-            self.data.append(self.raw)
+            self.data = self.raw
         elif isinstance(self.raw, list):    # self.raw is list containing list of files/path.
             pass
         else:
@@ -36,6 +44,11 @@ class Data(object):
                 self.bot.eh.sentry.capture_exception()
 
     def __setattr(self):
-        for data in self.data:
-            for attr in data:
-                self.__setattr__(attr, data[attr])
+        try:
+            for name in self.data:
+                try:
+                    self.__setattr__(name, DataEntry(self.data[name]))
+                except TypeError:
+                    self.__setattr__(name, self.data[name])
+        except TypeError:
+            pass
