@@ -86,8 +86,10 @@ async def shutup_bot(ctx):
             pass
         return str(ctx.channel.id) not in bot.guild_shutup_settings[str(ctx.guild.id)]"""
 
-"""@bot.check
+@bot.check
 async def tad_general_check(ctx):
+    if not ctx.guild:
+        return True
     if hasattr(ctx.message.author.guild_permissions, 'manage_guild'):
         return True
     if ctx.message.channel.id == 244998983112458240:
@@ -96,6 +98,6 @@ async def tad_general_check(ctx):
         return False
     elif ctx.author.bot:
         return False
-    return True"""
+    return True
 
 bot.run(config["TOKEN"])
