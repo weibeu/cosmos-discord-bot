@@ -9,6 +9,7 @@ import discord
 import asyncio
 import time
 import argparse, shlex
+import random
 
 
 class MEMBER(object):
@@ -620,9 +621,10 @@ class Guild_Admin(object):
             await ctx.send("No sub-command called")
 
     @secret_confessions.command(name="setup")
-    async def setup_sc(self, ctx):
+    async def setup_sc(self, ctx, message_channel: discord.TextChannel = None):
         """Setup secret confessions on you guild."""
-        message_channel = await ctx.guild.create_text_channel(name="Secret-Confessions", reason="Channel created for secret confession messages.")
+        if message_channel is None:
+            message_channel = await ctx.guild.create_text_channel(name="Secret-Confessions", reason="Channel created for secret confession messages.")
         log_channel = await ctx.guild.create_text_channel(name="logs-secret-confessions", reason="Channel create for secret confessions logs.")
         await message_channel.set_permissions(ctx.guild.default_role, reason="Denied normal users from sending messages directly.", send_messages=False)
         await log_channel.set_permissions(ctx.guild.default_role, reason="Denied normal users from wathing secret confessions logs and send messages.", read_messages=False, send_messages=False)
@@ -654,13 +656,15 @@ class Guild_Admin(object):
         await ctx.send("Secret confessions disabled.")
 
     @commands.command()
-    async def confess(self, ctx, guild_id, *, content):
+    async def confess(self, ctx, guild_id, *, content: str):
         """Confess secretly in channel if secret-confessions are enabled in that guild."""
         guild = self.bot.get_guild(int(guild_id))
         if self.sc_settings[str(guild.id)]["enabled"]:
+            markdown = random.choice(['```css\n', '```diff\n- ', '```diff\n+ ', '```fix\n', ])
             color = get_random_embed_color()
             message = discord.Embed()
-            message.description = content
+            message.description = markdown+content+'```'
+            message.title = '㊙㊙㊙:secret: CONFESSION!'
             message.colour = color
             log = discord.Embed()
             log.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
@@ -672,6 +676,7 @@ class Guild_Admin(object):
             log_channel = guild.get_channel(int(self.sc_settings[str(guild.id)]["log_channel"]))
             await message_channel.send(embed=message)
             await log_channel.send(embed=log)
+            await ctx.message.add_reaction('✅')
 
             #process confession
         else:
