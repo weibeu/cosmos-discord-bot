@@ -668,7 +668,7 @@ class Guild_Admin(object):
             message.colour = color
             log = discord.Embed()
             log.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-            log.description = content
+            log.description = '```css\n'+content+'```'
             log.set_footer(text="ID: "+str(ctx.author.id))
             log.add_field(name="Author: ", value=ctx.author.mention)
             log.colour = color
