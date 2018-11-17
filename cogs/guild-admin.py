@@ -660,11 +660,11 @@ class Guild_Admin(object):
         """Confess secretly in channel if secret-confessions are enabled in that guild."""
         guild = self.bot.get_guild(int(guild_id))
         if self.sc_settings[str(guild.id)]["enabled"]:
-            markdown = random.choice(['```css\n', '```diff\n- ', '```diff\n+ ', '```fix\n', ])
+            markdown = random.choice(['```css\n', '```fix\n', ])
             color = get_random_embed_color()
             message = discord.Embed()
             message.description = markdown+content+'```'
-            message.title = '㊙㊙㊙:secret: CONFESSION!'
+            message.title = '㊙ CONFESSIONS!'
             message.colour = color
             log = discord.Embed()
             log.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
