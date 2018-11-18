@@ -659,16 +659,15 @@ class Guild_Admin(object):
     @commands.command()
     async def confess(self, ctx, guild_id, *, content: str):
         """Confess secretly in channel if secret-confessions are enabled in that guild."""
+        if ctx.guild:
+            return
         guild = self.bot.get_guild(int(guild_id))
         if self.sc_settings[str(guild.id)]["enabled"]:
-            gif = get_gif("Anime")
+            gif = get_gif("Anime", limit=30)
             color = get_random_embed_color()
             message = discord.Embed()
-            if len(content) <= 200:
-                message.add_field(name=content, value="^")
-            else:
-                message.add_field(name=">", value=content)
-            message.set_author(name="CONFESSION!", icon_url=gif)
+            message.description = content
+            message.set_author(name="Anonymous", icon_url=gif)
             message.colour = color
             log = discord.Embed()
             log.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
