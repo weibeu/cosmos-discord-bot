@@ -657,7 +657,7 @@ class Guild_Admin(object):
         self.sc_settings[str(ctx.guild.id)]["enabled"] = False
         await ctx.send("Secret confessions disabled.")
 
-    @commands.cooldown(1, 60*60*7, BucketType.user)
+    @commands.cooldown(5, 86400, BucketType.user)
     @commands.command()
     async def confess(self, ctx, guild_id, *, content: str):
         """Confess secretly in channel if secret-confessions are enabled in that guild."""
