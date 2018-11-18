@@ -638,7 +638,8 @@ class Guild_Admin(object):
         td = {"enabled": True, "message_channel": str(message_channel.id), "log_channel": str(log_channel.id)}
         self.sc_settings[str(ctx.guild.id)] = td #runtime dict
         await ctx.send("Setup Successfull.")
-        help_message = await message_channel.send("Send me `;confess "+str(ctx.guild.id)+" <your content>` as dm to add secret confession.")
+        await message_channel.send("__**To make secret confession:**__")
+        help_message = await message_channel.send("`;confess "+str(ctx.guild.id)+" your confession`")
         await help_message.pin()
 
     @secret_confessions.command(name="enable")
