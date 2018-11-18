@@ -34,8 +34,6 @@ class CommandErrorHandler:
 
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.message.add_reaction('⏰')
-            await asyncio.sleep(3.7)
-            await ctx.message.delete()
 
         print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
