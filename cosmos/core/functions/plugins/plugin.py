@@ -1,4 +1,5 @@
 import os
+import importlib
 
 from discord import ClientException
 from cosmos.core.functions.data.models import PluginData
@@ -46,3 +47,9 @@ class Plugin(object):
             self.bot.log.info(f"Plugin '{self.name}' unloaded.")
         else:
             self.bot.log.info(f"Plugin '{self.name}' isn't loaded.")
+
+    def reload(self):
+        if self in self.bot.plugins.loaded:
+            importlib.reload(importlib.import_module(self.python_path))
+            self.unload()
+            self.load()
