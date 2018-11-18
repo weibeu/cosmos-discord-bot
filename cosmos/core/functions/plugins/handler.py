@@ -37,19 +37,17 @@ class PluginHandler(object):
         else:
             return get_object(self.fetched, **kwargs)
 
-    @staticmethod
-    def load(plugin):
-        plugin.load()
-
-    @staticmethod
-    def unload(plugin):
-        plugin.unload()
-
     def load_all(self):
-        self.bot.log.info("Loading fetched plugins.")
+        self.bot.log.info("Loading all fetched plugins.")
         for plugin in self.fetched:
-            self.load(plugin)
+            plugin.load()
 
     def unload_all(self):
+        self.bot.log.info("Unloading all loaded plugins.")
         for plugin in self.loaded:
-            self.unload(plugin)
+            plugin.unload()
+
+    def refresh(self):
+        self.bot.log.info("Refreshing loaded plugins.")
+        for plugin in self.loaded:
+            plugin.reload()
