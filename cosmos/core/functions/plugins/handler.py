@@ -6,8 +6,6 @@ from cosmos.core.functions.plugins.plugin import Plugin
 
 class PluginHandler(object):
 
-    SETUP_FILE = "setup.py"
-
     def __init__(self, bot):
         self.bot = bot
         self.fetched = []
@@ -21,20 +19,23 @@ class PluginHandler(object):
                 for plugin_dir in os.listdir(self.bot.configs.plugins.raw[directory]):
                     plugin_dir_path = os.path.join(self.bot.configs.plugins.raw[directory], plugin_dir)
                     if os.path.isdir(plugin_dir_path):
-                        if self.SETUP_FILE in os.listdir(plugin_dir_path):
+                        if '__init__.py' in os.listdir(plugin_dir_path):
                             plugin = Plugin(self.bot, plugin_dir_path)
                             self.fetched.append(plugin)
                             self.bot.log.info(f"Fetched '{plugin.name}'. [{plugin.python_path}]")
                         else:
-                            pass    # Try loading plugins without 'setup.py'.
+                            pass    # Try loading plugins without '__init__.py'.
                     else:
                         pass    # Not a plugin directory rather maybe a plugin.py file.
             except FileNotFoundError:
                 self.bot.log.info(f"Directory '{self.bot.configs.plugins.raw[directory]}' not found.")
                 self.bot.eh.sentry.capture_exception()
 
-    def get(self, **kwargs):
-        return get_object(self.fetched, **kwargs)
+    def get(self, name=None, **kwargs):
+        if name:
+            return get_object(self.fetched, name=name)
+        else:
+            return get_object(self.fetched, **kwargs)
 
     @staticmethod
     def load(plugin):

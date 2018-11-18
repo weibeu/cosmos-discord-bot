@@ -6,13 +6,10 @@ from cosmos.core.functions.data.models import PluginData
 
 class Plugin(object):
 
-    SETUP_FILE = "setup.py"
-
     def __init__(self, bot, dir_path):
         self.bot = bot
         self.dir_path = dir_path
         self.name = None
-        self.raw_path = None    # path to setup.py file.
         self.python_path = None
         # self.category = None
         self.data = None
@@ -21,8 +18,7 @@ class Plugin(object):
 
     def get_details(self):
         self.name = os.path.basename(self.dir_path)
-        self.raw_path = os.path.join(self.dir_path, self.SETUP_FILE)
-        self.python_path = f"{self.raw_path.replace('/', '.')}"[:-3]
+        self.python_path = f"{self.dir_path.replace('/', '.')}"
 
     def get_data(self):
         self.data = PluginData(self.bot, self)
