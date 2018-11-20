@@ -3,8 +3,9 @@ import discord
 
 class Presence(object):
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, plugin):
+        self.plugin = plugin
+        self.bot = self.plugin.bot
 
     async def set_presence(self, activity_type, **kwargs):
         if isinstance(activity_type, str):
