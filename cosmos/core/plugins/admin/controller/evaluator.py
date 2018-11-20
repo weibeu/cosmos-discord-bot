@@ -8,8 +8,9 @@ from discord.ext import commands
 
 class Evaluator(object):
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, plugin):
+        self.plugin = plugin
+        self.bot = self.plugin.bot
         self._last_result = None
 
     async def __local_check(self, ctx):
