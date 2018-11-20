@@ -33,51 +33,45 @@ class Cosmos(commands.AutoShardedBot):
         self.configs.discord.client_id = client_id or self.configs.discord.client_id
         self.configs.discord.prefixes = prefixes or self.configs.cosmos.prefixes
 
+    @Time.calc_time
     def _init_time(self):
         print("Initialising Cosmos time.")
         self.time = Time()
-        print("Done.", end="\n\n")
 
+    @Time.calc_time
     def _init_utilities(self):
         print("Initialising utilities.")
-        start_time = self.time.time()
         self.utilities = Utility(self)
-        print(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
+    @Time.calc_time
     def _init_configs(self):
         print("Initialising configs.")
-        start_time = self.time.time()
         self.configs = ConfigHandler(self)
-        print(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
+    @Time.calc_time
     def _init_logger(self):
         print("Initialising logger.")
-        start_time = self.time.time()
         self.log = LoggerHandler(self)
-        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
+    @Time.calc_time
     def _init_exception_handler(self):
         self.log.info("Initialising exception handler.")
-        start_time = self.time.time()
         self.eh = ExceptionHandler(self)
         try:
             self.eh.sentry.init(**self.configs.sentry.raw)
         except self.eh.sentry.utils.BadDsn:
             self.log.error("Invalid sentry DSN provided.")
-        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
+    @Time.calc_time
     def _init_database(self):
         self.log.info("Initialising database.")
-        start_time = self.time.time()
         self.db = Database(self)
-        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
+    @Time.calc_time
     def _init_plugins(self):
         self.log.info("Initialising plugins.")
-        start_time = self.time.time()
         self.plugins = PluginHandler(self)
         self.plugins.load_all()    # Here since Plugin requires self.bot.plugins to load itself.
-        self.log.info(f"Done. [{round(self.time.time() - start_time, 3)}s].\n\n")
 
     def run(self):
         try:

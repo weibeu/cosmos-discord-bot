@@ -27,6 +27,20 @@ class Time(object):
         self.year = now.year
         return self
 
+    @staticmethod
+    def calc_time(decorated):
+
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            var = decorated(*args, **kwargs)
+            if hasattr(args[0], 'log') and args[0].log:
+                log = args[0].log
+                log.info(f"Done. [{round(time.time() - start_time, 3)}s].\n\n")
+            else:
+                print(f"Done. [{round(time.time() - start_time, 3)}s].\n\n")
+            return var
+        return wrapper
+
     def time(self):
         return time.time() - self.init_time
 
