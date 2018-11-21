@@ -1,0 +1,10 @@
+# ! Few settings for presence plugin.
+
+
+rotate: Yes    # Rotate presence or nah (default).
+
+interval: 7    # Rotate bot status after interval seconds.
+
+activity_type: random    # Can be any from messages.yaml.keys() or random.
+
+stream_url: https://www.twitch.tv/the_c0sm0s    # Twitch stream url required to setup stream status.
