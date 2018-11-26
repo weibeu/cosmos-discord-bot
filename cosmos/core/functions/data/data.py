@@ -18,7 +18,7 @@ class Data(object):
         self.__setattr()
 
     def fetch_file(self, file_path):
-        base = os.path.basename((file_path))
+        base = os.path.basename(file_path)
         self.data[os.path.splitext(base)[0]] = self.bot.utilities.file_handler.get_file_data(file_path)
 
     def fetch_raw_data(self):
