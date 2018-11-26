@@ -15,7 +15,6 @@ class Data(object):
         self.raw = data    # Universe.
         self.data = {}    # Dict of filename and their corresponding data.
         self.fetch_raw_data()
-        self.__setattr()
 
     def fetch_file(self, file_path):
         base = os.path.basename(file_path)
