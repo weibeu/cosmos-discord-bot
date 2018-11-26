@@ -33,15 +33,22 @@ class Data(object):
             else:   # path to file or directory doesn't exists.
                 if os.path.isfile(self.raw):    # File.
                     self.fetch_file(self.raw)
+                else:
+                    self.data = self.raw
+                    return
+            self.__setattr()
         elif isinstance(self.raw, dict):    # self.raw is not raw.
             self.data = self.raw
+            self.__setattr()
         elif isinstance(self.raw, list):    # self.raw is list containing list of files/path.
-            pass
+            self.data = self.raw
         else:
             try:    # Treat self.raw as file object.
                 self.fetch_file(self.raw.name)
             except (FileNotFoundError, IsADirectoryError):
                 self.bot.eh.sentry.capture_exception()
+            finally:
+                self.__setattr()
 
     def __setattr(self):
         try:
