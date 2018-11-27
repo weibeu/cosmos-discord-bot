@@ -1006,11 +1006,6 @@ class Music:
         except Exception as e:
             errors.append(e)
 
-        if errors:
-            errors = '\n'.join(str(e) for e in errors)
-            await ctx.send(f'The following errors occurred while forcing a stop.'
-                           f' Errors are not indicative of failure:\n'
-                           f'```css\n[{errors}]\n```')
         await asyncio.sleep(3)
         try:
             await ctx.message.delete()
