@@ -1,4 +1,5 @@
 import discord
+import asyncio
 from discord.ext import commands
 import datetime
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
@@ -99,10 +100,17 @@ class TAD(object):
 
     @commands.command(name="doggo")
     @checks.is_mod()
-    async def doghouse(self, ctx, member: discord.Member, *, reason: str=None):
-        """Put bad doggo into jail."""
+    async def doghouse(self, ctx, member: discord.Member, time: str or float, *, reason: str=None):
+        """Put bad doggo into jail. Time Format: nmins/nhours or just `n` represents n minutes."""
         if not reason:
             reason = "Reason not specified"
+        if isinstance(time, str):
+            if time.lower().endswith("mins") or time.lower().endswith("min"):
+                time = float(filter(str.isdigit, time))*60
+            elif time.lower().endswith("hours") or time.lower().endswith("hour"):
+                time = float(filter(str.isdigit, time))*60*60
+        elif isinstance(time, int):
+            time = time*60
         role = discord.utils.get(ctx.guild.roles, id=396570360054677507)
         await member.add_roles(role, reason=reason)
         await ctx.message.add_reaction('✅')
@@ -114,7 +122,11 @@ class TAD(object):
         log.add_field(name="Moderator", value=f"{ctx.author.name} | {ctx.author.mention}", inline=False)
         log.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         log.set_thumbnail(url=member.avatar_url)
-        await log_channel.send(embed=log)
+        m = await log_channel.send(embed=log)
+        await asyncio.sleep(time)
+        await member.remove_roles(role)
+        log.title = "🐕 Case closed"
+        await m.edit(embed=log)
         
 
 def setup(bot):
