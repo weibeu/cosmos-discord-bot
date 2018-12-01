@@ -105,10 +105,14 @@ class TAD(object):
         if not reason:
             reason = "Reason not specified"
         if isinstance(time, str):
-            if time.lower().endswith("mins") or time.lower().endswith("min"):
-                time = int(filter(str.isdigit, time))*60
-            elif time.lower().endswith("hours") or time.lower().endswith("hour"):
-                time = int(filter(str.isdigit, time))*60*60
+            if time.lower().endswith("mins"):
+                time = float(time.split("mins")[0])*60
+            elif time.lower().endswith("min"):
+                time = float(time.split("min")[0])*60
+            elif time.lower().endswith("hours"):
+                time = float(time.split("hours")[0])*60*60
+            elif time.lower().endswith("hour"):
+                time = float(time.split("hour")[0])*60*60
         elif isinstance(time, int):
             time = time*60
         role = discord.utils.get(ctx.guild.roles, id=396570360054677507)
