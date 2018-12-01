@@ -3,8 +3,7 @@ from cosmos.core.functions.cacher import cachers
 
 class Cache(object):
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.dict = None
         self.ttl = None
         self.lru = None
