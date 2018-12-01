@@ -6,13 +6,13 @@ class Cache(object):
     def __init__(self, cache):
         self.cache = cache
 
-    def get_cache(self, key: str or int):
+    def get(self, key: str or int):
         return self.cache.get(key)
 
-    def set_cache(self, key: str or int, value):
+    def set(self, key: str or int, value):
         self.cache.update({key: value})
 
-    def remove_cache(self, key: str or int):
+    def remove(self, key: str or int):
         if key in self.cache.keys():
             self.cache.pop(key)
 
