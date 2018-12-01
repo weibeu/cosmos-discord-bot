@@ -132,11 +132,11 @@ class TAD(object):
         m = await log_channel.send(embed=log)
         try:
             await asyncio.sleep(time)
+            await member.remove_roles(role)
+            log.title = "❎ Case closed"
+            await m.edit(embed=log)
         except:
             pass
-        await member.remove_roles(role)
-        log.title = "❎ Case closed"
-        await m.edit(embed=log)
         
 
 def setup(bot):
