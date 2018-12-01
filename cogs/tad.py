@@ -130,7 +130,7 @@ class TAD(object):
         m = await log_channel.send(embed=log)
         await asyncio.sleep(time)
         await member.remove_roles(role)
-        log.title = "🐕 Case closed"
+        log.title = "❎ Case closed"
         await m.edit(embed=log)
         
 
