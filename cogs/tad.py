@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import datetime
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
+from cogs.utils import checks
 
 class TAD(object):
     """A custom class for tad server."""
@@ -95,6 +96,23 @@ class TAD(object):
         role = discord.utils.get(ctx.guild.roles, id=447945813100986379)
         await ctx.author.remove_roles(role, reason=ctx.author.name+" stopped studying.")
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
+
+    @commands.command(name="doggo")
+    @checks.is_mod()
+    async def doghouse(self, ctx, member: discord.Member, *, reason: str=None):
+        """Put bad doggo into jail."""
+        role = discord.utils.get(ctx.guild.roles, id=396570360054677507)
+        await member.add_roles(roles, reason=reason)
+        await ctx.message.add_reaction('✅')
+        log = discord.Embed(title="🐕 | Case", color=get_random_embed_color(), timestamp=ctx.message.created_at)
+        log_channel = self.guild.get_channel(408189687329456128)
+        await log.add_field(name="Name", value=f"{member.name} | {member.mention}")
+        await log.add_field(name="ID", value=f"`member.id`")
+        await log.add_field(name="Reason", value=reason)
+        await log.add_field(name="Moderator", value=f"{ctx.author.mention} | {ctx.author.name}")
+        await log.set_author(name=member.name, icon_url=member.avatar_url)
+        await log_channel.send(embed=log)
+        
 
 def setup(bot):
     bot.add_cog(TAD(bot))
