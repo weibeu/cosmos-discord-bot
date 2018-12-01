@@ -101,6 +101,8 @@ class TAD(object):
     @checks.is_mod()
     async def doghouse(self, ctx, member: discord.Member, *, reason: str=None):
         """Put bad doggo into jail."""
+        if not reason:
+            reason = "Reason not specified"
         role = discord.utils.get(ctx.guild.roles, id=396570360054677507)
         await member.add_roles(roles, reason=reason)
         await ctx.message.add_reaction('✅')
