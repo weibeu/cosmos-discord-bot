@@ -108,11 +108,11 @@ class TAD(object):
         await ctx.message.add_reaction('✅')
         log = discord.Embed(title="🐕 | Case", color=get_random_embed_color(), timestamp=ctx.message.created_at)
         log_channel = self.guild.get_channel(408189687329456128)
-        await log.add_field(name="Name", value=f"{member.name} | {member.mention}")
-        await log.add_field(name="ID", value=f"`member.id`")
-        await log.add_field(name="Reason", value=reason)
-        await log.add_field(name="Moderator", value=f"{ctx.author.mention} | {ctx.author.name}")
-        await log.set_author(name=member.name, icon_url=member.avatar_url)
+        log.add_field(name="Name", value=f"{member.name} | {member.mention}")
+        log.add_field(name="ID", value=f"`member.id`")
+        log.add_field(name="Reason", value=reason)
+        log.add_field(name="Moderator", value=f"{ctx.author.mention} | {ctx.author.name}")
+        log.set_author(name=member.name, icon_url=member.avatar_url)
         await log_channel.send(embed=log)
         
 
