@@ -88,16 +88,16 @@ async def shutup_bot(ctx):
 
 @bot.check
 async def tad_general_check(ctx):
+    try:
+        if ctx.message.author.guild_permissions.manage_guild:
+            return True
+    except:
+        pass
     if ctx.message.channel.id == 244998983112458240:
         await ctx.message.delete()
         return False
     if not ctx.guild:
         return True
-    try:
-        if hasattr(ctx.message.author.guild_permissions, 'manage_guild'):
-            return True
-    except:
-        pass
     if ctx.author.bot:
         return False
     return True
