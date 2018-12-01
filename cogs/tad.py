@@ -113,6 +113,8 @@ class TAD(object):
                 time = float(time.split("hours")[0])*60*60
             elif time.lower().endswith("hour"):
                 time = float(time.split("hour")[0])*60*60
+            elif time.lower() in ["inf", "infinite"]:
+                time = "Infinite"
         elif isinstance(time, int):
             time = time*60
         role = discord.utils.get(ctx.guild.roles, id=396570360054677507)
@@ -128,7 +130,10 @@ class TAD(object):
         log.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         log.set_thumbnail(url=member.avatar_url)
         m = await log_channel.send(embed=log)
-        await asyncio.sleep(time)
+        try:
+            await asyncio.sleep(time)
+        except:
+            pass
         await member.remove_roles(role)
         log.title = "❎ Case closed"
         await m.edit(embed=log)
