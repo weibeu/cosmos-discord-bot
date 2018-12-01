@@ -104,7 +104,7 @@ class TAD(object):
         if not reason:
             reason = "Reason not specified"
         role = discord.utils.get(ctx.guild.roles, id=396570360054677507)
-        await member.add_roles(roles, reason=reason)
+        await member.add_roles(role, reason=reason)
         await ctx.message.add_reaction('✅')
         log = discord.Embed(title="🐕 | Case", color=get_random_embed_color(), timestamp=ctx.message.created_at)
         log_channel = self.guild.get_channel(408189687329456128)
