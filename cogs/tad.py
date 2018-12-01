@@ -125,7 +125,10 @@ class TAD(object):
         log.add_field(name="Name", value=f"{member.name} | {member.mention}", inline=False)
         log.add_field(name="ID", value=f"`{member.id}`", inline=False)
         log.add_field(name="Reason", value=reason, inline=False)
-        log.add_field(name="Length", value=f"{time/60} Minutes")
+        try:
+            log.add_field(name="Length", value=f"{time/60} Minutes")
+        except:
+            log.add_field(name="Length", value=time)
         log.add_field(name="Moderator", value=f"{ctx.author.name} | {ctx.author.mention}", inline=False)
         log.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         log.set_thumbnail(url=member.avatar_url)
