@@ -1,26 +1,44 @@
 import cachetools
 
+from abc import ABC, abstractmethod
+
 
 class Cache(object):
 
-    def __init__(self, cache):
-        self.cache = cache
+    @abstractmethod
+    def get(self, *args, **kwargs):
+        raise NotImplementedError
 
-    def get(self, key: str or int):
-        return self.cache.get(key)
+    @abstractmethod
+    def update(self, *args, **kwargs):
+        raise NotImplementedError
 
-    def set(self, key: str or int, value):
-        self.cache.update({key: value})
+    @abstractmethod
+    def pop(self, *args, **kwargs):
+        raise NotImplementedError
 
-    def remove(self, key: str or int):
-        if key in self.cache.keys():
-            self.cache.pop(key)
+    @abstractmethod
+    def keys(self, *args, **kwargs):
+        raise NotImplementedError
+
+    def get_cache(self, key: str or int):
+        return self.get(key)
+
+    def set_cache(self, key: str or int, value):
+        self.update({key: value})
+
+    def remove_cache(self, key: str or int):
+        if key in self.keys():
+            self.pop(key)
 
 
-class DictCache(Cache):
+class DictCache(dict, Cache):
 
     def __init__(self):
-        super().__init__(dict())
+        super().__init__()
+
+    def get(self, key: str or int):
+        return super().get(key)
 
 
 class TTLCache(Cache):
@@ -39,3 +57,9 @@ class LFUCache(Cache):
 
     def __init__(self, max_size: int=50000, **kwargs):
         super().__init__(cachetools.LFUCache(max_size, **kwargs))
+
+
+class RedisCache(object):
+
+    def __init__(self):
+        pass
