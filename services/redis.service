@@ -5,7 +5,7 @@ After=multi-user.target
 [Service]
 Type=simple
 WorkingDirectory=/root/dev/tc-discord-bot
-ExecStart=/root/redis/src/run-server
+ExecStart=/root/redis/src/redis-server
 User=root
 
 [Install]
