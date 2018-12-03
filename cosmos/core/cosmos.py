@@ -5,6 +5,7 @@ from cosmos.core.utilities.time import Time
 from cosmos.core.functions.configs.handler import ConfigHandler
 from cosmos.core.functions.logger.handler import LoggerHandler
 from cosmos.core.functions.plugins.handler import PluginHandler
+from cosmos.core.functions.cacher.handler import CacheHandler
 from cosmos.core.functions.database.database import Database
 from cosmos.core.functions.exceptions.handler import ExceptionHandler
 from cosmos.core.utilities.handler import Utility
@@ -17,6 +18,7 @@ class Cosmos(commands.AutoShardedBot):
         self.configs = None
         self.eh = None
         self.log = None
+        self.cache = None
         self.db = None
         self.plugins = None
         self._init_time()
@@ -27,6 +29,7 @@ class Cosmos(commands.AutoShardedBot):
         )
         self._init_logger()
         self._init_exception_handler()
+        self._init_caches()
         self._init_database()
         self._init_plugins()
         self.configs.discord.token = token or self.configs.discord.token
@@ -61,6 +64,11 @@ class Cosmos(commands.AutoShardedBot):
             self.eh.sentry.init(**self.configs.sentry.raw)
         except self.eh.sentry.utils.BadDsn:
             self.log.error("Invalid sentry DSN provided.")
+
+    @Time.calc_time
+    def _init_caches(self):
+        self.log.info("Initialising caches.")
+        self.cache = CacheHandler(self)
 
     @Time.calc_time
     def _init_database(self):
