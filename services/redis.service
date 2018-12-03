@@ -1,0 +1,12 @@
+[Unit]
+Description=Redis Server
+After=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/dev/tc-discord-bot
+ExecStart=/root/redis/src/run-server
+User=root
+
+[Install]
+WantedBy=multi-user.target
