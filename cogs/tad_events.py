@@ -8,10 +8,10 @@ from cogs.utils.util import get_random_embed_color
 
 class SantaEvent(object):
 
-    GUILD_ID = 390134592507609088   # 244998983112458240
-    ROLE_ID = 476719309901791232    # 518971059756859393
+    GUILD_ID = 401447139290644480   # 244998983112458240
+    ROLE_ID = 519459776200179719    # 518971059756859393
     EMOJI = '🎁'
-    COOLDOWN = 25
+    COOLDOWN = 10
     CHANCE = 100
     WAIT_FOR = 7
     SANTA_GIF = "https://media1.giphy.com/media/3oriNS6RGNct2MZWJq/giphy.gif"
@@ -79,6 +79,8 @@ class SantaEvent(object):
                 role_members.remove(winner)
                 embed.description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
                 embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
+            except:
+                pass
             
             members += role_members
             
