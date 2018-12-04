@@ -11,7 +11,7 @@ class SantaEvent(object):
     GUILD_ID = 244998983112458240
     ROLE_ID = 518971059756859393
     EMOJI = '🎁'
-    COOLDOWN = 600
+    COOLDOWN = 1200
     CHANCE = 25
     WAIT_FOR = 7
     SANTA_GIF = "https://media1.giphy.com/media/3oriNS6RGNct2MZWJq/giphy.gif"
