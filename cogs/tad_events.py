@@ -8,8 +8,8 @@ from cogs.utils.util import get_random_embed_color
 
 class SantaEvent(object):
 
-    GUILD_ID = 401447139290644480   # 244998983112458240
-    ROLE_ID = 519459776200179719    # 518971059756859393
+    GUILD_ID = 390134592507609088   # 244998983112458240
+    ROLE_ID = 476719309901791232    # 518971059756859393
     EMOJI = '🎁'
     COOLDOWN = 10
     CHANCE = 100
@@ -71,14 +71,16 @@ class SantaEvent(object):
             embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
             embed.description = str()
 
-            
-            winner = random.choice(role_members)
-            await winner.add_roles(self.role, reason="Gift from TAD's Santa Lil Neko")
-            winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
-            await give_points(str(message.guild.id), str(winner.id), winner_points)
-            role_members.remove(winner)
-            embed.description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
-            embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
+            try:
+                winner = random.choice(role_members)
+                await winner.add_roles(self.role, reason="Gift from TAD's Santa Lil Neko")
+                winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
+                await give_points(str(message.guild.id), str(winner.id), winner_points)
+                role_members.remove(winner)
+                embed.description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
+                embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
+            except:
+                pass
             
             members += role_members
             
