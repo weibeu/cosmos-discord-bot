@@ -60,10 +60,6 @@ class SantaEvent(object):
             
             await message.clear_reactions()
 
-            if members+role_members = []:
-                await message.channel.send("You missed santa 😦")
-                return
-
             points_common = random.choice(range(50, 61))
             points_uncommon = random.choice(range(61, 101))
             points_rare = random.choice(range(101, 200))
