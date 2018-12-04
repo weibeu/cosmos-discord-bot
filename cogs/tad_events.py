@@ -60,6 +60,9 @@ class SantaEvent(object):
                 else:
                     members.append(m)
             
+            if not members + role_members:
+                return
+
             await message.clear_reactions()
 
             points_common = random.choice(range(50, 61))
@@ -83,9 +86,7 @@ class SantaEvent(object):
                 print(e)
             
             members += role_members
-            
-            if not members:
-                return
+
 
             for m in members:
                 m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
