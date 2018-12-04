@@ -60,6 +60,10 @@ class SantaEvent(object):
             
             await message.clear_reactions()
 
+            if members+role_members = []:
+                await message.channel.send("You missed santa 😦")
+                return
+
             points_common = random.choice(range(50, 61))
             points_uncommon = random.choice(range(61, 101))
             points_rare = random.choice(range(101, 200))
@@ -70,17 +74,17 @@ class SantaEvent(object):
             winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
             await give_points(str(message.guild.id), str(winner.id), winner_points)
             role_members.remove(winner)
-            embed = discord.Embed(title=f"{self.EMOJI} Gifts!", colour=get_random_embed_color())
+            embed = discord.Embed(title=f"{self.EMOJI} Gifts for you!", colour=get_random_embed_color())
             embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
             embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
-            description = "🏆    __**{winner.name}**__    {self.role.mention} & +{winner_points}\n\n"
+            description = f"🤶    __**{winner.name}**__    🏆 {self.role.mention} & +{winner_points}\n\n"
             members += role_members
             if not members:
                 return
             for m in members:
                 m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
                 await give_points(str(message.guild.id), str(m.id), m_points)
-                description += "🤶    {m.name}    +{m_points}\n"
+                description += f"🤶    {m.name}    +{m_points}\n"
             embed.description = description
             await message.channel.send(embed=embed)
             self.time = time.time()
