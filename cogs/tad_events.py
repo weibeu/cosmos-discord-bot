@@ -64,10 +64,7 @@ class SantaEvent(object):
             points_rare = random.choice(range(101, 200))
             points_leg = random.choice(range(200, 301))
 
-            try:
-                winner = random.choice(role_members)
-            except:
-                pass
+            winner = random.choice(role_members)
             await winner.add_roles(self.role, reason="Gift from TAD's Santa Lil Neko")
             winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
             await give_points(str(message.guild.id), str(winner.id), winner_points)
