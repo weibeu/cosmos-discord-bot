@@ -65,10 +65,10 @@ class SantaEvent(object):
 
             await message.clear_reactions()
 
-            points_common = random.choice(range(50, 61))
-            points_uncommon = random.choice(range(61, 101))
-            points_rare = random.choice(range(101, 200))
-            points_leg = random.choice(range(200, 301))
+            points_common = random.choice(range(5, 50))
+            points_uncommon = random.choice(range(50, 100))
+            points_rare = random.choice(range(100, 250))
+            points_leg = random.choice(range(250, 300))
 
             embed = discord.Embed(title=f"{self.EMOJI} Gifts for you!", colour=get_random_embed_color())
             embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
