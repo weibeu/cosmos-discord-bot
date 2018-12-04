@@ -20,6 +20,7 @@ class SantaEvent(object):
         self.bot = bot
         self.guild = None
         self.role = None
+        self.time = time.time()
         self.bot.loop.create_task(self.fetch_objects())
 
     async def fetch_objects(self):
@@ -78,6 +79,7 @@ class SantaEvent(object):
                 await give_points(str(message.guild.id), str(m.id), m_points)
                 description += "🤶    {m.name}    +{m_points}\n"
             await message.channel.send(embed=embed)
+            self.time = time.time()
 
 
 def setup(bot):
