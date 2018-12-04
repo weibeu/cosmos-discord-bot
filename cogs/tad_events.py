@@ -53,7 +53,7 @@ class SantaEvent(object):
             members = []
             role_members = []
             async for m in reaction.users():
-                if self.role in m.roles:
+                if self.role not in m.roles:
                     role_members.append(m)
                 else:
                     members.append(m)
@@ -62,9 +62,11 @@ class SantaEvent(object):
             points_uncommon = random.choice(range(61, 101))
             points_rare = random.choice(range(101, 200))
             points_leg = random.choice(range(200, 301))
-            points = random.choice([points_common]*90+[points_uncommon]*7+[points_rare]*2+[points_leg])
 
-            winner = random.choice(role_members)
+            try:
+                winner = random.choice(role_members)
+            except:
+                pass
             await winner.add_roles(self.role, reason="Gift from TAD's Santa Lil Neko")
             winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
             await give_points(str(message.guild.id), str(winner.id), winner_points)
@@ -74,6 +76,8 @@ class SantaEvent(object):
             embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
             description = "🏆    __**{winner.name}**__    {self.role.mention} & +{winner_points}\n\n"
             members += role_members
+            if not members:
+                return
             for m in members:
                 m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
                 await give_points(str(message.guild.id), str(m.id), m_points)
