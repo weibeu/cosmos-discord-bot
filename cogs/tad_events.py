@@ -44,7 +44,6 @@ class SantaEvent(object):
         if random.randint(1, 100) <= self.CHANCE:
             await message.add_reaction(self.EMOJI)
             await asyncio.sleep(self.WAIT_FOR)
-            await message.clear_reactions()
             """for r in message.reactions:
                 if r.emoji == self.EMOJI:
                     reaction = r
@@ -59,6 +58,8 @@ class SantaEvent(object):
                 else:
                     members.append(m)
             
+            await message.clear_reactions()
+
             points_common = random.choice(range(50, 61))
             points_uncommon = random.choice(range(61, 101))
             points_rare = random.choice(range(101, 200))
