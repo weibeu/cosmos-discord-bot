@@ -67,31 +67,28 @@ class SantaEvent(object):
             points_rare = random.choice(range(101, 200))
             points_leg = random.choice(range(200, 301))
 
-            try:
-                winner = random.choice(role_members)
-                await winner.add_roles(self.role, reason="Gift from TAD's Santa Lil Neko")
-                winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
-                await give_points(str(message.guild.id), str(winner.id), winner_points)
-                role_members.remove(winner)
-                embed = discord.Embed(title=f"{self.EMOJI} Gifts for you!", colour=get_random_embed_color())
-                embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
-                embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
-                description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
-            
-                members += role_members
-                if not members:
-                    return
+            winner = random.choice(role_members)
+            await winner.add_roles(self.role, reason="Gift from TAD's Santa Lil Neko")
+            winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
+            await give_points(str(message.guild.id), str(winner.id), winner_points)
+            role_members.remove(winner)
+            embed = discord.Embed(title=f"{self.EMOJI} Gifts for you!", colour=get_random_embed_color())
+            embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
+            embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
+            embed.description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
+        
+            members += role_members
+            if not members:
+                return
 
-                for m in members:
-                    m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
-                    await give_points(str(message.guild.id), str(m.id), m_points)
-                    description += f"🤶    {m.name}    +{m_points} cosmos points.\n"
-            except:
-                pass
-            else:
-                embed.description = description
-                await message.channel.send(embed=embed)
-                self.time = time.time()
+            for m in members:
+                m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
+                await give_points(str(message.guild.id), str(m.id), m_points)
+                embed.description += f"🤶    {m.name}    +{m_points} cosmos points.\n"
+            
+            embed.description = description
+            await message.channel.send(embed=embed)
+            self.time = time.time()
 
 
 def setup(bot):
