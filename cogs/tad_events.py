@@ -24,28 +24,28 @@ class SantaEvent(object):
 
     async def fetch_objects(self):
         await self.bot.wait_until_ready()
-        self.guild = self.bot.get_guild(GUILD_ID)
-        self.role = discord.utils.get(self.guild.roles, id=ROLE_ID)
+        self.guild = self.bot.get_guild(self.GUILD_ID)
+        self.role = discord.utils.get(self.guild.roles, id=self.ROLE_ID)
 
     async def __local_check(self, ctx):
-        return ctx.guild.id == GUILD_ID
+        return ctx.guild.id == self.GUILD_ID
 
     async def on_message(self, message):
         if message.author.bot:
             return
         if message.attachments != []:
             return
-        if message.guild.id != GUILD_ID:
+        if message.guild.id != self.GUILD_ID:
             return
-        if time.time() - self.time <= COOLDOWN:
+        if time.time() - self.time <= self.COOLDOWN:
             return
 
-        if random.randint(1, 100) <= CHANCE:
-            await message.add_reaction(EMOJI)
-            await asyncio.sleep(WAIT_FOR)
+        if random.randint(1, 100) <= self.CHANCE:
+            await message.add_reaction(self.EMOJI)
+            await asyncio.sleep(self.WAIT_FOR)
             await message.clear_reactions()
             for r in message.reactions:
-                if r.emoji == EMOJI:
+                if r.emoji == self.EMOJI:
                     reaction = r
                 else:
                     reaction = None
@@ -68,9 +68,9 @@ class SantaEvent(object):
             winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
             await give_points(str(message.guild.id), str(winner.id), winner_points)
             role_members.remove(winner)
-            embed = discord.Embed(title=f"{EMOJI} Gifts!", colour=get_random_embed_color())
+            embed = discord.Embed(title=f"{self.EMOJI} Gifts!", colour=get_random_embed_color())
             embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
-            embed.set_author(name="Santa Neko", icon_url=SANTA_GIF) 
+            embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
             description = "🏆    __**{winner.name}**__    {self.role.mention} & +{winner_points}\n\n"
             members += role_members
             for m in members:
