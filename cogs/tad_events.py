@@ -8,12 +8,12 @@ from cogs.utils.util import get_random_embed_color
 
 class SantaEvent(object):
 
-    GUILD_ID = 390134592507609088   # 244998983112458240
-    ROLE_ID = 476719309901791232    # 518971059756859393
+    GUILD_ID = 244998983112458240
+    ROLE_ID = 518971059756859393
     EMOJI = '🎁'
     COOLDOWN = 10
-    CHANCE = 100
-    WAIT_FOR = 7
+    CHANCE = 3
+    WAIT_FOR = 2820
     SANTA_GIF = "https://media1.giphy.com/media/3oriNS6RGNct2MZWJq/giphy.gif"
 
     def __init__(self, bot):
