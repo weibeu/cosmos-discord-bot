@@ -80,10 +80,10 @@ class SantaEvent(object):
                 winner_points = random.choice([points_common]*40+[points_uncommon]*30+[points_rare]*20+[points_leg]*10)
                 await give_points(str(message.guild.id), str(winner.id), winner_points)
                 role_members.remove(winner)
-                embed.description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
+                embed.description = f"🏆    __**{winner.mention}  🎉 {self.role.mention} and +{winner_points} cosmos points.**__\n\n"
                 embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
             except Exception as e:
-                print(e)
+                pass
             
             members += role_members
 
@@ -91,7 +91,7 @@ class SantaEvent(object):
             for m in members:
                 m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
                 await give_points(str(message.guild.id), str(m.id), m_points)
-                embed.description += f"🤶    {m.name}    +{m_points} cosmos points.\n"
+                embed.description += f"🤶    **{m.name}**  🎉  +{m_points} cosmos points.\n"
             
             await message.channel.send(embed=embed)
             self.time = time.time()
