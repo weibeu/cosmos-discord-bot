@@ -77,18 +77,21 @@ class SantaEvent(object):
                 embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
                 embed.set_author(name="Santa Neko", icon_url=self.SANTA_GIF) 
                 description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
+            
+                members += role_members
+                if not members:
+                    return
+
+                for m in members:
+                    m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
+                    await give_points(str(message.guild.id), str(m.id), m_points)
+                    description += f"🤶    {m.name}    +{m_points} cosmos points.\n"
             except:
                 pass
-            members += role_members
-            if not members:
-                return
-            for m in members:
-                m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
-                await give_points(str(message.guild.id), str(m.id), m_points)
-                description += f"🤶    {m.name}    +{m_points} cosmos points.\n"
-            embed.description = description
-            await message.channel.send(embed=embed)
-            self.time = time.time()
+            else:
+                embed.description = description
+                await message.channel.send(embed=embed)
+                self.time = time.time()
 
 
 def setup(bot):
