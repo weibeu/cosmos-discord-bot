@@ -45,11 +45,12 @@ class SantaEvent(object):
             await message.add_reaction(self.EMOJI)
             await asyncio.sleep(self.WAIT_FOR)
             await message.clear_reactions()
-            for r in message.reactions:
+            """for r in message.reactions:
                 if r.emoji == self.EMOJI:
                     reaction = r
                 else:
-                    reaction = None
+                    reaction = None"""
+            reaction = message.reactions[0]
             members = []
             role_members = []
             async for m in reaction.users():
