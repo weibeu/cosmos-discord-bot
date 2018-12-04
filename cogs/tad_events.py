@@ -79,8 +79,8 @@ class SantaEvent(object):
                 role_members.remove(winner)
                 embed.description = f"🤶    __**{winner.name}    🏆 {self.role.mention} and +{winner_points} cosmos points.__**\n\n"
                 embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
-            except:
-                pass
+            except Exception as e:
+                print(e)
             
             members += role_members
             
