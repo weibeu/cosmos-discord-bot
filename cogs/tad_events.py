@@ -81,6 +81,7 @@ class SantaEvent(object):
                 m_points = random.choice([points_common]*80+[points_uncommon]*15+[points_rare]*3+[points_leg]*2)
                 await give_points(str(message.guild.id), str(m.id), m_points)
                 description += "🤶    {m.name}    +{m_points}\n"
+            embed.description = description
             await message.channel.send(embed=embed)
             self.time = time.time()
 
