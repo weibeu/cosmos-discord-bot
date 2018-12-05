@@ -1,7 +1,21 @@
-class Config(object):
+import os
+from abc import ABCMeta
 
-    def __init__(self, config):
-        self.raw = config
+from cosmos.core.utilities.handlers import FileHandler
+
+
+class Config(object):
+    __metaclass__ = ABCMeta
+
+    PATH = str()
+
+    def __init__(self):
+        self.raw = None
+        self.PATH = os.path.join(self.PATH)
+        self._fetch_config()
+
+    def _fetch_config(self):
+        self.raw = FileHandler.get_file_data(self.PATH)
         for config in self.raw:
             if self.raw[config] == "":
                 self.raw[config] = None

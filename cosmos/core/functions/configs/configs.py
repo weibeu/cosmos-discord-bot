@@ -5,35 +5,40 @@ from cosmos.core.functions.exceptions.initial import FatalError
 
 
 class DiscordConfig(Config):
+    PATH = "cfg/core/discord.yaml"
 
-    def __init__(self, client_config):
-        super().__init__(client_config)
+    def __init__(self):
+        super().__init__()
         token = os.getenv("DiscordToken")   # Use token from environment if present.
         if token is not None:
             self.token = token
 
 
 class CosmosConfig(Config):
+    PATH = "cfg/core/cosmos.yaml"
 
-    def __init__(self, cosmos_config):
-        super().__init__(cosmos_config)
+    def __init__(self):
+        super().__init__()
 
 
 class PluginsConfig(Config):
+    PATH = "cfg/core/plugins.yaml"
 
-    def __init__(self, plugins_config):
-        super().__init__(plugins_config)
+    def __init__(self):
+        super().__init__()
 
 
 class LoggerConfig(Config):
+    PATH = "cfg/core/logger.yaml"
 
-    def __init__(self, logger_config):
-        super().__init__(logger_config)
+    def __init__(self):
+        super().__init__()
 
 
 class DatabaseConfig(Config):
+    PATH = "cfg/core/database.yaml"
 
-    def __init__(self, database_config):
+    def __init__(self):
         self.requires_auth = None
         self.username = None
         self.password = None
@@ -41,7 +46,7 @@ class DatabaseConfig(Config):
         self.port = None
         self.uri = None
         self.raw = None
-        super().__init__(database_config)
+        super().__init__()
         if not self.requires_auth:
             self.host = self.host or "127.0.0.1"
             self.port = self.port or "27017"
@@ -60,9 +65,10 @@ class DatabaseConfig(Config):
 
 
 class SentryConfig(Config):
+    PATH = "cfg/core/sentry.yaml"
 
-    def __init__(self, sentry_config):
-        super().__init__(sentry_config)
+    def __init__(self):
+        super().__init__()
         if hasattr(self, "release"):
             if self.release is None or "":
                 self.__delattr__("release")
