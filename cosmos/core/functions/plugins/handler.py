@@ -1,6 +1,7 @@
 import os
 
 from discord.utils import get as get_object
+
 from cosmos.core.functions.plugins.plugin import Plugin
 
 
@@ -15,8 +16,8 @@ class PluginHandler(object):
     def fetch_all(self):
         for directory in self.bot.configs.plugins.raw:
             self.bot.log.info(f"Fetching '{directory}' plugins.")
-            try:
-                for plugin_dir in os.listdir(self.bot.configs.plugins.raw[directory]):
+            for plugin_dir in os.listdir(self.bot.configs.plugins.raw[directory]):
+                try:
                     plugin_dir_path = os.path.join(self.bot.configs.plugins.raw[directory], plugin_dir)
                     if os.path.isdir(plugin_dir_path):
                         if '__init__.py' in os.listdir(plugin_dir_path):
@@ -27,9 +28,9 @@ class PluginHandler(object):
                             pass    # Try loading plugins without '__init__.py'.
                     else:
                         pass    # Not a plugin directory rather maybe a plugin.py file.
-            except FileNotFoundError:
-                self.bot.log.info(f"Directory '{self.bot.configs.plugins.raw[directory]}' not found.")
-                self.bot.eh.sentry.capture_exception()
+                except FileNotFoundError:
+                    self.bot.log.info(f"Directory '{self.bot.configs.plugins.raw[directory]}' not found.")
+                    self.bot.eh.sentry.capture_exception()
 
     def get(self, name=None, **kwargs):
         if name:
