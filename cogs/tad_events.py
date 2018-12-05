@@ -83,6 +83,7 @@ class SantaEvent(object):
                 embed.description = f"🏆    __**{winner.mention}  🎉 {self.role.mention} and +{winner_points} cosmos points.**__\n\n"
                 embed.set_footer(text=f"Congrats {winner.name}!", icon_url=winner.avatar_url)
             except Exception as e:
+                print(e)
                 pass
             
             members += role_members
