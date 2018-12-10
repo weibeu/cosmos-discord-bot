@@ -547,6 +547,23 @@ class Guild_Admin(object):
         self.omjcd_settings[str(ctx.guild.id)]["enabled"] = False
         await ctx.send("OMJCD disabled.")
 
+    @cooldown_on_member_join.command(name="freeze", aliases=['pause', 'stop'])
+    async def freeze_omjcd(self, ctx):
+        """Prevents members from leaving orientation mode and freezes them forbidding access to normal chats. **Useful in raid like situation.**\n__**Don't forget to enable it again after raid.**__"""
+        self.omjcd_settings[str(ctx.guild.id)].update({"frozen": True})
+        await ctx.message.add_reaction('☑')
+    
+    @cooldown_on_member_join.command(name="unfreeze", aliases=['play', 'start'])
+    async def unfreeze_omjcd(self, ctx):
+        """Unfreeze orientation back to normal flow and brings frozen members to chat again."""
+        self.omjcd_settings[str(ctx.guild.id)].update({"frozen": False})
+        role = discord.utils.get(member.guild.roles, id=int(self.omjcd_settings[str(ctx.guild.id)]["role"]))
+        for m in role.members:
+            await m.remove_roles(role, reason="Unfreezing orientation.")
+        await ctx.message.add_reaction('☑')
+
+
+
     '''@cooldown_on_member_join.command()
     async def settings(self, ctx):
         """Displays guild OMJCD setings"""
@@ -573,7 +590,11 @@ class Guild_Admin(object):
                     for r in mroles:
                         if r.id == role.id:
                             mroles.remove(r)
-                    await member.edit(roles=mroles, reason="Removing cooldown role.") # changed to this way to be 100% accurate
+                    try:
+                        if not self.omjcd_settings[str(ctx.guild.id)]["frozen"]:
+                            await member.edit(roles=mroles, reason="Removing cooldown role.") # changed to this way to be 100% accurate
+                    except:
+                        await member.edit(roles=mroles, reason="Removing cooldown role.") # changed to this way to be 100% accurate
                     # await member.remove_roles(role, reason="Removing cooldown role.")
                 except discord.errors.NotFound:
                     pass
