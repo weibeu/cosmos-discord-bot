@@ -107,6 +107,13 @@ class Moderation(object):
         await asyncio.sleep(2.7)
         await ctx.message.delete()
 
+    @commands.command(name="massban")
+    @checks.admin_or_permissions(ban_members=True)
+    async def mass_ban(self, ctx, *, member_ids):
+        """__**Warning!** Mass Ban given IDS.__"""
+        pass
+
+
 def setup(bot):
     bot.add_cog(Moderation(bot))
 
