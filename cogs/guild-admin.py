@@ -557,7 +557,7 @@ class Guild_Admin(object):
     async def unfreeze_omjcd(self, ctx):
         """Unfreeze orientation back to normal flow and brings frozen members to chat again."""
         self.omjcd_settings[str(ctx.guild.id)].update({"frozen": False})
-        role = discord.utils.get(member.guild.roles, id=int(self.omjcd_settings[str(ctx.guild.id)]["role"]))
+        role = discord.utils.get(ctx.guild.roles, id=int(self.omjcd_settings[str(ctx.guild.id)]["role"]))
         for m in role.members:
             await m.remove_roles(role, reason="Unfreezing orientation.")
         await ctx.message.add_reaction('☑')
