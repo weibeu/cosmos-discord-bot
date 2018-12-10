@@ -591,12 +591,12 @@ class Guild_Admin(object):
                         if r.id == role.id:
                             mroles.remove(r)
                     try:
-                        if not self.omjcd_settings[str(ctx.guild.id)]["frozen"]:
+                        if not self.omjcd_settings[str(member.guild.id)]["frozen"]:
                             await member.edit(roles=mroles, reason="Removing cooldown role.") # changed to this way to be 100% accurate
-                        elif self.omjcd_settings[str(ctx.guild.id)]["frozen"]:
+                        elif self.omjcd_settings[str(member.guild.id)]["frozen"]:
                             pass
                     except KeyError:
-                        self.omjcd_settings[str(ctx.guild.id)].update({"frozen": False})
+                        self.omjcd_settings[str(member.guild.id)].update({"frozen": False})
                         await member.edit(roles=mroles, reason="Removing cooldown role.") # changed to this way to be 100% accurate
                     # await member.remove_roles(role, reason="Removing cooldown role.")
                 except discord.errors.NotFound:
