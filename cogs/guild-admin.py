@@ -572,6 +572,16 @@ class Guild_Admin(object):
             l += 1
         await ctx.send(f"Kicked {l} members.")
 
+    @cooldown_on_member_join.command(name="ban")
+    async def ban_omjcd(self, ctx):
+        """**Bans all members who are in orientation.** __Useful while raids.__"""
+        role = discord.utils.get(ctx.guild.roles, id=int(self.omjcd_settings[str(ctx.guild.id)]["role"]))
+        l = 0
+        for m in role.members:
+            await m.ban(reason="Banned from orientation mode.")
+            l += 1
+        await ctx.send(f"Banned {l} members!")
+
 
 
     '''@cooldown_on_member_join.command()
