@@ -562,6 +562,16 @@ class Guild_Admin(object):
             await m.remove_roles(role, reason="Unfreezing orientation.")
         await ctx.message.add_reaction('☑')
 
+    @cooldown_on_member_join.command(name="kick")
+    async def kick_omjcd(self, ctx):
+        """**Kicks all members who are in orientation.** __Useful while raids.__"""
+        role = discord.utils.get(ctx.guild.roles, id=int(self.omjcd_settings[str(ctx.guild.id)]["role"]))
+        l = 0
+        for m in role.members:
+            await m.kick(reason="Kicked from orientation mode.")
+            l += 1
+        await ctx.send(f"Kicked {l} members.")
+
 
 
     '''@cooldown_on_member_join.command()
