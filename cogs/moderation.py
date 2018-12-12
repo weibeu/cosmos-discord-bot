@@ -121,7 +121,7 @@ class Moderation(object):
     
     @commands.command(name="masskick")
     @checks.admin_or_permissions(kick_members=True)
-    async def mass_ban(self, ctx, *, member_ids: str):
+    async def mass_kick(self, ctx, *, member_ids: str):
         """__**Warning!** Mass Kick given IDS.__"""
         ids = member_ids.split()
         for i in ids:
