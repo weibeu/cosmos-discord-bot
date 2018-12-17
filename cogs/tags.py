@@ -4,6 +4,8 @@ from cogs.utils import db
 from cogs.utils.paginator import Pages
 from cogs.utils.rmenu import Menu, confirm_menu
 from cogs.utils import checks
+import re
+import aiohttp
 
 class Tags(object):
 
@@ -24,11 +26,29 @@ class Tags(object):
     @commands.guild_only()
     async def tag(self, ctx, *, name):
         """Tag any text to retrieve it later.\nIf sub command is not called, then this will search for provided tag."""
+        files = []
         tag = await db.get_tag(ctx.guild.id, ctx.author.id, name)
+        content = tag
         if tag is None:
             await ctx.send("Tag not found.")
             return
-        await ctx.send(tag)
+        urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', tag)
+        
+        for url in urls:
+            async with aiohttp.ClientSession() as ses:
+                async with ses.get(url) as r:
+                    img = await r.read()
+
+            file = discord.File(img)
+            files.append(file)
+
+            tag = tag.replace(url, "")
+        
+
+        if files:
+            await ctx.send(tag, files=files)
+        else:
+            await ctx.send(content)
 
     @tag.command(name="create", aliases=["add", "new"])
     async def create_tag(self, ctx, name, *, content):
