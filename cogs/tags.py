@@ -101,6 +101,7 @@ class Tags(object):
     async def tag_box_tag(self, ctx, *, name):
         """Retrieve a tag from tag box."""
         tag = await db.get_tag_box(ctx.guild.id, name)
+        files = []
         content = tag
         if tag is None:
             await ctx.send("Tag not found.")
