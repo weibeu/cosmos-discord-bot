@@ -99,7 +99,7 @@ class TAD(object):
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
 
     @commands.command(name="doggo")
-    @checks.is_mod()
+    @commands.has_permissions(manage_roles=True)
     async def doghouse(self, ctx, member: discord.Member, time: str or float, *, reason: str=None):
         """Put bad doggo into jail. Time Format: nmins/nhours or just `n` represents n minutes."""
         if not reason:
