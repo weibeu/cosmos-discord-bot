@@ -27,6 +27,7 @@ class Tags(object):
     async def tag(self, ctx, *, name):
         """Tag any text to retrieve it later.\nIf sub command is not called, then this will search for provided tag."""
         files = []
+        filename = ""
         tag = await db.get_tag(ctx.guild.id, ctx.author.id, name)
         content = tag
         if tag is None:
@@ -39,7 +40,14 @@ class Tags(object):
                 async with ses.get(url) as r:
                     img = await r.read()
 
-            file = discord.File(img)
+            if ".png" in url.lower():
+                filename = "tag.png"
+            elif ".jpg" in url.lower():
+                filename = "tag.jpg"
+            elif ".gif" in url.lower():
+                filename = "tag.gif"
+
+            file = discord.File(img, filename=filename)
             files.append(file)
 
             tag = tag.replace(url, "")
@@ -104,7 +112,14 @@ class Tags(object):
                 async with ses.get(url) as r:
                     img = await r.read()
 
-            file = discord.File(img)
+            if ".png" in url.lower():
+                filename = "tag.png"
+            elif ".jpg" in url.lower():
+                filename = "tag.jpg"
+            elif ".gif" in url.lower():
+                filename = "tag.gif"
+
+            file = discord.File(img, filename=filename)
             files.append(file)
 
             tag = tag.replace(url, "")
