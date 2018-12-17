@@ -93,10 +93,27 @@ class Tags(object):
     async def tag_box_tag(self, ctx, *, name):
         """Retrieve a tag from tag box."""
         tag = await db.get_tag_box(ctx.guild.id, name)
+        content = tag
         if tag is None:
             await ctx.send("Tag not found.")
             return
-        await ctx.send(tag)
+        urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', tag)
+        
+        for url in urls:
+            async with aiohttp.ClientSession() as ses:
+                async with ses.get(url) as r:
+                    img = await r.read()
+
+            file = discord.File(img)
+            files.append(file)
+
+            tag = tag.replace(url, "")
+        
+
+        if files:
+            await ctx.send(tag, files=files)
+        else:
+            await ctx.send(content)
 
     @tag_box.command(name="create", aliases=["add, new"])
     @checks.is_mod()
