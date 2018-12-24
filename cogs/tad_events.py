@@ -11,9 +11,9 @@ class SantaEvent(object):
     GUILD_ID = 244998983112458240
     ROLE_ID = 518971059756859393
     EMOJI = '🎁'
-    COOLDOWN = 6120
-    CHANCE = 3
-    WAIT_FOR = 7
+    COOLDOWN = 1200
+    CHANCE = 40
+    WAIT_FOR = 13
     SANTA_GIF = "https://media1.giphy.com/media/3oriNS6RGNct2MZWJq/giphy.gif"
 
     def __init__(self, bot):
