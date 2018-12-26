@@ -8,6 +8,10 @@ import time
 
 class RoleShop(object):
     """Cog for guild role shop"""
+
+    POINTS = 1
+    COOLDOWN = 10
+
     def __init__(self, bot):
         self.bot = bot
         self.cd = {}
@@ -18,8 +22,8 @@ class RoleShop(object):
         if message.guild is None:
             return
         try:
-            if int(time.time()) - self.cd[message.author.id] > 10:
-                await db.give_points(message.guild.id, message.author.id, 3)
+            if int(time.time()) - self.cd[message.author.id] > self.COOLDOWN:
+                await db.give_points(message.guild.id, message.author.id, self.POINTS)
                 self.cd[message.author.id] = int(time.time())
         except KeyError:
             self.cd[message.author.id] = int(time.time())
