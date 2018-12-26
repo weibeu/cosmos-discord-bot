@@ -1,7 +1,7 @@
-import discord
+import asyncio
 import random
 
-import asyncio
+import discord
 
 
 class Presence(object):
@@ -10,7 +10,11 @@ class Presence(object):
         self.plugin = plugin
         self.bot = self.plugin.bot
         self.rotate = self.plugin.data.configs.rotate
-        self.bot.loop.create_task(self.rotate_presence())
+        self.rotate_task = self.bot.loop.create_task(self.rotate_presence())
+
+    def __unload(self):
+        self.bot.log.info("Stopping presence rotation.")
+        self.rotate_task.cancel()
 
     async def set_presence(self, activity_type, message, **kwargs):
         if isinstance(activity_type, str):
