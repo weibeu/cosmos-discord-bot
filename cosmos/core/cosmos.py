@@ -11,7 +11,7 @@ from cosmos.core.functions.exceptions.handler import ExceptionHandler
 from cosmos.core.utilities.handler import Utility
 
 
-class Cosmos(commands.AutoShardedBot):
+class Cosmos(commands.Bot):
 
     def __init__(self, token=None, client_id=None, prefixes=None):
         self.time = None
