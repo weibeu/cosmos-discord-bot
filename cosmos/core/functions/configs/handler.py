@@ -1,4 +1,4 @@
-from cosmos.core.functions.configs.configs import *
+from .configs import *
 
 
 class ConfigHandler(object):

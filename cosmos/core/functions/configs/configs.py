@@ -1,7 +1,7 @@
 import os
 
-from cosmos.core.functions.configs.config import Config
-from cosmos.core.functions.exceptions.initial import FatalError
+from .config import Config
+from ..exceptions.initial import FatalError
 
 
 class DiscordConfig(Config):

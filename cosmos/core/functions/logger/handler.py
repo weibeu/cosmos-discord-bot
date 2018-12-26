@@ -1,4 +1,4 @@
-from cosmos.core.functions.logger.logger import Logger
+from .logger import Logger
 
 
 class LoggerHandler(Logger):

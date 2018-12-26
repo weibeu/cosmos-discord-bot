@@ -1,4 +1,4 @@
-from cosmos.core.plugins.admin.controller.evaluator import Evaluator
+from .controller.evaluator import Evaluator
 
 
 def setup(bot):

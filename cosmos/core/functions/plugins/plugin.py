@@ -1,8 +1,9 @@
-import os
 import importlib
+import os
 
 from discord import ClientException
-from cosmos.core.functions.data.models import PluginData
+
+from ..data.models import PluginData
 
 
 class Plugin(object):

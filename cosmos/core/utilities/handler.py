@@ -1,5 +1,5 @@
-from cosmos.core.utilities import handlers
-from cosmos.core.utilities.utils import Utils
+from . import handlers
+from .utils import Utils
 
 
 class Utility(Utils):

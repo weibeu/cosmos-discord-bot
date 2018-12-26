@@ -1,6 +1,6 @@
 import os
 
-from cosmos.core.functions.data.data import Data
+from .data import Data
 
 
 class PluginData(Data):

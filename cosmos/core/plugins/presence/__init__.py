@@ -1,4 +1,4 @@
-from cosmos.core.plugins.presence.presence import Presence
+from .presence import Presence
 
 
 def setup(bot):

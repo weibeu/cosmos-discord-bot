@@ -1,4 +1,4 @@
-from cosmos.core.functions.cacher import cachers
+from . import cachers
 
 
 class CacheHandler(object):

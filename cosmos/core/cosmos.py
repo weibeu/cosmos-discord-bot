@@ -1,14 +1,14 @@
 import discord
-
 from discord.ext import commands
-from cosmos.core.utilities.time import Time
-from cosmos.core.functions.configs.handler import ConfigHandler
-from cosmos.core.functions.logger.handler import LoggerHandler
-from cosmos.core.functions.plugins.handler import PluginHandler
-from cosmos.core.functions.cacher.handler import CacheHandler
-from cosmos.core.functions.database.database import Database
-from cosmos.core.functions.exceptions.handler import ExceptionHandler
-from cosmos.core.utilities.handler import Utility
+
+from .functions.cacher.handler import CacheHandler
+from .functions.configs.handler import ConfigHandler
+from .functions.database.database import Database
+from .functions.exceptions.handler import ExceptionHandler
+from .functions.logger.handler import LoggerHandler
+from .functions.plugins.handler import PluginHandler
+from .utilities.handler import Utility
+from .utilities.time import Time
 
 
 class Cosmos(commands.Bot):

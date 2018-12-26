@@ -2,7 +2,7 @@ import os
 
 from discord.utils import get as get_object
 
-from cosmos.core.functions.plugins.plugin import Plugin
+from .plugin import Plugin
 
 
 class PluginHandler(object):
