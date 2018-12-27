@@ -1,6 +1,8 @@
 from .presence import Presence
 
+cogs = [Presence]
+
 
 def setup(bot):
     plugin = bot.plugins.get(bot.utilities.get_file_directory(__file__))
-    bot.add_cog(Presence(plugin))
+    # plugin.load_cogs(cogs)

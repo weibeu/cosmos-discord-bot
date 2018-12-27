@@ -13,6 +13,7 @@ class Plugin(object):
         self.dir_path = dir_path
         self.name = None
         self.python_path = None
+        self.cogs = []
         # self.category = None
         self.data = None
         self.get_details()
@@ -54,3 +55,7 @@ class Plugin(object):
             importlib.reload(importlib.import_module(self.python_path))
             self.unload()
             self.load()
+
+    def load_cogs(self, cog_list: list):
+        for cog in cog_list:
+            cog(self).load()

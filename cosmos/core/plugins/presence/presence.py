@@ -3,20 +3,28 @@ import random
 
 import discord
 
+from ...functions.plugins.models import Cog
 
-class Presence(object):
+
+class Presence(Cog):
 
     def __init__(self, plugin):
+        super().__init__()
         self.plugin = plugin
-        self.bot = self.plugin.bot
+        self.bot = plugin.bot
         self.rotate = self.plugin.data.configs.rotate
         self.rotate_task = self.bot.loop.create_task(self.rotate_presence())
 
     def __unload(self):
         self.bot.log.info("Stopping presence rotation.")
         self.rotate_task.cancel()
+        # self.rotate = False
+        self.bot.loop.create_task(self.set_presence())
 
-    async def set_presence(self, activity_type, message, **kwargs):
+    async def set_presence(self, activity_type=None, message=None, **kwargs):
+        if activity_type is None and message is None:
+            await self.bot.change_presence(activity=None)
+            return
         if isinstance(activity_type, str):
             try:
                 activity_type = getattr(discord.ActivityType, activity_type)
