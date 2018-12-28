@@ -1,8 +1,8 @@
 import pickle
+from abc import ABC, abstractmethod
+
 import aioredis
 import cachetools
-
-from abc import ABC, abstractmethod
 
 
 class Cache(object):
@@ -32,34 +32,32 @@ class Cache(object):
         if key in self.keys():
             self.pop(key)
 
-    # TODO: Make child classes implement abstractmethod(s) from different parent class.
 
-
-class DictCache(dict, Cache):
+class DictCache(dict, Cache, ABC):
 
     def __init__(self):
         super().__init__()
 
 
-class TTLCache(cachetools.TTLCache, Cache):
+class TTLCache(cachetools.TTLCache, Cache, ABC):
 
     def __init__(self, max_size: int=50000, ttl: int=60, **kwargs):
         super().__init__(max_size, ttl, **kwargs)
 
 
-class LRUCache(cachetools.LRUCache, Cache):
+class LRUCache(cachetools.LRUCache, Cache, ABC):
 
     def __init__(self, max_size: int=50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
-class LFUCache(cachetools.LFUCache, Cache):
+class LFUCache(cachetools.LFUCache, Cache, ABC):
 
     def __init__(self, max_size: int=50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
-class AsyncDictCache(DictCache):
+class AsyncDictCache(DictCache, ABC):
 
     def __init__(self):
         super().__init__()
