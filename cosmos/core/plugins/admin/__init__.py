@@ -1,6 +1,8 @@
 from .controller.evaluator import Evaluator
 
+__all__ = [Evaluator]
+
 
 def setup(bot):
     plugin = bot.plugins.get(bot.utilities.get_file_directory(__file__))
-    bot.add_cog(Evaluator(plugin))
+    plugin.load_cogs(__all__)

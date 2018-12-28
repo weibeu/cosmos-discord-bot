@@ -1,14 +1,18 @@
-import traceback
-import textwrap
 import io
-
+import textwrap
+import traceback
+from abc import ABC
 from contextlib import redirect_stdout
+
 from discord.ext import commands
 
+from ....functions.plugins.models import Cog
 
-class Evaluator(object):
+
+class Evaluator(Cog, ABC):
 
     def __init__(self, plugin):
+        super().__init__()
         self.plugin = plugin
         self.bot = self.plugin.bot
         self._last_result = None
