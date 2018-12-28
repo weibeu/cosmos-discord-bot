@@ -13,7 +13,8 @@ class Plugin(object):
         self.dir_path = dir_path
         self.name = None
         self.python_path = None
-        self.cogs = []
+        self._cogs = {}  # All visible loaded cogs. Isn't affected by load/unload.
+        self.cogs = self.bot.cogs
         # self.category = None
         self.data = None
         self.get_details()
@@ -56,6 +57,17 @@ class Plugin(object):
             self.unload()
             self.load()
 
+    def load_cog(self, cog):
+        cog = cog(self)
+        self.bot.log.info(f"Loading COG {cog.name}.")
+        if cog.name in self.cogs:
+            self.bot.log.error(f"Cog {self.name} is already loaded.")
+            return
+        else:
+            self.bot.add_cog(cog)
+        # self._cogs.update({cog.name: cog})
+        self.bot.log.info("Done.")
+
     def load_cogs(self, cog_list: list):
         for cog in cog_list:
-            cog(self).load()
+            self.load_cog(cog)
