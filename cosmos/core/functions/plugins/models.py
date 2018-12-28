@@ -28,7 +28,7 @@ class Cog(object):
     def bot(self, bot):
         self._bot = bot
 
-    def __load(self):
+    def _load(self):
         plugin = self.plugin
         plugin.bot.log.info(f"Loading COG {self.__class__.__name__}.")
         cog = self.__class__(plugin)
@@ -37,6 +37,7 @@ class Cog(object):
             return
         else:
             plugin.bot.add_cog(cog)
+            self.plugin.cogs.update({cog.name: cog})
         plugin.bot.log.info("Done.")
 
     def unload(self):
@@ -46,10 +47,11 @@ class Cog(object):
             return
         else:
             self.bot.remove_cog(self.name)
+            self.plugin.cogs.pop(self.name)
         self.bot.log.info(f"COG {self.name} unloaded.")
 
     def reload(self):
         self.bot.log.info(f"Reloading COG {self.name}.")
         self.unload()
-        self.__load()
+        self._load()
         self.bot.log.info(f"COG {self.name} reloaded.")

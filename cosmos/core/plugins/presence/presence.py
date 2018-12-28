@@ -1,12 +1,13 @@
 import asyncio
 import random
+from abc import ABC
 
 import discord
 
 from ...functions.plugins.models import Cog
 
 
-class Presence(Cog):
+class Presence(Cog, ABC):
 
     def __init__(self, plugin):
         super().__init__()
@@ -18,7 +19,6 @@ class Presence(Cog):
     def __unload(self):
         self.bot.log.info("Stopping presence rotation.")
         self.rotate_task.cancel()
-        # self.rotate = False
         self.bot.loop.create_task(self.set_presence())
 
     async def set_presence(self, activity_type=None, message=None, **kwargs):
