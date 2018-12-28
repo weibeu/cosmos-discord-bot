@@ -14,10 +14,11 @@ class Plugin(object):
         self.dir_path = dir_path
         self.name = None
         self.python_path = None
+        self.data = None
+        # self.category = None
+        # self.extension = None    # __init__.py module.
         self._cogs = {}  # All visible loaded cogs. Isn't affected by load/unload methods.
         self.cogs = {}
-        # self.category = None
-        self.data = None
         self.get_details()
         self.get_data()
 
@@ -75,6 +76,6 @@ class Plugin(object):
         # self._cogs.update({cog.name: cog})
         self.bot.log.info("Done.")
 
-    def load_cogs(self, cog_list: list):
+    def load_cogs(self, cog_list: list):  # TODO: Automatically get __all__ from __init___.py.
         for cog in cog_list:
             self.load_cog(cog)
