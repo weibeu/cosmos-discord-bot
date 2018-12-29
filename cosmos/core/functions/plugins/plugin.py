@@ -62,15 +62,15 @@ class Plugin(object):
     def load_cog(self, cog):
         cog = cog(self)
         self._cogs.update({cog.name: cog})
-        self.bot.log.info(f"Loading COG {cog.name}.")
-        if cog.name in self.cogs:
-            self.bot.log.error(f"Cog {cog.name} is already loaded.")
-            return
         if not isinstance(cog, Cog):
             self.bot.log.warning(f"Can't load COG {cog.name}.")
             self.bot.log.error(f"COG {cog.name} must inherit {Cog.__name__} [{Cog}]")
             return
+        if cog.name in self.cogs:
+            self.bot.log.error(f"Cog {cog.name} is already loaded.")
+            return
         else:
+            self.bot.log.info(f"Loading COG {cog.name}.")
             self.bot.add_cog(cog)
             self.cogs.update({cog.name: cog})
         # self._cogs.update({cog.name: cog})
