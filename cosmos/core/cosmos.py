@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from .functions.cacher.handler import CacheHandler
 from .functions.configs.handler import ConfigHandler
-from .functions.database.database import Database
+from .functions.database.database import DatabaseClient
 from .functions.exceptions.handler import ExceptionHandler
 from .functions.logger.handler import LoggerHandler
 from .functions.plugins.handler import PluginHandler
@@ -19,6 +19,7 @@ class Cosmos(commands.Bot):
         self.eh = None
         self.log = None
         self.cache = None
+        self.db_client = None
         self.db = None
         self.plugins = None
         self._init_time()
@@ -73,7 +74,8 @@ class Cosmos(commands.Bot):
     @Time.calc_time
     def _init_database(self):
         self.log.info("Initialising database.")
-        self.db = Database(self)
+        self.db_client = DatabaseClient(self)
+        self.db = self.db_client.db
 
     @Time.calc_time
     def _init_plugins(self):
