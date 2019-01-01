@@ -1,7 +1,9 @@
 import os
 
+from .api.hastebin import HasteBin
 
-class Utils(object):
+
+class Utils(HasteBin):
 
     @staticmethod
     def get_python_path(path):
