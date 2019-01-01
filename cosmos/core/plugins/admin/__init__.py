@@ -4,5 +4,5 @@ __all__ = [Evaluator]
 
 
 def setup(bot):
-    plugin = bot.plugins.get(bot.utilities.get_file_directory(__file__))
+    plugin = bot.plugins.get_from_file(__file__)
     plugin.load_cogs(__all__)

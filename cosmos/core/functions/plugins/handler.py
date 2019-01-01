@@ -38,6 +38,9 @@ class PluginHandler(object):
         else:
             return get_object(self.fetched, **kwargs)
 
+    def get_from_file(self, file, **kwargs):
+        return self.get(self.bot.utilities.get_file_directory(file), **kwargs)
+
     def load_all(self):
         self.bot.log.info("Loading all fetched plugins.")
         for plugin in self.fetched:
