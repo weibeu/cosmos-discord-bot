@@ -1,3 +1,4 @@
+import importlib
 import os
 
 from discord.utils import get as get_object
@@ -38,8 +39,13 @@ class PluginHandler(object):
         else:
             return get_object(self.fetched, **kwargs)
 
-    def get_from_file(self, file, **kwargs):
-        return self.get(self.bot.utilities.get_file_directory(file), **kwargs)
+    def get_from_file(self, file):
+        return self.get(self.bot.utilities.get_file_directory(file))
+
+    def setup(self, file, cogs: list = None):
+        plugin = self.get_from_file(file)
+        cog_list = cogs or importlib.import_module(plugin.python_path).__all__
+        plugin.load_cogs(cog_list)
 
     def load_all(self):
         self.bot.log.info("Loading all fetched plugins.")
