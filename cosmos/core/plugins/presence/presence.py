@@ -12,7 +12,6 @@ class Presence(Cog, ABC):
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
-        self.bot = self.plugin.bot
         self.rotate = self.plugin.data.configs.rotate
         self.rotate_task = self.bot.loop.create_task(self.rotate_presence())
 

@@ -18,6 +18,7 @@ class Cog(object):
     @plugin.setter
     def plugin(self, plugin):
         self._plugin = plugin
+        self._bot = self._plugin.bot
 
     @property
     @abstractmethod

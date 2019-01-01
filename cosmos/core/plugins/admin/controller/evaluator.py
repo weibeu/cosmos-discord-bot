@@ -14,7 +14,6 @@ class Evaluator(Cog, ABC):
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
-        self.bot = self.plugin.bot
         self._last_result = None
 
     async def __local_check(self, ctx):
