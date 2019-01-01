@@ -22,6 +22,10 @@ class Plugin(object):
         self.get_details()
         self.get_data()
 
+    @property
+    def module(self):
+        return self.bot.extensions.get(self.python_path)
+
     def get_details(self):
         self.name = os.path.basename(self.dir_path)
         self.python_path = f"{self.dir_path.replace('/', '.')}"
@@ -76,6 +80,7 @@ class Plugin(object):
         # self._cogs.update({cog.name: cog})
         self.bot.log.info("Done.")
 
-    def load_cogs(self, cog_list: list):  # TODO: Automatically get __all__ from __init___.py.
+    def load_cogs(self, cogs: list = None):
+        cog_list = cogs or self.module.__all__
         for cog in cog_list:
             self.load_cog(cog)
