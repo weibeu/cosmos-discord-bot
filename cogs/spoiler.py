@@ -60,7 +60,7 @@ class SpoilerCache:
         return embed
 
     def to_spoiler_embed(self, ctx, storage_message):
-        description = 'React with <:spoiler:430469957042831371> to reveal the spoiler.'
+        description = 'React with <:show:529950991009972234> to reveal the spoiler.'
         embed = discord.Embed(title=f'{self.title} Spoiler', description=description)
         if self.has_single_image() and self.text is None:
             embed.title = f'{self.title} Spoiler Image'
@@ -216,7 +216,7 @@ class Spoiler(object):
 
         spoiler_message = await ctx.send(embed=cache.to_spoiler_embed(ctx, storage_message))
         self._spoiler_cache[spoiler_message.id] = cache
-        await spoiler_message.add_reaction(':show:529950991009972234:')
+        await spoiler_message.add_reaction(':show:529950991009972234')
 
 def setup(bot):
     bot.add_cog(Spoiler(bot))
