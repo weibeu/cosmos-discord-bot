@@ -61,13 +61,7 @@ async def on_guild_join(guild):
 async def on_guild_remove(guild):
     await presence()
 
-@bot.after_invoke
-async def after_any_command(ctx):
-    if not ctx.command_failed:
-        if str(ctx.command) not in bot.command_count:
-            bot.command_count[str(ctx.command)] = 1
-        else:
-            bot.command_count[str(ctx.command)] += 1
+
 
 """@bot.check
 async def shutup_bot(ctx):
