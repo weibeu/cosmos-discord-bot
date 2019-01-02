@@ -93,6 +93,8 @@ async def tad_general_check(ctx):
             return True
     except:
         pass
+    if ctx.command.name.lower() == 'spoiler':
+        return True
     if ctx.message.channel.id == 244998983112458240:
         await ctx.message.delete()
         return False
