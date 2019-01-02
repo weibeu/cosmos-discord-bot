@@ -22,4 +22,5 @@ giphy_client
 motor
 lyricsgenius
 yarl<1.2
+lru_dict
 psutil
