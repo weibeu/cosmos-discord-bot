@@ -217,3 +217,6 @@ class Spoiler(object):
         spoiler_message = await ctx.send(embed=cache.to_spoiler_embed(ctx, storage_message))
         self._spoiler_cache[spoiler_message.id] = cache
         await spoiler_message.add_reaction(':show:529950991009972234:')
+
+def setup(bot):
+    bot.add_cog(Spoiler(bot))
