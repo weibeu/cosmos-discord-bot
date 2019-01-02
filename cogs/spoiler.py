@@ -5,6 +5,7 @@ import discord
 
 from discord.ext import commands
 from lru import LRU
+from cogs.utils.util import get_random_embed_color
 
 
 def can_use_spoiler():
@@ -37,7 +38,7 @@ class SpoilerCache:
         return self.attachments and self.attachments[0].filename.lower().endswith(('.gif', '.png', '.jpg', '.jpeg'))
 
     def to_embed(self, bot):
-        embed = discord.Embed(title=f'{self.title} Spoiler', colour=0x01AEEE)
+        embed = discord.Embed(title=f'{self.title} Spoiler', colour=get_random_embed_color())
         if self.text:
             embed.description = self.text
 
@@ -66,7 +67,7 @@ class SpoilerCache:
             embed.title = f'{self.title} Spoiler Image'
 
         embed.set_footer(text=storage_message.id)
-        embed.colour = 0x01AEEE
+        embed.colour = get_random_embed_color()
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url_as(format='png'))
         return embed
 
