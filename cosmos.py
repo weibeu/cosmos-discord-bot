@@ -20,6 +20,7 @@ bot.session = aiohttp.ClientSession(loop=asyncio.get_event_loop())
 bot.client_id = config["client_id"]
 bot.cog_list = []
 bot.categories = {}
+bot.session = aiohttp.ClientSession(loop=bot.loop)
 for f in os.listdir("cogs"):
     if f.endswith(".py"):
         bot.cog_list.append("cogs."+f[:-3])
