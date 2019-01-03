@@ -153,7 +153,7 @@ class Spoiler(object):
         total_bytes = 0
         eight_mib = 8 * 1024 * 1024
         for attach in ctx.message.attachments:
-            async with ctx.session.get(attach.url) as resp:
+            async with self.bot.session.get(attach.url) as resp:
                 if resp.status != 200:
                     continue
 
