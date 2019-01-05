@@ -109,24 +109,20 @@ class Moderation(object):
 
     @commands.command(name="massban")
     @checks.admin_or_permissions(ban_members=True)
-    async def mass_ban(self, ctx, *, member_ids: str):
+    async def mass_ban(self, ctx, *members: discord.Member):
         """__**Warning!** Mass Ban given IDS.__"""
-        ids = member_ids.split()
-        for i in ids:
+        for m in members:
             try:
-                m = discord.utils.get(ctx.guild.members, id=int(i))
                 await m.ban(reason="Mass Ban")
             except:
                 pass
     
     @commands.command(name="masskick")
     @checks.admin_or_permissions(kick_members=True)
-    async def mass_kick(self, ctx, *, member_ids: str):
+    async def mass_kick(self, ctx, *members: discord.Member):
         """__**Warning!** Mass Kick given IDS.__"""
-        ids = member_ids.split()
-        for i in ids:
+        for m in members:
             try:
-                m = discord.utils.get(ctx.guild.members, id=int(i))
                 await m.kick(reason="Mass Kick")
             except:
                 pass
