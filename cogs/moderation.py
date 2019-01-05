@@ -114,7 +114,7 @@ class Moderation(object):
         n = 0
         for m in members:
             try:
-                await m.ban(reason="Mass Ban")
+                await m.ban(reason=f"Mass Ban by {ctx.author.name}.")
                 n += 1
             except:
                 pass
@@ -127,7 +127,7 @@ class Moderation(object):
         n = 0
         for m in members:
             try:
-                await m.kick(reason="Mass Kick")
+                await m.kick(reason=f"Mass Kick by {ctx.author.name}.")
                 n += 1
             except:
                 pass
