@@ -10,7 +10,7 @@ class Config(object):
     PATH = str()
 
     def __init__(self):
-        self.raw = None
+        self.raw: dict = None
         self.PATH = os.path.join(self.PATH)
         self._fetch_config()
 
