@@ -7,6 +7,7 @@ from .functions.configs.handler import ConfigHandler
 from .functions.database.database import DatabaseClient
 from .functions.exceptions.handler import ExceptionHandler
 from .functions.logger.handler import LoggerHandler
+from .functions.emotes.emotes import CosmosEmotes
 from .functions.plugins.handler import PluginHandler
 from .utilities.handler import Utility
 from .utilities.time import Time
@@ -22,6 +23,7 @@ class Cosmos(commands.Bot):
         self.cache = None
         self.db_client = None
         self.db = None
+        self.emotes = None
         self.plugins = None
         self._init_time()
         self._init_utilities()
@@ -34,6 +36,7 @@ class Cosmos(commands.Bot):
         self._init_exception_handler()
         self._init_caches()
         self._init_database()
+        self._init_emotes()
         self._init_plugins()
         self.configs.discord.token = token or self.configs.discord.token
         self.configs.discord.client_id = client_id or self.configs.discord.client_id
@@ -78,6 +81,11 @@ class Cosmos(commands.Bot):
         self.log.info("Initialising database.")
         self.db_client = DatabaseClient(self)
         self.db = self.db_client.db
+
+    @Time.calc_time
+    def _init_emotes(self):
+        self.log.info("Initialising cosmos emotes.")
+        self.emotes = CosmosEmotes(self)
 
     @Time.calc_time
     def _init_plugins(self):
