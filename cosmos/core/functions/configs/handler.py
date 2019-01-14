@@ -5,12 +5,13 @@ class ConfigHandler(object):
 
     def __init__(self, bot):
         self.bot = bot
-        self.discord = None
-        self.cosmos = None
-        self.plugins = None
-        self.logger = None
-        self.db = None
-        self.sentry = None
+        self.discord: DiscordConfig = None
+        self.cosmos: CosmosConfig = None
+        self.plugins: PluginsConfig = None
+        self.logger: LoggerConfig = None
+        self.db: DatabaseConfig = None
+        self.sentry: SentryConfig = None
+        self.emotes: CosmosEmotesConfig = None
         self._get_all()
 
     def _get_all(self):
@@ -20,3 +21,4 @@ class ConfigHandler(object):
         self.logger = LoggerConfig()
         self.db = DatabaseConfig()
         self.sentry = SentryConfig()
+        self.emotes = CosmosEmotesConfig()

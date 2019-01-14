@@ -5,6 +5,7 @@ from ..exceptions.initial import FatalError
 
 
 class DiscordConfig(Config):
+
     PATH = "cfg/core/discord.yaml"
 
     def __init__(self):
@@ -15,6 +16,7 @@ class DiscordConfig(Config):
 
 
 class CosmosConfig(Config):
+
     PATH = "cfg/core/cosmos.yaml"
 
     def __init__(self):
@@ -22,6 +24,7 @@ class CosmosConfig(Config):
 
 
 class PluginsConfig(Config):
+
     PATH = "cfg/core/plugins.yaml"
 
     def __init__(self):
@@ -29,6 +32,7 @@ class PluginsConfig(Config):
 
 
 class LoggerConfig(Config):
+
     PATH = "cfg/core/logger.yaml"
 
     def __init__(self):
@@ -36,6 +40,7 @@ class LoggerConfig(Config):
 
 
 class DatabaseConfig(Config):
+
     PATH = "cfg/core/database.yaml"
 
     def __init__(self):
@@ -65,6 +70,7 @@ class DatabaseConfig(Config):
 
 
 class SentryConfig(Config):
+
     PATH = "cfg/core/sentry.yaml"
 
     def __init__(self):
@@ -72,3 +78,11 @@ class SentryConfig(Config):
         if hasattr(self, "release"):
             if self.release is None or "":
                 self.__delattr__("release")
+
+
+class CosmosEmotesConfig(Config):
+
+    PATH = "cfg/core/emotes.yaml"
+
+    def __init__(self):
+        super().__init__()
