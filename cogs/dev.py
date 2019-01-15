@@ -16,7 +16,7 @@ class DevCommands(object):
             "name": message.author.nick,
             "message_content": message.clean_content,
             "avatar_url": message.author.avatar_url,
-            "name_color": list(message.author.color.to_rgb())
+            "name_color": list(message.author.color.to_rgb()),
             "time_stamp": message.created_at.strftime("%A at %I:%M %p")
         }
         async with self.bot.session.post("http://127.0.0.1:5000/discord/ss/message/", json=payload) as response:
