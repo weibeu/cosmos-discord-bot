@@ -19,7 +19,7 @@ class DevCommands(object):
             "name_color": ctx.author.color.to_rgb(),
             "time_stamp": message.created_at.strftime("%A at %I:%M %p")
         }
-        async with bot.session.post("http://127.0.0.1:5000/discord/ss/message/", json=payload) as response:
+        async with self.bot.session.post("http://127.0.0.1:5000/discord/ss/message/", json=payload) as response:
             screenshot = await response.read()
         
         file = discord.File(screenshot, filename="Screenshot.png")
