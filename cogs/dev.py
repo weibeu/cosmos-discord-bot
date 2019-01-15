@@ -8,7 +8,7 @@ class DevCommands(object):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def ss_msg(self, ctx, message_id, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
         message = await channel.get_message(message_id)
@@ -16,7 +16,7 @@ class DevCommands(object):
             "name": ctx.author.nick,
             "message_content": message.clean_content,
             "avatar_url": ctx.author.avatar_url,
-            "name_color": ctx.author.color.to_rgb(),
+            "name_color": list(ctx.author.color.to_rgb())
             "time_stamp": message.created_at.strftime("%A at %I:%M %p")
         }
         async with self.bot.session.post("http://127.0.0.1:5000/discord/ss/message/", json=payload) as response:
