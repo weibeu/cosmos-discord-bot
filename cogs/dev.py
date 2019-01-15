@@ -13,7 +13,9 @@ class DevCommands(object):
     async def ss_msg(self, ctx, message_id, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
         message = await channel.get_message(message_id)
-        if (message.created_at - datetime.datetime.now()).days <= 6:
+        if (message.created_at - datetime.datetime.now()).days <= 1:
+            time_stamp = message.created_at.strftime("Today at %I:%M %p")
+        elif (message.created_at - datetime.datetime.now()).days <= 6:
             time_stamp = message.created_at.strftime("%A at %I:%M %p")
         else:
             time_stamp = message.created_at.strftime("%m/%d/%Y")
