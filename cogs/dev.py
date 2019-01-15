@@ -13,7 +13,7 @@ class DevCommands(object):
         channel = channel or ctx.channel
         message = await channel.get_message(message_id)
         payload = {
-            "name": message.author.nick,
+            "name": message.author.nick or message.author.name,
             "message_content": message.clean_content,
             "avatar_url": message.author.avatar_url,
             "name_color": list(message.author.color.to_rgb()),
