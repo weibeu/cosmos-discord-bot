@@ -99,5 +99,4 @@ async def tad_general_check(ctx):
         return False
     return True
 
-
 bot.run(config["TOKEN"])
