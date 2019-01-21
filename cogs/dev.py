@@ -26,7 +26,7 @@ class DevCommands(object):
             "name_color": list(message.author.color.to_rgb()),
             "time_stamp": time_stamp
         }
-        async with self.bot.session.post("http://127.0.0.1:5000/discord/ss/message/", json=payload) as response:
+        async with self.bot.session.post("https://cosmos-image-processor.herokuapp.com/discord/ss/message/", json=payload) as response:
             screenshot = await response.read()
         
         file = discord.File(screenshot, filename="Screenshot.png")
