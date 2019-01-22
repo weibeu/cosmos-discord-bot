@@ -25,8 +25,8 @@ class Loading(object):
         await self.__stop_loading()
 
     def __enter__(self):
-        self.loop.create_task(self.__do_loading())
+        self.loop.create_task(self.__aenter__())
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.loop.create_task(self.__stop_loading())
+        self.loop.create_task(self.__aexit__(exc_tb, exc_val, exc_tb))
