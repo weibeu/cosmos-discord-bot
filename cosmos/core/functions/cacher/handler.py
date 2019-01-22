@@ -19,7 +19,7 @@ class CacheHandler(object):
         self.lfu = cachers.LFUCache()
         self.redis = cachers.RedisCache()
         try:
-            await self.redis._fetch_client()
+            await self.redis.fetch_client()
         except OSError:
             self.bot.log.error("Unable to connect to redis server. Check if it's running.")
             self.bot.log.info("Using cachers.AsyncDictCache instead.")

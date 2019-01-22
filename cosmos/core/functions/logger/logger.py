@@ -23,7 +23,7 @@ class Logger(object):
             print(f"Creating log file '{os.path.join(self.path, self.file_name)}'.", end=" ")
         else:
             print(f"Using '{os.path.join(self.path, self.file_name)}' as log file.", end=" ")
-        handler = logging.FileHandler(filename=os.path.join(self.path, self.file_name), encoding="utf-8", mode="a")
+        handler = logging.FileHandler(filename=os.path.join(self.path, self.file_name), encoding="utf-8")
         print("Done.")
         logger_format = logging.Formatter(fmt=self.default_format, datefmt=self.default_date_format, style=self.style)
         handler.setFormatter(logger_format)

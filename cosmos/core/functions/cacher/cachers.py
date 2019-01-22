@@ -41,19 +41,19 @@ class DictCache(dict, Cache, ABC):
 
 class TTLCache(cachetools.TTLCache, Cache, ABC):
 
-    def __init__(self, max_size: int=50000, ttl: int=60, **kwargs):
+    def __init__(self, max_size: int = 50000, ttl: int = 60, **kwargs):
         super().__init__(max_size, ttl, **kwargs)
 
 
 class LRUCache(cachetools.LRUCache, Cache, ABC):
 
-    def __init__(self, max_size: int=50000, **kwargs):
+    def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
 class LFUCache(cachetools.LFUCache, Cache, ABC):
 
-    def __init__(self, max_size: int=50000, **kwargs):
+    def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
@@ -84,7 +84,7 @@ class RedisCache(object):
     def __init__(self):
         self.__client = None
 
-    async def _fetch_client(self):
+    async def fetch_client(self):
         # TODO: Start redis server.
         self.__client = await aioredis.create_redis('redis://localhost')
 
