@@ -1,7 +1,6 @@
 import asyncio
 
 from discord.ext import commands
-
 from .functions import Loading
 
 
@@ -11,9 +10,9 @@ class CosmosContext(commands.Context):
     def emotes(self):
         return self.bot.emotes
 
-    async def trigger_loading(self):
+    async def trigger_loading(self, timeout=10):
         async with Loading(self):
-            await asyncio.sleep(10)
+            await asyncio.sleep(timeout)
 
     async def loading(self):
         return Loading(self)
