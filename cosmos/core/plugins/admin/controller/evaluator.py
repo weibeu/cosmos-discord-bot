@@ -51,28 +51,29 @@ class Evaluator(Cog, ABC):
 
         to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
 
-        try:
-            exec(to_compile, env)
-        except Exception as e:
-            return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
-
-        func = env['func']
-        try:
-            with redirect_stdout(stdout):
-                ret = await func()
-        except Exception as e:
-            value = stdout.getvalue()
-            await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
-        else:
-            value = stdout.getvalue()
+        async with ctx.loading():
             try:
-                await ctx.message.add_reaction('\u2705')
-            except:
-                pass
+                exec(to_compile, env)
+            except Exception as e:
+                return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
 
-            if ret is None:
-                if value:
-                    await ctx.send(f'```py\n{value}\n```')
+            func = env['func']
+            try:
+                with redirect_stdout(stdout):
+                    ret = await func()
+            except Exception as e:
+                value = stdout.getvalue()
+                await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
             else:
-                self._last_result = ret
-                await ctx.send(f'```py\n{value}{ret}\n```')
+                value = stdout.getvalue()
+                try:
+                    await ctx.message.add_reaction('\u2705')
+                except:
+                    pass
+
+                if ret is None:
+                    if value:
+                        await ctx.send(f'```py\n{value}\n```')
+                else:
+                    self._last_result = ret
+                    await ctx.send(f'```py\n{value}{ret}\n```')
