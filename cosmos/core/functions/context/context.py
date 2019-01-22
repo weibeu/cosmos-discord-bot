@@ -14,5 +14,5 @@ class CosmosContext(commands.Context):
         async with Loading(self):
             await asyncio.sleep(timeout)
 
-    async def loading(self):
+    def loading(self):
         return Loading(self)
