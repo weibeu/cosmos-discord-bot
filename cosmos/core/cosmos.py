@@ -9,6 +9,7 @@ from .functions.exceptions.handler import ExceptionHandler
 from .functions.logger.handler import LoggerHandler
 from .functions.emotes.emotes import CosmosEmotes
 from .functions.plugins.handler import PluginHandler
+from .functions.context import CosmosContext
 from .utilities.handler import Utility
 from .utilities.time import Time
 
@@ -92,6 +93,9 @@ class Cosmos(commands.Bot):
         self.log.info("Initialising plugins.")
         self.plugins = PluginHandler(self)
         self.plugins.load_all()    # Here since Plugin requires self.bot.plugins to load itself.
+
+    async def get_context(self, message, *, context_class=CosmosContext):
+        return await super().get_context(message, cls=context_class)
 
     def run(self):
         try:
