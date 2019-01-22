@@ -5,7 +5,6 @@ class Loading(object):
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.loop = self.ctx.bot.loop
         self.emote = self.ctx.emotes.misc.yellow_square_load
 
     async def __do_loading(self):
@@ -17,9 +16,9 @@ class Loading(object):
         except NotFound:
             pass
 
-    def __enter__(self):
-        self.loop.create_task(self.__do_loading())
+    async def __aenter__(self):
+        await self.__do_loading()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.loop.create_task(self.__stop_loading())
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.__stop_loading()
