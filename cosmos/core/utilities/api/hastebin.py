@@ -8,6 +8,7 @@ class HasteBin(object):
     ENCODING = "utf-8"
 
     async def haste(self, content: str) -> str:
+        content = str(content)
         async with aiohttp.ClientSession() as session:
             async with session.post(self.BASE_URL, data=content.encode(self.ENCODING)) as post:
                 response = await post.json()
