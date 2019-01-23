@@ -4,6 +4,7 @@ import traceback
 from abc import ABC
 from contextlib import redirect_stdout
 
+import discord
 from discord.ext import commands
 
 from ....functions.plugins.models import Cog
@@ -73,7 +74,15 @@ class Evaluator(Cog, ABC):
 
                 if ret is None:
                     if value:
-                        await ctx.send(f'```py\n{value}\n```')
+                        try:
+                            await ctx.send(f'```py\n{value}\n```')
+                        except discord.HTTPException:
+                            haste_url = await self.bot.utilities.haste(value)
+                            await ctx.send(haste_url)
                 else:
                     self._last_result = ret
-                    await ctx.send(f'```py\n{value}{ret}\n```')
+                    try:
+                        await ctx.send(f'```py\n{value}{ret}\n```')
+                    except discord.HTTPException:
+                        haste_url = await self.bot.utilities.haste(value+ret)
+                        await ctx.send(haste_url)
