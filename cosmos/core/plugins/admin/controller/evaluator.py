@@ -77,12 +77,12 @@ class Evaluator(Cog, ABC):
                         try:
                             await ctx.send(f'```py\n{value}\n```')
                         except discord.HTTPException:
-                            haste_url = await self.bot.utilities.haste(value)
+                            haste_url = await self.bot.utilities.haste(str(value))
                             await ctx.send(haste_url)
                 else:
                     self._last_result = ret
                     try:
                         await ctx.send(f'```py\n{value}{ret}\n```')
                     except discord.HTTPException:
-                        haste_url = await self.bot.utilities.haste(value+ret)
+                        haste_url = await self.bot.utilities.haste(f"{value}{ret}")
                         await ctx.send(haste_url)
