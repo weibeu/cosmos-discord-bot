@@ -3,6 +3,7 @@ import textwrap
 import traceback
 from abc import ABC
 from contextlib import redirect_stdout
+from pprint import pformat
 
 import discord
 from discord.ext import commands
@@ -77,12 +78,12 @@ class Evaluator(Cog, ABC):
                         try:
                             await ctx.send(f'```py\n{value}\n```')
                         except discord.HTTPException:
-                            haste_url = await self.bot.utilities.haste(str(value))
+                            haste_url = await self.bot.utilities.haste(pformat(value, indent=4))
                             await ctx.send(haste_url.py)
                 else:
                     self._last_result = ret
                     try:
                         await ctx.send(f'```py\n{value}{ret}\n```')
                     except discord.HTTPException:
-                        haste_url = await self.bot.utilities.haste(f"{value}{ret}")
+                        haste_url = await self.bot.utilities.haste(pformat(f"{value}{ret}", indent=4))
                         await ctx.send(haste_url.py)
