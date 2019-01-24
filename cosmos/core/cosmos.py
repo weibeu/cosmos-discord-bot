@@ -1,7 +1,6 @@
 import aiohttp
-
-from discord.ext import commands
 from discord import LoginFailure
+from discord.ext import commands
 
 from .functions import *
 from .utilities import *
