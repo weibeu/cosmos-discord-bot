@@ -4,8 +4,8 @@ After=multi-user.target
 
 [Service]
 Type=simple
-WorkingDirectory=/root/dev/tc-discord-bot
-ExecStart=/usr/bin/python3.6 /root/dev/tc-discord-bot/run.py
+WorkingDirectory=/root/dev/cosmos-discord-bot
+ExecStart=/usr/bin/python3.6 /root/dev/cosmos-discord-bot/run.py
 User=root
 
 [Install]
