@@ -7,7 +7,7 @@ from contextlib import redirect_stdout
 import discord
 from discord.ext import commands
 
-from ....functions.plugins.models import Cog
+from ....functions import Cog
 
 
 class Evaluator(Cog, ABC):

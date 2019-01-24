@@ -1,6 +1,6 @@
 from abc import ABC
 
-from ...functions.plugins.models import Cog
+from ...functions import Cog
 
 
 class CommandErrorHandler(Cog, ABC):

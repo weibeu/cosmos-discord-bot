@@ -1,17 +1,10 @@
 import aiohttp
-import discord
-from discord.ext import commands
 
-from .functions.cacher.handler import CacheHandler
-from .functions.configs.handler import ConfigHandler
-from .functions.database.database import DatabaseClient
-from .functions.exceptions.handler import ExceptionHandler
-from .functions.logger.handler import LoggerHandler
-from .functions.emotes.emotes import CosmosEmotes
-from .functions.plugins.handler import PluginHandler
-from .functions.context import CosmosContext
-from .utilities.handler import Utility
-from .utilities.time import Time
+from discord.ext import commands
+from discord import LoginFailure
+
+from .functions import *
+from .utilities import *
 
 
 class Cosmos(commands.Bot):
@@ -100,9 +93,9 @@ class Cosmos(commands.Bot):
     def run(self):
         try:
             super().run(self.configs.discord.token)
-        except discord.LoginFailure:
+        except LoginFailure:
             self.log.error("Invalid token provided.")
-            raise discord.LoginFailure
+            raise LoginFailure
 
     async def on_ready(self):
         self.log.info(f"{self.user.name}#{self.user.discriminator} Ready! [{self.time.round_time()} seconds.]")

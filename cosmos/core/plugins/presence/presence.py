@@ -4,7 +4,7 @@ from abc import ABC
 
 import discord
 
-from ...functions.plugins.models import Cog
+from ...functions import Cog
 
 
 class Presence(Cog, ABC):

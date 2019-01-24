@@ -1,4 +1,4 @@
-from cosmos.core.cosmos import Cosmos
+from cosmos import Cosmos
 
 if __name__ == "__main__":
     bot = Cosmos()
