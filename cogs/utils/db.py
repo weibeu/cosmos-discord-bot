@@ -625,14 +625,17 @@ async def get_log_settings(guilds):
     for g in guilds:
         guild = motor_client.guilds[str(g.id)]
         s = await guild.find_one({'_id': 'settings'}, {'logs': '$'})
-        s.pop("_id")
-        if s is not None:
-            try:
-                d = s['logs']
-                d.update({"invites": []})
-                log_guilds_cache[g.id] = d
-            except:
-                continue
+        try:
+            s.pop("_id")
+            if s is not None:
+                try:
+                    d = s['logs']
+                    d.update({"invites": []})
+                    log_guilds_cache[g.id] = d
+                except:
+                    continue
+        except:
+            pass
     return log_guilds_cache
 
 
