@@ -20,10 +20,10 @@ class Logs(object):
 
     async def refresh_invites(self, guild):
         try:
-            c = self.cache[str(guild.id)]
+            c = self.cache[guild.id]
             invites = await guild.invites()
             c.update({"invites": invites})
-            self.cache.update({str(guild.id): c})
+            self.cache.update({guild.id: c})
         except:
             pass
 
@@ -84,7 +84,7 @@ class Logs(object):
             "channel": channel.id,
             "enabled": True
         }
-        self.cache.update({str(ctx.guild.id): c})
+        self.cache.update({ctx.guild.id: c})
         await ctx.send(f"Logs created and enabled for {channel.mention}.")
 
     @logger.command(name="enable")
