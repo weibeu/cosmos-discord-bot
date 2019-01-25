@@ -30,3 +30,5 @@ class Loading(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.loop.create_task(self.__aexit__(exc_tb, exc_val, exc_tb))
+
+    # TODO: Replace with error reaction on_command_error.
