@@ -5,9 +5,9 @@ from cogs.utils import db
 from cogs.utils.util import get_random_embed_color
 
 
-class JoinLeaveLog(object):
+class Logs(object):
 
-    def __int__(self, bot):
+    def __init__(self, bot):
         self.bot = bot
         self.cache = {}
         self.bot.loop.create_task(self.get_settings())
@@ -25,7 +25,7 @@ class JoinLeaveLog(object):
         self.cache.update({str(guild.id): c})
 
     async def on_member_join(self, member):
-        if str(member.guild.id) in self.cache and self.cache(str(member.guild.id))["enabled"]:
+        if str(member.guild.id) in self.cache and self.cache[str(member.guild.id)]["enabled"]:
             invite = None
             invites = await member.guild.invites()
             for i in invites:
@@ -57,7 +57,7 @@ class JoinLeaveLog(object):
             await log_channel.send(embed=embed)
 
     async def on_member_remove(self, member):
-        if str(member.guild.id) in self.cache and not self.cache(str(member.guild.id))["enabled"]:
+        if str(member.guild.id) in self.cache and not self.cache[str(member.guild.id)]["enabled"]:
             embed = discord.Embed(title="Member Left", color=int("0xF44336", 16))
             embed.add_field(name="Member", value=f"{member} | {member}\n**ID:** `{member.id}`")
             embed.add_field(name="Joined at", value=f"{member.joined_at.strftime('%d - %B - %Y | %H : %M (GMT)')}")
@@ -100,4 +100,4 @@ class JoinLeaveLog(object):
 
 
 def setup(bot):
-    bot.add_cog(JoinLeaveLog(bot))
+    bot.add_cog(Logs(bot))
