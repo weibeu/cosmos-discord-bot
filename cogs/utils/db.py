@@ -604,9 +604,36 @@ async def get_spook_data(guilds):
                 spooks[str(g.id)] = s['not_spook']
             except:
                 continue
-    return spooks  
+    return spooks
 
 
+async def set_log_channel(guild_id, channel_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"logs.channel": channel_id}})
+    await guild.update_one({'_id': 'settings'}, {'$set': {"logs.enabled": True}})
+
+async def enable_log_channel(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"logs.enabled": True}})
+
+async def disable_log_channel(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    await guild.update_one({'_id': 'settings'}, {'$set': {"logs.enabled": False}})
+
+async def get_log_settings(guilds):
+    log_guilds_cache = {}
+    for g in guilds:
+        guild = motor_client.guilds[str(g.id)]
+        s = await guild.find_one({'_id': 'settings'}, {'logs': '$'})
+        s.pop("_id")
+        if s is not None:
+            try:
+                d = s['logs']
+                d.update({"invites": []})
+                log_guilds_cache[g.id] = d
+            except:
+                continue
+    return log_guilds_cache
 
 
 
