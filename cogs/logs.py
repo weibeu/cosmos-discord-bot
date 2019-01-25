@@ -17,6 +17,7 @@ class Logs(object):
         self.cache = await db.get_log_settings(self.bot.guilds)
         for g in self.bot.guilds:
             await self.refresh_invites(g)
+        print(self.cache)
 
     async def refresh_invites(self, guild):
         try:
@@ -29,7 +30,6 @@ class Logs(object):
 
     async def on_member_join(self, member):
         if str(member.guild.id) in self.cache and self.cache[str(member.guild.id)]["enabled"]:
-            print(self.cache)
             invite = None
             invites = await member.guild.invites()
             for i in invites:
