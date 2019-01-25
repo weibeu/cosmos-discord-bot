@@ -29,6 +29,7 @@ class Logs(object):
 
     async def on_member_join(self, member):
         if str(member.guild.id) in self.cache and self.cache[str(member.guild.id)]["enabled"]:
+            print(self.cache)
             invite = None
             invites = await member.guild.invites()
             for i in invites:
@@ -75,7 +76,7 @@ class Logs(object):
         if ctx.invoked_subcommand is None:
             pass
 
-    @logger.command(name="channel")
+    @logger.command(name="setup")
     async def set_logger_channel(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
         await db.set_log_channel(ctx.guild.id, channel.id)
