@@ -30,18 +30,26 @@ class Logs(object):
     async def on_member_join(self, member):
         if member.guild.id in self.cache and self.cache[member.guild.id]["enabled"]:
             invite = None
-            invites = await member.guild.invites()
-            for i in invites:
-                for old_invite in self.cache[member.guild.id]["invites"]:
-                    if i.uses > old_invite.uses and i.id == old_invite.id:
-                        invite = i
-            if not invite:
-                async for entry in member.guild.audit_logs():
-                    if entry.action == discord.AuditLogAction.invite_create:
-                        invite = entry.target
-                        break
+            try:
+                invites = await member.guild.invites()
+                for i in invites:
+                    try:
+                        for old_invite in self.cache[member.guild.id]["invites"]:
+                            if i.uses > old_invite.uses and i.id == old_invite.id:
+                                invite = i
+                    except KeyError:
+                        c = self.cache[member.guild.id]
+                        c.update({"invites": []})
+                        self.cache.update({member.guild.id: c})
+                if not invite:
+                    async for entry in member.guild.audit_logs():
+                        if entry.action == discord.AuditLogAction.invite_create:
+                            invite = entry.target
+                            break
 
-            await self.refresh_invites(member.guild)
+                await self.refresh_invites(member.guild)
+            except discord.Forbidden:
+                pass
 
             embed = discord.Embed(title="Member Joined", color=get_random_embed_color(), timestamp=member.joined_at)
             embed.add_field(name="Member", value=f"{member.mention} | {member}\n**ID:** `{member.id}`")
@@ -72,11 +80,13 @@ class Logs(object):
     @commands.has_permissions(administrator=True)
     @commands.group(name="log")
     async def logger(self, ctx):
+        """Setup Member leaves and join to your server. Check `;help log` for its sub-commands."""
         if ctx.invoked_subcommand is None:
             pass
 
     @logger.command(name="setup")
     async def set_logger_channel(self, ctx, channel: discord.TextChannel = None):
+        """Setup logger to current or specified channel."""
         channel = channel or ctx.channel
         await db.set_log_channel(ctx.guild.id, channel.id)
         # update runtime dict
@@ -89,6 +99,7 @@ class Logs(object):
 
     @logger.command(name="enable")
     async def enable_logger(self, ctx):
+        """Enable member leave/join logs."""
         c: dict = self.cache[ctx.guild.id]
         c.update({"enabled": True})
         self.cache.update({ctx.guild.id: c})
@@ -97,6 +108,7 @@ class Logs(object):
 
     @logger.command(name="disable")
     async def disable_logger(self, ctx):
+        """Disable member leave/join logs."""
         c: dict = self.cache[ctx.guild.id]
         c.update({"enabled": False})
         self.cache.update({ctx.guild.id: c})
