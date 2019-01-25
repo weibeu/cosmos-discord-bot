@@ -60,7 +60,7 @@ class Logs(object):
             await log_channel.send(embed=embed)
 
     async def on_member_remove(self, member):
-        if member.guild.id in self.cache and not self.cache[member.guild.id]["enabled"]:
+        if member.guild.id in self.cache and self.cache[member.guild.id]["enabled"]:
             embed = discord.Embed(title="Member Left", color=int("0xF44336", 16))
             embed.add_field(name="Member", value=f"{member} | {member}\n**ID:** `{member.id}`")
             embed.add_field(name="Joined at", value=f"{member.joined_at.strftime('%d - %B - %Y | %H : %M (GMT)')}")
@@ -89,18 +89,19 @@ class Logs(object):
 
     @logger.command(name="enable")
     async def enable_logger(self, ctx):
-        c: dict = self.cache[str(ctx.guild.id)]
+        c: dict = self.cache[ctx.guild.id]
         c.update({"enabled": True})
-        self.cache.update({str(ctx.guild.id): c})
+        self.cache.update({ctx.guild.id: c})
         await db.enable_log_channel(ctx.guild.id)
+        await ctx.message.add_reaction('✅')
 
     @logger.command(name="disable")
     async def disable_logger(self, ctx):
-        c: dict = self.cache[str(ctx.guild.id)]
+        c: dict = self.cache[ctx.guild.id]
         c.update({"enabled": False})
-        self.cache.update({str(ctx.guild.id): c})
+        self.cache.update({ctx.guild.id: c})
         await db.enable_log_channel(ctx.guild.id)
-
+        await ctx.message.add_reaction('✅')
 
 def setup(bot):
     bot.add_cog(Logs(bot))
