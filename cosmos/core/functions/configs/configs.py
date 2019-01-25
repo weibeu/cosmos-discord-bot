@@ -1,5 +1,7 @@
 import os
 
+import discord
+
 from .config import Config
 from ..exceptions.initial import FatalError
 
@@ -86,3 +88,18 @@ class CosmosEmotesConfig(Config):
 
     def __init__(self):
         super().__init__()
+
+
+class CosmosColorScheme(Config):
+
+    PATH = "cfg/theme/color_scheme.yaml"
+
+    def __init__(self):
+        super().__init__()
+        self._to_discord_color()
+
+    def _to_discord_color(self):
+        for color_type in self.raw:
+            color_int = int(self.raw[color_type], 16)
+            discord_color = discord.Color(color_int)
+            self.__setattr__(color_type, discord_color)

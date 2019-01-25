@@ -12,6 +12,7 @@ class ConfigHandler(object):
         self.db: DatabaseConfig = None
         self.sentry: SentryConfig = None
         self.emotes: CosmosEmotesConfig = None
+        self.color_scheme: CosmosColorScheme = None
         self._get_all()
 
     def _get_all(self):
@@ -22,3 +23,4 @@ class ConfigHandler(object):
         self.db = DatabaseConfig()
         self.sentry = SentryConfig()
         self.emotes = CosmosEmotesConfig()
+        self.color_scheme = CosmosColorScheme()
