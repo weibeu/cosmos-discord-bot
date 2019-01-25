@@ -17,7 +17,6 @@ class Logs(object):
         self.cache = await db.get_log_settings(self.bot.guilds)
         for g in self.bot.guilds:
             await self.refresh_invites(g)
-        print(self.cache)
 
     async def refresh_invites(self, guild):
         try:
@@ -29,11 +28,11 @@ class Logs(object):
             pass
 
     async def on_member_join(self, member):
-        if str(member.guild.id) in self.cache and self.cache[str(member.guild.id)]["enabled"]:
+        if member.guild.id in self.cache and self.cache[member.guild.id]["enabled"]:
             invite = None
             invites = await member.guild.invites()
             for i in invites:
-                for old_invite in self.cache[str(member.guild.id)]["invites"]:
+                for old_invite in self.cache[member.guild.id]["invites"]:
                     if i.uses > old_invite.uses and i.id == old_invite.id:
                         invite = i
             if not invite:
@@ -57,17 +56,17 @@ class Logs(object):
                                     value=f"**URL:** {invite.url}\n**Inviter:** {invite.inviter.mention} | {invite.inviter}\n**Uses:** {invite.uses}",
                                     inline=False)
             embed.set_thumbnail(url=member.avatar_url)
-            log_channel = await member.guild.get_channel(self.cache[str(member.guild.id)].get("channel"))
+            log_channel = await member.guild.get_channel(self.cache[member.guild.id].get("channel"))
             await log_channel.send(embed=embed)
 
     async def on_member_remove(self, member):
-        if str(member.guild.id) in self.cache and not self.cache[str(member.guild.id)]["enabled"]:
+        if member.guild.id in self.cache and not self.cache[member.guild.id]["enabled"]:
             embed = discord.Embed(title="Member Left", color=int("0xF44336", 16))
             embed.add_field(name="Member", value=f"{member} | {member}\n**ID:** `{member.id}`")
             embed.add_field(name="Joined at", value=f"{member.joined_at.strftime('%d - %B - %Y | %H : %M (GMT)')}")
             embed.add_field(name="Created at", value=f"{member.created_at.strftime('%d - %B - %Y')}")
             embed.set_thumbnail(url=member.avatar_url)
-            log_channel = await member.guild.get_channel(self.cache[str(member.guild.id)].get("channel"))
+            log_channel = await member.guild.get_channel(self.cache[member.guild.id].get("channel"))
             await log_channel.send(embed=embed)
 
     @commands.has_permissions(administrator=True)
