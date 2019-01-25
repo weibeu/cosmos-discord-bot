@@ -19,10 +19,13 @@ class Logs(object):
             await self.refresh_invites(g)
 
     async def refresh_invites(self, guild):
-        c = self.cache[str(guild.id)]
-        invites = await guild.invites()
-        c.update({"invites": invites})
-        self.cache.update({str(guild.id): c})
+        try:
+            c = self.cache[str(guild.id)]
+            invites = await guild.invites()
+            c.update({"invites": invites})
+            self.cache.update({str(guild.id): c})
+        except:
+            pass
 
     async def on_member_join(self, member):
         if str(member.guild.id) in self.cache and self.cache[str(member.guild.id)]["enabled"]:
