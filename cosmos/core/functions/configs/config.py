@@ -1,11 +1,10 @@
 import os
-from abc import ABCMeta
+from abc import ABC
 
 from ...utilities import handlers
 
 
-class Config(object):
-    __metaclass__ = ABCMeta
+class Config(ABC):
 
     PATH = str()
 
