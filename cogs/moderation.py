@@ -108,7 +108,7 @@ class Moderation(object):
         await asyncio.sleep(2.7)
         await ctx.message.delete()
 
-    @commands.group(name="ban")
+    @commands.group(name="ban", invoke_without_command=True)
     @checks.admin_or_permissions(ban_members=True)
     async def _ban(self, ctx, member: discord.Member, reason: str = None):
         """Bans a member with provided optional reason.
@@ -146,9 +146,9 @@ class Moderation(object):
 
         try:
             if files:
-                await member.send(f"You were **banned** from {ctx.guild.name}. REASON: {reason}", files=files)
+                await member.send(f"You were **banned** from {ctx.guild.name}. **REASON:** {reason}", files=files)
             else:
-                await member.send(f"You were **banned** from {ctx.guild.name}. REASON: {reason}")
+                await member.send(f"You were **banned** from {ctx.guild.name}. **REASON:** {reason}")
 
             await member.ban(reason=f"{raw_reason} Moderator: {ctx.author.name}")
 
@@ -167,7 +167,7 @@ class Moderation(object):
         await ctx.message.add_reaction('✅')
 
 
-    @commands.group(name="kick")
+    @commands.group(name="kick", invoke_without_command=True)
     @checks.admin_or_permissions(kick_members=True)
     async def _kick(self, ctx, member: discord.Member, reason: str = None):
         """Kicks a member with provided optional reason.
