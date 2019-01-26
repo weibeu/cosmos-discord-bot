@@ -6,6 +6,8 @@ from .emotes.emotes import CosmosEmotes
 from .exceptions.handler import ExceptionHandler
 from .logger.handler import LoggerHandler
 from .plugins.handler import PluginHandler
+from .theme.theme import CosmosTheme
+
 from .plugins.models import Cog
 
 __all__ = [
@@ -17,6 +19,7 @@ __all__ = [
     "CosmosEmotes",
     "PluginHandler",
     "CosmosContext",
+    "CosmosTheme",
 
     "Cog"
 ]

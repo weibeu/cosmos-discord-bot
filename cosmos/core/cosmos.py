@@ -18,6 +18,7 @@ class Cosmos(commands.Bot):
         self.db = None
         self.emotes = None
         self.plugins = None
+        self.theme = None
         self._init_time()
         self._init_utilities()
         self._init_configs()
@@ -31,6 +32,7 @@ class Cosmos(commands.Bot):
         self._init_database()
         self._init_emotes()
         self._init_plugins()
+        self._init_theme()
         self.configs.discord.token = token or self.configs.discord.token
         self.configs.discord.client_id = client_id or self.configs.discord.client_id
         self.configs.discord.prefixes = prefixes or self.configs.cosmos.prefixes
@@ -85,6 +87,11 @@ class Cosmos(commands.Bot):
         self.log.info("Initialising plugins.")
         self.plugins = PluginHandler(self)
         self.plugins.load_all()    # Here since Plugin requires self.bot.plugins to load itself.
+
+    @Time.calc_time
+    def _init_theme(self):
+        self.log.info("Initialising cosmos theme.")
+        self.theme = CosmosTheme(self)
 
     async def get_context(self, message, *, context_class=CosmosContext):
         return await super().get_context(message, cls=context_class)
