@@ -119,10 +119,13 @@ class Moderation(object):
             {'_id': 'settings'},
             {'presets.ban': '$'}
         )
-        presets = data.get('presets')
-        if presets:
-            preset = presets.get('ban')
-        else:
+        try:
+            presets = data.get('presets')
+            if presets:
+                preset = presets.get('ban')
+            else:
+                preset = None
+        except AttributeError:
             preset = None
         preset = preset or ''
         raw_reason = reason or ''
@@ -183,10 +186,13 @@ class Moderation(object):
             {'_id': 'settings'},
             {'presets.kick': '$'}
         )
-        presets = data.get('presets')
-        if presets:
-            preset = presets.get('kick')
-        else:
+        try:
+            presets = data.get('presets')
+            if presets:
+                preset = presets.get('kick')
+            else:
+                preset = None
+        except AttributeError:
             preset = None
         preset = preset or ''
         raw_reason = reason or ''
