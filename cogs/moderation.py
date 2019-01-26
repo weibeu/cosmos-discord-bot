@@ -163,7 +163,10 @@ class Moderation(object):
         except Exception as e:
             print(e)
 
-        await ctx.message.add_reaction('✅')
+        if files:
+            await ctx.send(f"Y{member.name} was **banned** from. **REASON:** {reason}", files=files)
+        else:
+            await ctx.send(f"{member.name} was **banned**. **REASON:** {reason}")
 
     @_ban.command(name="preset")
     async def set_ban_preset(self, ctx, *, message: str):
@@ -230,7 +233,10 @@ class Moderation(object):
         except Exception as e:
             print(e)
 
-        await ctx.message.add_reaction('✅')
+        if files:
+            await ctx.send(f"{member.name} was **kicked** from. **REASON:** {reason}", files=files)
+        else:
+            await ctx.send(f"{member.name} was **kicked**. **REASON:** {reason}")
 
     @_kick.command(name="preset")
     async def set_kick_preset(self, ctx, *, message: str):
