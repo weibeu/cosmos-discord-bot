@@ -1,3 +1,4 @@
+import aiohttp
 import discord
 from discord.ext import commands
 import asyncio
@@ -126,7 +127,7 @@ class Moderation(object):
         urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', reason)
 
         for url in urls:
-            async with self.bot.session as ses:
+            async with aiohttp.ClientSession() as ses:
                 async with ses.get(url) as r:
                     img = await r.read()
 
@@ -186,7 +187,7 @@ class Moderation(object):
         urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', reason)
 
         for url in urls:
-            async with self.bot.session as ses:
+            async with aiohttp.ClientSession() as ses:
                 async with ses.get(url) as r:
                     img = await r.read()
 
@@ -206,9 +207,9 @@ class Moderation(object):
 
         try:
             if files:
-                await member.send(f"You were **kicked** from {ctx.guild.name}. REASON: {reason}", files=files)
+                await member.send(f"You were **kicked** from {ctx.guild.name}. **REASON:** {reason}", files=files)
             else:
-                await member.send(f"You were **kicked** from {ctx.guild.name}. REASON: {reason}")
+                await member.send(f"You were **kicked** from {ctx.guild.name}. **REASON:** {reason}")
 
             await member.kick(reason=f"{raw_reason} Moderator: {ctx.author.name}")
 
