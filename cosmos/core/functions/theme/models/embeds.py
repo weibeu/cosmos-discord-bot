@@ -12,7 +12,7 @@ class Base(Embed):
 class Primary(Base):
 
     def __init__(self, bot=None, **kwargs):
-        self._bot = bot
+        self.bot = bot
         primary_color = self.bot.configs.color_scheme.primary
         try:
             kwargs["color"] = kwargs.get("color") or primary_color
