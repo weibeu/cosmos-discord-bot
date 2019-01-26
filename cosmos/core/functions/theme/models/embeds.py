@@ -38,9 +38,9 @@ class OneLine(Primary):
 
     def __init__(self, bot, emote, content: str = None, color=None, **kwargs):
         self._bot = bot
-        content = f"{emote}    {content}"
+        content = f"{emote}\t{content}"
         assert len(content) <= 256, "Content should be less than or equal to 256 in length."
-        super().__init__(description=content, color=color, **kwargs)
+        super().__init__(title=content, color=color, **kwargs)
 
     @property
     def bot(self):
