@@ -119,7 +119,11 @@ class Moderation(object):
             {'_id': 'settings'},
             {'presets.ban': '$'}
         )
-        preset = data['presets'].get('ban')
+        presets = data.get('presets')
+        if presets:
+            preset = presets.get('ban')
+        else:
+            preset = None
         preset = preset or ''
         raw_reason = reason or ''
         reason = preset + raw_reason
@@ -179,7 +183,11 @@ class Moderation(object):
             {'_id': 'settings'},
             {'presets.kick': '$'}
         )
-        preset = data['presets'].get('kick')
+        presets = data.get('presets')
+        if presets:
+            preset = presets.get('kick')
+        else:
+            preset = None
         preset = preset or ''
         raw_reason = reason or ''
         reason = preset + raw_reason
