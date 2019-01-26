@@ -118,7 +118,7 @@ class Moderation(object):
             {'_id': 'settings'},
             {'presets.ban': '$'}
         )
-        preset = data['presets']['ban']
+        preset = data['presets'].get('ban')
         preset = preset or ''
         raw_reason = reason
         reason = preset + reason
@@ -158,7 +158,7 @@ class Moderation(object):
         await ctx.message.add_reaction('✅')
 
     @_ban.command(name="preset")
-    async def set_ban_preset(self, ctx, message: str):
+    async def set_ban_preset(self, ctx, *, message: str):
         """Preset custom message for ban command."""
         await self.bot.db_client.guilds[str(ctx.guild.id)].update_one(
             {'_id': 'settings'},
@@ -178,7 +178,7 @@ class Moderation(object):
             {'_id': 'settings'},
             {'presets.kick': '$'}
         )
-        preset = data['presets']['kick']
+        preset = data['presets'].get('kick')
         preset = preset or ''
         raw_reason = reason
         reason = preset + reason
@@ -218,7 +218,7 @@ class Moderation(object):
         await ctx.message.add_reaction('✅')
 
     @_kick.command(name="preset")
-    async def set_kick_preset(self, ctx, message: str):
+    async def set_kick_preset(self, ctx, *, message: str):
         """Preset custom message for kick command."""
         await self.bot.db_client.guilds[str(ctx.guild.id)].update_one(
             {'_id': 'settings'},
