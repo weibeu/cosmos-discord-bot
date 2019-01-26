@@ -204,7 +204,7 @@ class RoleShop(object):
         try:
             if await confirm_menu(ctx, "Are you sure to equip your all unequipped roles?"):
                 for role_id in roles:
-                    role = discord.utils.get(ctx.guild.roles, id=int(id))
+                    role = discord.utils.get(ctx.guild.roles, id=int(role_id))
                     await ctx.author.add_roles(role, reason="Role equipped from role shop")
                     await db.equip_user_role(ctx, role.id)
                 await ctx.send("All unequipped roles equipped.")
