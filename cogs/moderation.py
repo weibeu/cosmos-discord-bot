@@ -120,8 +120,8 @@ class Moderation(object):
         )
         preset = data['presets'].get('ban')
         preset = preset or ''
-        raw_reason = reason
-        reason = preset + reason
+        raw_reason = reason or ''
+        reason = preset + raw_reason
 
         urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', reason)
 
@@ -180,8 +180,8 @@ class Moderation(object):
         )
         preset = data['presets'].get('kick')
         preset = preset or ''
-        raw_reason = reason
-        reason = preset + reason
+        raw_reason = reason or ''
+        reason = preset + raw_reason
 
         urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', reason)
 
