@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+import re
 
 from cogs.utils.util import get_reaction_yes_no
 from cogs.utils import checks
@@ -106,6 +107,125 @@ class Moderation(object):
         await ctx.message.add_reaction(get_reaction_yes_no()["yes"])
         await asyncio.sleep(2.7)
         await ctx.message.delete()
+
+    @commands.group(name="ban")
+    @checks.admin_or_permissions(ban_members=True)
+    async def _ban(self, ctx, member: discord.Member, reason: str = None):
+        """Bans a member with provided optional reason.
+        You can also check `;help ban preset` to add custom preset ban messages. Note: optional reason is latter to preset message."""
+        files = []
+        data = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one(
+            {'_id': 'settings'},
+            {'presets.ban': '$'}
+        )
+        preset = data['presets']['ban']
+        preset = preset or ''
+        raw_reason = reason
+        reason = preset + reason
+
+        urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', reason)
+
+        for url in urls:
+            async with self.bot.session as ses:
+                async with ses.get(url) as r:
+                    img = await r.read()
+
+            if ".png" in url.lower():
+                filename = "tag.png"
+            elif ".jpg" in url.lower():
+                filename = "tag.jpg"
+            elif ".gif" in url.lower():
+                filename = "tag.gif"
+            else:
+                filename = "tag.png"
+
+            file = discord.File(img, filename=filename)
+            files.append(file)
+
+            reason = reason.replace(url, "")
+
+        try:
+            if files:
+                await member.send(f"You were **banned** from {ctx.guild.name}. REASON: {reason}", files=files)
+            else:
+                await member.send(f"You were **banned** from {ctx.guild.name}. REASON: {reason}")
+
+            await member.ban(reason=f"{raw_reason} Moderator: {ctx.author.name}")
+
+        except Exception as e:
+            print(e)
+
+        await ctx.message.add_reaction('✅')
+
+    @_ban.command(name="preset")
+    async def set_ban_preset(self, ctx, message: str):
+        """Preset custom message for ban command."""
+        await self.bot.db_client.guilds[str(ctx.guild.id)].update_one(
+            {'_id': 'settings'},
+            {'$set': {'presets.ban': message}}
+        )
+        await ctx.message.add_reaction('✅')
+
+
+    @commands.group(name="kick")
+    @checks.admin_or_permissions(kick_members=True)
+    async def _kick(self, ctx, member: discord.Member, reason: str = None):
+        """Kicks a member with provided optional reason.
+        You can also check `;help kick preset` to add custom preset kick messages. Note: optional reason is latter to preset message.
+        """
+        files = []
+        data = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one(
+            {'_id': 'settings'},
+            {'presets.kick': '$'}
+        )
+        preset = data['presets']['kick']
+        preset = preset or ''
+        raw_reason = reason
+        reason = preset + reason
+
+        urls = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg|gif)', reason)
+
+        for url in urls:
+            async with self.bot.session as ses:
+                async with ses.get(url) as r:
+                    img = await r.read()
+
+            if ".png" in url.lower():
+                filename = "tag.png"
+            elif ".jpg" in url.lower():
+                filename = "tag.jpg"
+            elif ".gif" in url.lower():
+                filename = "tag.gif"
+            else:
+                filename = "tag.png"
+
+            file = discord.File(img, filename=filename)
+            files.append(file)
+
+            reason = reason.replace(url, "")
+
+        try:
+            if files:
+                await member.send(f"You were **kicked** from {ctx.guild.name}. REASON: {reason}", files=files)
+            else:
+                await member.send(f"You were **kicked** from {ctx.guild.name}. REASON: {reason}")
+
+            await member.kick(reason=f"{raw_reason} Moderator: {ctx.author.name}")
+
+        except Exception as e:
+            print(e)
+
+        await ctx.message.add_reaction('✅')
+
+    @_kick.command(name="preset")
+    async def set_kick_preset(self, ctx, message: str):
+        """Preset custom message for kick command."""
+        await self.bot.db_client.guilds[str(ctx.guild.id)].update_one(
+            {'_id': 'settings'},
+            {'$set': {'presets.kick': message}}
+        )
+        await ctx.message.add_reaction('✅')
+
 
     @commands.command(name="massban")
     @checks.admin_or_permissions(ban_members=True)
