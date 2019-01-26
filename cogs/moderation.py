@@ -164,7 +164,7 @@ class Moderation(object):
             print(e)
 
         if files:
-            await ctx.send(f"Y{member.name} was **banned** from. **REASON:** {reason}", files=files)
+            await ctx.send(f"{member.name} was **banned** from. **REASON:** {reason}", files=files)
         else:
             await ctx.send(f"{member.name} was **banned**. **REASON:** {reason}")
 
