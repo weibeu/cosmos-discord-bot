@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import datetime
 import time
+
+from cogs.utils import db
 from cogs.utils.config import get_config_value
 from cogs.utils.dataIO import dataIO
 from cogs.utils.checks import embed_perms, cmd_prefix_len, parse_prefix, get_user
@@ -107,6 +109,9 @@ class Core(object):
         e.description = f'<{discord.utils.oauth_url(self.bot.client_id, perms)}>'
         e.colour = get_random_embed_color()
         await ctx.send(embed=e)
+
+    async def on_guild_join(self, guild):
+        await db.add_settings(guild.id)
 
 def setup(bot):
     bot.add_cog(Core(bot))

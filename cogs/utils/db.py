@@ -290,6 +290,11 @@ async def buy_role(ctx, role_id):
     await guild.update_one({'_id': 'members'}, {'$inc': {str(ctx.author.id)+".points": -point}})
     await give_user_role(ctx, role_id) #finally adding role to user purchased list
 
+async def add_settings(guild_id):
+    guild = motor_client.guilds[str(guild_id)]
+    if await count_settings(guild) == 0:
+        await insert(guild, {'_id': 'settings'})
+
 async def setup_reactor(ctx, emojis):
     guild = motor_client.guilds[str(ctx.guild.id)]
     if await count_settings(guild)==0:
