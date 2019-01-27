@@ -36,9 +36,10 @@ class Primary(Base):
 
 class OneLine(Primary):
 
-    def __init__(self, bot, emote, content: str = None, color=None, **kwargs):
+    def __init__(self, bot, content: str = None, emote: str = str(), color=None, **kwargs):
         self._bot = bot
-        content = f"{emote}\t{content}"
+        if emote:
+            content = f"{emote}    {content}"
         assert len(content) <= 256, "Content should be less than or equal to 256 in length."
         super().__init__(title=content, color=color, **kwargs)
 
@@ -56,5 +57,5 @@ class CosmosEmbed(object):
     def primary(self, **kwargs):
         return Primary(self.bot, **kwargs)
 
-    def one_line(self, emote: str, content: str, **kwargs):
+    def one_line(self, content: str, emote: str = str(), **kwargs):
         return OneLine(self.bot, emote, content, **kwargs)
