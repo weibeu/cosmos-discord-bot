@@ -1,7 +1,7 @@
 from .primary import Primary
 
 
-class OneLine(Primary):
+class OneLinePrimary(Primary):
 
     def __init__(self, bot, content: str = None, emote: str = str(), color=None, **kwargs):
         self._bot = bot
@@ -13,3 +13,16 @@ class OneLine(Primary):
     @property
     def bot(self):
         return self._bot
+
+
+class OneLine(object):
+
+    def __init__(self, bot):
+        self.bot = bot
+
+    def primary(self, content: str, emote: str = str(), **kwargs):
+        return OneLinePrimary(self.bot, emote, content, **kwargs)
+
+    def discord(self, content: str, emote: str = str(), **kwargs):
+        discord_color = self.bot.configs.color_scheme.discord
+        return OneLinePrimary(self.bot, content, emote, color=discord_color, **kwargs)
