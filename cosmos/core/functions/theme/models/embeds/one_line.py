@@ -25,4 +25,4 @@ class OneLine(object):
 
     def discord(self, content: str, emote: str = str(), **kwargs):
         discord_color = self.bot.configs.color_scheme.discord
-        return OneLinePrimary(self.bot, content, emote, color=discord_color, **kwargs)
+        return OneLinePrimary(self.bot, emote, content, color=discord_color, **kwargs)
