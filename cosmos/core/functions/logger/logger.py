@@ -12,7 +12,7 @@ class Logger(object):
         self.name = self.bot.configs.logger.name
         self.path = self.bot.configs.logger.path.format(**self.bot.time.now().__dict__)
         self.file_name = self.bot.configs.logger.file_name.format(**self.bot.time.now().__dict__)
-        self.level = logging.DEBUG
+        self.level = getattr(logging, self.bot.configs.logger.level)
         self._logger = logging.getLogger(self.name)
         self._logger.setLevel(self.level)
 
