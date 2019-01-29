@@ -1,12 +1,13 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+
+from cosmos.galaxies.profile.models.base import ProfileModelsBase
 
 
-class UserExperience(ABC):
-
-    @property
-    @abstractmethod
-    def bot(self):
-        raise NotImplementedError
+class UserExperience(ProfileModelsBase, ABC):
 
     def __init__(self):
         pass
+
+    @property
+    def xp(self):
+        return

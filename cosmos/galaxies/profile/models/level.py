@@ -1,12 +1,13 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+
+from .base import ProfileModelsBase
 
 
-class UserLevel(ABC):
-
-    @property
-    @abstractmethod
-    def bot(self):
-        raise NotImplementedError
+class UserLevel(ProfileModelsBase, ABC):
 
     def __init__(self):
         pass
+
+    @property
+    def level(self):
+        return
