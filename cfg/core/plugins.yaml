@@ -1,3 +1,4 @@
 # ! Plugins directories.
 
 core: "cosmos/core/plugins"
+galaxy: "cosmos/galaxies"
