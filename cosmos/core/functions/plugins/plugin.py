@@ -7,7 +7,7 @@ from cosmos.core.functions.plugins.models import Cog
 from ..data.models import PluginData
 
 
-class Plugin(object):
+class Plugin(object):   # Extension
 
     def __init__(self, bot, dir_path):
         self.bot = bot
