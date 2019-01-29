@@ -1,9 +1,7 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABC
 
 
-class Cog(object):
-
-    __metaclass__ = ABCMeta
+class Cog(ABC):
 
     def __init__(self, *args, **kwargs):
         self.name = self.__class__.__name__
@@ -11,7 +9,6 @@ class Cog(object):
         self._bot = None
 
     @property
-    @abstractmethod
     def plugin(self):
         return self._plugin
 
@@ -21,7 +18,6 @@ class Cog(object):
         self._bot = self._plugin.bot
 
     @property
-    @abstractmethod
     def bot(self):
         return self._bot
 
