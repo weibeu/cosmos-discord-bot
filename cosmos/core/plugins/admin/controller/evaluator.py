@@ -1,7 +1,6 @@
 import io
 import textwrap
 import traceback
-from abc import ABC
 from contextlib import redirect_stdout
 from pprint import pformat
 
@@ -11,14 +10,14 @@ from discord.ext import commands
 from ....functions import Cog
 
 
-class Evaluator(Cog, ABC):
+class Evaluator(Cog):
 
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
         self._last_result = None
 
-    async def __local_check(self, ctx):
+    async def __local_check(self, ctx):     # ! Never ever remove this method.
         return await self.bot.is_owner(ctx.author)
 
     @staticmethod

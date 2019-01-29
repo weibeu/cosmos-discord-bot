@@ -1,9 +1,7 @@
-from abc import ABC
-
 from ...functions import Cog
 
 
-class CommandErrorHandler(Cog, ABC):
+class CommandErrorHandler(Cog):
 
     def __init__(self, plugin):
         super().__init__()

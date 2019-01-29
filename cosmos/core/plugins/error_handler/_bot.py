@@ -1,9 +1,7 @@
-from abc import ABC
-
 from ...functions import Cog
 
 
-class BotErrorHandler(Cog, ABC):
+class BotErrorHandler(Cog):
 
     def __init__(self, plugin):
         super().__init__()

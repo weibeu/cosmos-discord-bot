@@ -1,13 +1,12 @@
 import asyncio
 import random
-from abc import ABC
 
 import discord
 
 from ...functions import Cog
 
 
-class Presence(Cog, ABC):
+class Presence(Cog):
 
     def __init__(self, plugin):
         super().__init__()
