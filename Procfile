@@ -1,1 +1,1 @@
-worker: bin/start-stunnel python3 run.py
+worker: python3 run.py
