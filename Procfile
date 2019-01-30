@@ -1,1 +1,1 @@
-worker: bin/start-stunnel bundle exec python3 run.py
+worker: bin/start-stunnel python3 run.py
