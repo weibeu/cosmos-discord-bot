@@ -82,14 +82,14 @@ class AsyncDictCache(DictCache, ABC):
 class RedisCache(object):
 
     def __init__(self):
-        self.__client = None
+        self.client = None
 
     async def fetch_client(self):
         # TODO: Start redis server.
-        self.__client = await aioredis.create_redis('redis://localhost')
+        self.client = await aioredis.create_redis('redis://localhost')
 
     async def get(self, key: str):
-        byte = await self.__client.get(key)
+        byte = await self.client.get(key)
         if byte:
             data = pickle.loads(byte)
         else:
@@ -98,8 +98,8 @@ class RedisCache(object):
 
     async def set(self, key: str, data):
         byte = pickle.dumps(data)
-        await self.__client.set(key, byte)
+        await self.client.set(key, byte)
 
     async def remove(self, key: str):
-        if await self.__client.exists(key):
-            await self.__client.delete(key)
+        if await self.client.exists(key):
+            await self.client.delete(key)
