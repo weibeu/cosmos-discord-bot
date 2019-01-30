@@ -79,27 +79,24 @@ class AsyncDictCache(DictCache, ABC):
             super().pop(key)
 
 
-class RedisCache(object):
+class RedisCache(aioredis.Redis, ABC):
 
-    def __init__(self):
-        self.client = None
+    def __init__(self, connection):
+        self._conn = connection
+        super().__init__(self._conn)
 
-    async def fetch_client(self):
-        # TODO: Start redis server.
-        self.client = await aioredis.create_redis('redis://localhost')
-
-    async def get(self, key: str):
-        byte = await self.client.get(key)
+    async def get(self, key: str, **kwargs):
+        byte = await super().get(key)
         if byte:
             data = pickle.loads(byte)
         else:
             data = None
         return data
 
-    async def set(self, key: str, data):
+    async def set(self, key: str, data, **kwargs):
         byte = pickle.dumps(data)
-        await self.client.set(key, byte)
+        await super().set(key, byte)
 
     async def remove(self, key: str):
-        if await self.client.exists(key):
-            await self.client.delete(key)
+        if await self.exists(key):
+            await self.delete(key)

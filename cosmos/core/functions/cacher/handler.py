@@ -1,3 +1,5 @@
+import aioredis
+
 from . import cachers
 
 
@@ -17,9 +19,9 @@ class CacheHandler(object):
         self.ttl = cachers.TTLCache()
         self.lru = cachers.LRUCache()
         self.lfu = cachers.LFUCache()
-        self.redis = cachers.RedisCache()
         try:
-            await self.redis.fetch_client()
+            conn = await aioredis.connection.create_connection("redis://localhost", loop=self.bot.loop)
+            self.redis = cachers.RedisCache(conn)
         except OSError:
             self.bot.log.error("Unable to connect to redis server. Check if it's running.")
             self.bot.log.info("Using cachers.AsyncDictCache instead.")
