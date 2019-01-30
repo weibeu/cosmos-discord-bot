@@ -84,3 +84,6 @@ class Plugin(object):   # Extension
         cog_list = cogs or self.module.__all__
         for cog in cog_list:
             self.load_cog(cog)
+
+    def get_cog(self, cog_name: str):
+        return self.cogs.get(cog_name)
