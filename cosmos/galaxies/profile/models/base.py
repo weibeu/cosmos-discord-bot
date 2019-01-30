@@ -1,9 +1,6 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class ProfileModelsBase(ABC):
 
-    @property
-    @abstractmethod
-    def bot(self):
-        raise NotImplementedError
+    pass
