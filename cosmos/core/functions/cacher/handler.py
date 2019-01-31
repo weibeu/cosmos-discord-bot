@@ -15,10 +15,10 @@ class CacheHandler(object):
         self.bot.loop.create_task(self.__fetch_cachers())
 
     async def __fetch_cachers(self):
-        self.dict = cachers.DictCache()
-        self.ttl = cachers.TTLCache()
-        self.lru = cachers.LRUCache()
-        self.lfu = cachers.LFUCache()
+        self.dict = cachers.DictCache
+        self.ttl = cachers.TTLCache
+        self.lru = cachers.LRUCache
+        self.lfu = cachers.LFUCache
         try:
             conn = await aioredis.connection.create_connection("redis://localhost", loop=self.bot.loop)
             self.redis = cachers.RedisCache(conn)
