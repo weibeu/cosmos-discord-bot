@@ -1,1 +1,7 @@
 collection_name: profiles
+
+document_schema:
+    user_id: null
+    reps: 0
+    description: ""
+    xp: 0
