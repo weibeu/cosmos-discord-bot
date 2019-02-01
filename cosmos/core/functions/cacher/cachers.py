@@ -78,6 +78,13 @@ class AsyncDictCache(DictCache, ABC):
         if key in super().keys():
             super().pop(key)
 
+    async def hmset_dict(self, key: str, data):
+        await self.set(key, data)
+
+    async def hget(self, key, field):
+        data = await self.get(key)
+        return data.get(field)
+
 
 class RedisCache(aioredis.Redis, ABC):
 
