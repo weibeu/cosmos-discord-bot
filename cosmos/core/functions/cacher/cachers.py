@@ -63,25 +63,30 @@ class AsyncDictCache(DictCache, ABC):
         super().__init__()
 
     async def get(self, key: str):
-        byte = super().get(key)
-        if byte:
-            data = pickle.loads(byte)
-        else:
-            data = None
-        return data
+        # byte = super().get(key)
+        # if byte:
+        #    data = pickle.loads(byte)
+        # else:
+        #    data = None
+        return super().get(key)
 
     async def set(self, key: str, data):
-        byte = pickle.dumps(data)
-        super().update({key: byte})
+        # byte = pickle.dumps(data)
+        super().update({key: data})
 
     async def remove(self, key: str):
         if key in super().keys():
             super().pop(key)
 
-    async def hmset_dict(self, key: str, data):
+    async def set_object(self, key: str, field, data):
+        d = await self.get(key)
+        d.update({field: data})
         await self.set(key, data)
 
-    async def hget(self, key, field):
+    async def set_objects(self, key: str, data):
+        await self.set(key, data)
+
+    async def get_object(self, key, field):
         data = await self.get(key)
         return data.get(field)
 
@@ -94,11 +99,10 @@ class RedisCache(aioredis.Redis, ABC):
 
     async def get(self, key: str, **kwargs):
         byte = await super().get(key)
-        if byte:
-            data = pickle.loads(byte)
-        else:
-            data = None
-        return data
+        try:
+            return pickle.loads(byte)
+        except TypeError:
+            return
 
     async def set(self, key: str, data, **kwargs):
         byte = pickle.dumps(data)
@@ -107,3 +111,20 @@ class RedisCache(aioredis.Redis, ABC):
     async def remove(self, key: str):
         if await self.exists(key):
             await self.delete(key)
+
+    async def set_object(self, key, field, value):
+        byte = pickle.dumps(value)
+        await self.hmset(key, field, byte)
+
+    async def set_objects(self, key, dictionary):
+        for field, value in dictionary.items():
+            byte = pickle.dumps(value)
+            dictionary.update({field: byte})
+        await self.hmset_dict(key, dictionary)
+
+    async def get_object(self, key, field):
+        byte = (await self.hmget(key, field))[0]
+        try:
+            return pickle.loads(byte)
+        except TypeError:
+            return
