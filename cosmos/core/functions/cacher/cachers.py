@@ -80,8 +80,8 @@ class AsyncDictCache(DictCache, ABC):
 
     async def set_object(self, key: str, field, data):
         d = await self.get(key)
-        d.update({field: data})
-        await self.set(key, data)
+        d[field] = data
+        self[key] = d
 
     async def set_objects(self, key: str, data):
         await self.set(key, data)
@@ -89,6 +89,10 @@ class AsyncDictCache(DictCache, ABC):
     async def get_object(self, key, field):
         data = await self.get(key)
         return data.get(field)
+
+    async def hlen(self, key):
+        data = await self.get(key)
+        return len(data)
 
 
 class RedisCache(aioredis.Redis, ABC):
