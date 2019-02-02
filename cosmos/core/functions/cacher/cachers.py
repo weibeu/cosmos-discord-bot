@@ -91,8 +91,7 @@ class AsyncDictCache(DictCache, ABC):
         return data.get(field)
 
     async def hlen(self, key):
-        data = await self.get(key)
-        return len(data)
+        return len(self[key])
 
 
 class RedisCache(aioredis.Redis, ABC):
