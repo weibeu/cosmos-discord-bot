@@ -38,3 +38,18 @@ class ProfileCache(object):
         profile_document.update({"user_id": user_id})
         await self.collection.insert_one(profile_document)
         return await self.get_profile(user_id)
+
+    async def get_profile_embed(self, ctx):
+        profile = await self.get_profile(ctx.author.id)
+        if not profile:
+            async with ctx.loading():
+                await ctx.send(embed=self.bot.theme.embeds.one_line.primary("Welcome. Creating your Cosmos profile!"))
+                profile = await self.create_profile(ctx.author.id)
+        embed = self.bot.theme.embeds.primary(title="Profile")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.add_field(name="Reputation points", value=str(profile.reps))
+        embed.add_field(name="Level", value=str(profile.level))
+        embed.add_field(name="Experience points", value=str(profile.xp))
+        description = profile.description or self.plugin.data.profile.default_description
+        embed.add_field(name="Profile description", value=description)
+        return embed
