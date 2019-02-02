@@ -15,7 +15,7 @@ class ProfileCache(object):
         await self.bot.wait_until_ready()
         self._redis = self.bot.cache.redis
         profile_documents = dict()
-        profiles_data = await self.collection.find(projection={"_id": False}).to_list(None)
+        profiles_data = await self.collection.find({}).to_list(None)
         for profile_document in profiles_data:
             profile = CosmosUserProfile.from_document(profile_document)
             user_id = int(profile_document.get("user_id"))  # bson.int64.Int64 to int
