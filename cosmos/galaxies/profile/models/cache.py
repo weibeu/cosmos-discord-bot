@@ -45,7 +45,7 @@ class ProfileCache(object):
             async with ctx.loading():
                 await ctx.send(embed=self.bot.theme.embeds.one_line.primary("Welcome. Creating your Cosmos profile!"))
                 profile = await self.create_profile(ctx.author.id)
-        embed = self.bot.theme.embeds.primary(title="Profile")
+        embed = self.bot.theme.embeds.primary(title="Cosmos Profile")
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         embed.add_field(name="Reputation points", value=str(profile.reps))
         embed.add_field(name="Level", value=str(profile.level))
