@@ -6,7 +6,6 @@ from .currency import CosmosCurrency
 class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
 
     def __init__(self, **kwargs):
-        super().__init__()
         self.id: int = kwargs["user_id"]
         self.reps: int = kwargs.get("reps", 0)
         # self.badges = []
