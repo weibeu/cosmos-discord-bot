@@ -1,13 +1,18 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 from .base import ProfileModelsBase
 
 
 class UserLevel(ProfileModelsBase, ABC):
 
-    def __init__(self):
-        pass
+    @property
+    @abstractmethod
+    def xp(self):
+        raise NotImplementedError
+
+    def from_xp(self):
+        return int(self.xp / 10)
 
     @property
     def level(self):
-        return
+        return self.from_xp()
