@@ -5,3 +5,5 @@ document_schema:
     reps: 0
     description: ""
     xp: 0
+
+default_description: "Lazy. How do I change my profile description?"
