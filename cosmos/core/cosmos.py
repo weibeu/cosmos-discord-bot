@@ -25,7 +25,6 @@ class Cosmos(commands.Bot):
         super().__init__(
             command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes)
         )
-        self.session = aiohttp.ClientSession(loop=self.loop)
         self._init_logger()
         self._init_exception_handler()
         self._init_database()
