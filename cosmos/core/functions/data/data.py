@@ -4,9 +4,8 @@ import os
 class DataEntry(object):
 
     def __init__(self, data):
-        self.raw = data
-        for attr in self.raw:
-            self.__setattr__(attr, self.raw[attr])
+        for attr in data:
+            self.__setattr__(attr, data[attr])
 
 
 class Data(object):
