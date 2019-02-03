@@ -1,4 +1,3 @@
-import aiohttp
 from discord import LoginFailure
 from discord.ext import commands
 
