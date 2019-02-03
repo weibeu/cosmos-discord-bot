@@ -22,6 +22,7 @@ class CosmosConfig(Config):
     PATH = "cfg/core/cosmos.yaml"
 
     def __init__(self):
+        self.prefixes = None
         super().__init__()
 
 
