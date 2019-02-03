@@ -1,18 +1,18 @@
 # ! List of messages displayed as bot status.
 
 playing:
-  - Hentai Simulator [VR Edition]
-  - Discord
-  - Battle Royale
+    - Hentai Simulator [VR Edition]
+    - Discord
+    - Battle Royale
 
 streaming:
-  - Direct Messages
-  - Hentai Desu
+    - Direct Messages
+    - Hentai Desu
 
 listening:
-  - Your voice
-  - Your Heartbeat
+    - Your voice
+    - Your Heartbeat
 
 watching:
-  - Hentai Desu
-  - Bleach
+    - Hentai Desu
+    - Bleach
