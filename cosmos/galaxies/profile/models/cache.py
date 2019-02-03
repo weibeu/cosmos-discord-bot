@@ -9,11 +9,15 @@ class ProfileCache(object):
         self._redis = None
         self.__collection_name = self.plugin.data.profile.collection_name
         self.collection = self.bot.db[self.__collection_name]
+        self.bot.loop.create_task(self.__get_cache_client())
+
+    async def __get_cache_client(self):
+        await self.bot.wait_until_ready()
+        self._redis = self.bot.cache.redis
 
     async def prepare(self):
         self.bot.log.info("Preparing profile caches.")
-        await self.bot.wait_until_ready()
-        self._redis = self.bot.cache.redis
+        await self.__get_cache_client()
         profile_documents = dict()
         profiles_data = await self.collection.find({}).to_list(None)
         for profile_document in profiles_data:
