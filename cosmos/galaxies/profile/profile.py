@@ -10,7 +10,7 @@ class Profile(Cog):
         super().__init__()
         self.plugin = plugin
         self.cache = ProfileCache(self.plugin)
-        if self.plugin.data.profile.data.get("cache_all"):
+        if self.plugin.data.profile.raw.get("cache_all"):
             self.bot.loop.create_task(self.cache.prepare())
 
     @commands.command()
