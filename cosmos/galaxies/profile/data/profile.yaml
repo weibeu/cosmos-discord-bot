@@ -12,4 +12,4 @@ document_schema:
 default_description: "Lazy. How do I change my profile description?"
 
 xp_default: 50
-xp_cooldown: 5
+xp_cooldown: 10
