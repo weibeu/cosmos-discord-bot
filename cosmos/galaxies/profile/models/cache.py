@@ -7,34 +7,39 @@ class ProfileCache(object):
         self.plugin = plugin
         self.bot = self.plugin.bot
         self._redis = None
+        self.lfu = self.bot.cache.lfu()
         self.__collection_name = self.plugin.data.profile.collection_name
         self.collection = self.bot.db[self.__collection_name]
-        self.bot.loop.create_task(self.__get_cache_client())
+        # self.bot.loop.create_task(self.__get_redis_client())
 
-    async def __get_cache_client(self):
+    async def __get_redis_client(self):
         await self.bot.wait_until_ready()
         self._redis = self.bot.cache.redis
 
     async def prepare(self):
         self.bot.log.info("Preparing profile caches.")
-        await self.__get_cache_client()
+        # await self.__get_redis_client()
         profile_documents = dict()
         profiles_data = await self.collection.find({}).to_list(None)
         for profile_document in profiles_data:
             profile = CosmosUserProfile.from_document(profile_document)
             user_id = int(profile_document.get("user_id"))  # bson.int64.Int64 to int
             profile_documents[user_id] = profile
-        await self._redis.set_objects(self.__collection_name, profile_documents)
-        profile_count = await self._redis.hlen(self.__collection_name)
+        # await self._redis.set_objects(self.__collection_name, profile_documents)
+        self.lfu.update(profile_documents)
+        # profile_count = await self._redis.hlen(self.__collection_name)
+        profile_count = self.lfu.currsize
         self.bot.log.info(f"Loaded {profile_count} profiles to cache.")
 
     async def get_profile(self, user_id: int) -> CosmosUserProfile:
-        profile = await self._redis.get_object(self.__collection_name, user_id)
+        # profile = await self._redis.get_object(self.__collection_name, user_id)
+        profile = self.lfu.get(user_id)
         if not profile:
             profile_document = await self.collection.find_one({"user_id": user_id})
             if profile_document:
                 profile = CosmosUserProfile.from_document(profile_document)
-                await self._redis.set_object(self.__collection_name, user_id, profile)
+                # await self._redis.set_object(self.__collection_name, user_id, profile)
+                self.lfu.set(user_id, profile)
         return profile
 
     async def create_profile(self, user_id: int) -> CosmosUserProfile:
