@@ -11,7 +11,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         # self.badges = []
         self.description: str = kwargs.get("description", str())
         UserExperience.__init__(self, kwargs.get("xp", 0))
-        UserLevel.__init__(self)
+        UserLevel.__init__(self, kwargs.get("level", 0))
         # CosmosCurrency.__init__(self, kwargs.get("currency_name", 0))
         self.rank: int = None
         self.spouse: CosmosUserProfile = None

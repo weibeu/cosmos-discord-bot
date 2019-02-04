@@ -12,6 +12,8 @@ class ProfileCache(object):
         self.collection = self.bot.db[self.__collection_name]
         # self.bot.loop.create_task(self.__get_redis_client())
 
+        self.__xp_buffer = self.bot.cache.ttl()
+
     async def __get_redis_client(self):
         await self.bot.wait_until_ready()
         self._redis = self.bot.cache.redis
@@ -48,6 +50,9 @@ class ProfileCache(object):
         await self.collection.insert_one(profile_document)
         return await self.get_profile(user_id)
 
+    async def give_xp(self, message):
+        pass
+
     async def get_profile_embed(self, ctx):
         profile = await self.get_profile(ctx.author.id)
         if not profile:
@@ -59,6 +64,7 @@ class ProfileCache(object):
         embed.add_field(name="Reputation points", value=str(profile.reps))
         embed.add_field(name="Level", value=str(profile.level))
         embed.add_field(name="Experience points", value=str(profile.xp))
+        embed.add_field(name="Experience points required for next level", value=str(profile.delta_xp))
         description = profile.description or self.plugin.data.profile.default_description
         embed.add_field(name="Profile description", value=description)
         return embed

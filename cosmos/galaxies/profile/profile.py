@@ -13,6 +13,9 @@ class Profile(Cog):
         if self.plugin.data.profile.__dict__.get("cache_all"):
             self.bot.loop.create_task(self.cache.prepare())
 
+    async def on_message(self, message):
+        pass
+
     @commands.command()
     async def profile(self, ctx):
         embed = await self.cache.get_profile_embed(ctx)

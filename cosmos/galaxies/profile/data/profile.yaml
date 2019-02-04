@@ -7,6 +7,7 @@ document_schema:
     user_id: null
     reps: 0
     description: ""
+    level: 0
     xp: 0
 
 default_description: "Lazy. How do I change my profile description?"
