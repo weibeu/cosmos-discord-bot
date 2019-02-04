@@ -68,7 +68,7 @@ class AsyncDictCache(DictCache, ABC):
         #    data = pickle.loads(byte)
         # else:
         #    data = None
-        return super().get(key)
+        return super().get(key, dict())
 
     async def set(self, key: str, data):
         # byte = pickle.dumps(data)
