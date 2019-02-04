@@ -15,6 +15,3 @@ class UserExperience(ProfileModelsBase, ABC):
     @xp.setter
     def xp(self, xp: int):
         self._xp = int(xp)
-
-    def __add__(self, other: int):
-        self._xp += int(other)
