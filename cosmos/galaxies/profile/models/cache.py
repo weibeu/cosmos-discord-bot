@@ -7,7 +7,7 @@ class ProfileCache(object):
         self.plugin = plugin
         self.bot = self.plugin.bot
         self._redis = None
-        self.lfu = self.bot.cache.lfu()
+        self.lfu = self.bot.cache.lfu(self.plugin.data.profile.cache_max_size)
         self.__collection_name = self.plugin.data.profile.collection_name
         self.collection = self.bot.db[self.__collection_name]
         # self.bot.loop.create_task(self.__get_redis_client())

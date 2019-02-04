@@ -1,5 +1,7 @@
 collection_name: profiles
+
 cache_all: No
+cache_max_size: 1000
 
 document_schema:
     user_id: null
