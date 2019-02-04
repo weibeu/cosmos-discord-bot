@@ -1,9 +1,12 @@
-from abc import ABC, abstractmethod
+import math
 
+from abc import ABC, abstractmethod
 from .base import ProfileModelsBase
 
 
 class UserLevel(ProfileModelsBase, ABC):
+
+    K = 1
 
     @property
     @abstractmethod
@@ -11,7 +14,8 @@ class UserLevel(ProfileModelsBase, ABC):
         raise NotImplementedError
 
     def from_xp(self):
-        return int(self.xp / 10)
+        _level = math.floor(math.log(self.xp*math.e + math.e))*self.K
+        return _level
 
     @property
     def level(self):

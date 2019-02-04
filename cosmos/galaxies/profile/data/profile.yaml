@@ -8,3 +8,6 @@ document_schema:
     xp: 0
 
 default_description: "Lazy. How do I change my profile description?"
+
+xp_default: 50
+xp_cooldown: 5
