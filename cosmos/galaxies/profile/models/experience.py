@@ -11,3 +11,10 @@ class UserExperience(ProfileModelsBase, ABC):
     @property
     def xp(self):
         return self._xp
+
+    @xp.setter
+    def xp(self, xp: int):
+        self._xp = int(xp)
+
+    def __add__(self, other: int):
+        self._xp + int(other)
