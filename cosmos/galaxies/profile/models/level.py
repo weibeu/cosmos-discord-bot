@@ -14,8 +14,7 @@ class UserLevel(ProfileModelsBase, ABC):
         raise NotImplementedError
 
     def from_xp(self):
-        _level = math.floor(math.log(self.xp*math.e + math.e))*self.K
-        return _level
+        return math.floor(math.log(self.xp*math.e + math.e))*self.K
 
     @property
     def level(self):
