@@ -14,7 +14,9 @@ class ProfileCache(object):
         self.collection = self.bot.db[self.__collection_name]
         # self.bot.loop.create_task(self.__get_redis_client())
 
-        self.__xp_buffer = self.bot.cache.ttl()
+        xp_buffer_max_size = self.plugin.data.profile.xp_buffer_max_size
+        xp_buffer_cooldown = self.plugin.data.profile.xp_buffer_cooldown
+        self.__xp_buffer = self.bot.cache.ttl(xp_buffer_max_size, xp_buffer_cooldown)
 
     async def __get_redis_client(self):
         await self.bot.wait_until_ready()
@@ -57,11 +59,14 @@ class ProfileCache(object):
         return await self.get_profile(user_id)
 
     async def give_xp(self, message):
+        if message.author.id in self.__xp_buffer:
+            return
         profile = await self.get_profile(message.author.id)
         xp = random.randint(self.plugin.data.profile.xp_default_min, self.plugin.data.profile.xp_default_max)
         if not profile:
             profile = await self.create_profile(message.author.id, message.channel)
         profile.give_xp(xp)
+        self.__xp_buffer.set(message.author.id, None)    # TODO: Replace None or convert xp_buffer to list or set.
 
     async def get_profile_embed(self, ctx):
         profile = await self.get_profile(ctx.author.id)
