@@ -88,8 +88,9 @@ class ProfileCache(object):
         return embed
 
     async def __update_database(self):
-        await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
-        self.bot.log.info("Updating Profile caches to database.")
-        batch = [UpdateOne(*profile.to_xp_filter_and_update()) for profile in self.lfu.values()]
-        await self.collection.bulk_write(batch, ordered=False)
-        self.bot.log.info(f"Job completed. Updated {len(batch)} profiles.")
+        while True:
+            await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
+            self.bot.log.info("Updating Profile caches to database.")
+            batch = [UpdateOne(*profile.to_xp_filter_and_update()) for profile in self.lfu.values()]
+            await self.collection.bulk_write(batch, ordered=False)
+            self.bot.log.info(f"Job completed. Updated {len(batch)} profiles.")
