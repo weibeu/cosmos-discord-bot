@@ -35,7 +35,9 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
     def to_xp_filter_and_update(self) -> tuple:
         filter_ = {"user_id": self.id}
         update = {
-            "xp": self.xp,
-            "level": self.level
+            "$set": {
+                "xp": self.xp,
+                "level": self.level
+            }
         }
         return filter_, update
