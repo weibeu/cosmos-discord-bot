@@ -59,11 +59,9 @@ class ProfileCache(object):
     async def give_xp(self, message):
         profile = await self.get_profile(message.author.id)
         xp = random.randint(self.plugin.data.profile.xp_default_min, self.plugin.data.profile.xp_default_max)
-        try:
-            profile.give_xp(xp)
-        except AttributeError:
+        if not profile:
             profile = await self.create_profile(message.author.id, message.channel)
-            profile.give_xp(xp)    # Repeated ^^^ 'cause try > if.
+        profile.give_xp(xp)
 
     async def get_profile_embed(self, ctx):
         profile = await self.get_profile(ctx.author.id)
