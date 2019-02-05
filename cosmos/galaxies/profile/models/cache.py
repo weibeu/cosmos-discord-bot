@@ -1,3 +1,5 @@
+import random
+
 from .user_profile import CosmosUserProfile
 
 
@@ -44,21 +46,30 @@ class ProfileCache(object):
                 self.lfu.set(user_id, profile)
         return profile
 
-    async def create_profile(self, user_id: int) -> CosmosUserProfile:
+    async def create_profile(self, user_id: int, channel=None) -> CosmosUserProfile:
+        try:
+            await channel.send(embed=self.bot.theme.embeds.one_line.primary("Welcome. Creating your Cosmos profile!"))
+        except AttributeError:
+            pass
         profile_document = self.plugin.data.profile.document_schema
         profile_document.update({"user_id": user_id})
         await self.collection.insert_one(profile_document)
         return await self.get_profile(user_id)
 
     async def give_xp(self, message):
-        pass
+        profile = await self.get_profile(message.author.id)
+        xp = random.randint(self.plugin.data.profile.xp_default_min, self.plugin.data.profile.xp_default_max)
+        try:
+            profile.give_xp(xp)
+        except AttributeError:
+            profile = await self.create_profile(message.author.id, message.channel)
+            profile.give_xp(xp)    # Repeated ^^^ 'cause try > if.
 
     async def get_profile_embed(self, ctx):
         profile = await self.get_profile(ctx.author.id)
         if not profile:
             async with ctx.loading():
-                await ctx.send(embed=self.bot.theme.embeds.one_line.primary("Welcome. Creating your Cosmos profile!"))
-                profile = await self.create_profile(ctx.author.id)
+                profile = await self.create_profile(ctx.author.id, ctx.channel)
         embed = self.bot.theme.embeds.primary(title="Cosmos Profile")
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         embed.add_field(name="Reputation points", value=str(profile.reps))
