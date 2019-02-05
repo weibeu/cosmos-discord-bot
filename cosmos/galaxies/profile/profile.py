@@ -18,6 +18,8 @@ class Profile(Cog):
             return True
         if message.author.bot:
             return True
+        if not message.guild:
+            return True
 
     async def on_message(self, message):
         if self.__is_ignored(message):
