@@ -23,12 +23,12 @@ class UserLevel(ProfileModelsBase, ABC):
 
     @property
     def __delta_xp(self):
-        return (self._xp_level + math.log(self._level + math.e))*self.K
+        return math.log(self._level + math.e)*self.K
 
     @property
     def delta_xp(self):
         # Basically property for public use.
-        return int(self.__delta_xp - self.xp)
+        return int(self.xp_level - self.xp)
 
     def from_delta_xp(self):
         # return math.floor(math.log(self.xp/(math.log(math.exp(self.xp)) + math.e) + math.e))*self.K
