@@ -27,15 +27,12 @@ class UserLevel(ProfileModelsBase, ABC):
 
     @property
     def delta_xp(self):
-        # Basically property for public use.
         return int(self.xp_level - self.xp)
 
     def from_delta_xp(self):
-        # return math.floor(math.log(self.xp/(math.log(math.exp(self.xp)) + math.e) + math.e))*self.K
-        # return math.floor(math.log(self.xp / math.log(self.xp + 2) + math.e)) * self.K
         while self.delta_xp <= self.xp:
             self._xp_level += self.__delta_xp
-            self._level += 1
+            self._level += 1    # Don't really need self._level -= 1 'cause user will never loose xp.
         return self._level
 
     @property
