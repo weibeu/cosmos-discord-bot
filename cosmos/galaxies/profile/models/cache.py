@@ -2,6 +2,7 @@ import asyncio
 import random
 
 from pymongo import UpdateOne
+from pymongo.errors import InvalidOperation
 
 from .user_profile import CosmosUserProfile
 
@@ -92,5 +93,8 @@ class ProfileCache(object):
             await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
             self.bot.log.info("Updating Profile caches to database.")
             batch = [UpdateOne(*profile.to_xp_filter_and_update()) for profile in self.lfu.values()]
-            await self.collection.bulk_write(batch, ordered=False)
-            self.bot.log.info(f"Job completed. Updated {len(batch)} profiles.")
+            try:
+                await self.collection.bulk_write(batch, ordered=False)
+                self.bot.log.info(f"Job completed. Updated {len(batch)} profiles.")
+            except InvalidOperation:
+                self.bot.eh.sentry.capture_exception()
