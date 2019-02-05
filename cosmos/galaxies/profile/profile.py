@@ -14,7 +14,7 @@ class Profile(Cog):
             self.bot.loop.create_task(self.cache.prepare())
 
     async def on_message(self, message):
-        pass
+        await self.cache.give_xp(message)
 
     @commands.command()
     async def profile(self, ctx):
