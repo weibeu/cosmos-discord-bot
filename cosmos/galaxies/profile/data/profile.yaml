@@ -15,4 +15,4 @@ default_description: "Lazy. How do I change my profile description?"
 xp_default_min: 0
 xp_default_max: 10
 xp_buffer_max_size: 1000000
-xp_buffer_cooldown: 10
+xp_buffer_cooldown: 20
