@@ -94,7 +94,7 @@ class ProfileCache(object):
             self.bot.log.info("Updating Profile caches to database.")
             batch = [UpdateOne(*profile.to_xp_filter_and_update()) for profile in self.lfu.values()]
             try:
-                await self.collection.bulk_write(batch, ordered=False)
-                self.bot.log.info(f"Job completed. Updated {len(batch)} profiles.")
+                result = await self.collection.bulk_write(batch, ordered=False)
+                self.bot.log.info(f"Job completed. Updated {result.modified_count} profiles.")
             except InvalidOperation:
                 self.bot.eh.sentry.capture_exception()
