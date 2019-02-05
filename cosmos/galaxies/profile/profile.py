@@ -1,7 +1,9 @@
-from discord.ext import commands
+import discord
 
 from .. import Cog
 from .models import ProfileCache
+
+from discord.ext import commands
 
 
 class Profile(Cog):
@@ -28,6 +30,7 @@ class Profile(Cog):
         await self.cache.give_xp(message)
 
     @commands.command()
-    async def profile(self, ctx):
-        embed = await self.cache.get_profile_embed(ctx)
+    async def profile(self, ctx, user: discord.User = None):
+        user = user or ctx.author
+        embed = await self.cache.get_profile_embed(user)
         await ctx.send(embed=embed)

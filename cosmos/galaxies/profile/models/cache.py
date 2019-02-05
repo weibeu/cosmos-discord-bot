@@ -71,12 +71,12 @@ class ProfileCache(object):
         profile.give_xp(xp)
         self.__xp_buffer.set(message.author.id, None)    # TODO: Replace None or convert xp_buffer to list or set.
 
-    async def get_profile_embed(self, ctx):
-        profile = await self.get_profile(ctx.author.id)
+    async def get_profile_embed(self, user):
+        profile = await self.get_profile(user.id)
         if not profile:
-            profile = await self.create_profile(ctx.author.id)
+            profile = await self.create_profile(user.id)
         embed = self.bot.theme.embeds.primary(title="Cosmos Profile")
-        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_author(name=user.name, icon_url=user.avatar_url)
         embed.add_field(name="Reputation points", value=str(profile.reps))
         embed.add_field(name="Level", value=str(profile.level))
         embed.add_field(name="Experience points", value=str(profile.xp))
