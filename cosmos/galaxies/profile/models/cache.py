@@ -1,4 +1,7 @@
+import asyncio
 import random
+
+from pymongo import UpdateOne
 
 from .user_profile import CosmosUserProfile
 
@@ -12,6 +15,7 @@ class ProfileCache(object):
         self.lfu = self.bot.cache.lfu(self.plugin.data.profile.cache_max_size)
         self.__collection_name = self.plugin.data.profile.collection_name
         self.collection = self.bot.db[self.__collection_name]
+        self.bot.loop.create_task(self.__update_database())
         # self.bot.loop.create_task(self.__get_redis_client())
 
         xp_buffer_max_size = self.plugin.data.profile.xp_buffer_max_size
@@ -82,3 +86,10 @@ class ProfileCache(object):
         description = profile.description or self.plugin.data.profile.default_description
         embed.add_field(name="Profile description", value=description)
         return embed
+
+    async def __update_database(self):
+        await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
+        self.bot.log.info("Updating Profile caches to database.")
+        batch = [UpdateOne(*profile.to_xp_filter_and_update()) for profile in self.lfu.values()]
+        await self.collection.bulk_write(batch, ordered=False)
+        self.bot.log.info(f"Job completed. Updated {len(batch)} profiles.")

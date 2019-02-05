@@ -21,3 +21,21 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
     @classmethod
     def from_document(cls, document: dict):
         return cls(**document)
+
+    def to_document(self) -> dict:
+        document = {
+            "user_id": self.id,
+            "reps": self.reps,
+            "description": self.description,
+            "level": self.level,
+            "xp": self.xp
+        }
+        return document
+
+    def to_xp_filter_and_update(self) -> tuple:
+        filter_ = {"user_id": self.id}
+        update = {
+            "xp": self.xp,
+            "level": self.level
+        }
+        return filter_, update
