@@ -31,7 +31,7 @@ class ProfileCache(object):
         self.bot.log.info("Preparing profile caches.")
         # await self.__get_redis_client()
         profile_documents = dict()
-        profiles_data = await self.collection.find({}).to_list(None)
+        profiles_data = await self.collection.find({}).to_list(self.plugin.data.profile.cache_max_size)
         for profile_document in profiles_data:
             profile = CosmosUserProfile.from_document(profile_document)
             user_id = int(profile_document.get("user_id"))  # bson.int64.Int64 to int
