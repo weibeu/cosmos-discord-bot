@@ -32,16 +32,6 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         # self.on_time: int = None
         self._xp_buffer_cooldown = kwargs.get("xp_buffer_cooldown", self._plugin.data.xp.buffer_cooldown)
 
-    def to_document(self) -> dict:
-        document = {
-            "user_id": self.id,
-            "reps": self.reps,
-            "description": self.description,
-            "level": self.level,
-            "xp": self.xp
-        }
-        return document
-
     def to_xp_filter_and_update(self) -> tuple:
         filter_ = {"user_id": self.id}
         update = {
