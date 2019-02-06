@@ -41,11 +41,11 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
     def can_rep(self):
         if not self.rep_datetime:    # Using rep for first time.
             return True
-        return (self.rep_delta.seconds/60)/60 <= self._plugin.data.profile.rep_cooldown
+        return (self.rep_delta.seconds/60)/60 >= self._plugin.data.profile.rep_cooldown
 
     @property
     def rep_delta(self):
-        return self.rep_datetime - datetime.now()
+        return datetime.now() - self.rep_datetime
 
     async def rep(self):
         self.reps += 1
