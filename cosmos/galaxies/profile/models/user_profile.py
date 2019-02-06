@@ -5,7 +5,20 @@ from .currency import CosmosCurrency
 
 class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
 
-    def __init__(self, **kwargs):
+    @property
+    def _plugin(self):
+        return self.__plugin
+
+    @property
+    def xp_buffer_cooldown(self):
+        return self._xp_buffer_cooldown
+
+    @classmethod
+    def from_document(cls, plugin, document: dict):
+        return cls(plugin, **document)
+
+    def __init__(self, plugin, **kwargs):
+        self.__plugin = plugin
         self.id: int = kwargs["user_id"]
         self.reps: int = kwargs.get("reps", 0)
         # self.badges = []
@@ -17,10 +30,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         self.spouse: CosmosUserProfile = None
         # self.inventory = []
         # self.on_time: int = None
-
-    @classmethod
-    def from_document(cls, document: dict):
-        return cls(**document)
+        self._xp_buffer_cooldown = kwargs.get("xp_buffer_cooldown", self._plugin.data.xp.buffer_cooldown)
 
     def to_document(self) -> dict:
         document = {

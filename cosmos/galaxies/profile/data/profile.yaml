@@ -12,9 +12,4 @@ document_schema:
 
 default_description: "Lazy. How do I change my profile description?"
 
-xp_default_min: 10
-xp_default_max: 30
-xp_buffer_max_size: 1000000    # Max size of buffer cache to not give xp.
-xp_buffer_cooldown: 15    # Time after which User is removed from buffer.
-
 update_task_cooldown: 60    # Time period of cache to db update task.

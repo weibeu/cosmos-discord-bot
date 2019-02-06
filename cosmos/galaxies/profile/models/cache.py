@@ -1,9 +1,7 @@
 import asyncio
-import random
 
 from pymongo import UpdateOne
 from pymongo.errors import InvalidOperation
-
 from .user_profile import CosmosUserProfile
 
 
@@ -19,10 +17,6 @@ class ProfileCache(object):
         self.bot.loop.create_task(self.__update_database())
         # self.bot.loop.create_task(self.__get_redis_client())
 
-        xp_buffer_max_size = self.plugin.data.profile.xp_buffer_max_size
-        xp_buffer_cooldown = self.plugin.data.profile.xp_buffer_cooldown
-        self.__xp_buffer = self.bot.cache.ttl(xp_buffer_max_size, xp_buffer_cooldown)
-
     async def __get_redis_client(self):
         await self.bot.wait_until_ready()
         self._redis = self.bot.cache.redis
@@ -33,7 +27,7 @@ class ProfileCache(object):
         profile_documents = dict()
         profiles_data = await self.collection.find({}).to_list(self.plugin.data.profile.cache_max_size)
         for profile_document in profiles_data:
-            profile = CosmosUserProfile.from_document(profile_document)
+            profile = CosmosUserProfile.from_document(self.plugin, profile_document)
             user_id = int(profile_document.get("user_id"))  # bson.int64.Int64 to int
             profile_documents[user_id] = profile
         # await self._redis.set_objects(self.__collection_name, profile_documents)
@@ -48,7 +42,7 @@ class ProfileCache(object):
         if not profile:
             profile_document = await self.collection.find_one({"user_id": user_id})
             if profile_document:
-                profile = CosmosUserProfile.from_document(profile_document)
+                profile = CosmosUserProfile.from_document(self.plugin, profile_document)
                 # await self._redis.set_object(self.__collection_name, user_id, profile)
                 self.lfu.set(user_id, profile)
         return profile
@@ -60,16 +54,15 @@ class ProfileCache(object):
         return await self.get_profile(user_id)
 
     async def give_xp(self, message):
-        if message.author.id in self.__xp_buffer:
-            return
         profile = await self.get_profile(message.author.id)
-        xp = random.randint(self.plugin.data.profile.xp_default_min, self.plugin.data.profile.xp_default_max)
         if not profile:
             embed = self.bot.theme.embeds.one_line.primary(f"Welcome {message.author.name}. Creating your profile!")
             await message.channel.send(embed=embed)
             profile = await self.create_profile(message.author.id)
-        profile.give_xp(xp)
-        self.__xp_buffer.set(message.author.id, None)    # TODO: Replace None or convert xp_buffer to list or set.
+        if profile.in_xp_buffer:
+            return
+
+        await profile.give_xp()
 
     async def get_profile_embed(self, user):
         profile = await self.get_profile(user.id)
