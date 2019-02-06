@@ -65,8 +65,8 @@ class ProfileCache(object):
         profile = await self.get_profile(message.author.id)
         xp = random.randint(self.plugin.data.profile.xp_default_min, self.plugin.data.profile.xp_default_max)
         if not profile:
-            embed = self.bot.theme.embeds.one_line.primary("Welcome to Cosmos. Creating your profile!")
-            await message.channel.send(content=message.author.mention, embed=embed)
+            embed = self.bot.theme.embeds.one_line.primary(f"Welcome {message.author.name}. Creating your profile!")
+            await message.channel.send(embed=embed)
             profile = await self.create_profile(message.author.id)
         profile.give_xp(xp)
         self.__xp_buffer.set(message.author.id, None)    # TODO: Replace None or convert xp_buffer to list or set.
