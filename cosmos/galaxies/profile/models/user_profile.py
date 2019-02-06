@@ -35,6 +35,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         # self.on_time: int = None
         self._xp_buffer_cooldown = kwargs.get("xp_buffer_cooldown", self._plugin.data.xp.buffer_cooldown)
         self.user = self._plugin.bot.get_user(self.id)
+        self.__collection = self._plugin.profile_cache.collection
 
     @property
     def can_rep(self):
@@ -46,8 +47,10 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
     def rep_delta(self):
         return self.rep_datetime - datetime.now()
 
-    def rep(self):
+    async def rep(self):
         self.reps += 1
+        self.rep_datetime = datetime.now()
+        await self.__collection.update_one({"user_id": self.id}, {"$set": {"rep_datetime": self.rep_datetime}})
 
     def to_update_document(self) -> tuple:
         filter_ = {"user_id": self.id}
