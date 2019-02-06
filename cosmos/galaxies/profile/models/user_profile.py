@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from .level import UserLevel
 from .experience import UserExperience
 from .currency import CosmosCurrency
@@ -21,6 +23,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         self.__plugin = plugin
         self.id: int = kwargs["user_id"]
         self.reps: int = kwargs.get("reps", 0)
+        self.rep_datetime = kwargs.get("rep_datetime")
         # self.badges = []
         self.description: str = kwargs.get("description", str())
         UserExperience.__init__(self, kwargs.get("xp", 0))
@@ -32,6 +35,13 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         # self.on_time: int = None
         self._xp_buffer_cooldown = kwargs.get("xp_buffer_cooldown", self._plugin.data.xp.buffer_cooldown)
         self.user = self._plugin.bot.get_user(self.id)
+
+    @property
+    def can_rep(self):
+        if not self.rep_datetime:    # Using rep for first time.
+            return True
+        delta = self.rep_datetime - datetime.now()
+        return (delta.seconds/60)/60 <= self._plugin.data.profile.rep_cooldown
 
     def to_xp_filter_and_update(self) -> tuple:
         filter_ = {"user_id": self.id}
