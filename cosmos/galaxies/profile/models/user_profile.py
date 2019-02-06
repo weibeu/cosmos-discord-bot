@@ -55,7 +55,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         self.reps += 1
         author_profile.rep_datetime = datetime.now()
         await self.__collection.update_one(
-            {"user_id": self.id}, {"$set": {"rep_datetime": author_profile.rep_datetime}}
+            {"user_id": author_profile.id}, {"$set": {"rep_datetime": author_profile.rep_datetime}}
         )
 
     def to_update_document(self) -> tuple:
