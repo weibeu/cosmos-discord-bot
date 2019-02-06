@@ -32,5 +32,5 @@ class Profile(Cog):
     @commands.command()
     async def profile(self, ctx, user: discord.User = None):
         user = user or ctx.author
-        embed = await self.cache.get_profile_embed(user)
-        await ctx.send(embed=embed)
+        profile = await self.cache.get_profile(user.id)
+        await ctx.send(embed=profile.get_embed())
