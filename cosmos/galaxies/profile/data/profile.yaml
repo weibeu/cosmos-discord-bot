@@ -6,10 +6,12 @@ cache_all: No    # Cache ^ members profile on ready.
 document_schema:
     user_id: null
     reps: 0
+    rep_datetime: null
     description: ""
     level: 0
     xp: 0
 
+rep_cooldown: 20    # Cooldown for awarding reputation points in hours.
 default_description: "Lazy. How do I change my profile description?"
 
 update_task_cooldown: 60    # Time period of cache to db update task.
