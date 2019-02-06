@@ -52,5 +52,7 @@ class Profile(Cog):
             embed = self.bot.theme.embeds.one_line.primary(f"👌 You added one reputation point to {user.name}.")
             await ctx.send(embed=embed)
         else:
-            embed = self.bot.theme.embeds.one_line.primary(f"🕐 You can rep again in {author_profile.rep_delta}.")
+            hrs, mins, secs = author_profile.rep_delta
+            res = f"🕐    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
+            embed = self.bot.theme.embeds.one_line.primary(res)
             await ctx.send(embed=embed)
