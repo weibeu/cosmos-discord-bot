@@ -46,7 +46,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
 
     @property
     def rep_delta(self):
-        delta = datetime.now() - self.rep_datetime
+        delta = self.rep_datetime- datetime.now()
         hours, _ = divmod(delta.seconds, 3600)
         minutes, seconds = divmod(_, 60)
         return hours, minutes, seconds
