@@ -43,10 +43,11 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         delta = self.rep_datetime - datetime.now()
         return (delta.seconds/60)/60 <= self._plugin.data.profile.rep_cooldown
 
-    def to_xp_filter_and_update(self) -> tuple:
+    def to_update_document(self) -> tuple:
         filter_ = {"user_id": self.id}
         update = {
             "$set": {
+                "reps": self.reps,
                 "xp": self.xp,
                 "level": self.level
             }

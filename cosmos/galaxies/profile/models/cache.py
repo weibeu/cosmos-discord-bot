@@ -68,7 +68,7 @@ class ProfileCache(object):
         while True:
             await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
             self.bot.log.info("Updating Profile caches to database.")
-            batch = [UpdateOne(*profile.to_xp_filter_and_update()) for profile in self.lfu.values()]
+            batch = [UpdateOne(*profile.to_update_document()) for profile in self.lfu.values()]
             try:
                 result = await self.collection.bulk_write(batch, ordered=False)
                 self.bot.log.info(f"Job completed. Updated {result.modified_count} profiles.")
