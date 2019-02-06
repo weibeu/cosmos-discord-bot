@@ -37,11 +37,20 @@ class Profile(Cog):
         await ctx.send(embed=profile.get_embed())
 
     @commands.command(name="rep")
-    async def rep_user(self, ctx, user: discord.User):
-        if user.bot:
+    async def rep_user(self, ctx, user: discord.User = None):
+        if user and user.bot:
             embed = self.bot.theme.embeds.one_line.primary("😔    Sorry but I just can't do that.")
             return await ctx.send(embed=embed)
         author_profile = await self.cache.get_profile(ctx.author.id)
+        if user is None:
+            if author_profile.can_rep:
+                res = "👌    You can rep someone now."
+            else:
+                hrs, mins, secs = author_profile.rep_delta
+                res = f"🕐    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
+            embed = self.bot.theme.embeds.one_line.primary(res)
+            return await ctx.send(embed=embed)
+
         if author_profile.can_rep:
             target_profile = await self.cache.get_profile(user.id)
             if not target_profile:
@@ -49,7 +58,7 @@ class Profile(Cog):
                 embed = self.bot.theme.embeds.one_line.primary(res)
                 await ctx.send(embed=embed)
             await target_profile.rep(author_profile)
-            embed = self.bot.theme.embeds.one_line.primary(f"👌    You added one reputation point to {user.name}.")
+            embed = self.bot.theme.embeds.one_line.primary(f"You added one reputation point to {user.name}.", user.avatar_url)
             await ctx.send(embed=embed)
         else:
             hrs, mins, secs = author_profile.rep_delta
