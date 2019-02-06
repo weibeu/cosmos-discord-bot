@@ -31,7 +31,6 @@ class UserLevel(ProfileModelsBase, ABC):
 
     def from_delta_xp(self):
         while self.xp >= self.xp_level:
-            print(1)
             self._xp_level += self.__delta_xp
             self._level += 1    # Don't really need self._level -= 1 'cause user will never loose xp.
         return self._level
