@@ -12,8 +12,8 @@ document_schema:
 
 default_description: "Lazy. How do I change my profile description?"
 
-xp_default_min: 0
-xp_default_max: 20
+xp_default_min: 10
+xp_default_max: 30
 xp_buffer_max_size: 1000000
 xp_buffer_cooldown: 15
 
