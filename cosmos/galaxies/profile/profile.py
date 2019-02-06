@@ -34,3 +34,19 @@ class Profile(Cog):
         user = user or ctx.author
         profile = await self.cache.get_profile(user.id)
         await ctx.send(embed=profile.get_embed())
+
+    @commands.command(name="rep")
+    async def rep_user(self, ctx, user: discord.User):
+        author_profile = await self.cache.get_profile(ctx.author.id)
+        if author_profile.can_rep:
+            target_profile = await self.cache.get_profile(user.id)
+            if not target_profile:
+                res = f"Sorry but, {user.name} hasn't created their Cosmos Profile yet."
+                embed = self.bot.theme.embeds.one_line.primary(res)
+                await ctx.send(embed=embed)
+            target_profile.rep()
+            embed = self.bot.theme.embeds.one_line.primary(f"👌 You added one reputation point to {user.name}.")
+            await ctx.send(embed=embed)
+        else:
+            embed = self.bot.theme.embeds.one_line.primary(f"🕐 You can rep again in {author_profile.rep_delta}.")
+            await ctx.send(embed=embed)

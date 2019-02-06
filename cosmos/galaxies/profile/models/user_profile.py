@@ -40,8 +40,14 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
     def can_rep(self):
         if not self.rep_datetime:    # Using rep for first time.
             return True
-        delta = self.rep_datetime - datetime.now()
-        return (delta.seconds/60)/60 <= self._plugin.data.profile.rep_cooldown
+        return (self.rep_delta.seconds/60)/60 <= self._plugin.data.profile.rep_cooldown
+
+    @property
+    def rep_delta(self):
+        return self.rep_datetime - datetime.now()
+
+    def rep(self):
+        self.reps += 1
 
     def to_update_document(self) -> tuple:
         filter_ = {"user_id": self.id}
