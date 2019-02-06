@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from .level import UserLevel
 from .experience import UserExperience
@@ -41,19 +41,21 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
     def can_rep(self):
         if not self.rep_datetime:    # Using rep for first time.
             return True
-        net_seconds = self.rep_delta[0]*60*60 + self.rep_delta[1]*60 + self.rep_delta[2]
-        return net_seconds >= self._plugin.data.profile.rep_cooldown*60*60
+        delta = datetime.datetime.now() - self.rep_datetime
+        return delta.seconds >= self._plugin.data.profile.rep_cooldown*60*60
 
     @property
     def rep_delta(self):
-        delta = self.rep_datetime - datetime.now()
+        future = self.rep_datetime + datetime.timedelta(hours=self._plugin.data.profile.rep_cooldown)
+        # noinspection PyTypeChecker
+        delta = future - datetime.datetime.now()
         hours, _ = divmod(delta.seconds, 3600)
         minutes, seconds = divmod(_, 60)
         return hours, minutes, seconds
 
     async def rep(self, author_profile):
         self.reps += 1
-        author_profile.rep_datetime = datetime.now()
+        author_profile.rep_datetime = datetime.datetime.now()
         await self.__collection.update_one(
             {"user_id": author_profile.id}, {"$set": {"rep_datetime": author_profile.rep_datetime}}
         )
