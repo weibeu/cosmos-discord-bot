@@ -48,7 +48,7 @@ class Profile(Cog):
                 res = f"Sorry but, {user.name} hasn't created their Cosmos Profile yet. Can you encourage them to?"
                 embed = self.bot.theme.embeds.one_line.primary(res)
                 await ctx.send(embed=embed)
-            await target_profile.rep()
+            await target_profile.rep(author_profile)
             embed = self.bot.theme.embeds.one_line.primary(f"👌 You added one reputation point to {user.name}.")
             await ctx.send(embed=embed)
         else:

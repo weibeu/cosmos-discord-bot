@@ -47,10 +47,12 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
     def rep_delta(self):
         return datetime.now() - self.rep_datetime
 
-    async def rep(self):
+    async def rep(self, author_profile):
         self.reps += 1
-        self.rep_datetime = datetime.now()
-        await self.__collection.update_one({"user_id": self.id}, {"$set": {"rep_datetime": datetime.now()}})
+        author_profile.rep_datetime = datetime.now()
+        await self.__collection.update_one(
+            {"user_id": self.id}, {"$set": {"rep_datetime": author_profile.rep_datetime}}
+        )
 
     def to_update_document(self) -> tuple:
         filter_ = {"user_id": self.id}
