@@ -54,7 +54,7 @@ class ProfileCache(object):
         return profile
 
     async def create_profile(self, user_id: int) -> CosmosUserProfile:
-        profile_document = self.plugin.data.profile.document_schema
+        profile_document = self.plugin.data.profile.document_schema.copy()
         profile_document.update({"user_id": user_id})
         await self.collection.insert_one(profile_document)
         return await self.get_profile(user_id)
