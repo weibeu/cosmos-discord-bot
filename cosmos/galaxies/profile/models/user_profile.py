@@ -31,6 +31,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         # self.inventory = []
         # self.on_time: int = None
         self._xp_buffer_cooldown = kwargs.get("xp_buffer_cooldown", self._plugin.data.xp.buffer_cooldown)
+        self.user = self._plugin.bot.get_user(self.id)
 
     def to_xp_filter_and_update(self) -> tuple:
         filter_ = {"user_id": self.id}
@@ -41,3 +42,14 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
             }
         }
         return filter_, update
+
+    def get_embed(self, user):
+        embed = self._plugin.bot.theme.embeds.primary(title="Cosmos Profile")
+        embed.set_author(name=user.name, icon_url=self.user.avatar_url)
+        embed.add_field(name="Reputation points", value=str(self.reps))
+        embed.add_field(name="Level", value=str(self.level))
+        embed.add_field(name="Experience points", value=str(self.xp))
+        embed.add_field(name="Experience points required for next level", value=str(self.delta_xp))
+        description = self.description or self._plugin.data.profile.default_description
+        embed.add_field(name="Profile description", value=description)
+        return embed

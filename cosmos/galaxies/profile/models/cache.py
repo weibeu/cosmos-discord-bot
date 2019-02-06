@@ -64,20 +64,6 @@ class ProfileCache(object):
 
         await profile.give_xp()
 
-    async def get_profile_embed(self, user):
-        profile = await self.get_profile(user.id)
-        if not profile:
-            profile = await self.create_profile(user.id)
-        embed = self.bot.theme.embeds.primary(title="Cosmos Profile")
-        embed.set_author(name=user.name, icon_url=user.avatar_url)
-        embed.add_field(name="Reputation points", value=str(profile.reps))
-        embed.add_field(name="Level", value=str(profile.level))
-        embed.add_field(name="Experience points", value=str(profile.xp))
-        embed.add_field(name="Experience points required for next level", value=str(profile.delta_xp))
-        description = profile.description or self.plugin.data.profile.default_description
-        embed.add_field(name="Profile description", value=description)
-        return embed
-
     async def __update_database(self):
         while True:
             await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
