@@ -51,20 +51,17 @@ class Profile(Cog):
             else:
                 hrs, mins, secs = author_profile.rep_delta
                 res = f"🕐    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
-            embed = self.bot.theme.embeds.one_line.primary(res)
-            return await ctx.send(embed=embed)
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
 
         if author_profile.can_rep:
             target_profile = await self.cache.get_profile(user.id)
             if not target_profile:
                 res = f"😔    Sorry but, {user.name} hasn't created their Cosmos Profile yet. Can you encourage them to?"
-                embed = self.bot.theme.embeds.one_line.primary(res)
-                await ctx.send(embed=embed)
+                await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
             await target_profile.rep(author_profile)
-            embed = self.bot.theme.embeds.one_line.primary(f"You added one reputation point to {user.name}.", user.avatar_url)
-            await ctx.send(embed=embed)
+            res = f"You added one reputation point to {user.name}."
+            await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, user.avatar_url))
         else:
             hrs, mins, secs = author_profile.rep_delta
             res = f"🕐    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
-            embed = self.bot.theme.embeds.one_line.primary(res)
-            await ctx.send(embed=embed)
+            await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
