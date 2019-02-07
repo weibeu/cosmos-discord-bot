@@ -59,11 +59,11 @@ class ProfileCache(object):
             embed = self.bot.theme.embeds.one_line.primary(f"Welcome {message.author.name}. Creating your profile!")
             await message.channel.send(embed=embed)
             profile = await self.create_profile(message.author.id)
-        if profile.in_xp_buffer:
-            return
 
-        await profile.give_xp()
-        await profile.give_default_bosons()
+        if not profile.in_xp_buffer:
+            await profile.give_xp()
+        if not profile.in_boson_buffer:
+            await profile.give_default_bosons()
 
     async def __update_database(self):
         while True:
