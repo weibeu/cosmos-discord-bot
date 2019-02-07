@@ -61,7 +61,8 @@ class CosmosUserProfile(UserExperience, Boson):
         update = {
             "$set": {
                 "xp": self.xp,
-                "level": self.level
+                "level": self.level,
+                "bosons": self.bosons
             }
         }
         return filter_, update
