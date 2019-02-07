@@ -41,6 +41,9 @@ class Profile(Cog):
         if user and user.bot:
             embed = self.bot.theme.embeds.one_line.primary("😔    Sorry but I just can't do that.")
             return await ctx.send(embed=embed)
+        if user.id == ctx.author.id:
+            res = "🙂    Nice try but wouldn't that be unfair?"
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         author_profile = await self.cache.get_profile(ctx.author.id)
         if user is None:
             if author_profile.can_rep:
