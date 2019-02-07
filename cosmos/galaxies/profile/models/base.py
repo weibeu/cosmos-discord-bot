@@ -1,6 +1,9 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class ProfileModelsBase(ABC):
 
-    pass
+    @property
+    @abstractmethod
+    def _plugin(self):
+        raise NotImplementedError
