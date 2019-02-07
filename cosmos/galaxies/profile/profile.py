@@ -56,7 +56,7 @@ class Profile(Cog):
         if author_profile.can_rep:
             target_profile = await self.cache.get_profile(user.id)
             if not target_profile:
-                res = f"😔    Sorry but, {user.name} hasn't created their Cosmos Profile yet. Can you encourage them to?"
+                res = self.plugin.data.responses.no_profile.format(user_name=user.name)
                 return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
             await target_profile.rep(author_profile)
             res = f"You added one reputation point to {user.name}."
