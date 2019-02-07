@@ -5,9 +5,6 @@ cache_all: No    # Cache ^ members profile on ready.
 
 document_schema:
     user_id: null
-    reps: 0
-    rep_datetime: null
-    description: ""
     level: 0
     xp: 0
 
