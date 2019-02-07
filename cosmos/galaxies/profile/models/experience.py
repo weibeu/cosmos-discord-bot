@@ -9,11 +9,6 @@ class UserExperience(UserLevel, ABC):
 
     @property
     @abstractmethod
-    def _plugin(self):
-        raise NotImplementedError
-
-    @property
-    @abstractmethod
     def xp_buffer_cooldown(self):
         raise NotImplementedError
 
