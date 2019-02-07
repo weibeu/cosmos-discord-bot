@@ -34,6 +34,9 @@ class Profile(Cog):
     async def profile(self, ctx, user: discord.User = None):
         user = user or ctx.author
         profile = await self.cache.get_profile(user.id)
+        if profile is None:
+            res = self.plugin.data.responses.no_profile.format(user_name=user.name)
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         await ctx.send(embed=profile.get_embed())
 
     @commands.command(name="rep")
