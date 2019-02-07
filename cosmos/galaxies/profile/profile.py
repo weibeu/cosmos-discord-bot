@@ -28,7 +28,7 @@ class Profile(Cog):
         if self.__is_ignored(message):
             return
 
-        await self.cache.give_xp(message)
+        await self.cache.give_assets(message)
 
     @commands.command()
     async def profile(self, ctx, user: discord.User = None):
