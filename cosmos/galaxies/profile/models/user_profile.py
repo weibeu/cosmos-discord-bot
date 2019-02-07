@@ -1,11 +1,10 @@
 import datetime
 
-from .level import UserLevel
 from .experience import UserExperience
-from .currency import CosmosCurrency
+from .currency import Boson
 
 
-class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
+class CosmosUserProfile(UserExperience, Boson):
 
     @property
     def _plugin(self):
@@ -27,7 +26,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         # self.badges = []
         self.description: str = kwargs.get("description", str())
         UserExperience.__init__(self, kwargs.get("xp", 0), kwargs.get("level", 0))
-        # CosmosCurrency.__init__(self, kwargs.get("currency_name", 0))
+        Boson.__init__(self, kwargs.get("bosons", 0))
         self.rank: int = None
         self.spouse: CosmosUserProfile = None
         # self.inventory = []
@@ -76,6 +75,7 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         embed = self._plugin.bot.theme.embeds.primary(title="Cosmos Profile")
         embed.set_author(name=self.user.name, icon_url=self.user.avatar_url)
         embed.add_field(name="Reputation points", value=str(self.reps))
+        embed.add_field(name="Bosons", value=str(self.bosons))
         embed.add_field(name="Level", value=str(self.level))
         embed.add_field(name="Experience points", value=str(self.xp))
         embed.add_field(name="Experience points required for next level", value=str(self.delta_xp))

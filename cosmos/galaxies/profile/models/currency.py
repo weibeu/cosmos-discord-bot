@@ -3,11 +3,11 @@ from abc import ABC
 from .base import ProfileModelsBase
 
 
-class CosmosCurrency(ProfileModelsBase, ABC):
+class Boson(ProfileModelsBase, ABC):
 
-    def __init__(self, value: int):
-        self._currency = value
+    def __init__(self, bosons: int):
+        self._bosons = bosons
 
     @property
-    def currency(self):
-        return self._currency
+    def bosons(self):
+        return self._bosons
