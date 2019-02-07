@@ -69,6 +69,7 @@ class ProfileCache(object):
             await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
             self.bot.log.info("Updating Profile caches to database.")
             batch = [UpdateOne(*profile.to_update_document()) for profile in self.lfu.values()]
+            # TODO: Make global database batches.
             try:
                 result = await self.collection.bulk_write(batch, ordered=False)
                 self.bot.log.info(f"Job completed. Updated {result.modified_count} profiles.")
