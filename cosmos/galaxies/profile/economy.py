@@ -17,7 +17,7 @@ class Economy(Cog):
             adverb = f"{user.name} has"
         else:
             user = ctx.author
-            adverb = "{user.name}, you have"
+            adverb = f"{user.name}, you have"
         if user.bot:
             res = f"😙    Poor {user.name} is jobless. Help them to get one."
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
