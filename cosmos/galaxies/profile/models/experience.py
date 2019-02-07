@@ -2,10 +2,10 @@ import asyncio
 import random
 
 from abc import ABC, abstractmethod
-from cosmos.galaxies.profile.models.base import ProfileModelsBase
+from .level import UserLevel
 
 
-class UserExperience(ProfileModelsBase, ABC):
+class UserExperience(UserLevel, ABC):
 
     @property
     @abstractmethod
@@ -17,7 +17,8 @@ class UserExperience(ProfileModelsBase, ABC):
     def xp_buffer_cooldown(self):
         raise NotImplementedError
 
-    def __init__(self, xp: int):
+    def __init__(self, xp: int, level):
+        super().__init__(level)
         self._xp = xp
         self.in_xp_buffer = False
 
