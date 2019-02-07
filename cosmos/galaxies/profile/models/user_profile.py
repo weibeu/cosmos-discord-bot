@@ -10,10 +10,6 @@ class CosmosUserProfile(UserExperience, Boson):
     def _plugin(self):
         return self.__plugin
 
-    @property
-    def xp_buffer_cooldown(self):
-        return self._xp_buffer_cooldown
-
     @classmethod
     def from_document(cls, plugin, document: dict):
         return cls(plugin, **document)
@@ -31,7 +27,6 @@ class CosmosUserProfile(UserExperience, Boson):
         self.spouse: CosmosUserProfile = None
         # self.inventory = []
         # self.on_time: int = None
-        self._xp_buffer_cooldown = kwargs.get("xp_buffer_cooldown", self._plugin.data.xp.buffer_cooldown)
         self.user = self._plugin.bot.get_user(self.id)
         self.__collection = self._plugin.profile_cache.collection
 

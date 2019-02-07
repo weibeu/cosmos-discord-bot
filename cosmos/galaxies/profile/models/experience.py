@@ -7,11 +7,6 @@ from .level import UserLevel
 
 class UserExperience(UserLevel, ABC):
 
-    @property
-    @abstractmethod
-    def xp_buffer_cooldown(self):
-        raise NotImplementedError
-
     def __init__(self, xp: int, level):
         super().__init__(level)
         self._xp = xp
@@ -30,5 +25,5 @@ class UserExperience(UserLevel, ABC):
         self._xp += xp
 
         self.in_xp_buffer = True    # Put user in xp cooldown buffer.
-        await asyncio.sleep(self.xp_buffer_cooldown)
+        await asyncio.sleep(self._plugin.data.xp.buffer_cooldown)
         self.in_xp_buffer = False
