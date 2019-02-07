@@ -32,6 +32,7 @@ class UserExperience(ProfileModelsBase, ABC):
     async def give_xp(self):
         xp = random.randint(self._plugin.data.xp.default_min, self._plugin.data.xp.default_max)
         self._xp += xp
-        self.in_xp_buffer = True
+
+        self.in_xp_buffer = True    # Put user in xp cooldown buffer.
         await asyncio.sleep(self.xp_buffer_cooldown)
         self.in_xp_buffer = False
