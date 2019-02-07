@@ -74,11 +74,11 @@ class CosmosUserProfile(UserExperience, Boson):
     def get_embed(self):
         embed = self._plugin.bot.theme.embeds.primary(title="Cosmos Profile")
         embed.set_author(name=self.user.name, icon_url=self.user.avatar_url)
-        embed.add_field(name="Reputation points", value=str(self.reps))
-        embed.add_field(name="Bosons", value=str(self.bosons))
         embed.add_field(name="Level", value=str(self.level))
         embed.add_field(name="Experience points", value=str(self.xp))
-        embed.add_field(name="Experience points required for next level", value=str(self.delta_xp))
+        embed.add_field(name="Delta Experience points", value=str(self.delta_xp))
+        embed.add_field(name="Reputation points", value=str(self.reps))
+        embed.add_field(name="Bosons", value=str(self.bosons))
         description = self.description or self._plugin.data.profile.default_description
         embed.add_field(name="Profile description", value=description)
         return embed
