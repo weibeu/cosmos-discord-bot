@@ -57,6 +57,9 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         self.reps += 1
         author_profile.rep_datetime = datetime.datetime.now()
         await self.__collection.update_one(
+            {"user_id": self.id}, {"$set": {"reps": self.reps}}
+        )
+        await self.__collection.update_one(
             {"user_id": author_profile.id}, {"$set": {"rep_datetime": author_profile.rep_datetime}}
         )
 
@@ -64,7 +67,6 @@ class CosmosUserProfile(UserExperience, UserLevel, CosmosCurrency):
         filter_ = {"user_id": self.id}
         update = {
             "$set": {
-                "reps": self.reps,
                 "xp": self.xp,
                 "level": self.level
             }
