@@ -11,7 +11,7 @@ class Economy(Cog):
         self.plugin = plugin
         self.cache = self.plugin.profile_cache
 
-    @commands.group(name="bosons", aliases=["boson", "$"])
+    @commands.group(name="bosons", aliases=["boson", "$"], invoke_without_command=True)
     async def bosons(self, ctx, user: discord.User = None):
         if user:
             adverb = f"{user.name} has"
@@ -36,7 +36,7 @@ class Economy(Cog):
             res = self.plugin.data.responses.no_profile.format(user_name=user.name)
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         if author_profile.bosons < bosons:
-            res = "❌    Sorry but you don't have enough Bosons for this transaction."
+            res = "❌    Sorry but you don't have enough Bosons to complete this transaction."
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         author_profile.give_bosons(-bosons)
         target_profile.give_bosons(bosons)
