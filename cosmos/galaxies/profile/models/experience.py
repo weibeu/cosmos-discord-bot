@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from .level import UserLevel
 
 
