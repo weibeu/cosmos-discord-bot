@@ -11,7 +11,7 @@ class Economy(Cog):
         self.plugin = plugin
         self.cache = self.plugin.profile_cache
 
-    @commands.command(name="bosons", aliases=["boson", "$"])
+    @commands.group(name="bosons", aliases=["boson", "$"])
     async def bosons(self, ctx, user: discord.User = None):
         if user:
             adverb = f"{user.name} has"
@@ -26,6 +26,21 @@ class Economy(Cog):
             res = self.plugin.data.responses.no_profile.format(user_name=user.name)
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         res = f"💵    {adverb} {profile.bosons} Bosons."
+        await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+
+    @bosons.command(name="credit", aliases=["transfer", "give"])
+    async def transfer_bosons(self, ctx, user: discord.User, bosons: int):
+        author_profile = await self.cache.get_profile(ctx.author.id)
+        target_profile = await self.cache.get_profile(user.id)
+        if target_profile is None:
+            res = self.plugin.data.responses.no_profile.format(user_name=user.name)
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        if author_profile.bosons < bosons:
+            res = "❌    Sorry but you don't have enough Bosons for this transaction."
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        author_profile.give_bosons(-bosons)
+        target_profile.give_bosons(bosons)
+        res = f"📤    {ctx.author.name}, you gave {bosons} Bosons to {user.name}."
         await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
 
     @commands.command(name="daily", aliases=["dailies"])
