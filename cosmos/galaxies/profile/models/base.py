@@ -10,6 +10,16 @@ class ProfileModelsBase(ABC):
     def _plugin(self):
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def _collection(self):
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def id(self):
+        raise NotImplementedError
+
     @staticmethod
     def time_delta(past, extend_hours) -> tuple:
         future = past + datetime.timedelta(hours=extend_hours)
