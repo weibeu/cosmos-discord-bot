@@ -39,7 +39,6 @@ class CosmosUserProfile(UserExperience, Boson, CosmosMarriage):
         # self.badges = []
         self._description: str = kwargs.get("description", str())
         self.rank: int = None
-        self.spouse: CosmosUserProfile = None
         # self.inventory = []
         # self.on_time: int = None
         self.user = self._plugin.bot.get_user(self.id)
