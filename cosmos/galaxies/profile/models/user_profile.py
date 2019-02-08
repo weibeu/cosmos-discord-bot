@@ -10,6 +10,14 @@ class CosmosUserProfile(UserExperience, Boson):
     def _plugin(self):
         return self.__plugin
 
+    @property
+    def _collection(self):
+        return self.__collection
+
+    @property
+    def id(self):
+        return self._id
+
     @classmethod
     def from_document(cls, plugin, document: dict):
         return cls(plugin, **document)
@@ -18,7 +26,7 @@ class CosmosUserProfile(UserExperience, Boson):
         UserExperience.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
         self.__plugin = plugin
-        self.id: int = kwargs["user_id"]
+        self._id: int = kwargs["user_id"]
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
         self.rep_datetime = raw_reputation.get("datetime")
@@ -29,7 +37,7 @@ class CosmosUserProfile(UserExperience, Boson):
         # self.inventory = []
         # self.on_time: int = None
         self.user = self._plugin.bot.get_user(self.id)
-        self._collection = self._plugin.profile_cache.collection
+        self.__collection = self._plugin.profile_cache.collection
 
     @property
     def can_rep(self):
