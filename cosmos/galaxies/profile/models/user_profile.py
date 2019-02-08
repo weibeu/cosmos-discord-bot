@@ -15,6 +15,8 @@ class CosmosUserProfile(UserExperience, Boson):
         return cls(plugin, **document)
 
     def __init__(self, plugin, **kwargs):
+        UserExperience.__init__(self, **kwargs)
+        Boson.__init__(self, **kwargs)
         self.__plugin = plugin
         self.id: int = kwargs["user_id"]
         raw_reputation = kwargs.get("reputation", dict())
@@ -22,8 +24,6 @@ class CosmosUserProfile(UserExperience, Boson):
         self.rep_datetime = raw_reputation.get("datetime")
         # self.badges = []
         self.description: str = kwargs.get("description", str())
-        UserExperience.__init__(self, **kwargs)
-        Boson.__init__(self, **kwargs)
         self.rank: int = None
         self.spouse: CosmosUserProfile = None
         # self.inventory = []
