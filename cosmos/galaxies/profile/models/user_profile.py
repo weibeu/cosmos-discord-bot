@@ -39,13 +39,8 @@ class CosmosUserProfile(UserExperience, Boson):
         return delta.seconds >= self._plugin.data.profile.rep_cooldown*60*60
 
     @property
-    def rep_delta(self):
-        future = self.rep_datetime + datetime.timedelta(hours=self._plugin.data.profile.rep_cooldown)
-        # noinspection PyTypeChecker
-        delta = future - datetime.datetime.now()
-        hours, _ = divmod(delta.seconds, 3600)
-        minutes, seconds = divmod(_, 60)
-        return hours, minutes, seconds
+    def rep_delta(self) -> tuple:
+        return self.time_delta(self.rep_datetime, self._plugin.data.profile.rep_cooldown)
 
     async def rep(self, author_profile):
         self.reps += 1
