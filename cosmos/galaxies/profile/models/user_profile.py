@@ -1,10 +1,11 @@
 import datetime
 
-from .experience import UserExperience
 from .currency import Boson
+from .experience import UserExperience
+from .marriage import CosmosMarriage
 
 
-class CosmosUserProfile(UserExperience, Boson):
+class CosmosUserProfile(UserExperience, Boson, CosmosMarriage):
 
     @property
     def _plugin(self):
@@ -29,6 +30,7 @@ class CosmosUserProfile(UserExperience, Boson):
     def __init__(self, plugin, **kwargs):
         UserExperience.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
+        CosmosMarriage.__init__(self, **kwargs)
         self.__plugin = plugin
         self._id: int = kwargs["user_id"]
         raw_reputation = kwargs.get("reputation", dict())
