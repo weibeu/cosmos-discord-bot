@@ -29,7 +29,7 @@ class CosmosUserProfile(UserExperience, Boson):
         # self.inventory = []
         # self.on_time: int = None
         self.user = self._plugin.bot.get_user(self.id)
-        self.__collection = self._plugin.profile_cache.collection
+        self._collection = self._plugin.profile_cache.collection
 
     @property
     def can_rep(self):
@@ -45,10 +45,10 @@ class CosmosUserProfile(UserExperience, Boson):
     async def rep(self, author_profile):
         self.reps += 1
         author_profile.rep_datetime = datetime.datetime.now()
-        await self.__collection.update_one(
+        await self._collection.update_one(
             {"user_id": self.id}, {"$set": {"reputation.points": self.reps}}
         )
-        await self.__collection.update_one(
+        await self._collection.update_one(
             {"user_id": author_profile.id}, {"$set": {"reputation.datetime": author_profile.rep_datetime}}
         )
 
