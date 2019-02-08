@@ -1,3 +1,5 @@
 default_min: 1
 default_max: 3
 buffer_cooldown: 47    # Time after which User is removed from buffer.
+
+daily_cooldown: 20    # Cooldown after which User can take another daily in hours.
