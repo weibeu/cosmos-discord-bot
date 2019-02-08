@@ -27,3 +27,23 @@ class Economy(Cog):
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         res = f"💵    {adverb} {profile.bosons} Bosons."
         await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+
+    @commands.command(name="daily", aliases=["dailies"])
+    async def daily_bosons(self, ctx, user: discord.User = None):
+        author_profile = await self.cache.get_profile(ctx.author.id)
+        target_name = "you"
+        if (user and user.bot) or not user:
+            target_profile = author_profile
+        else:
+            target_profile = await self.cache.get_profile(user.id)
+            if target_profile is None:
+                target_profile = author_profile
+            else:
+                target_name = user.name
+        if not author_profile.can_take_daily_bosons:
+            hrs, mins, secs = author_profile.daily_bosons_delta
+            res = f"⏳    You can take your dailies again in {hrs} hours, {mins} minutes and {secs} seconds."
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        await author_profile.take_daily_bosons(target_profile)
+        res = f"🗓    {self.plugin.data.boson.default_daily} daily Bosons were given to {target_name}."
+        await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
