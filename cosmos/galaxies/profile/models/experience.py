@@ -7,9 +7,9 @@ from .level import UserLevel
 
 class UserExperience(UserLevel, ABC):
 
-    def __init__(self, xp: int, level):
-        super().__init__(level)
-        self._xp = xp
+    def __init__(self, **kwargs):
+        self._xp = kwargs.get("xp", 0)
+        super().__init__(kwargs.get("level", 0))
         self.in_xp_buffer = False
 
     @property

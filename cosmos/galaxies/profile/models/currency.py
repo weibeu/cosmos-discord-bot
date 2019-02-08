@@ -7,8 +7,9 @@ from .base import ProfileModelsBase
 
 class Boson(ProfileModelsBase, ABC):
 
-    def __init__(self, bosons: int):
-        self._bosons = bosons
+    def __init__(self, **kwargs):
+        raw_currency = kwargs.get("currency", dict())
+        self._bosons = raw_currency.get("bosons", 0)
         self.in_boson_buffer = False
 
     @property

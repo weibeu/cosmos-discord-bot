@@ -17,12 +17,13 @@ class CosmosUserProfile(UserExperience, Boson):
     def __init__(self, plugin, **kwargs):
         self.__plugin = plugin
         self.id: int = kwargs["user_id"]
-        self.reps: int = kwargs.get("reps", 0)
-        self.rep_datetime = kwargs.get("rep_datetime")
+        raw_reputation = kwargs.get("reputation", dict())
+        self.reps: int = raw_reputation.get("points", 0)
+        self.rep_datetime = raw_reputation.get("datetime")
         # self.badges = []
         self.description: str = kwargs.get("description", str())
-        UserExperience.__init__(self, kwargs.get("xp", 0), kwargs.get("level", 0))
-        Boson.__init__(self, kwargs.get("bosons", 0))
+        UserExperience.__init__(self, **kwargs)
+        Boson.__init__(self, **kwargs)
         self.rank: int = None
         self.spouse: CosmosUserProfile = None
         # self.inventory = []
@@ -50,10 +51,10 @@ class CosmosUserProfile(UserExperience, Boson):
         self.reps += 1
         author_profile.rep_datetime = datetime.datetime.now()
         await self.__collection.update_one(
-            {"user_id": self.id}, {"$set": {"reps": self.reps}}
+            {"user_id": self.id}, {"$set": {"reputation.points": self.reps}}
         )
         await self.__collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"rep_datetime": author_profile.rep_datetime}}
+            {"user_id": author_profile.id}, {"$set": {"reputation.datetime": author_profile.rep_datetime}}
         )
 
     def to_update_document(self) -> tuple:
@@ -62,7 +63,7 @@ class CosmosUserProfile(UserExperience, Boson):
             "$set": {
                 "xp": self.xp,
                 "level": self.level,
-                "bosons": self.bosons
+                "currency.bosons": self.bosons
             }
         }
         return filter_, update
