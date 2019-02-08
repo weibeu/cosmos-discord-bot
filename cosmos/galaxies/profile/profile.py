@@ -30,7 +30,7 @@ class Profile(Cog):
 
         await self.cache.give_assets(message)
 
-    @commands.command()
+    @commands.group(invoke_without_command=True)
     async def profile(self, ctx, user: discord.User = None):
         user = user or ctx.author
         profile = await self.cache.get_profile(user.id)
@@ -38,6 +38,27 @@ class Profile(Cog):
             res = self.plugin.data.responses.no_profile.format(user_name=user.name)
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         await ctx.send(embed=profile.get_embed())
+
+    @profile.group(name="description", aliases=["text"], invoke_without_command=True)
+    async def profile_description(self, ctx):
+        profile = await self.cache.get_profile(ctx.author.id)
+        embed = self.bot.theme.embeds.primary(title="Profile Description")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.description = profile.description
+        await ctx.send(embed=embed)
+
+    @profile_description.command(name="set", aliases=["modify", "edit", "change"])
+    async def set_profile_description(self, ctx, *, description: str):
+        max_words = self.plugin.data.profile.max_description_length
+        if len(description) > max_words:
+            res = f"❌    Sorry but profile description cannot exceed {max_words} word limit."
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        profile = await self.cache.get_profile(ctx.author.id)
+        await profile.set_description(description)
+        embed = self.bot.theme.embeds.primary(title="✅    Your Profile Description has been updated to:")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.description = profile.description
+        await ctx.send("", embed=embed)
 
     @commands.command(name="rep")
     async def rep_user(self, ctx, user: discord.User = None):

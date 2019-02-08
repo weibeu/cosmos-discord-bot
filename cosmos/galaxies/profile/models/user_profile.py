@@ -64,6 +64,12 @@ class CosmosUserProfile(UserExperience, Boson):
             {"user_id": author_profile.id}, {"$set": {"reputation.datetime": author_profile.rep_datetime}}
         )
 
+    async def set_description(self, description: str):
+        self._description = description
+        await self._collection.update_one(
+            {"user_id": self.id}, {"$set": {"description": self.description}}
+        )
+
     def to_update_document(self) -> tuple:
         filter_ = {"user_id": self.id}
         update = {

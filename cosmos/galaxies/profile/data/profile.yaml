@@ -9,6 +9,8 @@ document_schema:
     xp: 0
 
 rep_cooldown: 20    # Cooldown for awarding reputation points in hours.
+
+max_description_length: 250
 default_description: "Lazy. How do I change my profile description?"
 
 update_task_cooldown: 60    # Time period of cache to db update task.
