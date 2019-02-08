@@ -66,5 +66,5 @@ class Profile(Cog):
             await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, user.avatar_url))
         else:
             hrs, mins, secs = author_profile.rep_delta
-            res = f"🕐    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
+            res = f"⏳    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
             await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
