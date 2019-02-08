@@ -18,6 +18,10 @@ class CosmosUserProfile(UserExperience, Boson):
     def id(self):
         return self._id
 
+    @property
+    def description(self):
+        return self._description or self._plugin.data.profile.default_description
+
     @classmethod
     def from_document(cls, plugin, document: dict):
         return cls(plugin, **document)
@@ -31,7 +35,7 @@ class CosmosUserProfile(UserExperience, Boson):
         self.reps: int = raw_reputation.get("points", 0)
         self.rep_datetime = raw_reputation.get("datetime")
         # self.badges = []
-        self.description: str = kwargs.get("description", str())
+        self._description: str = kwargs.get("description", str())
         self.rank: int = None
         self.spouse: CosmosUserProfile = None
         # self.inventory = []
@@ -79,6 +83,5 @@ class CosmosUserProfile(UserExperience, Boson):
         embed.add_field(name="Delta Experience points", value=str(self.delta_xp))
         embed.add_field(name="Reputation points", value=str(self.reps))
         embed.add_field(name="Bosons", value=str(self.bosons))
-        description = self.description or self._plugin.data.profile.default_description
-        embed.add_field(name="Profile description", value=description)
+        embed.add_field(name="Profile description", value=self.description)
         return embed
