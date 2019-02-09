@@ -42,8 +42,10 @@ class PluginHandler(object):
     def get_from_file(self, file):
         return self.get(self.bot.utilities.get_file_directory(file))
 
-    def setup(self, file, cogs: list = None):
+    def setup(self, file, cogs: list = None, **kwargs):
         plugin = self.get_from_file(file)
+        for attr_name in kwargs:
+            self.__setattr__(attr_name, kwargs[attr_name])
         cog_list = cogs or importlib.import_module(plugin.python_path).__all__
         plugin.load_cogs(cog_list)
         return plugin
