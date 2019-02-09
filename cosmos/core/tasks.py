@@ -11,7 +11,8 @@ class InitialTasks(commands.Bot):
         self._init_utilities()
         self._init_configs()
         super().__init__(
-            command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes)
+            command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes),
+            case_insensitive=True
         )
         self._init_logger()
         self._init_exception_handler()
