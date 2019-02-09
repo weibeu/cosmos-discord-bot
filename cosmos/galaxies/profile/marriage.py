@@ -109,7 +109,7 @@ class Marriage(Cog):
         if not author_profile.spouse:
             res = "You are not married to yet to divorce."
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
-        target_profile = await self.cache.get_profile(author_profile.spouse.user.id)
+        target_profile = await self.cache.get_profile(author_profile.spouse.id)
         await author_profile.divorce(target_profile)
         try:
             res = f"💔    {ctx.author.name} has divorced you."
