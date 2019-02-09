@@ -42,7 +42,7 @@ class CosmosUserProfile(UserExperience, Boson, CosmosMarriage):
         # self.inventory = []
         # self.on_time: int = None
         self.user = self._plugin.bot.get_user(self.id)
-        self.__collection = self._plugin.profile_cache.collection
+        self.__collection = self._plugin.cache.collection
 
     @property
     def can_rep(self):
