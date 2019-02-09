@@ -67,3 +67,14 @@ class CosmosMarriage(ProfileModelsBase, ABC):
         await self._collection.update_one(
             {"user_id": author_profile.id}, {"$set": {"marriage.spouse": author_profile.spouse_id}}
         )
+
+    async def divorce(self, target_profile):
+        self.spouse_id = None
+        target_profile.spouse_id = None
+
+        await self._collection.update_one(
+            {"user_id": self.id}, {"$unset": {"marriage.spouse": "$"}}
+        )
+        await self._collection.update_one(
+            {"user_id": target_profile.id}, {"$unset": {"marriage.spouse": "$"}}
+        )

@@ -102,3 +102,19 @@ class Marriage(Cog):
             pass
         res = f"You have cancelled your proposal sent to {target_profile.user.name}."
         await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
+
+    @commands.command(name="divorce")
+    async def divorce_user(self, ctx):
+        author_profile = await self.cache.get_profile(ctx.author.id)
+        if not author_profile.spouse:
+            res = "You are not married to yet to divorce."
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
+        target_profile = await self.cache.get_profile(author_profile.spouse.user.id)
+        await author_profile.divorce(target_profile)
+        try:
+            res = f"💔    {ctx.author.name} has divorced you."
+            await target_profile.user.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        except discord.Forbidden:
+            pass
+        res = f"You have divorced {target_profile.user.name}."
+        await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
