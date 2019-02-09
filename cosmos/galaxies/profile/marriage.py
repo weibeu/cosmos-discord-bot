@@ -43,9 +43,10 @@ class Marriage(Cog):
             return False
 
         if target_profile.proposed and target_profile.proposed.id == ctx.author.id:
+            content = f"{ctx.author.mention} {user.mention}"
             res = f"💕    The perfect match! You both have proposed to each other. You should now kiss each other " \
                 f"under 60 seconds to finally get married till eternity."
-            await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+            await ctx.send(content, embed=self.bot.theme.embeds.one_line.primary(res))
             try:
                 _ = await self.bot.wait_for("message", check=check_kiss_author)
                 __ = await self.bot.wait_for("message", check=check_kiss_target)
