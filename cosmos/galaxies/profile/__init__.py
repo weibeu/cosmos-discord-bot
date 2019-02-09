@@ -11,5 +11,4 @@ __all__ = [
 
 
 def setup(bot):
-    plugin = bot.plugins.setup(__file__)
-    plugin.cache = ProfileCache(plugin)
+    bot.plugins.setup(__file__, cache=ProfileCache)    # setup method automatically passes plugin.
