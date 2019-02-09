@@ -19,9 +19,6 @@ class Marriage(Cog):
             res = f"😶    You are really weird. But I understand your feelings {ctx.author.name}."
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         target_profile = await self.cache.get_profile(user.id)
-        if target_profile.proposer:
-            res = f"😔    Someone has already proposed to {user.name}. They should decline them first right?"
-            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         if target_profile.spouse:
             res = f"💔    ... sorry to inform you but uh {user.name} is already married."
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
@@ -60,6 +57,10 @@ class Marriage(Cog):
             content = f"{ctx.author.mention} {user.mention}"
             res = f"🎉    Congratulations {ctx.author.name} and {user.name}! You're married now."
             return await ctx.send(content, embed=self.bot.theme.embeds.one_line.primary(res))
+
+        if target_profile.proposer:
+            res = f"😔    Someone has already proposed to {user.name}. They should decline them first right?"
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
 
         await target_profile.propose(author_profile)
         try:
