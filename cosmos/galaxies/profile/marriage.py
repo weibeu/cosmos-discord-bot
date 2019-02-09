@@ -27,25 +27,16 @@ class Marriage(Cog):
             res = f"😒    By any chance do you still remember {author_profile.spouse.name}?"
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
 
-        author_kiss = False
-        target_kiss = False
-
-        def check_kiss(msg):
-            global author_kiss
-            global target_kiss
-            if msg.author.id in [ctx.author.id, user.id] and "kiss" in msg.content.lower() and msg.mentions:
+        def check_kiss_author(msg):
+            if msg.author.id == ctx.author.id and "kiss" in msg.content.lower() and msg.mentions:
                 if msg.mentions[0].id == user.id:
-                    global author_kiss
-                    global target_kiss
-                    author_kiss = True
-                    if author_kiss and target_kiss:
-                        return True
-                elif msg.mentions[0].id == ctx.author.id:
-                    global author_kiss
-                    global target_kiss
-                    target_kiss = True
-                    if author_kiss and target_kiss:
-                        return True
+                    return True
+            return False
+
+        def check_kiss_target(msg):
+            if msg.author.id == user.id and "kiss" in msg.content.lower() and msg.mentions:
+                if msg.mentions[0].id == ctx.author.id:
+                    return True
             return False
 
         if target_profile.proposed and target_profile.proposed.id == ctx.author.id:
@@ -53,7 +44,8 @@ class Marriage(Cog):
                 f"under 60 seconds to finally get married till eternity."
             await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
             try:
-                _ = await self.bot.wait_for("message", check=check_kiss)
+                _ = await self.bot.wait_for("message", check=check_kiss_author)
+                __ = await self.bot.wait_for("message", check=check_kiss_target)
             except asyncio.TimeoutError:
                 res = "🕛    Time is up. Thought you can always give it another shot."
                 return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
