@@ -35,10 +35,14 @@ class Marriage(Cog):
             global target_kiss
             if msg.author.id in [ctx.author.id, user.id] and "kiss" in msg.content.lower() and msg.mentions:
                 if msg.mentions[0].id == user.id:
+                    global author_kiss
+                    global target_kiss
                     author_kiss = True
                     if author_kiss and target_kiss:
                         return True
                 elif msg.mentions[0].id == ctx.author.id:
+                    global author_kiss
+                    global target_kiss
                     target_kiss = True
                     if author_kiss and target_kiss:
                         return True
