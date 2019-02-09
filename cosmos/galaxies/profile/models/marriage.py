@@ -46,6 +46,17 @@ class CosmosMarriage(ProfileModelsBase, ABC):
             {"user_id": target_profile.id}, {"$unset": {"marriage.proposed": "$"}}
         )
 
+    async def cancel_proposal(self, target_profile):
+        self.proposed_id = None
+        target_profile.proposer_id = None
+
+        await self._collection.update_one(
+            {"user_id": self.id}, {"$unset": {"marriage.proposed": "$"}}
+        )
+        await self._collection.update_one(
+            {"user_id": target_profile.id}, {"$unset": {"marriage.proposer": "$"}}
+        )
+
     async def marry(self, author_profile):
         self.spouse_id = author_profile.id
         author_profile.spouse_id = self.id
