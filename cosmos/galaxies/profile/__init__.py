@@ -1,6 +1,6 @@
 from .profile import Profile
 from .economy import Economy
-from .ascension.levels import Levels
+from .ascension import Levels
 
 __all__ = [
     Profile,

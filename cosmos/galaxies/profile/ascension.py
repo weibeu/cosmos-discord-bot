@@ -1,4 +1,4 @@
-from ... import Cog
+from .. import Cog
 
 
 class Levels(Cog):
