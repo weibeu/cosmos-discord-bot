@@ -26,6 +26,9 @@ class Marriage(Cog):
         if author_profile.spouse:
             res = f"😒    By any chance do you still remember {author_profile.spouse.name}?"
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        if author_profile.proposed:
+            res = f"You've already proposed to {author_profile.proposed.name}. You need to cancel your proposal first."
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
 
         def check_kiss_author(msg):
             if msg.author.id == ctx.author.id and "kiss" in msg.content.lower() and msg.mentions:
