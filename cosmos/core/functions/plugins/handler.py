@@ -45,7 +45,13 @@ class PluginHandler(object):
     def setup(self, file, cogs: list = None, **kwargs):
         plugin = self.get_from_file(file)
         for attr_name in kwargs:
-            self.__setattr__(attr_name, kwargs[attr_name])
+            try:
+                self.__setattr__(attr_name, kwargs[attr_name](plugin))
+            except TypeError:
+                try:
+                    self.__setattr__(attr_name, kwargs[attr_name])
+                except TypeError:
+                    self.bot.eh.sentry.capture_exception()
         cog_list = cogs or importlib.import_module(plugin.python_path).__all__
         plugin.load_cogs(cog_list)
         return plugin
