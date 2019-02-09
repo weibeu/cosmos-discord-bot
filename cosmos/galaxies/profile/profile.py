@@ -29,7 +29,7 @@ class Profile(Cog):
         await self.cache.give_assets(message)
 
     @commands.group(invoke_without_command=True)
-    async def profile(self, ctx, user: discord.User = None):
+    async def profile(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         profile = await self.cache.get_profile(user.id)
         if profile is None:
@@ -59,7 +59,7 @@ class Profile(Cog):
         await ctx.send("", embed=embed)
 
     @commands.command(name="rep")
-    async def rep_user(self, ctx, user: discord.User = None):
+    async def rep_user(self, ctx, user: discord.Member = None):
         if user and user.bot:
             embed = self.bot.theme.embeds.one_line.primary("😔    Sorry but I just can't do that.")
             return await ctx.send(embed=embed)
