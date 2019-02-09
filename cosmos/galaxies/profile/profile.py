@@ -1,7 +1,6 @@
 import discord
 
 from .. import Cog
-from .models import ProfileCache
 
 from discord.ext import commands
 
@@ -11,8 +10,7 @@ class Profile(Cog):
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
-        self.plugin.profile_cache = ProfileCache(self.plugin)
-        self.cache = self.plugin.profile_cache
+        self.cache = self.plugin.cache
         if self.plugin.data.profile.__dict__.get("cache_all"):
             self.bot.loop.create_task(self.cache.prepare())
 

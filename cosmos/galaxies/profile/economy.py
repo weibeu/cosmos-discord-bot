@@ -9,7 +9,7 @@ class Economy(Cog):
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
-        self.cache = self.plugin.profile_cache
+        self.cache = self.plugin.cache
 
     @commands.group(name="bosons", aliases=["boson", "$"], invoke_without_command=True)
     async def bosons(self, ctx, user: discord.User = None):
