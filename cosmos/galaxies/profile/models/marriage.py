@@ -23,3 +23,25 @@ class CosmosMarriage(ProfileModelsBase, ABC):
     @property
     def spouse(self):
         return self._plugin.bot.get_user(self.spouse_id)
+
+    async def propose(self, author_profile):
+        self.proposer_id = author_profile.id
+        author_profile.proposed_id = self.id
+
+        await self._collection.update_one(
+            {"user_id": self.id}, {"marriage.proposer": self.proposer_id}
+        )
+        await self._collection.update_one(
+            {"user_id": author_profile.id}, {"marriage.proposed": author_profile.proposed_id}
+        )
+
+    async def marry(self, author_profile):
+        self.spouse_id = author_profile.id
+        author_profile.spouse_id = self.id
+
+        await self._collection.update_one(
+            {"user_id": self.id}, {"marriage.spouse": self.spouse_id}
+        )
+        await self._collection.update_one(
+            {"user_id": author_profile.id}, {"marriage.spouse": author_profile.spouse_id}
+        )
