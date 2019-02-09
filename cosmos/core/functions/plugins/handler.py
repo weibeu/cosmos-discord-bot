@@ -46,6 +46,7 @@ class PluginHandler(object):
         plugin = self.get_from_file(file)
         cog_list = cogs or importlib.import_module(plugin.python_path).__all__
         plugin.load_cogs(cog_list)
+        return plugin
 
     def load_all(self):
         self.bot.log.info("Loading all fetched plugins.")
