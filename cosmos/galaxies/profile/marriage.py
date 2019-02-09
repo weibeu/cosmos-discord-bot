@@ -13,7 +13,7 @@ class Marriage(Cog):
         self.plugin = plugin
         self.cache = self.plugin.cache
 
-    @commands.command(name="propose")
+    @commands.group(name="propose", aliases=["proposal", "proposals"], invoke_without_command=True)
     async def propose_user(self, ctx, user: discord.User):
         if user.bot or user.id == ctx.author.id:
             res = f"😶    You are really weird. But I understand your feelings {ctx.author.name}."
@@ -71,7 +71,7 @@ class Marriage(Cog):
         res = f"💖    You have proposed to {user.name}!"
         await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
 
-    @commands.command(name="decline", aliases=["reject"])
+    @propose_user.command(name="decline", aliases=["reject"])
     async def decline_proposal(self, ctx):
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.proposer:
@@ -85,4 +85,20 @@ class Marriage(Cog):
         except discord.Forbidden:
             pass
         res = f"You have declined the proposal of {target_profile.user.name}."
+        await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
+
+    @propose_user.command(name="cancel", aliases=["revoke", "pull"])
+    async def cancel_proposal(self, ctx):
+        author_profile = await self.cache.get_profile(ctx.author.id)
+        if not author_profile.proposed:
+            res = f"{ctx.author.name}, you have not sent any proposals yet."
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
+        target_profile = await self.cache.get_profile(author_profile.proposed_id)
+        await author_profile.cancel_proposal(target_profile)
+        try:
+            res = f"💔    {ctx.author.name} has pulled back their proposal from you."
+            await target_profile.user.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        except discord.Forbidden:
+            pass
+        res = f"You have cancelled your proposal sent to {target_profile.user.name}."
         await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
