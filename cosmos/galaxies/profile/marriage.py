@@ -16,7 +16,7 @@ class Marriage(Cog):
     @commands.group(name="propose", aliases=["proposal", "proposals", "marry"], invoke_without_command=True)
     async def propose_user(self, ctx, user: discord.User):
         if user.bot or user.id == ctx.author.id:
-            res = f"😶    You are really weird. But I understand your feelings {ctx.author.name}."
+            res = f"😶    You are really weird. But I understand your feelings {ctx.author.mention}."
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
         target_profile = await self.cache.get_profile(user.id)
         if target_profile.spouse:
