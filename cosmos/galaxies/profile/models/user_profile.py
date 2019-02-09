@@ -90,5 +90,8 @@ class CosmosUserProfile(UserExperience, Boson, CosmosMarriage):
         embed.add_field(name="Delta Experience points", value=str(self.delta_xp))
         embed.add_field(name="Reputation points", value=str(self.reps))
         embed.add_field(name="Bosons", value=str(self.bosons))
+        embed.add_field(name="💖  Proposed", value=self.proposed)
+        embed.add_field(name="🖤  Proposer", value=self.proposer)
+        embed.add_field(name="💍  Spouse", value=self.spouse)
         embed.add_field(name="Profile description", value=self.description)
         return embed
