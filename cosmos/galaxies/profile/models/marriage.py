@@ -29,10 +29,10 @@ class CosmosMarriage(ProfileModelsBase, ABC):
         author_profile.proposed_id = self.id
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"marriage.proposer": self.proposer_id}
+            {"user_id": self.id}, {"$set": {"marriage.proposer": self.proposer_id}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"marriage.proposed": author_profile.proposed_id}
+            {"user_id": author_profile.id}, {"$set": {"marriage.proposed": author_profile.proposed_id}}
         )
 
     async def marry(self, author_profile):
@@ -40,8 +40,8 @@ class CosmosMarriage(ProfileModelsBase, ABC):
         author_profile.spouse_id = self.id
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"marriage.spouse": self.spouse_id}
+            {"user_id": self.id}, {"$set": {"marriage.spouse": self.spouse_id}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"marriage.spouse": author_profile.spouse_id}
+            {"user_id": author_profile.id}, {"$set": {"marriage.spouse": author_profile.spouse_id}}
         )
