@@ -69,3 +69,19 @@ class Marriage(Cog):
             pass
         res = f"💖    You have proposed to {user.name}!"
         await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+
+    @commands.command(name="decline", aliases=["reject"])
+    async def decline_proposal(self, ctx):
+        author_profile = await self.cache.get_profile(ctx.author.id)
+        if not author_profile.proposer:
+            res = f"{ctx.author.name}, you do not have any pending proposals."
+            return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
+        target_profile = await self.cache.get_profile(author_profile.proposer_id)
+        await author_profile.decline_proposal(target_profile)
+        try:
+            res = f"💔    {ctx.author.name} has declined your proposal."
+            await target_profile.user.send(embed=self.bot.theme.embeds.one_line.primary(res))
+        except discord.Forbidden:
+            pass
+        res = f"You have declined the proposal of {target_profile.user.name}."
+        await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res, ctx.author.avatar_url))
