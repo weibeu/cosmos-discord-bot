@@ -36,3 +36,5 @@ class DatabaseBatch(object):
             else:
                 self.bot.log.info(f"Done. [{self.collection.name}] {result.bulk_api_result}.")
                 self.batch = list()
+        else:
+            self.bot.log.debug(f"Empty [{self.collection.name}] batch.")
