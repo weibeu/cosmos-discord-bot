@@ -19,11 +19,7 @@ class UserLevel(ProfileModelsBase, ABC):
 
     @property
     def xp_level(self):
-        return self._xp_level + self.__delta_xp
-
-    @property
-    def __delta_xp(self):
-        return math.log(self._level + math.e)*self.K
+        return self._xp_level + math.log(self._level + math.e)*self.K
 
     @property
     def delta_xp(self):
