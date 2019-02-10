@@ -1,7 +1,5 @@
 import asyncio
 
-from pymongo import UpdateOne
-from pymongo.errors import InvalidOperation
 from .user_profile import CosmosUserProfile
 
 
@@ -12,8 +10,7 @@ class ProfileCache(object):
         self.bot = self.plugin.bot
         self._redis = None
         self.lfu = self.bot.cache.lfu(self.plugin.data.profile.cache_max_size)
-        self.__collection_name = self.plugin.data.profile.collection_name
-        self.collection = self.bot.db[self.__collection_name]
+        self.collection = self.plugin.collection
         self.bot.loop.create_task(self.__update_database())
         # self.bot.loop.create_task(self.__get_redis_client())
 
@@ -68,11 +65,6 @@ class ProfileCache(object):
     async def __update_database(self):
         while True:
             await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
-            self.bot.log.info("Updating Profile caches to database.")
-            batch = [UpdateOne(*profile.to_update_document()) for profile in self.lfu.values()]
-            # TODO: Make global database batches.
-            try:
-                result = await self.collection.bulk_write(batch, ordered=False)
-                self.bot.log.info(f"Job completed. Updated {result.modified_count} profiles.")
-            except InvalidOperation:
-                self.bot.eh.sentry.capture_exception()
+            for profile in self.lfu.values():
+                self.plugin.batch.queue_update(*profile.to_update_document())
+            await self.plugin.batch.write(ordered=False)
