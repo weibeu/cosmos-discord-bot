@@ -30,15 +30,9 @@ class Marriage(Cog):
             res = f"You've already proposed to {author_profile.proposed.name}. You need to cancel your proposal first."
             return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
 
-        def check_kiss_author(msg):
-            if msg.author.id == ctx.author.id and "kiss" in msg.content.lower() and msg.mentions:
-                if msg.mentions[0].id == user.id:
-                    return True
-            return False
-
-        def check_kiss_target(msg):
-            if msg.author.id == user.id and "kiss" in msg.content.lower() and msg.mentions:
-                if msg.mentions[0].id == ctx.author.id:
+        def check_kiss(msg):
+            if msg.author.id in [ctx.author.id, user.id] and "kiss" in msg.content.lower() and msg.mentions:
+                if msg.mentions[0].id in [ctx.author.id, user.id]:
                     return True
             return False
 
@@ -48,8 +42,14 @@ class Marriage(Cog):
                 f"under 60 seconds to finally get married till eternity."
             await ctx.send(content, embed=self.bot.theme.embeds.one_line.primary(res))
             try:
-                _ = await self.bot.wait_for("message", check=check_kiss_author)
-                __ = await self.bot.wait_for("message", check=check_kiss_target)
+                author_kiss = False
+                target_kiss = False
+                while not (author_kiss and target_kiss):
+                    _message = await self.bot.wait_for("message", check=check_kiss)
+                    if _message.mentions[0].id == user.id:
+                        author_kiss = True
+                    elif _message.mentions[0].id == ctx.author.id:
+                        target_kiss = True
             except asyncio.TimeoutError:
                 res = "🕛    Time is up. Thought you can always give it another shot."
                 return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
