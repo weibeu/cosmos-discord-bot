@@ -64,7 +64,7 @@ class Marriage(Cog):
 
         await target_profile.propose(author_profile)
         try:
-            res = f"💖    {ctx.author} has proposed you."
+            res = f"💖    {ctx.author.name} has proposed you."
             await user.send(embed=self.bot.theme.embeds.one_line.primary(res))
         except discord.Forbidden:
             pass
