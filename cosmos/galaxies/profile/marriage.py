@@ -46,6 +46,7 @@ class Marriage(Cog):
                 target_kiss = False
                 while not (author_kiss and target_kiss):
                     _message = await self.bot.wait_for("message", check=check_kiss)
+                    await _message.add_reaction("💟")
                     if _message.mentions[0].id == user.id:
                         author_kiss = True
                     elif _message.mentions[0].id == ctx.author.id:
