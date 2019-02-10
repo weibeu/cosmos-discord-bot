@@ -8,8 +8,8 @@ class DatabaseBatch(object):
 
     def __init__(self, bot, collection):
         self.bot = bot
-        self.collection = collection
         self.batch = []
+        self.collection = collection
 
     def queue(self, write_operation: Union[InsertOne, UpdateOne, ReplaceOne, DeleteOne]):
         self.batch.append(write_operation)
