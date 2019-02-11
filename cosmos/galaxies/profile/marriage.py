@@ -41,19 +41,19 @@ class Marriage(Cog):
             res = f"💕    The perfect match! You should now kiss each other " \
                 f"under 60 seconds to finally get married till eternity."
             await ctx.send(content, embed=self.bot.theme.embeds.one_line.primary(res))
-            try:
-                author_kiss = False
-                target_kiss = False
-                while not (author_kiss and target_kiss):
+            author_kiss = False
+            target_kiss = False
+            while not (author_kiss and target_kiss):
+                try:
                     _message = await self.bot.wait_for("message", check=check_kiss)
                     await _message.add_reaction("💟")
                     if _message.mentions[0].id == user.id:
                         author_kiss = True
                     elif _message.mentions[0].id == ctx.author.id:
                         target_kiss = True
-            except asyncio.TimeoutError:
-                res = "🕛    Time is up. Thought you can always give it another shot."
-                return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
+                except asyncio.TimeoutError:
+                    res = "🕛    Time is up. Thought you can always give it another shot."
+                    return await ctx.send(embed=self.bot.theme.embeds.one_line.primary(res))
             await target_profile.marry(author_profile)
             content = f"{ctx.author.mention} {user.mention}"
             res = f"🎉    Congratulations {ctx.author.name} and {user.name}! You're married now."
