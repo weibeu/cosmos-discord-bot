@@ -48,3 +48,21 @@ class Boson(ProfileModelsBase, ABC):
         await self._collection.update_one(
             {"user_id": self.id}, {"$set": {"currency.daily_datetime": self.boson_daily_datetime}}
         )
+
+
+class Fermion(ProfileModelsBase, ABC):
+
+    def __init__(self, **kwargs):
+        raw_currency = kwargs.get("currency")
+        self._fermions = raw_currency.get("fermions", 0)
+
+    @property
+    def fermions(self):
+        return self._fermions
+
+    async def give_fermions(self, fermions: int):
+        self._fermions += fermions
+
+        await self._collection.update_one(
+            {"user_id": self.id}, {"$set": {"currency.fermions": self.fermions}}
+        )

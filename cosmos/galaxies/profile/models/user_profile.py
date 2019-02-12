@@ -1,11 +1,11 @@
 import datetime
 
-from .currency import Boson
+from .currency import Boson, Fermion
 from .experience import UserExperience
 from .marriage import CosmosMarriage
 
 
-class CosmosUserProfile(UserExperience, Boson, CosmosMarriage):
+class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
 
     @property
     def _plugin(self):
@@ -90,7 +90,8 @@ class CosmosUserProfile(UserExperience, Boson, CosmosMarriage):
         embed.add_field(name="Delta Experience points", value=self.delta_xp)
         embed.add_field(name="Reputation points", value=self.reps)
         embed.add_field(name="Bosons", value=self.bosons)
-        embed.add_field(name="Rank", value=self.rank)
+        embed.add_field(name="Fermions", value=self.fermions)
+        # embed.add_field(name="Rank", value=self.rank)
         embed.add_field(name="💖  Proposed", value=self.proposed)
         embed.add_field(name="🖤  Proposer", value=self.proposer)
         embed.add_field(name="💍  Spouse", value=self.spouse)
