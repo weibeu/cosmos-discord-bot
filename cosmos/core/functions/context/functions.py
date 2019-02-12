@@ -6,7 +6,7 @@ class Loading(object):
     def __init__(self, ctx):
         self.ctx = ctx
         self.loop = self.ctx.bot.loop
-        self.emote = self.ctx.emotes.misc.yellow_square_load
+        self.emote = self.ctx.emotes.misc.square_load
 
     async def __do_loading(self):
         await self.ctx.message.add_reaction(self.emote)
