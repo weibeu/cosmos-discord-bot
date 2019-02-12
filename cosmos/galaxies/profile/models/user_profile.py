@@ -34,6 +34,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
     def __init__(self, plugin, **kwargs):
         UserExperience.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
+        Fermion.__init__(**kwargs)
         CosmosMarriage.__init__(self, **kwargs)
         self.__plugin = plugin
         self._id: int = kwargs["user_id"]
