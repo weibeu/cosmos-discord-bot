@@ -20,6 +20,10 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         return self._id
 
     @property
+    def is_prime(self):
+        return self._is_prime
+
+    @property
     def description(self):
         return self._description or self._plugin.data.profile.default_description
 
@@ -33,6 +37,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         CosmosMarriage.__init__(self, **kwargs)
         self.__plugin = plugin
         self._id: int = kwargs["user_id"]
+        self._is_prime = kwargs.get("is_prime", False)
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
         self.rep_datetime = raw_reputation.get("datetime")

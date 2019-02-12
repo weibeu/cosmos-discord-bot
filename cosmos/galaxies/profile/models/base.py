@@ -20,6 +20,11 @@ class ProfileModelsBase(ABC):
     def id(self):
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def is_prime(self):
+        raise NotImplementedError
+
     @staticmethod
     def time_delta(past, extend_hours) -> tuple:
         future = past + datetime.timedelta(hours=extend_hours)
