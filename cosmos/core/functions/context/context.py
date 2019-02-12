@@ -12,7 +12,7 @@ class CosmosContext(commands.Context):
         return self.bot.emotes
 
     @property
-    def line_embed(self):
+    def embed_line(self):
         return self.bot.theme.embeds.one_line.primary
 
     async def trigger_loading(self, timeout=10):
