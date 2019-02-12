@@ -11,6 +11,10 @@ class CosmosContext(commands.Context):
     def emotes(self):
         return self.bot.emotes
 
+    @property
+    def theme(self):
+        return self.bot.theme
+
     async def trigger_loading(self, timeout=10):
         async with Loading(self):
             await asyncio.sleep(timeout)
