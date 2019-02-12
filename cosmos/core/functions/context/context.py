@@ -12,8 +12,8 @@ class CosmosContext(commands.Context):
         return self.bot.emotes
 
     @property
-    def theme(self):
-        return self.bot.theme
+    def line_embed(self):
+        return self.bot.theme.embeds.one_line.primary
 
     async def trigger_loading(self, timeout=10):
         async with Loading(self):
