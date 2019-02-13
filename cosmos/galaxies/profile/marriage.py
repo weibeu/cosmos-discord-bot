@@ -20,7 +20,7 @@ class Marriage(Cog):
             return await ctx.send(embed=ctx.embed_line(res))
         target_profile = await self.cache.get_profile(user.id)
         author_profile = await self.cache.get_profile(ctx.author.id)
-        if author_profile.spouse_id == target_profile.spouse_id:
+        if author_profile.spouse_id == user.id and target_profile.spouse_id == ctx.author.id:
             res = f"🎉    Congratulations! You guys got married aagin."
             return await ctx.send(embed=ctx.embed_line(res))
         if target_profile.spouse:
