@@ -3,6 +3,7 @@ import asyncio
 from discord.ext import commands
 
 from .functions import Loading
+from .paginators import BasePaginator
 
 
 class CosmosContext(commands.Context):
@@ -21,3 +22,6 @@ class CosmosContext(commands.Context):
 
     def loading(self):
         return Loading(self)
+
+    async def paginate(self, entries, per_page=10, show_entry_count=False, inline=False, timeout=90, show_author=True):
+        return BasePaginator(self, entries, per_page, show_entry_count, inline, timeout, show_author)
