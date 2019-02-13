@@ -119,7 +119,7 @@ class BasePaginator(object):
 
         while self.is_paginating:
             try:
-                _, __ = await self.ctx.bot.wait_for("reaction_add", check=self.check_reaction, timeout=self.timeout)
+                reaction, user = await self.ctx.bot.wait_for("reaction_add", check=self.check_reaction, timeout=self.timeout)
             except asyncio.TimeoutError:
                 self.is_paginating = False
                 try:
@@ -128,5 +128,12 @@ class BasePaginator(object):
                     pass
                 finally:
                     break
+
+            try:
+                await self.message.remove_reaction(reaction, user)
+            except discord.Forbidden:
+                pass
+            except discord.NotFound:
+                self.ctx.bot.eh.sentry.capture_exception()
 
             await self.match()
