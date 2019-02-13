@@ -10,7 +10,7 @@ class BasePaginator(object):
         self.entries = entries
         self.per_page = per_page
         self.max_pages = self.__count_pages()
-        self.embed = self.ctx.bot.theme.embeds.primary
+        self.embed = self.ctx.bot.theme.embeds.primary(**kwargs)
         self.is_paginating = len(self.entries) > self.per_page
         self.show_entry_count = show_entry_count
         self.inline = inline
