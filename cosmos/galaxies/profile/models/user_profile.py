@@ -2,7 +2,7 @@ import datetime
 
 from .currency import Boson, Fermion
 from .experience import UserExperience
-from .marriage import CosmosMarriage
+from .family import CosmosMarriage
 
 
 class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
