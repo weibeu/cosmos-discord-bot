@@ -1,4 +1,4 @@
-import datetime
+import arrow
 
 from .currency import Boson, Fermion
 from .experience import UserExperience
@@ -54,7 +54,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
     def can_rep(self):
         if not self.rep_datetime:    # Using rep for first time.
             return True
-        delta = datetime.datetime.now() - self.rep_datetime
+        delta = arrow.utcnow() - self.rep_datetime
         return delta.seconds >= self._plugin.data.profile.rep_cooldown*60*60
 
     @property
@@ -63,7 +63,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
 
     async def rep(self, author_profile):
         self.reps += 1
-        author_profile.rep_datetime = datetime.datetime.now()
+        author_profile.rep_datetime = arrow.utcnow()
         await self._collection.update_one(
             {"user_id": self.id}, {"$set": {"reputation.points": self.reps}}
         )

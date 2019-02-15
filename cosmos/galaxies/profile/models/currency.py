@@ -1,5 +1,5 @@
+import arrow
 import asyncio
-import datetime
 import random
 
 from abc import ABC
@@ -34,7 +34,7 @@ class Boson(ProfileModelsBase, ABC):
     def can_take_daily_bosons(self):
         if not self.boson_daily_datetime:
             return True
-        delta = datetime.datetime.now() - self.boson_daily_datetime
+        delta = arrow.utcnow() - self.boson_daily_datetime
         return delta.seconds >= self._plugin.data.boson.daily_cooldown*60*60
 
     @property
@@ -44,7 +44,7 @@ class Boson(ProfileModelsBase, ABC):
     async def take_daily_bosons(self, target_profile=None):
         profile = target_profile or self
         profile._bosons += self._plugin.data.boson.default_daily
-        self.boson_daily_datetime = datetime.datetime.now()
+        self.boson_daily_datetime = arrow.utcnow()
         await self._collection.update_one(
             {"user_id": self.id}, {"$set": {"currency.daily_datetime": self.boson_daily_datetime}}
         )
