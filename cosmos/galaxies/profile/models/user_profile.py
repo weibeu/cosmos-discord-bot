@@ -41,7 +41,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         self._is_prime = kwargs.get("is_prime", False)
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
-        self.rep_datetime = raw_reputation.get("datetime")
+        self.rep_datetime = raw_reputation.get("rep_datetime")
         # self.badges = []
         self._description: str = kwargs.get("description", str())
         self.rank: int = None
@@ -68,7 +68,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
             {"user_id": self.id}, {"$set": {"reputation.points": self.reps}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"reputation.datetime": author_profile.rep_datetime}}
+            {"user_id": author_profile.id}, {"$set": {"reputation.rep_datetime": author_profile.rep_datetime}}
         )
 
     async def set_description(self, description: str):
