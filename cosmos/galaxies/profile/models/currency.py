@@ -46,7 +46,7 @@ class Boson(ProfileModelsBase, ABC):
         profile._bosons += self._plugin.data.boson.default_daily
         self.boson_daily_datetime = arrow.utcnow()
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"currency.daily_datetime": self.boson_daily_datetime}}
+            {"user_id": self.id}, {"$set": {"currency.daily_datetime": self.boson_daily_datetime.datetime}}
         )
 
 

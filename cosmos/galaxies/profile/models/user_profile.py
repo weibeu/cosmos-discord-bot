@@ -68,7 +68,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
             {"user_id": self.id}, {"$set": {"reputation.points": self.reps}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"reputation.rep_datetime": author_profile.rep_datetime}}
+            {"user_id": author_profile.id}, {"$set": {"reputation.rep_datetime": author_profile.rep_datetime.datetime}}
         )
 
     async def set_description(self, description: str):
