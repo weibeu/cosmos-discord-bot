@@ -41,7 +41,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         self._is_prime = kwargs.get("is_prime", False)
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
-        self.rep_datetime = raw_reputation.get("rep_datetime")
+        self.rep_timestamp = raw_reputation.get("timestamp")
         # self.badges = []
         self._description: str = kwargs.get("description", str())
         self.rank: int = None
@@ -52,23 +52,23 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
 
     @property
     def can_rep(self):
-        if not self.rep_datetime:    # Using rep for first time.
+        if not self.rep_timestamp:    # Using rep for first time.
             return True
-        delta = arrow.utcnow() - self.rep_datetime
+        delta = arrow.utcnow() - self.rep_timestamp
         return delta.seconds >= self._plugin.data.profile.rep_cooldown*60*60
 
     @property
     def rep_delta(self) -> tuple:
-        return self.time_delta(self.rep_datetime, self._plugin.data.profile.rep_cooldown)
+        return self.time_delta(self.rep_timestamp, self._plugin.data.profile.rep_cooldown)
 
     async def rep(self, author_profile):
         self.reps += 1
-        author_profile.rep_datetime = arrow.utcnow()
+        author_profile.rep_timestamp = arrow.utcnow()
         await self._collection.update_one(
             {"user_id": self.id}, {"$set": {"reputation.points": self.reps}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"reputation.rep_datetime": author_profile.rep_datetime.datetime}}
+            {"user_id": author_profile.id}, {"$set": {"reputation.timestamp": author_profile.rep_timestamp.datetime}}
         )
 
     async def set_description(self, description: str):
