@@ -1,4 +1,7 @@
 from abc import ABC
+
+import arrow
+
 from .base import ProfileModelsBase
 
 
@@ -9,6 +12,7 @@ class CosmosMarriage(ProfileModelsBase, ABC):
         self.proposed_id = raw_marriage.get("proposed")
         self.proposer_id = raw_marriage.get("proposer")
         self.spouse_id = raw_marriage.get("spouse")
+        self.marriage_timestamp = raw_marriage.get("timestamp")
 
     # Return discord.User instead of CosmosUserProfile because it would summon three more users to cache.
 
@@ -59,13 +63,22 @@ class CosmosMarriage(ProfileModelsBase, ABC):
 
     async def marry(self, author_profile):
         self.spouse_id = author_profile.id
+        self.marriage_timestamp = arrow.utcnow()
         author_profile.spouse_id = self.id
+        author_profile.marriage_timestamp = self.marriage_timestamp
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"marriage.spouse": self.spouse_id}}
+            self.document_filter, {
+                "$set": {"marriage.spouse": self.spouse_id, "marriage.timestamp": self.marriage_timestamp.datetime}
+            }
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"marriage.spouse": author_profile.spouse_id}}
+            author_profile.document_filter, {
+                "$set": {
+                    "marriage.spouse": author_profile.spouse_id,
+                    "marriage.timestamp": author_profile.marriage_timestamp.datetime
+                }
+            }
         )
 
     async def divorce(self, target_profile):
