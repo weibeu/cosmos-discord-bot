@@ -53,7 +53,7 @@ class Boson(ProfileModelsBase, ABC):
 class Fermion(ProfileModelsBase, ABC):
 
     def __init__(self, **kwargs):
-        raw_currency = kwargs.get("currency")
+        raw_currency = kwargs.get("currency", dict())
         self._fermions = raw_currency.get("fermions", 0)
 
     @property
