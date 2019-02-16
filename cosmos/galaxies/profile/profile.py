@@ -58,6 +58,22 @@ class Profile(Cog):
         embed.description = profile.description
         await ctx.send("", embed=embed)
 
+    @profile.group(name="birthday", aliases=["birthdate", "bday"], invoke_without_command=True)
+    async def profile_birthday(self, ctx):
+        profile = await self.cache.get_profile(ctx.author.id)
+        if not profile.birthday:
+            res = "You have not set your birthday on your profile yet."
+            return await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+        res = f"Your birthday is on {profile.birthday.strftime('%e %B')}."
+        await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+
+    @profile_birthday.command(name="set")
+    async def set_profile_birthday(self, ctx, *, birthday: str):
+        profile = await self.cache.get_profile(ctx.author.id)
+        await profile.set_birthday(birthday)
+        res = f"Your birthday is set to {profile.birthday.strftime('%A, %B %e, %Y')}."
+        await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+
     @commands.command(name="rep")
     async def rep_user(self, ctx, user: discord.Member = None):
         if user and user.bot:
