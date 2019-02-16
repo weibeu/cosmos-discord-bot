@@ -56,8 +56,7 @@ class Economy(Cog):
             else:
                 target_name = user.name
         if not author_profile.can_take_daily_bosons:
-            hrs, mins, secs = author_profile.daily_bosons_delta
-            res = f"⏳    You can take your dailies again in {hrs} hours, {mins} minutes and {secs} seconds."
+            res = f"⏳    You can take your dailies again {author_profile.rep_delta.humanize()}."
             return await ctx.send(embed=ctx.embed_line(res))
         await author_profile.take_daily_bosons(target_profile)
         res = f"🗓    {self.plugin.data.boson.default_daily} daily Bosons were given to {target_name}."

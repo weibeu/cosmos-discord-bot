@@ -71,8 +71,7 @@ class Profile(Cog):
             if author_profile.can_rep:
                 res = "👌    You can rep someone now."
             else:
-                hrs, mins, secs = author_profile.rep_delta
-                res = f"⏳    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
+                res = f"⏳    You can rep again {author_profile.rep_delta.humanize()}."
             return await ctx.send(embed=ctx.embed_line(res))
 
         if author_profile.can_rep:
@@ -84,6 +83,5 @@ class Profile(Cog):
             res = f"You added one reputation point to {user.name}."
             await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
         else:
-            hrs, mins, secs = author_profile.rep_delta
-            res = f"⏳    You can rep again in {hrs} hours, {mins} minutes and {secs} seconds."
+            res = f"⏳    You can rep again {author_profile.rep_delta.humanize()}."
             await ctx.send(embed=ctx.embed_line(res))
