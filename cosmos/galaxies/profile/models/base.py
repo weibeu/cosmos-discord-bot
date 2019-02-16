@@ -2,6 +2,8 @@ import datetime
 
 from abc import ABC, abstractmethod
 
+import arrow
+
 
 class ProfileModelsBase(ABC):
 
@@ -24,6 +26,11 @@ class ProfileModelsBase(ABC):
     @abstractmethod
     def is_prime(self):
         raise NotImplementedError
+
+    @staticmethod
+    def get_arrow(timestamp):
+        if timestamp:
+            return arrow.get(timestamp)
 
     @staticmethod
     def time_delta(past, extend_hours) -> tuple:
