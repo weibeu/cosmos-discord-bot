@@ -5,10 +5,17 @@ import arrow
 from .base import ProfileModelsBase
 
 
-class CosmosMarriage(ProfileModelsBase, ABC):
+class CosmosFamily(ProfileModelsBase, ABC):
+
+    def __init__(self, marriage_document):
+        self.children = marriage_document.get("children", list())
+
+
+class CosmosMarriage(CosmosFamily, ABC):
 
     def __init__(self, **kwargs):
         raw_marriage = kwargs.get("marriage", dict())
+        super().__init__(raw_marriage)
         self.proposed_id = raw_marriage.get("proposed")
         self.proposer_id = raw_marriage.get("proposer")
         self.spouse_id = raw_marriage.get("spouse")
