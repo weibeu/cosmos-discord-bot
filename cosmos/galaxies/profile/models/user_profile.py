@@ -79,6 +79,8 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         )
 
     async def set_birthday(self, birthday):
+        if isinstance(birthday, str):
+            birthday = arrow.get(birthday)
         self.birthday = birthday
 
         await self._collection.update_one(
