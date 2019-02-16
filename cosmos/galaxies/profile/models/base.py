@@ -35,3 +35,9 @@ class ProfileModelsBase(ABC):
     @staticmethod
     def get_future_arrow(past, **kwargs):
         return arrow.get(past) + datetime.timedelta(**kwargs)
+
+    @property
+    def document_filter(self):
+        return {
+            "user_id": self.id
+        }
