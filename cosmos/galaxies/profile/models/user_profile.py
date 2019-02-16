@@ -44,6 +44,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         self.rep_timestamp = self.get_arrow(raw_reputation.get("timestamp"))
         # self.badges = []
         self._description: str = kwargs.get("description", str())
+        self.birthday = self.get_arrow(kwargs.get("birthday"))
         self.rank: int = None
         # self.inventory = []
         # self.on_time: int = None
@@ -75,6 +76,13 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         self._description = description
         await self._collection.update_one(
             {"user_id": self.id}, {"$set": {"description": self.description}}
+        )
+
+    async def set_birthday(self, birthday):
+        self.birthday = birthday
+
+        await self._collection.update_one(
+            self.document_filter, {"$set": {"birthday": birthday.datetime}}
         )
 
     def to_update_document(self) -> tuple:
