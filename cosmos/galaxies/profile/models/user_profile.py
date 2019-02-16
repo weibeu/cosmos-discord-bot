@@ -41,7 +41,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         self._is_prime = kwargs.get("is_prime", False)
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
-        self.rep_timestamp = raw_reputation.get("timestamp")
+        self.rep_timestamp = self.get_arrow(raw_reputation.get("timestamp"))
         # self.badges = []
         self._description: str = kwargs.get("description", str())
         self.rank: int = None

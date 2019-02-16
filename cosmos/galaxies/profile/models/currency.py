@@ -11,7 +11,7 @@ class Boson(ProfileModelsBase, ABC):
     def __init__(self, **kwargs):
         raw_currency = kwargs.get("currency", dict())
         self._bosons = raw_currency.get("bosons", 0)
-        self.boson_daily_timestamp = raw_currency.get("boson_daily_timestamp")
+        self.boson_daily_timestamp = self.get_arrow(raw_currency.get("boson_daily_timestamp"))
 
         self.in_boson_buffer = False
 
