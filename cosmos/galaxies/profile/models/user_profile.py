@@ -101,6 +101,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         # embed.add_field(name="Rank", value=self.rank)
         embed.add_field(name="💖  Proposed", value=self.proposed)
         embed.add_field(name="🖤  Proposer", value=self.proposer)
-        embed.add_field(name="💍  Spouse", value=f"{self.spouse}\nMarried {self.marriage_timestamp.humanize()}.")
+        if self.spouse_id:
+            embed.add_field(name="💍  Spouse", value=f"{self.spouse}\nMarried {self.marriage_timestamp.humanize()}.")
         embed.add_field(name="Profile description", value=self.description)
         return embed
