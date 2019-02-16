@@ -116,4 +116,6 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
             embed.add_field(name="💍  Spouse", value=f"{self.spouse}\nMarried {self.marriage_timestamp.humanize()}.")
             embed.add_field(name="Family", value=self.children)
         embed.add_field(name="Profile description", value=self.description)
+        if self.birthday:
+            embed.add_field(name="Birthday", value=self.birthday.strftime("%e %B"))
         return embed
