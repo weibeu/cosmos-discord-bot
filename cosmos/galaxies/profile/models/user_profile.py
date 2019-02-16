@@ -58,8 +58,8 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         return delta.seconds >= self._plugin.data.profile.rep_cooldown*60*60
 
     @property
-    def rep_delta(self) -> tuple:
-        return self.time_delta(self.rep_timestamp, self._plugin.data.profile.rep_cooldown)
+    def rep_delta(self):
+        return self.get_future_arrow(self.rep_timestamp, hours=self._plugin.data.profile.rep_cooldown)
 
     async def rep(self, author_profile):
         self.reps += 1

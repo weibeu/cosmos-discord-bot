@@ -38,8 +38,8 @@ class Boson(ProfileModelsBase, ABC):
         return delta.seconds >= self._plugin.data.boson.daily_cooldown*60*60
 
     @property
-    def daily_bosons_delta(self) -> tuple:
-        return self.time_delta(self.boson_daily_timestamp, self._plugin.data.boson.daily_cooldown)
+    def daily_bosons_delta(self):
+        return self.get_future_arrow(self.boson_daily_timestamp, hours=self._plugin.data.boson.daily_cooldown)
 
     async def take_daily_bosons(self, target_profile=None):
         profile = target_profile or self
