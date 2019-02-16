@@ -2,10 +2,10 @@ import arrow
 
 from .currency import Boson, Fermion
 from .experience import UserExperience
-from .family import CosmosMarriage
+from .family import Relationship
 
 
-class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
+class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     @property
     def _plugin(self):
@@ -35,7 +35,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, CosmosMarriage):
         UserExperience.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
-        CosmosMarriage.__init__(self, **kwargs)
+        Relationship.__init__(self, **kwargs)
         self.__plugin = plugin
         self._id: int = kwargs["user_id"]
         self._is_prime = kwargs.get("is_prime", False)

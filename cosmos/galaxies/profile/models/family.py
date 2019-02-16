@@ -5,25 +5,13 @@ import arrow
 from .base import ProfileModelsBase
 
 
-class CosmosFamily(ProfileModelsBase, ABC):
+class Marriage(ProfileModelsBase, ABC):
 
     def __init__(self, marriage_document):
-        self._children = marriage_document.get("children", list())
-
-    @property
-    def children(self):
-        return [self._plugin.bot.get_user(child_id) for child_id in self._children]
-
-
-class CosmosMarriage(CosmosFamily, ABC):
-
-    def __init__(self, **kwargs):
-        raw_marriage = kwargs.get("marriage", dict())
-        super().__init__(raw_marriage)
-        self.proposed_id = raw_marriage.get("proposed")
-        self.proposer_id = raw_marriage.get("proposer")
-        self.spouse_id = raw_marriage.get("spouse")
-        self.marriage_timestamp = self.get_arrow(raw_marriage.get("timestamp"))
+        self.proposed_id = marriage_document.get("proposed")
+        self.proposer_id = marriage_document.get("proposer")
+        self.spouse_id = marriage_document.get("spouse")
+        self.marriage_timestamp = self.get_arrow(marriage_document.get("timestamp"))
 
     # Return discord.User instead of CosmosUserProfile because it would summon three more users to cache.
 
@@ -44,10 +32,10 @@ class CosmosMarriage(CosmosFamily, ABC):
         author_profile.proposed_id = self.id
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"marriage.proposer": self.proposer_id}}
+            {"user_id": self.id}, {"$set": {"relationship.marriage.proposer": self.proposer_id}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"marriage.proposed": author_profile.proposed_id}}
+            {"user_id": author_profile.id}, {"$set": {"relationship.marriage.proposed": author_profile.proposed_id}}
         )
 
     async def decline_proposal(self, target_profile):
@@ -55,10 +43,10 @@ class CosmosMarriage(CosmosFamily, ABC):
         target_profile.proposed_id = None
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$unset": {"marriage.proposer": "$"}}
+            {"user_id": self.id}, {"$unset": {"relationship.marriage.proposer": "$"}}
         )
         await self._collection.update_one(
-            {"user_id": target_profile.id}, {"$unset": {"marriage.proposed": "$"}}
+            {"user_id": target_profile.id}, {"$unset": {"relationship.marriage.proposed": "$"}}
         )
 
     async def cancel_proposal(self, target_profile):
@@ -66,10 +54,10 @@ class CosmosMarriage(CosmosFamily, ABC):
         target_profile.proposer_id = None
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$unset": {"marriage.proposed": "$"}}
+            {"user_id": self.id}, {"$unset": {"relationship.marriage.proposed": "$"}}
         )
         await self._collection.update_one(
-            {"user_id": target_profile.id}, {"$unset": {"marriage.proposer": "$"}}
+            {"user_id": target_profile.id}, {"$unset": {"relationship.marriage.proposer": "$"}}
         )
 
     async def marry(self, author_profile):
@@ -80,14 +68,17 @@ class CosmosMarriage(CosmosFamily, ABC):
 
         await self._collection.update_one(
             self.document_filter, {
-                "$set": {"marriage.spouse": self.spouse_id, "marriage.timestamp": self.marriage_timestamp.datetime}
+                "$set": {
+                    "relationship.marriage.spouse": self.spouse_id,
+                    "relationship.marriage.timestamp": self.marriage_timestamp.datetime
+                }
             }
         )
         await self._collection.update_one(
             author_profile.document_filter, {
                 "$set": {
-                    "marriage.spouse": author_profile.spouse_id,
-                    "marriage.timestamp": author_profile.marriage_timestamp.datetime
+                    "relationship.marriage.spouse": author_profile.spouse_id,
+                    "relationship.marriage.timestamp": author_profile.marriage_timestamp.datetime
                 }
             }
         )
@@ -101,8 +92,25 @@ class CosmosMarriage(CosmosFamily, ABC):
         target_profile.proposer_id = None
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$unset": {"marriage": "$"}}
+            {"user_id": self.id}, {"$unset": {"relationship.marriage": "$"}}
         )
         await self._collection.update_one(
-            {"user_id": target_profile.id}, {"$unset": {"marriage": "$"}}
+            {"user_id": target_profile.id}, {"$unset": {"relationship.marriage": "$"}}
         )
+
+
+class Relationship(Marriage, ABC):
+
+    def __init__(self, **kwargs):
+        relationship_document = kwargs.get("relationship", dict())
+        super().__init__(relationship_document.get("marriage", dict()))
+        self._parents = relationship_document.get("parents", list())
+        self._children = relationship_document.get("children", list())
+
+    @property
+    def children(self):
+        return [self._plugin.bot.get_user(child_id) for child_id in self._children]
+
+    @property
+    def parents(self):
+        return [self._plugin.bot.get_user(parent_id) for parent_id in self._parents]
