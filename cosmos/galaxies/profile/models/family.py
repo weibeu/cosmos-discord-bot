@@ -8,7 +8,11 @@ from .base import ProfileModelsBase
 class CosmosFamily(ProfileModelsBase, ABC):
 
     def __init__(self, marriage_document):
-        self.children = marriage_document.get("children", list())
+        self._children = marriage_document.get("children", list())
+
+    @property
+    def children(self):
+        return [self._plugin.bot.get_user(child_id) for child_id in self._children]
 
 
 class CosmosMarriage(CosmosFamily, ABC):
