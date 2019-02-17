@@ -24,3 +24,4 @@ lyricsgenius
 yarl<1.2
 lru_dict
 psutil
+asyncurban
