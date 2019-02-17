@@ -22,7 +22,7 @@ class API:
         except asyncurban.WordNotFoundError:
             return await ctx.send(f"Unable to find `{term}` from Urban Dictionary.")
         embed = discord.Embed(title=f"{word.word} - Urban Dictionary", color=get_random_embed_color())
-        embed.description = word.defination
+        embed.description = word.definition
         embed.url = word.permalink
         embed.add_field(name="Examples", value=word.example)
         await ctx.send(embed=embed)
