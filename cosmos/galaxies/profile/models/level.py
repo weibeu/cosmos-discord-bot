@@ -6,7 +6,7 @@ from .base import ProfileModelsBase
 
 class UserLevel(ProfileModelsBase, ABC):
 
-    K = 100
+    K = 3777
 
     def __init__(self, _level: int):
         self._level = _level
