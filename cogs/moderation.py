@@ -164,9 +164,9 @@ class Moderation(object):
             print(e)
 
         if files:
-            await ctx.send(f"{member.name} was **banned** from. **REASON:** {reason}", files=files)
+            await ctx.send(f"{member.name} was **banned** from **{ctx.guild.name}**. **REASON:** {reason}", files=files)
         else:
-            await ctx.send(f"{member.name} was **banned**. **REASON:** {reason}")
+            await ctx.send(f"{member.name} was **banned** from **{ctx.guild.name}**. **REASON:** {reason}")
 
     @_ban.command(name="preset")
     async def set_ban_preset(self, ctx, *, message: str):
