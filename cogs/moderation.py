@@ -1,3 +1,5 @@
+import typing
+
 import aiohttp
 import discord
 from discord.ext import commands
@@ -111,7 +113,7 @@ class Moderation(object):
 
     @commands.group(name="ban", invoke_without_command=True)
     @checks.admin_or_permissions(ban_members=True)
-    async def _ban(self, ctx, member: discord.Member, reason: str = None):
+    async def _ban(self, ctx, member: typing.Union[discord.Member, int], reason: str = None):
         """Bans a member with provided optional reason.
         You can also check `;help ban preset` to add custom preset ban messages. Note: optional reason is latter to preset message."""
         files = []
@@ -152,21 +154,32 @@ class Moderation(object):
 
             reason = reason.replace(url, "")
 
-        try:
+        if isinstance(member, discord.Member):
+
+            try:
+                if files:
+                    await member.send(f"You were **banned** from {ctx.guild.name}. **REASON:** {reason}", files=files)
+                else:
+                    await member.send(f"You were **banned** from {ctx.guild.name}. **REASON:** {reason}")
+
+                await member.ban(reason=f"{raw_reason} Moderator: {ctx.author.name}")
+
+            except Exception as e:
+                print(e)
+
             if files:
-                await member.send(f"You were **banned** from {ctx.guild.name}. **REASON:** {reason}", files=files)
+                await ctx.send(f"{member.name} was **banned** from **{ctx.guild.name}**. **REASON:** {reason}", files=files)
             else:
-                await member.send(f"You were **banned** from {ctx.guild.name}. **REASON:** {reason}")
-
-            await member.ban(reason=f"{raw_reason} Moderator: {ctx.author.name}")
-
-        except Exception as e:
-            print(e)
-
-        if files:
-            await ctx.send(f"{member.name} was **banned** from **{ctx.guild.name}**. **REASON:** {reason}", files=files)
+                await ctx.send(f"{member.name} was **banned** from **{ctx.guild.name}**. **REASON:** {reason}")
+        elif isinstance(member, int):
+            fake_member = discord.Object(id=member)
+            await ctx.guild.ban(fake_member, reason=f"{raw_reason} Moderator: {ctx.author.name}")
+            if files:
+                await ctx.send(f"<@{member}> was **banned** from **{ctx.guild.name}**. **REASON:** {reason}", files=files)
+            else:
+                await ctx.send(f"<@{member}> was **banned** from **{ctx.guild.name}**. **REASON:** {reason}")
         else:
-            await ctx.send(f"{member.name} was **banned** from **{ctx.guild.name}**. **REASON:** {reason}")
+            await ctx.send(f"Cant find `{member}`.")
 
     @_ban.command(name="preset")
     async def set_ban_preset(self, ctx, *, message: str):
