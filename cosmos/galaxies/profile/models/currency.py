@@ -46,7 +46,7 @@ class Boson(ProfileModelsBase, ABC):
         profile._bosons += self._plugin.data.boson.default_daily
         self.boson_daily_timestamp = arrow.utcnow()
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"currency.boson_daily_timestamp": self.boson_daily_timestamp.datetime}}
+            self.document_filter, {"$set": {"currency.boson_daily_timestamp": self.boson_daily_timestamp.datetime}}
         )
 
 
@@ -64,5 +64,5 @@ class Fermion(ProfileModelsBase, ABC):
         self._fermions += fermions
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"currency.fermions": self.fermions}}
+            self.document_filter, {"$set": {"currency.fermions": self.fermions}}
         )

@@ -66,16 +66,16 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         self.reps += 1
         author_profile.rep_timestamp = arrow.utcnow()
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"reputation.points": self.reps}}
+            self.document_filter, {"$set": {"reputation.points": self.reps}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"reputation.timestamp": author_profile.rep_timestamp.datetime}}
+            author_profile.document_filter, {"$set": {"reputation.timestamp": author_profile.rep_timestamp.datetime}}
         )
 
     async def set_description(self, description: str):
         self._description = description
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"description": self.description}}
+            self.document_filter, {"$set": {"description": self.description}}
         )
 
     async def set_birthday(self, birthday):
@@ -88,7 +88,6 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         )
 
     def to_update_document(self) -> tuple:
-        filter_ = {"user_id": self.id}
         update = {
             "$set": {
                 "xp": self.xp,
@@ -96,7 +95,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
                 "currency.bosons": self.bosons
             }
         }
-        return filter_, update
+        return self.document_filter, update
 
     def get_embed(self):
         embed = self._plugin.bot.theme.embeds.primary(title="Cosmos Profile")

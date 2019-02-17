@@ -32,10 +32,10 @@ class Marriage(ProfileModelsBase, ABC):
         author_profile.proposed_id = self.id
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$set": {"relationship.marriage.proposer": self.proposer_id}}
+            self.document_filter, {"$set": {"relationship.marriage.proposer": self.proposer_id}}
         )
         await self._collection.update_one(
-            {"user_id": author_profile.id}, {"$set": {"relationship.marriage.proposed": author_profile.proposed_id}}
+            author_profile.document_filter, {"$set": {"relationship.marriage.proposed": author_profile.proposed_id}}
         )
 
     async def decline_proposal(self, target_profile):
@@ -43,10 +43,10 @@ class Marriage(ProfileModelsBase, ABC):
         target_profile.proposed_id = None
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$unset": {"relationship.marriage.proposer": "$"}}
+            self.document_filter, {"$unset": {"relationship.marriage.proposer": "$"}}
         )
         await self._collection.update_one(
-            {"user_id": target_profile.id}, {"$unset": {"relationship.marriage.proposed": "$"}}
+            target_profile.document_filter, {"$unset": {"relationship.marriage.proposed": "$"}}
         )
 
     async def cancel_proposal(self, target_profile):
@@ -54,10 +54,10 @@ class Marriage(ProfileModelsBase, ABC):
         target_profile.proposer_id = None
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$unset": {"relationship.marriage.proposed": "$"}}
+            self.document_filter, {"$unset": {"relationship.marriage.proposed": "$"}}
         )
         await self._collection.update_one(
-            {"user_id": target_profile.id}, {"$unset": {"relationship.marriage.proposer": "$"}}
+            target_profile.document_filter, {"$unset": {"relationship.marriage.proposer": "$"}}
         )
 
     async def marry(self, author_profile):
@@ -92,10 +92,10 @@ class Marriage(ProfileModelsBase, ABC):
         target_profile.proposer_id = None
 
         await self._collection.update_one(
-            {"user_id": self.id}, {"$unset": {"relationship.marriage": "$"}}
+            self.document_filter, {"$unset": {"relationship.marriage": "$"}}
         )
         await self._collection.update_one(
-            {"user_id": target_profile.id}, {"$unset": {"relationship.marriage": "$"}}
+            target_profile.document_filter, {"$unset": {"relationship.marriage": "$"}}
         )
 
 
