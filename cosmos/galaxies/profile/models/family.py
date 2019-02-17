@@ -114,3 +114,7 @@ class Relationship(Marriage, ABC):
     @property
     def parents(self):
         return [self._plugin.bot.get_user(parent_id) for parent_id in self._parents]
+
+    async def adopt(self, target_profile):
+        self._children.append(target_profile.id)
+        # TODO: Handle same children for two profiles.
