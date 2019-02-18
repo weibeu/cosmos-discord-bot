@@ -22,7 +22,7 @@ class API:
             word = await self.ud.get_word(term)
         except asyncurban.WordNotFoundError:
             return await ctx.send(f"Unable to find `{term}` from Urban Dictionary.")
-        paginator = Pages(ctx, entries=word.definition.splitlines(), show_entry_count=False, show_author=False)
+        paginator = Pages(ctx, entries=word.definition.splitlines(), per_page=5, show_entry_count=False, show_author=False)
         paginator.embed.set_author(name=f"{word.word} - Urban Dictionary", url=word.permalink, icon_url=ctx.author.avatar_url)
         paginator.embed.add_field(name="Examples", value=word.example)
         await paginator.paginate()
