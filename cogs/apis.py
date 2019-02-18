@@ -2,6 +2,7 @@ import discord
 from asyncurban import UrbanDictionary
 from discord.ext import commands
 
+from cogs.utils.paginator import Pages
 from cogs.utils.util import get_random_embed_color
 
 
@@ -21,11 +22,10 @@ class API:
             word = await self.ud.get_word(term)
         except asyncurban.WordNotFoundError:
             return await ctx.send(f"Unable to find `{term}` from Urban Dictionary.")
-        embed = discord.Embed(color=get_random_embed_color())
-        embed.set_author(name=f"{word.word} - Urban Dictionary", url=word.permalink, icon_url=ctx.author.avatar_url)
-        embed.description = word.definition
-        embed.add_field(name="Examples", value=word.example)
-        await ctx.send(embed=embed)
+        paginator = Pages(ctx, entries=word.definition.splitlines(), show_entry_count=False, show_author=False)
+        paginator.embed.set_author(name=f"{word.word} - Urban Dictionary", url=word.permalink, icon_url=ctx.author.avatar_url)
+        paginator.embed.add_field(name="Examples", value=word.example)
+        await paginator.paginate()
 
 
 def setup(bot):
