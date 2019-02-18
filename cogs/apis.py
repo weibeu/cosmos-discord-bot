@@ -32,7 +32,7 @@ class API:
             await p.message.edit(embed=p.embed)
             await asyncio.sleep(60)
             await p.show_current_page()
-        p.show_help = show_help
+        paginator.show_help = show_help
         await paginator.paginate()
 
 
