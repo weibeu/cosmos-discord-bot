@@ -25,7 +25,7 @@ class API:
         except asyncurban.WordNotFoundError:
             return await ctx.send(f"Unable to find `{term}` from Urban Dictionary.")
         async def show_help(p):
-            p.embed.description = p.Empty
+            p.embed.description = ""
             p.embed.add_field(name="Examples", value=word.example)
             await p.message.edit(embed=p.embed)
             await asyncio.sleep(60)
