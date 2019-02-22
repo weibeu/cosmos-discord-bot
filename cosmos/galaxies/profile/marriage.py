@@ -17,21 +17,21 @@ class Marriage(Cog):
     async def propose_user(self, ctx, user: discord.User):
         if user.bot or user.id == ctx.author.id:
             res = f"😶    You are really weird. But I understand your feelings {ctx.author.name}."
-            return await ctx.send(embed=ctx.embed_line(res))
+            return await ctx.send_line(res)
         target_profile = await self.cache.get_profile(user.id)
         author_profile = await self.cache.get_profile(ctx.author.id)
         if author_profile.spouse_id == user.id and target_profile.spouse_id == ctx.author.id:
             res = f"🎉    Congratulations! You guys got married aagin."
-            return await ctx.send(embed=ctx.embed_line(res))
+            return await ctx.send_line(res)
         if target_profile.spouse:
             res = f"💔    ... sorry to inform you but uh {user.name} is already married."
-            return await ctx.send(embed=ctx.embed_line(res))
+            return await ctx.send_line(res)
         if author_profile.spouse:
             res = f"😒    By any chance do you still remember {author_profile.spouse.name}?"
-            return await ctx.send(embed=ctx.embed_line(res))
+            return await ctx.send_line(res)
         if author_profile.proposed:
             res = f"You've already proposed to {author_profile.proposed.name}. You need to cancel your proposal first."
-            return await ctx.send(embed=ctx.embed_line(res))
+            return await ctx.send_line(res)
 
         def check_kiss(msg):
             if msg.author.id in [ctx.author.id, user.id] and "kiss" in msg.content.lower() and msg.mentions:
@@ -56,7 +56,7 @@ class Marriage(Cog):
                         target_kiss = True
                 except asyncio.TimeoutError:
                     res = "🕛    Time is up. Thought you can always give it another shot."
-                    return await ctx.send(embed=ctx.embed_line(res))
+                    return await ctx.send_line(res)
             await target_profile.marry(author_profile)
             content = f"{ctx.author.mention} {user.mention}"
             res = f"🎉    Congratulations {ctx.author.name} and {user.name}! You're married now."
@@ -64,7 +64,7 @@ class Marriage(Cog):
 
         if target_profile.proposer:
             res = f"😔    Someone has already proposed to {user.name}. They should decline them first right?"
-            return await ctx.send(embed=ctx.embed_line(res))
+            return await ctx.send_line(res)
 
         await target_profile.propose(author_profile)
         try:
@@ -73,14 +73,14 @@ class Marriage(Cog):
         except discord.Forbidden:
             pass
         res = f"💖    You have proposed to {user.name}!"
-        await ctx.send(embed=ctx.embed_line(res))
+        await ctx.send_line(res)
 
     @propose_user.command(name="decline", aliases=["reject"])
     async def decline_proposal(self, ctx):
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.proposer:
             res = f"{ctx.author.name}, you do not have any pending proposals."
-            return await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+            return await ctx.send_line(res, ctx.author.avatar_url)
         target_profile = await self.cache.get_profile(author_profile.proposer_id)
         await author_profile.decline_proposal(target_profile)
         try:
@@ -89,14 +89,14 @@ class Marriage(Cog):
         except discord.Forbidden:
             pass
         res = f"You have declined the proposal of {target_profile.user.name}."
-        await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+        await ctx.send_line(res, ctx.author.avatar_url)
 
     @propose_user.command(name="cancel", aliases=["revoke", "pull"])
     async def cancel_proposal(self, ctx):
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.proposed:
             res = f"{ctx.author.name}, you have not sent any proposals yet."
-            return await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+            return await ctx.send_line(res, ctx.author.avatar_url)
         target_profile = await self.cache.get_profile(author_profile.proposed_id)
         await author_profile.cancel_proposal(target_profile)
         try:
@@ -105,14 +105,14 @@ class Marriage(Cog):
         except discord.Forbidden:
             pass
         res = f"You have cancelled your proposal sent to {target_profile.user.name}."
-        await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+        await ctx.send_line(res, ctx.author.avatar_url)
 
     @commands.command(name="divorce")
     async def divorce_user(self, ctx):
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.spouse:
             res = "You are not married yet to divorce."
-            return await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+            return await ctx.send_line(res, ctx.author.avatar_url)
         target_profile = await self.cache.get_profile(author_profile.spouse.id)
         await author_profile.divorce(target_profile)
         try:
@@ -121,4 +121,4 @@ class Marriage(Cog):
         except discord.Forbidden:
             pass
         res = f"You have divorced {target_profile.user.name}."
-        await ctx.send(embed=ctx.embed_line(res, ctx.author.avatar_url))
+        await ctx.send_line(res, ctx.author.avatar_url)
