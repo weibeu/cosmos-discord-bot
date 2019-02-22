@@ -55,11 +55,10 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
     def can_rep(self):
         if not self.rep_timestamp:    # Using rep for first time.
             return True
-        delta = arrow.utcnow() - self.rep_timestamp
-        return delta.seconds >= self._plugin.data.profile.rep_cooldown*60*60
+        return arrow.utcnow() > self.next_rep
 
     @property
-    def rep_delta(self):
+    def next_rep(self):
         return self.get_future_arrow(self.rep_timestamp, hours=self._plugin.data.profile.rep_cooldown)
 
     async def rep(self, author_profile):
