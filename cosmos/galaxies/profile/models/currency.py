@@ -34,11 +34,10 @@ class Boson(ProfileModelsBase, ABC):
     def can_take_daily_bosons(self):
         if not self.boson_daily_timestamp:
             return True
-        delta = arrow.utcnow() - self.boson_daily_timestamp
-        return delta.seconds >= self._plugin.data.boson.daily_cooldown*60*60
+        return arrow.utcnow() > self.next_daily_bosons
 
     @property
-    def daily_bosons_delta(self):
+    def next_daily_bosons(self):
         return self.get_future_arrow(self.boson_daily_timestamp, hours=self._plugin.data.boson.daily_cooldown)
 
     async def take_daily_bosons(self, target_profile=None):
