@@ -66,6 +66,8 @@ class Evaluator(Cog):
                 value = stdout.getvalue()
                 await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
             else:
+                await ctx.message.add_reaction('\u2705')
+
                 value = stdout.getvalue()
 
                 if ret is None:
@@ -82,5 +84,3 @@ class Evaluator(Cog):
                     except discord.HTTPException:
                         haste_url = await self.bot.utilities.haste(pformat(f"{value}{ret}", indent=4))
                         await ctx.send(haste_url.py)
-
-        await ctx.message.add_reaction('\u2705')
