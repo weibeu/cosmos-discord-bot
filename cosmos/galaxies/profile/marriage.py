@@ -1,7 +1,5 @@
 import asyncio
-
 import discord
-from discord.ext import commands
 
 from .. import Cog
 
@@ -13,7 +11,7 @@ class Marriage(Cog):
         self.plugin = plugin
         self.cache = self.plugin.cache
 
-    @commands.group(name="propose", aliases=["proposal", "proposals", "marry", "accept"], invoke_without_command=True)
+    @Cog.group(name="propose", aliases=["proposal", "proposals", "marry", "accept"], invoke_without_command=True)
     async def propose_user(self, ctx, user: discord.User):
         if user.bot or user.id == ctx.author.id:
             res = f"😶    You are really weird. But I understand your feelings {ctx.author.name}."
@@ -107,7 +105,7 @@ class Marriage(Cog):
         res = f"You have cancelled your proposal sent to {target_profile.user.name}."
         await ctx.send_line(res, ctx.author.avatar_url)
 
-    @commands.command(name="divorce")
+    @Cog.command(name="divorce")
     async def divorce_user(self, ctx):
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.spouse:

@@ -2,8 +2,6 @@ import discord
 
 from .. import Cog
 
-from discord.ext import commands
-
 
 class Profile(Cog):
 
@@ -22,13 +20,14 @@ class Profile(Cog):
         if not message.guild:
             return True
 
+    @Cog.listener()
     async def on_message(self, message):
         if self.__is_ignored(message):
             return
 
         await self.cache.give_assets(message)
 
-    @commands.group(invoke_without_command=True)
+    @Cog.group(invoke_without_command=True)
     async def profile(self, ctx, user: discord.Member = None):
         user = user or ctx.author
         profile = await self.cache.get_profile(user.id)
@@ -74,7 +73,7 @@ class Profile(Cog):
         res = f"Your birthday is set to {profile.birthday.strftime('%A, %B %e, %Y')}."
         await ctx.send_line(res, ctx.author.avatar_url)
 
-    @commands.command(name="rep")
+    @Cog.command(name="rep")
     async def rep_user(self, ctx, user: discord.Member = None):
         if user and user.bot:
             return await ctx.send_line("😔    Sorry but I just can't do that.")

@@ -14,7 +14,7 @@ class Presence(Cog):
         self.rotate = self.plugin.data.configs.rotate
         self.rotate_task = self.bot.loop.create_task(self.rotate_presence())
 
-    def __unload(self):
+    def cog_unload(self):
         self.bot.log.info("Stopping presence rotation.")
         self.rotate_task.cancel()
         self.bot.loop.create_task(self.set_presence())

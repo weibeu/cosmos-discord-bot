@@ -1,7 +1,6 @@
 import discord
 
 from .. import Cog
-from discord.ext import commands
 
 
 class Economy(Cog):
@@ -11,7 +10,7 @@ class Economy(Cog):
         self.plugin = plugin
         self.cache = self.plugin.cache
 
-    @commands.group(name="bosons", aliases=["boson", "$"], invoke_without_command=True)
+    @Cog.group(name="bosons", aliases=["boson", "$"], invoke_without_command=True)
     async def bosons(self, ctx, user: discord.User = None):
         if user:
             adverb = f"{user.name} has"
@@ -43,7 +42,7 @@ class Economy(Cog):
         res = f"📤    {ctx.author.name}, you gave {bosons} Bosons to {user.name}."
         await ctx.send_line(res)
 
-    @commands.command(name="daily", aliases=["dailies"])
+    @Cog.command(name="daily", aliases=["dailies"])
     async def daily_bosons(self, ctx, user: discord.User = None):
         author_profile = await self.cache.get_profile(ctx.author.id)
         target_name = "you"

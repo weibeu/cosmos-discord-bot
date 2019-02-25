@@ -5,7 +5,6 @@ from contextlib import redirect_stdout
 from pprint import pformat
 
 import discord
-from discord.ext import commands
 
 from ....functions import Cog
 
@@ -31,7 +30,7 @@ class Evaluator(Cog):
         return content.strip('` \n')
 
     # noinspection PyBroadException
-    @commands.command(hidden=True, name='eval')
+    @Cog.command(hidden=True, name='eval')
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
 

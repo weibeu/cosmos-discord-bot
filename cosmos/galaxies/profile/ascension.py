@@ -7,5 +7,6 @@ class Levels(Cog):
         super().__init__()
         self.plugin = plugin
 
+    @Cog.listener()
     async def on_message(self, message):
         pass
