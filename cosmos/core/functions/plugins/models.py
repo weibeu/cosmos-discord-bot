@@ -1,7 +1,7 @@
-from abc import ABC
+from discord.ext.commands import Cog as BaseCog
 
 
-class Cog(ABC):
+class Cog(BaseCog):
 
     def __init__(self, *args, **kwargs):
         self.name = self.__class__.__name__
