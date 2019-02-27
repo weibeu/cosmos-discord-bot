@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 
-class Cog(commands.Cog):
+class Cog(commands.Cog, metaclass=commands.CogMeta):
 
     command = commands.command
     group = commands.group
