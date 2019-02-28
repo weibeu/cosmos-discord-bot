@@ -1,9 +1,7 @@
 import asyncio
 
+from .functions import *
 from discord.ext import commands
-
-from .functions import Loading
-from .paginators import BasePaginator
 
 
 class CosmosContext(commands.Context):
