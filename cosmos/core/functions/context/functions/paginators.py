@@ -137,3 +137,36 @@ class BasePaginator(object):
                 self.ctx.bot.eh.sentry.capture_exception()
 
             await self.match()
+
+
+class FieldPaginator(BasePaginator):
+
+    async def show_page(self, page, first=False):
+        self.current_page = page
+        entries = self.get_page(page)
+        self.embed.clear_fields()
+
+        for key, value in entries:
+            self.embed.add_field(name=key, value=value, inline=self.inline)
+
+        if self.max_pages > 1:
+            if self.show_entry_count:
+                text = f"Displaying {page} of {self.max_pages} pages and {len(entries)} entries."
+            else:
+                text = f"Displaying {page} of {self.max_pages} pages."
+            self.embed.set_footer(text=text)
+
+        if self.show_author:
+            self.embed.set_author(name=self.ctx.author.name, icon_url=self.ctx.author.avatar_url)
+
+        if not self.is_paginating:
+            return await self.ctx.send(embed=self.embed)
+
+        if not first:
+            return await self.message.edit(embed=self.embed)
+
+        self.message = await self.ctx.channel.send(embed=self.embed)
+        for reaction, _ in self.emotes:
+            if self.max_pages == 2 and reaction in [self.ctx.emotes.misc.backward, self.ctx.emotes.misc.forward]:
+                continue
+            await self.message.add_reaction(reaction)
