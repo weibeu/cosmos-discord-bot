@@ -5,17 +5,17 @@ import discord
 
 class BasePaginator(object):
 
-    def __init__(self, ctx, entries, per_page=12, show_entry_count=False, inline=False, timeout=90, show_author=True):
+    def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, **kwargs):
         self.ctx = ctx
         self.entries = entries
         self.per_page = per_page
         self.max_pages = self.__count_pages()
         self.embed = self.ctx.bot.theme.embeds.primary()
         self.is_paginating = len(self.entries) > self.per_page
-        self.show_entry_count = show_entry_count
-        self.inline = inline
         self.timeout = timeout
         self.show_author = show_author
+        self.inline = inline
+        self.show_entry_count = kwargs.get("show_entry_count", False)
         self.emotes = [
             (self.ctx.emotes.misc.backward, self.first_page),
             (self.ctx.emotes.misc.prev, self.previous_page),
