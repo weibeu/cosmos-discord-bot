@@ -6,6 +6,24 @@ import discord
 import asyncio
 import time
 
+
+DISABLED_CHANNELS = [
+    366727862633627658,
+    397508425946234890,
+    452847980484231177,
+    271405124176445442,
+    363539879810039809,
+    451473900937936906,
+    253955758771798018,
+    452757464635408394,
+    499620316977430538,
+    447369692458516480,
+    397226497015808010,
+    391797801236955138,
+    457934983894663168,
+]
+
+
 class RoleShop(object):
     """Cog for guild role shop"""
 
@@ -20,6 +38,8 @@ class RoleShop(object):
         if message.author.bot:
             return
         if message.guild is None:
+            return
+        if message.channel.id in DISABLED_CHANNELS:
             return
         try:
             if int(time.time()) - self.cd[message.author.id] > self.COOLDOWN:
