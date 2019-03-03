@@ -267,10 +267,13 @@ async def confirm_menu(ctx, message, custom_message=False):
     except asyncio.TimeoutError:
         await ctx.send("Reaction Timeout")
     if choice.emoji.name+":"+str(choice.emoji.id) == util.get_reaction_yes_no()["yes"]:
+        await m.clear_reactions()
         return True
     elif choice.emoji.name+":"+str(choice.emoji.id) == util.get_reaction_yes_no()["no"]:
+        await m.clear_reactions()
         await ctx.send("Cancelled!")
         return False
     else:
+        await m.clear_reactions()
         await ctx.send("Some problem with yes/no reactions in confirm_menu.")
         return False
