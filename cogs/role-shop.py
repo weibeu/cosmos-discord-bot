@@ -71,7 +71,7 @@ class RoleShop(object):
             await db.give_points(ctx.guild.id, ctx.author.id, -points)
             points = points - int((points/100)*self.TAX)
             await db.give_points(ctx.guild.id, member.id, points)
-            await ctx.send(f"You gave **{points}** points to {member.mention}. *After {self.TAX}% TAX.*")
+            await ctx.send(f"{ctx.author.name} gave **{points}** points to {member.mention}. *After {self.TAX}% TAX.*")
 
     @commands.group(name="roleshop", aliases=["role-shop", "rs", "shop"])
     @commands.guild_only()
