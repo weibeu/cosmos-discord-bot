@@ -50,7 +50,7 @@ class RoleShop(object):
         except KeyError:
             self.cd[message.author.id] = int(time.time())
                                                                          
-    @commands.group(invoke_without_subcommand=True)
+    @commands.group(invoke_without_command=True)
     @commands.guild_only()
     async def points(self, ctx, *, user:discord.Member = None):
         """Sends guild points of user."""
