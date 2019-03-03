@@ -30,6 +30,8 @@ class RoleShop(object):
     POINTS = 1
     COOLDOWN = 10
 
+    TAX = 10
+
     def __init__(self, bot):
         self.bot = bot
         self.cd = {}
@@ -48,9 +50,9 @@ class RoleShop(object):
         except KeyError:
             self.cd[message.author.id] = int(time.time())
                                                                          
-    @commands.command()
+    @commands.group(invoke_without_subcommand=True)
     @commands.guild_only()
-    async def points(self, ctx, *, user:discord.User = None):
+    async def points(self, ctx, *, user:discord.Member = None):
         """Sends guild points of user."""
         if user is None:
             user = ctx.author
@@ -59,6 +61,17 @@ class RoleShop(object):
         else:
             points = await db.get_points(ctx.guild.id, user.id)
             await ctx.send(user.name+" has **"+points+"** guild points.")
+
+    @points.command(name="credit", aliases=["give", "transfer"])
+    async def credit_points(self, ctx, member: discord.Member, points: int):
+        self_points = await db.get_points(ctx.guild.id, ctx.author.id)
+        if points > int(self_points):
+            return await ctx.send(f"{ctx.author.name}, you don't have enough points to make this transaction.")
+        if await confirm_menu(ctx, ctx.message, custom_message=True):
+            await db.give_points(ctx.guild.id, ctx.author.id, -points)
+            points = points - int((points/100)*self.TAX)
+            await db.give_points(ctx.guild.id, member.id, points)
+            await ctx.send(f"You gave **{points}** points to {member.mention}. *After {self.TAX}% TAX.*")
 
     @commands.group(name="roleshop", aliases=["role-shop", "rs", "shop"])
     @commands.guild_only()
