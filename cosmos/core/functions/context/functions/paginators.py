@@ -17,7 +17,7 @@ class BasePaginator(object):
         self.inline = inline
         self.show_entry_count = kwargs.get("show_entry_count", False)
         self.show_controller = kwargs.get("show_controller", True)
-        self.emotes = [
+        self.controllers = [
             (self.ctx.emotes.misc.backward, self.first_page),
             (self.ctx.emotes.misc.prev, self.previous_page),
             (self.ctx.emotes.misc.close, self.close),
@@ -72,7 +72,7 @@ class BasePaginator(object):
         self.message = await self.ctx.channel.send(embed=self.embed)
 
         if self.show_controller:
-            for reaction, _ in self.emotes:
+            for reaction, _ in self.controllers:
                 if self.max_pages == 2 and reaction in [self.ctx.emotes.misc.backward, self.ctx.emotes.misc.forward]:
                     continue
                 await self.message.add_reaction(reaction)
@@ -107,7 +107,7 @@ class BasePaginator(object):
         if reaction.message.id != self.message.id:
             return False
 
-        for emote, function in self.emotes:
+        for emote, function in self.controllers:
             if reaction.emoji == emote:
                 self.match = function
                 return True
@@ -171,7 +171,7 @@ class FieldPaginator(BasePaginator):
         self.message = await self.ctx.channel.send(embed=self.embed)
 
         if self.show_controller:
-            for reaction, _ in self.emotes:
+            for reaction, _ in self.controllers:
                 if self.max_pages == 2 and reaction in [self.ctx.emotes.misc.backward, self.ctx.emotes.misc.forward]:
                     continue
                 await self.message.add_reaction(reaction)
