@@ -28,5 +28,5 @@ class CosmosContext(commands.Context):
     def loading(self):
         return Loading(self)
 
-    def get_paginator(self, entries, per_page=10, show_entry_count=False, inline=False, timeout=90, show_author=True):
-        return BasePaginator(self, entries, per_page, show_entry_count, inline, timeout, show_author)
+    def get_paginator(self, entries, per_page=10, timeout=90, show_author=True, inline=False, **kwargs):
+        return BasePaginator(self, entries, per_page, timeout, show_author, inline, **kwargs)
