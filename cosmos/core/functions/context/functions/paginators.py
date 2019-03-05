@@ -16,7 +16,7 @@ class BasePaginator(object):
         self.show_author = show_author
         self.inline = inline
         self.show_entry_count = kwargs.get("show_entry_count", False)
-        self.show_controller = kwargs.get("show_controller", True)
+        self.show_controllers = kwargs.get("show_controller", True)
         self.controllers = [
             (self.ctx.emotes.misc.backward, self.first_page),
             (self.ctx.emotes.misc.prev, self.previous_page),
@@ -36,7 +36,7 @@ class BasePaginator(object):
         return pages
 
     async def set_controllers(self, **kwargs):
-        if self.show_controller:
+        if self.show_controllers:
             for reaction, _ in self.controllers:
                 if self.max_pages == 2 and reaction in [self.ctx.emotes.misc.backward, self.ctx.emotes.misc.forward]:
                     continue
