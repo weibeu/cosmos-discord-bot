@@ -35,10 +35,12 @@ class BasePaginator(object):
             pages += 1
         return pages
 
-    async def set_controllers(self):
+    async def set_controllers(self, **kwargs):
         if self.show_controller:
             for reaction, _ in self.controllers:
                 if self.max_pages == 2 and reaction in [self.ctx.emotes.misc.backward, self.ctx.emotes.misc.forward]:
+                    continue
+                if not kwargs.get(reaction.name, True):
                     continue
                 await self.message.add_reaction(reaction)
 
