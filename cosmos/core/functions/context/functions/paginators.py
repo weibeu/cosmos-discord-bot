@@ -43,6 +43,8 @@ class BasePaginator(object):
                 if not kwargs.get(reaction.name, True):
                     continue
                 await self.message.add_reaction(reaction)
+        for reaction, _ in self.functions:
+            await self.message.add_reaction(reaction)
 
     def get_page(self, page):
         base = (page - 1) * self.per_page
@@ -107,13 +109,16 @@ class BasePaginator(object):
         await self.message.delete()
         self.is_paginating = False
 
+    def add_function(self, emote, function):
+        self.functions.append((emote, function))
+
     def check_reaction(self, reaction, user):
         if user is None or user.id != self.ctx.author.id:
             return False
         if reaction.message.id != self.message.id:
             return False
 
-        for emote, function in self.controllers:
+        for emote, function in self.controllers + self.functions:
             if reaction.emoji == emote:
                 self.match = function
                 return True
