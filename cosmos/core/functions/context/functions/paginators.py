@@ -5,6 +5,10 @@ import discord
 CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/553154076183887872/cancel.png"
 
 
+class Empty(discord.Embed.Empty):
+    pass
+
+
 class BasePaginator(object):
 
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, **kwargs):
@@ -125,6 +129,8 @@ class BasePaginator(object):
         for emote, function in self.controllers + self.functions:
             if reaction.emoji == emote:
                 self.match = function
+                if (emote, function) in self.functions:
+                    self.embed.set_footer(text=Empty, icon_url=Empty)
                 return True
         return False
 
