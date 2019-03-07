@@ -106,7 +106,7 @@ class BasePaginator(object):
             await self.show_page(self.current_page)
 
     async def close(self):
-        await self.message.delete()
+        await self.message.clear_reactions()
         self.is_paginating = False
 
     def add_function(self, emote, function):
