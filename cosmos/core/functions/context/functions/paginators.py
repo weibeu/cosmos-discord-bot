@@ -162,7 +162,7 @@ class BasePaginator(object):
 
 class FieldPaginator(BasePaginator):
 
-    async def show_page(self, page, first=False):
+    async def show_page(self, page, first=False, **kwargs):
         self.current_page = page
         entries = self.get_page(page)
         self.embed.clear_fields()
@@ -187,3 +187,5 @@ class FieldPaginator(BasePaginator):
             return await self.message.edit(embed=self.embed)
 
         self.message = await self.ctx.channel.send(embed=self.embed)
+
+        await self.set_controllers(**kwargs)
