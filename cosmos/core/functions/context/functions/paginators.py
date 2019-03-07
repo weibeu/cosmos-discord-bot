@@ -85,8 +85,6 @@ class BasePaginator(object):
         self.embed.description = "\n".join(para)
         self.message = await self.ctx.channel.send(embed=self.embed)
 
-        await self.set_controllers()
-
     async def check_show_page(self, page):
         if page != 0 and page <= self.max_pages:
             await self.show_page(page)
@@ -134,6 +132,8 @@ class BasePaginator(object):
             await first_page
         else:
             self.ctx.bot.loop.create_task(first_page)
+
+        await self.set_controllers()
 
         while self.is_paginating:
             try:
@@ -186,5 +186,3 @@ class FieldPaginator(BasePaginator):
             return await self.message.edit(embed=self.embed)
 
         self.message = await self.ctx.channel.send(embed=self.embed)
-
-        await self.set_controllers()
