@@ -139,7 +139,7 @@ class BasePaginator(object):
             except asyncio.TimeoutError:
                 self.is_paginating = False
                 try:
-                    self.embed.set_footer(text="Menu was closed due to inactivity.")
+                    self.embed.set_footer(text="This menu was closed due to inactivity.")
                     await self.message.edit(embed=self.embed)
                     await self.message.clear_reactions()
                 except discord.Forbidden:
