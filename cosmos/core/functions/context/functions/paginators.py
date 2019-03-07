@@ -1,6 +1,8 @@
 import asyncio
-
 import discord
+
+
+CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/553149935332360193/cancel.png"
 
 
 class BasePaginator(object):
@@ -106,7 +108,7 @@ class BasePaginator(object):
             await self.show_page(self.current_page)
 
     async def close(self):
-        self.embed.set_footer(text="You closed this menu.")
+        self.embed.set_footer(text="You closed this menu.", icon_url=CANCEL_IMAGE_URL)
         await self.message.edit(embed=self.embed)
         await self.message.clear_reactions()
         self.is_paginating = False
@@ -139,7 +141,7 @@ class BasePaginator(object):
             except asyncio.TimeoutError:
                 self.is_paginating = False
                 try:
-                    self.embed.set_footer(text="This menu was closed due to inactivity.")
+                    self.embed.set_footer(text="This menu was closed due to inactivity.", icon_url=CANCEL_IMAGE_URL)
                     await self.message.edit(embed=self.embed)
                     await self.message.clear_reactions()
                 except discord.Forbidden:
