@@ -126,8 +126,9 @@ class BasePaginator(object):
         for emote, function in self.controllers + self.functions:
             if reaction.emoji == emote:
                 self.match = function
-                if (emote, function) in self.functions:
-                    self.embed.set_footer(text=EmptyEmbed, icon_url=EmptyEmbed)
+                # if (emote, function) in self.functions:
+                #     self.embed.set_footer(text=EmptyEmbed, icon_url=EmptyEmbed)
+                self.embed.set_footer()
                 return True
         return False
 
