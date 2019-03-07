@@ -18,7 +18,7 @@ class BasePaginator(object):
         self.show_author = show_author
         self.inline = inline
         self.show_entry_count = kwargs.get("show_entry_count", False)
-        self.show_controllers = kwargs.get("show_controller", True)
+        self.show_controllers = True
         self.controllers = [
             (self.ctx.emotes.misc.backward, self.first_page),
             (self.ctx.emotes.misc.prev, self.previous_page),
@@ -128,7 +128,8 @@ class BasePaginator(object):
                 return True
         return False
 
-    async def paginate(self, **kwargs):
+    async def paginate(self, show_controllers=True, **kwargs):
+        self.show_controllers = show_controllers
         first_page = self.show_page(1, first=True, **kwargs)
         if not self.is_paginating:
             await first_page
