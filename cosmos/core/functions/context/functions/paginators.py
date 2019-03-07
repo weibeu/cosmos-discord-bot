@@ -2,7 +2,7 @@ import asyncio
 import discord
 
 
-CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/553149935332360193/cancel.png"
+CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/553154076183887872/cancel.png"
 
 
 class BasePaginator(object):
