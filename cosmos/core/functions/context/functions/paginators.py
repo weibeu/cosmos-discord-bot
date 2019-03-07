@@ -126,14 +126,14 @@ class BasePaginator(object):
                 return True
         return False
 
-    async def paginate(self):
+    async def paginate(self, **kwargs):
         first_page = self.show_page(1, first=True)
         if not self.is_paginating:
             await first_page
         else:
             self.ctx.bot.loop.create_task(first_page)
 
-        await self.set_controllers()
+        await self.set_controllers(**kwargs)
 
         while self.is_paginating:
             try:
