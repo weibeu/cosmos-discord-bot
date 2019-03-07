@@ -1,12 +1,9 @@
 import asyncio
 import discord
 
+EmptyEmbed = discord.Embed.Empty
 
 CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/553154076183887872/cancel.png"
-
-
-class Empty(discord.Embed.Empty):
-    pass
 
 
 class BasePaginator(object):
@@ -130,7 +127,7 @@ class BasePaginator(object):
             if reaction.emoji == emote:
                 self.match = function
                 if (emote, function) in self.functions:
-                    self.embed.set_footer(text=Empty, icon_url=Empty)
+                    self.embed.set_footer(text=EmptyEmbed, icon_url=EmptyEmbed)
                 return True
         return False
 
