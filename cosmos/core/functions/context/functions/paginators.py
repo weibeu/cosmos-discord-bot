@@ -106,6 +106,8 @@ class BasePaginator(object):
             await self.show_page(self.current_page)
 
     async def close(self):
+        self.embed.set_footer(text="You closed this menu.")
+        await self.message.edit(embed=self.embed)
         await self.message.clear_reactions()
         self.is_paginating = False
 
@@ -137,6 +139,8 @@ class BasePaginator(object):
             except asyncio.TimeoutError:
                 self.is_paginating = False
                 try:
+                    self.embed.set_footer(text="Menu was closed due to inactivity.")
+                    await self.message.edit(embed=self.embed)
                     await self.message.clear_reactions()
                 except discord.Forbidden:
                     pass
