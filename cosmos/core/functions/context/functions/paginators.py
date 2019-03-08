@@ -19,13 +19,17 @@ class BasePaginator(object):
         self.show_author = show_author
         self.inline = inline
         self.show_entry_count = kwargs.get("show_entry_count", False)
-        self.show_controllers = True
+        self.show_return = kwargs.get("show_return", True)
+        self.show_controllers = kwargs.get("show_controllers", True)
         self.controllers = [
             (self.ctx.emotes.misc.backward, self.first_page),
             (self.ctx.emotes.misc.prev, self.previous_page),
             (self.ctx.emotes.misc.close, self.close),
             (self.ctx.emotes.misc.next, self.next_page),
             (self.ctx.emotes.misc.forward, self.last_page),
+        ]
+        self.default_functions = [
+            (self.ctx.emotes.misc.return_, self.show_current_page),
         ]
         self.functions = []
         self.current_page = 1
@@ -123,17 +127,17 @@ class BasePaginator(object):
         if reaction.message.id != self.message.id:
             return False
 
-        for emote, function in self.controllers + self.functions:
+        for emote, function in self.controllers + self.default_functions + self.functions:
             if reaction.emoji == emote:
                 self.match = function
-                # if (emote, function) in self.functions:
-                #     self.embed.set_footer(text=EmptyEmbed, icon_url=EmptyEmbed)
-                self.embed.set_footer()
+                if (emote, function) in self.functions:
+                    self.embed.set_footer()
+                    if self.show_return:
+                        self.ctx.bot.loop.create_task(self.message.add_reaction(self.ctx.emotes.misc.return_))
                 return True
         return False
 
-    async def paginate(self, show_controllers=True, **kwargs):
-        self.show_controllers = show_controllers
+    async def paginate(self, **kwargs):
         first_page = self.show_page(1, first=True, **kwargs)
         if not self.is_paginating:
             await first_page
