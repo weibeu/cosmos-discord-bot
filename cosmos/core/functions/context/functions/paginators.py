@@ -19,8 +19,8 @@ class BasePaginator(object):
         self.show_author = show_author
         self.inline = inline
         self.show_entry_count = kwargs.get("show_entry_count", False)
-        self.show_return = kwargs.get("show_return", True)
         self.show_controllers = kwargs.get("show_controllers", True)
+        self.show_return = kwargs.get("show_return", True)
         self.controllers = [
             (self.ctx.emotes.misc.backward, self.first_page),
             (self.ctx.emotes.misc.prev, self.previous_page),
