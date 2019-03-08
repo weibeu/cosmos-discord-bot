@@ -111,6 +111,7 @@ class BasePaginator(object):
     async def show_current_page(self):
         if self.is_paginating:
             await self.show_page(self.current_page)
+            await self.message.remove_reaction(self.ctx.emotes.misc.return_, self.ctx.author)
 
     async def close(self):
         self.embed.set_footer(text="You closed this menu.", icon_url=CANCEL_IMAGE_URL)
