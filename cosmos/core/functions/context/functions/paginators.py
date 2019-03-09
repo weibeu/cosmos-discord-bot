@@ -136,9 +136,11 @@ class BasePaginator(object):
                     self.embed.set_footer()
                     if self.show_return:
                         self.loop.create_task(self.message.add_reaction(self.ctx.emotes.misc.return_))
+                    self.on_function_page = True
                 else:
                     if self.on_function_page:
                         self.loop.create_task(self.message.remove_reaction(self.ctx.emotes.misc.return_, self.ctx.me))
+                        self.on_function_page = False
                 return True
         return False
 
