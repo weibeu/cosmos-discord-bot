@@ -10,11 +10,13 @@ class BasePaginator(object):
 
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, **kwargs):
         self.ctx = ctx
+        self.loop = ctx.bot.loop
         self.entries = entries
         self.per_page = per_page
         self.max_pages = self.__count_pages()
         self.embed = self.ctx.bot.theme.embeds.primary()
         self.is_paginating = len(self.entries) > self.per_page
+        self.on_function_page = False
         self.timeout = timeout
         self.show_author = show_author
         self.inline = inline
@@ -111,7 +113,6 @@ class BasePaginator(object):
     async def show_current_page(self):
         if self.is_paginating:
             await self.show_page(self.current_page)
-            await self.message.remove_reaction(self.ctx.emotes.misc.return_, self.ctx.me)
 
     async def close(self):
         self.embed.set_footer(text="You closed this menu.", icon_url=CANCEL_IMAGE_URL)
@@ -134,7 +135,10 @@ class BasePaginator(object):
                 if (emote, function) in self.functions:
                     self.embed.set_footer()
                     if self.show_return:
-                        self.ctx.bot.loop.create_task(self.message.add_reaction(self.ctx.emotes.misc.return_))
+                        self.loop.create_task(self.message.add_reaction(self.ctx.emotes.misc.return_))
+                else:
+                    if self.on_function_page:
+                        self.loop.create_task(self.message.remove_reaction(self.ctx.emotes.misc.return_, self.ctx.me))
                 return True
         return False
 
@@ -143,7 +147,7 @@ class BasePaginator(object):
         if not self.is_paginating:
             await first_page
         else:
-            self.ctx.bot.loop.create_task(first_page)
+            self.loop.create_task(first_page)
 
         while self.is_paginating:
             try:
