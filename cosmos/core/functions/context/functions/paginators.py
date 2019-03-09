@@ -10,7 +10,8 @@ class BasePaginator(object):
 
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, **kwargs):
         self.ctx = ctx
-        self.loop = ctx.bot.loop
+        self.loop = self.ctx.bot.loop
+        self.emotes = self.emotes.misc
         self.entries = entries
         self.per_page = per_page
         self.max_pages = self.__count_pages()
@@ -24,14 +25,14 @@ class BasePaginator(object):
         self.show_controllers = kwargs.get("show_controllers", True)
         self.show_return = kwargs.get("show_return", True)
         self.controllers = [
-            (self.ctx.emotes.misc.backward, self.first_page),
-            (self.ctx.emotes.misc.prev, self.previous_page),
-            (self.ctx.emotes.misc.close, self.close),
-            (self.ctx.emotes.misc.next, self.next_page),
-            (self.ctx.emotes.misc.forward, self.last_page),
+            (self.emotes.backward, self.first_page),
+            (self.emotes.prev, self.previous_page),
+            (self.emotes.close, self.close),
+            (self.emotes.next, self.next_page),
+            (self.emotes.forward, self.last_page),
         ]
         self.default_functions = [
-            (self.ctx.emotes.misc.return_, self.show_current_page),
+            (self.emotes.return_, self.show_current_page),
         ]
         self.functions = []
         self.current_page = 1
@@ -47,7 +48,7 @@ class BasePaginator(object):
     async def set_controllers(self, **kwargs):
         if self.show_controllers:
             for reaction, _ in self.controllers:
-                if self.max_pages == 2 and reaction in [self.ctx.emotes.misc.backward, self.ctx.emotes.misc.forward]:
+                if self.max_pages == 2 and reaction in [self.emotes.backward, self.emotes.forward]:
                     continue
                 if not kwargs.get(reaction.name, True):
                     continue
@@ -135,11 +136,11 @@ class BasePaginator(object):
                 if (emote, function) in self.functions:
                     self.embed.set_footer()
                     if self.show_return:
-                        self.loop.create_task(self.message.add_reaction(self.ctx.emotes.misc.return_))
+                        self.loop.create_task(self.message.add_reaction(self.emotes.return_))
                     self.on_function_page = True
                 else:
                     if self.on_function_page:
-                        self.loop.create_task(self.message.remove_reaction(self.ctx.emotes.misc.return_, self.ctx.me))
+                        self.loop.create_task(self.message.remove_reaction(self.emotes.return_, self.ctx.me))
                         self.on_function_page = False
                 return True
         return False
