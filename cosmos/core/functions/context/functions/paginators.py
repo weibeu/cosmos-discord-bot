@@ -25,7 +25,9 @@ class BasePaginator(object):
         self.show_controllers = kwargs.get("show_controllers", True)
         self.show_return = kwargs.get("show_return", True)
         self.show_bullets = kwargs.get("show_bullets", False)
+        self.react_bullets = kwargs.get("react_bullets", False)
         self.bullets = self.emotes.foods.emotes
+        self.reaction_bullets = []
         self.controllers = [
             (self.emotes.misc.backward, self.first_page),
             (self.emotes.misc.prev, self.previous_page),
@@ -48,6 +50,9 @@ class BasePaginator(object):
         return pages
 
     async def set_controllers(self, **kwargs):
+        if self.react_bullets:
+            for reaction in self.reaction_bullets:
+                await self.message.add_reaction(reaction)
         if self.show_controllers:
             for reaction, _ in self.controllers:
                 if self.max_pages == 2 and reaction in [self.emotes.misc.backward, self.emotes.misc.forward]:
@@ -69,7 +74,9 @@ class BasePaginator(object):
         bullet_index = 0
         for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
             if self.show_bullets:
-                prefix = f"{self.bullets[bullet_index]} {entry}"
+                bullet = self.bullets[bullet_index]
+                prefix = f"{bullet} {entry}"
+                self.reaction_bullets.append(bullet)
             elif self.show_entry_count:
                 prefix = f"{index}. {entry}"
             else:
