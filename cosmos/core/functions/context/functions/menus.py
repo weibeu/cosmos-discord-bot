@@ -27,7 +27,7 @@ class BaseMenu(BasePaginator):
         self.entry_parser = entry_parser
         self.entries = []
         self.fetch_entries()
-        super().__init__(self.ctx, self.entries, *args, **kwargs)
+        super().__init__(self.ctx, self.entries, show_bullets=True, *args, **kwargs)
 
     def fetch_entries(self):
         for raw_entry in self.raw_entries:
