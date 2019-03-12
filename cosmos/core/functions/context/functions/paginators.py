@@ -66,14 +66,16 @@ class BasePaginator(object):
         self.current_page = page
         entries = self.get_page(page)
         para = []
+        bullet_index = 0
         for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
             if self.show_bullets:
-                prefix = f"{self.bullets[index-1]} {entry}"
+                prefix = f"{self.bullets[bullet_index]} {entry}"
             elif self.show_entry_count:
                 prefix = f"{index}. {entry}"
             else:
                 prefix = entry
             para.append(prefix)
+            bullet_index += 1
 
         if self.max_pages > 1:
             if self.show_entry_count:
@@ -188,10 +190,13 @@ class FieldPaginator(BasePaginator):
         entries = self.get_page(page)
         self.embed.clear_fields()
 
+        bullet_index = 0
+
         for key, value in entries:
             if self.show_bullets:
-                key += f"{self.bullets[entries.index((key, value))]}"
+                key = f"{self.bullets[bullet_index]}" + key
             self.embed.add_field(name=key, value=value, inline=self.inline)
+            bullet_index += 1
 
         if self.max_pages > 1:
             if self.show_entry_count:
