@@ -3,7 +3,7 @@ from .paginators import BasePaginator
 
 class MenuEntry(object):
 
-    async def __default_parser(self):
+    async def __default_parser(self, *_, **__):
         return str(self.raw)
 
     def __init__(self, ctx, raw, entry_parser=None):
