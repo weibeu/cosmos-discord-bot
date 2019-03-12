@@ -194,7 +194,7 @@ class FieldPaginator(BasePaginator):
 
         for key, value in entries:
             if self.show_bullets:
-                key = f"{self.bullets[bullet_index]}" + key
+                key = f"{self.bullets[bullet_index]}   " + key
             self.embed.add_field(name=key, value=value, inline=self.inline)
             bullet_index += 1
 
