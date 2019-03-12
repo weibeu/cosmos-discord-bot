@@ -11,7 +11,7 @@ class BasePaginator(object):
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, **kwargs):
         self.ctx = ctx
         self.loop = self.ctx.bot.loop
-        self.emotes = self.emotes.misc
+        self.emotes = self.ctx.bot.emotes.misc
         self.entries = entries
         self.per_page = per_page
         self.max_pages = self.__count_pages()
