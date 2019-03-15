@@ -8,7 +8,7 @@ CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/55
 
 class BasePaginator(object):
 
-    def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, **kwargs):
+    def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, is_menu=False, **kwargs):
         self.ctx = ctx
         self.loop = self.ctx.bot.loop
         self.emotes = self.ctx.bot.emotes
@@ -21,12 +21,10 @@ class BasePaginator(object):
         self.timeout = timeout
         self.show_author = show_author
         self.inline = inline
+        self.is_menu = is_menu
         self.show_entry_count = kwargs.get("show_entry_count", False)
         self.show_controllers = kwargs.get("show_controllers", True)
         self.show_return = kwargs.get("show_return", True)
-        self.show_bullets = kwargs.get("show_bullets", False)
-        self.react_bullets = kwargs.get("react_bullets", False)
-        self.bullets = self.emotes.foods.emotes
         self.reaction_bullets = []
         self.controllers = [
             (self.emotes.misc.backward, self.first_page),
@@ -50,10 +48,10 @@ class BasePaginator(object):
         return pages
 
     async def set_controllers(self, **kwargs):
-        if self.react_bullets:
+        if self.is_menu:
             for reaction in self.reaction_bullets:
                 await self.message.add_reaction(reaction)
-        if self.show_controllers:
+        if self.show_controllers and self.is_paginating:
             for reaction, _ in self.controllers:
                 if self.max_pages == 2 and reaction in [self.emotes.misc.backward, self.emotes.misc.forward]:
                     continue
@@ -73,9 +71,10 @@ class BasePaginator(object):
         para = []
         bullet_index = 0
         for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
-            if self.show_bullets:
-                bullet = self.bullets[bullet_index]
-                prefix = f"{bullet} {entry}"
+            if self.is_menu:
+                string = await entry.get_string()
+                bullet = entry.emote
+                prefix = f"{bullet} {string}"
                 self.reaction_bullets.append(bullet)
             elif self.show_entry_count:
                 prefix = f"{index}. {entry}"
@@ -93,10 +92,6 @@ class BasePaginator(object):
 
         if self.show_author:
             self.embed.set_author(name=self.ctx.author.name, icon_url=self.ctx.author.avatar_url)
-
-        if not self.is_paginating:
-            self.embed.description = "\n".join(para)
-            return await self.ctx.send(embed=self.embed)
 
         if not first:
             self.embed.description = "\n".join(para)
@@ -200,7 +195,8 @@ class FieldPaginator(BasePaginator):
         bullet_index = 0
 
         for key, value in entries:
-            if self.show_bullets:
+            if self.is_menu:
+                string = await value.get_string()
                 bullet = self.bullets[bullet_index]
                 key = f"{bullet}   " + key
                 self.reaction_bullets.append(bullet)
@@ -216,9 +212,6 @@ class FieldPaginator(BasePaginator):
 
         if self.show_author:
             self.embed.set_author(name=self.ctx.author.name, icon_url=self.ctx.author.avatar_url)
-
-        if not self.is_paginating:
-            return await self.ctx.send(embed=self.embed)
 
         if not first:
             return await self.message.edit(embed=self.embed)
