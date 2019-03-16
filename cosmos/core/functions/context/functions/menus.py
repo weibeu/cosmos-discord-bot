@@ -64,7 +64,7 @@ class BaseMenu(BasePaginator):
 
             response = discord.utils.get(self.entries, emote=r.emoji)
             if response:
-                await self._clean("Menu disabled.")
+                await self._clean(f"You chose {response.emote}.", self.CHECK_IMAGE_URL)
                 return response
             else:
                 try:
