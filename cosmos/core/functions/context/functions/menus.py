@@ -5,7 +5,7 @@ import discord
 from .paginators import BasePaginator
 
 
-class MenuEntry(object):
+class BaseMenuEntry(object):
 
     async def __default_parser(self, *_, **__):
         return str(self.raw)
@@ -38,14 +38,14 @@ class BaseMenu(BasePaginator):
         counter = 0
         page = 1
         for raw_entry in self.raw_entries:
-            entry = MenuEntry(self.ctx, raw_entry, self.bullets[counter], page, self.entry_parser)
+            entry = BaseMenuEntry(self.ctx, raw_entry, self.bullets[counter], page, self.entry_parser)
             self.entries.append(entry)
             counter += 1
             if counter == self.per_page:
                 counter = 0
                 page += 1
 
-    async def wait_for_response(self) -> MenuEntry:
+    async def wait_for_response(self) -> BaseMenuEntry:
         first_page = self.show_page(1, first=True)
         if not self.is_paginating:
             await first_page
