@@ -1,3 +1,7 @@
+import asyncio
+
+import discord
+
 from .paginators import BasePaginator
 
 
@@ -36,3 +40,37 @@ class BaseMenu(BasePaginator):
             counter += 1
             if counter == self.per_page:
                 counter = 0
+
+    async def wait_for_response(self) -> MenuEntry:
+        first_page = self.show_page(1, first=True)
+        if not self.is_paginating:
+            await first_page
+        else:
+            self.loop.create_task(first_page)
+
+        while self.is_paginating or self.is_menu:
+            try:
+                r, user = await self.ctx.bot.wait_for("reaction_add", check=self.check_reaction, timeout=self.timeout)
+            except asyncio.TimeoutError:
+                self.is_paginating = False
+                self.is_menu = False
+                try:
+                    await self._clean()
+                except discord.Forbidden:
+                    pass
+                finally:
+                    break
+
+            response = discord.utils.get(self.entries, emote=r.emoji)
+            if response:
+                await self._clean("Menu disabled.")
+                return response
+            else:
+                try:
+                    await self.message.remove_reaction(r, user)
+                except discord.Forbidden:
+                    pass
+                except discord.NotFound:
+                    self.ctx.bot.eh.sentry.capture_exception()
+
+                await self.match()
