@@ -70,18 +70,19 @@ class BasePaginator(object):
         self.current_page = page
         entries = self.get_page(page)
         para = []
-        bullet_index = 0
-        for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
-            if self.is_menu:
+
+        if self.is_menu:
+            for entry in self.entries:
                 bullet = entry.emote
-                prefix = f"{bullet} {entry.string}"
                 self.reaction_bullets.append(bullet)
-            elif self.show_entry_count:
-                prefix = f"{index}. {entry}"
-            else:
-                prefix = entry
-            para.append(prefix)
-            bullet_index += 1
+                para.append(f"{bullet} {entry.string}")
+        else:
+            for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
+                if self.show_entry_count:
+                    prefix = f"{index}. {entry}"
+                else:
+                    prefix = entry
+                para.append(prefix)
 
         if self.max_pages > 1:
             if self.show_entry_count:
@@ -199,16 +200,15 @@ class FieldPaginator(BasePaginator):
         entries = self.get_page(page)
         self.embed.clear_fields()
 
-        bullet_index = 0
-
-        for key, value in entries:
-            if self.is_menu:
-                string = await value.get_string()
-                bullet = self.bullets[bullet_index]
-                key = f"{bullet}   " + key
+        if self.is_menu:
+            for entry in self.entries:
+                bullet = entry.emote
+                key = f"{bullet}   {entry.key}"
                 self.reaction_bullets.append(bullet)
-            self.embed.add_field(name=key, value=value, inline=self.inline)
-            bullet_index += 1
+                self.embed.add_field(name=key, value=entry.value, inline=self.inline)
+        else:
+            for key, value in self.entries:
+                self.embed.add_field(name=key, value=value)
 
         if self.max_pages > 1:
             if self.show_entry_count:
