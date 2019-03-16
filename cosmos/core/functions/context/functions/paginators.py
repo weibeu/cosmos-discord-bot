@@ -6,6 +6,7 @@ EmptyEmbed = discord.Embed.Empty
 
 class BasePaginator(object):
 
+    CHECK_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/556367793952653333/check.png"
     CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/553154076183887872/cancel.png"
 
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, is_menu=False, **kwargs):
@@ -125,13 +126,18 @@ class BasePaginator(object):
             await self.show_page(self.current_page)
 
     async def close(self):
-        self.embed.set_footer(text="You closed this menu.", icon_url=self.CANCEL_IMAGE_URL)
-        await self.message.edit(embed=self.embed)
-        await self.message.clear_reactions()
+        await self._clean("You closed this menu.")
         self.is_paginating = False
 
     def add_function(self, emote, function):
         self.functions.append((emote, function))
+
+    async def _clean(self, message: str = None, icon_url: str = None):
+        message = message or "This menu was closed due to inactivity."
+        icon_url = icon_url or self.CANCEL_IMAGE_URL
+        self.embed.set_footer(text=message, icon_url=icon_url)
+        await self.message.edit(embed=self.embed)
+        await self.message.clear_reactions()
 
     def check_reaction(self, reaction, user):
         if user is None or user.id != self.ctx.author.id:
@@ -171,9 +177,7 @@ class BasePaginator(object):
             except asyncio.TimeoutError:
                 self.is_paginating = False
                 try:
-                    self.embed.set_footer(text="This menu was closed due to inactivity.", icon_url=self.CANCEL_IMAGE_URL)
-                    await self.message.edit(embed=self.embed)
-                    await self.message.clear_reactions()
+                    await self._clean()
                 except discord.Forbidden:
                     pass
                 finally:
