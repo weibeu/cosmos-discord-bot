@@ -72,7 +72,7 @@ class BasePaginator(object):
         para = []
 
         if self.is_menu:
-            for entry in self.entries:
+            for _, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
                 bullet = entry.emote
                 self.reaction_bullets.append(bullet)
                 para.append(f"{bullet} {entry.string}")
