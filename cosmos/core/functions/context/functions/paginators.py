@@ -73,9 +73,8 @@ class BasePaginator(object):
         bullet_index = 0
         for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
             if self.is_menu:
-                string = await entry.get_string()
                 bullet = entry.emote
-                prefix = f"{bullet} {string}"
+                prefix = f"{bullet} {entry.string}"
                 self.reaction_bullets.append(bullet)
             elif self.show_entry_count:
                 prefix = f"{index}. {entry}"

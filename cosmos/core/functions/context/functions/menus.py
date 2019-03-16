@@ -10,14 +10,15 @@ class MenuEntry(object):
     async def __default_parser(self, *_, **__):
         return str(self.raw)
 
-    def __init__(self, raw, emote, entry_parser=None):
+    def __init__(self, ctx, raw, emote, entry_parser=None):
         self.raw = raw
         self.emote = emote
         self.string_parser = entry_parser or self.__default_parser
         self.string = str()
+        ctx.bot.loop.create_task(self.fetch_string())
 
-    async def get_string(self):
-        return await self.string_parser(self.raw)
+    async def fetch_string(self):
+        self.string = await self.string_parser(self.raw)
 
 
 class BaseMenu(BasePaginator):
@@ -35,7 +36,7 @@ class BaseMenu(BasePaginator):
     def fetch_entries(self):
         counter = 0
         for raw_entry in self.raw_entries:
-            entry = MenuEntry(raw_entry, self.bullets[counter], self.entry_parser)
+            entry = MenuEntry(self.ctx, raw_entry, self.bullets[counter], self.entry_parser)
             self.entries.append(entry)
             counter += 1
             if counter == self.per_page:
