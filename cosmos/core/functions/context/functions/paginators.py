@@ -202,14 +202,14 @@ class FieldPaginator(BasePaginator):
         self.embed.clear_fields()
 
         if self.is_menu:
-            for entry in self.entries:
+            for entry in entries:
                 bullet = entry.emote
                 key, value = await entry.get_key_value()
                 key = f"{bullet}   {key}"
                 self.reaction_bullets.append(bullet)
                 self.embed.add_field(name=key, value=value, inline=self.inline)
         else:
-            for key, value in self.entries:
+            for key, value in entries:
                 self.embed.add_field(name=key, value=value)
 
         if self.max_pages > 1:
