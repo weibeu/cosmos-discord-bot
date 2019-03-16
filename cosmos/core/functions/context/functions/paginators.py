@@ -73,9 +73,10 @@ class BasePaginator(object):
 
         if self.is_menu:
             for _, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
+                string = await entry.get_string()
                 bullet = entry.emote
                 self.reaction_bullets.append(bullet)
-                para.append(f"{bullet} {entry.string}")
+                para.append(f"{bullet} {string}")
         else:
             for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
                 if self.show_entry_count:
@@ -203,9 +204,10 @@ class FieldPaginator(BasePaginator):
         if self.is_menu:
             for entry in self.entries:
                 bullet = entry.emote
-                key = f"{bullet}   {entry.key}"
+                key, value = await entry.get_key_value()
+                key = f"{bullet}   {key}"
                 self.reaction_bullets.append(bullet)
-                self.embed.add_field(name=key, value=entry.value, inline=self.inline)
+                self.embed.add_field(name=key, value=value, inline=self.inline)
         else:
             for key, value in self.entries:
                 self.embed.add_field(name=key, value=value)
