@@ -152,6 +152,10 @@ class BasePaginator(object):
                         self.loop.create_task(self.message.remove_reaction(self.emotes.misc.return_, self.ctx.me))
                         self.on_function_page = False
                 return True
+
+        if reaction.emoji in self.reaction_bullets and self.is_menu:
+            return True
+
         return False
 
     async def paginate(self, **kwargs):
