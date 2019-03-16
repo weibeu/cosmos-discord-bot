@@ -12,7 +12,7 @@ class Marriage(Cog):
         self.cache = self.plugin.cache
 
     @Cog.group(name="propose", aliases=["proposal", "proposals", "marry", "accept"], invoke_without_command=True)
-    async def propose_user(self, ctx, user: discord.User):
+    async def propose_user(self, ctx, user: discord.Member):
         if user.bot or user.id == ctx.author.id:
             res = f"😶    You are really weird. But I understand your feelings {ctx.author.name}."
             return await ctx.send_line(res)
