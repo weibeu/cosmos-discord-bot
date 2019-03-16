@@ -10,9 +10,10 @@ class MenuEntry(object):
     async def __default_parser(self, *_, **__):
         return str(self.raw)
 
-    def __init__(self, ctx, raw, emote, entry_parser=None):
+    def __init__(self, ctx, raw, emote, page, entry_parser=None):
         self.raw = raw
         self.emote = emote
+        self.page = page
         self.string_parser = entry_parser or self.__default_parser
         self.string = str()
         ctx.bot.loop.create_task(self.fetch_string())
@@ -35,12 +36,14 @@ class BaseMenu(BasePaginator):
 
     def fetch_entries(self):
         counter = 0
+        page = 1
         for raw_entry in self.raw_entries:
-            entry = MenuEntry(self.ctx, raw_entry, self.bullets[counter], self.entry_parser)
+            entry = MenuEntry(self.ctx, raw_entry, self.bullets[counter], page, self.entry_parser)
             self.entries.append(entry)
             counter += 1
             if counter == self.per_page:
                 counter = 0
+                page += 1
 
     async def wait_for_response(self) -> MenuEntry:
         first_page = self.show_page(1, first=True)
@@ -62,7 +65,8 @@ class BaseMenu(BasePaginator):
                 finally:
                     break
 
-            response = discord.utils.get(self.entries, emote=r.emoji)
+            response = discord.utils.get(self.entries, emote=r.emoji, page=self.current_page)
+
             if response:
                 await self._clean("Menu disabled.", self.CHECK_IMAGE_URL)
                 return response
