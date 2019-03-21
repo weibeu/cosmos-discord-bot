@@ -1,4 +1,4 @@
-from .user_profile import CosmosUserProfile
+from .cosmos.user_profile import CosmosUserProfile
 
 
 __all__ = [
