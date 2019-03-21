@@ -3,6 +3,7 @@ import asyncio
 import random
 
 from abc import ABC
+
 from .base import ProfileModelsBase
 
 

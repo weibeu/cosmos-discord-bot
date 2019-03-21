@@ -1,6 +1,6 @@
 import asyncio
 
-from .user_profile import CosmosUserProfile
+from .profiles import CosmosUserProfile
 
 
 class ProfileCache(object):
