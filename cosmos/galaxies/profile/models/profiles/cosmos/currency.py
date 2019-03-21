@@ -4,7 +4,7 @@ import random
 
 from abc import ABC
 
-from .base import ProfileModelsBase
+from ..base import ProfileModelsBase
 
 
 class Boson(ProfileModelsBase, ABC):

@@ -1,7 +1,7 @@
 import math
 
 from abc import ABC, abstractmethod
-from .base import ProfileModelsBase
+from ..base import ProfileModelsBase
 
 
 class UserLevel(ProfileModelsBase, ABC):

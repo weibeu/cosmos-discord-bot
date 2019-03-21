@@ -2,7 +2,7 @@ from abc import ABC
 
 import arrow
 
-from .base import ProfileModelsBase
+from ..base import ProfileModelsBase
 
 
 class Marriage(ProfileModelsBase, ABC):
