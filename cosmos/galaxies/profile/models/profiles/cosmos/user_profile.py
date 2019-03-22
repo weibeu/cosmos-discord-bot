@@ -48,7 +48,6 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         self.rank: int = None
         # self.inventory = []
         # self.on_time: int = None
-        self.user = self.plugin.bot.get_user(self.id)
         self.__collection = self.plugin.collection
 
     @property

@@ -23,6 +23,10 @@ class ProfileModelsBase(ABC):
         raise NotImplementedError
 
     @property
+    def user(self):
+        return self.plugin.bot.get_user(self.id)
+
+    @property
     @abstractmethod
     def is_prime(self):
         raise NotImplementedError
