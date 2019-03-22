@@ -12,7 +12,7 @@ class GuildMemberProfile(GuildPoints):
         return self._guild_id
 
     @classmethod
-    def from_document(cls, profile, **document: dict):
+    def from_document(cls, profile, document: dict):
         if not document:
             return
         return cls(profile, **document)
