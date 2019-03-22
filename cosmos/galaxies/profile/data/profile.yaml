@@ -3,6 +3,8 @@ collection_name: profiles
 cache_max_size: 1000
 cache_all: No    # Cache ^ members profile on ready.
 
+guild_profiles_cache_max_size: 10
+
 document_schema:
     user_id: null
     level: 0
