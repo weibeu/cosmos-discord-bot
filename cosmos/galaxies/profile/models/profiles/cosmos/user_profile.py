@@ -54,6 +54,8 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         # self.on_time: int = None
         self.guild_profiles = self.plugin.bot.cache.lfu(self.plugin.data.profile.guild_profiles_cache_max_size)
         self.__collection = self.plugin.collection
+        if self.plugin.data.profile.fetch_guild_profiles:
+            self.plugin.bot.create_task(self.__fetch_guild_profiles())    # TODO: Fetch profiles of all guilds.
 
     @property
     def can_rep(self):
@@ -121,6 +123,9 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         embed.add_field(name="Family", value=self.children)
         embed.add_field(name="Profile description", value=self.description)
         return embed
+
+    async def __fetch_guild_profiles(self):
+        pass
 
     async def get_guild_profile(self, guild_id: int) -> GuildMemberProfile:
         profile = self.guild_profiles.get(guild_id)
