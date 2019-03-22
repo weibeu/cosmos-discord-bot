@@ -4,6 +4,8 @@ from .currency import Boson, Fermion
 from .experience import UserExperience
 from .family import Relationship
 
+from ..guild import GuildMemberProfile
+
 
 class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
@@ -48,6 +50,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         self.rank: int = None
         # self.inventory = []
         # self.on_time: int = None
+        self.guild_profiles = self.plugin.bot.cache.lfu(self.plugin.data.profile.guild_profiles_cache_max_size)
         self.__collection = self.plugin.collection
 
     @property
@@ -116,3 +119,14 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         embed.add_field(name="Family", value=self.children)
         embed.add_field(name="Profile description", value=self.description)
         return embed
+
+    async def get_guild_profile(self, guild_id: int) -> GuildMemberProfile:
+        profile = self.guild_profiles.get(guild_id)
+        if not profile:
+            document = await self.collection.find_one(
+                self.document_filter, {f"guilds.{guild_id}": "$"}
+            ) or dict()
+            document = document.get("guilds", dict())
+            profile = GuildMemberProfile.from_document(self, document)
+            self.guild_profiles.set(guild_id, profile)
+        return profile
