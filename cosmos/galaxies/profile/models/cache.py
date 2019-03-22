@@ -5,6 +5,10 @@ from .profiles import CosmosUserProfile
 
 class ProfileCache(object):
 
+    DEFAULT_PROJECTION = {
+        "guilds": False,
+    }
+
     def __init__(self, plugin):
         self.plugin = plugin
         self.bot = self.plugin.bot
@@ -22,7 +26,8 @@ class ProfileCache(object):
         self.bot.log.info("Preparing profile caches.")
         # await self.__get_redis_client()
         profile_documents = dict()
-        profiles_data = await self.collection.find({}).to_list(self.plugin.data.profile.cache_max_size)
+        profiles_data = await self.collection.find(
+            {}, projection=self.DEFAULT_PROJECTION).to_list(self.plugin.data.profile.cache_max_size)
         for profile_document in profiles_data:
             profile = CosmosUserProfile.from_document(self.plugin, profile_document)
             user_id = int(profile_document.get("user_id"))  # bson.int64.Int64 to int
@@ -37,7 +42,7 @@ class ProfileCache(object):
         # profile = await self._redis.get_object(self.__collection_name, user_id)
         profile = self.lfu.get(user_id)
         if not profile:
-            profile_document = await self.collection.find_one({"user_id": user_id})
+            profile_document = await self.collection.find_one({"user_id": user_id}, projection=self.DEFAULT_PROJECTION)
             if profile_document:
                 profile = CosmosUserProfile.from_document(self.plugin, profile_document)
                 # await self._redis.set_object(self.__collection_name, user_id, profile)
