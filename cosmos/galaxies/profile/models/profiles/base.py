@@ -9,12 +9,12 @@ class ProfileModelsBase(ABC):
 
     @property
     @abstractmethod
-    def _plugin(self):
+    def plugin(self):
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def _collection(self):
+    def collection(self):
         raise NotImplementedError
 
     @property

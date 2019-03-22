@@ -17,24 +17,24 @@ class Marriage(ProfileModelsBase, ABC):
 
     @property
     def proposed(self):
-        return self._plugin.bot.get_user(self.proposed_id)
+        return self.plugin.bot.get_user(self.proposed_id)
 
     @property
     def proposer(self):
-        return self._plugin.bot.get_user(self.proposer_id)
+        return self.plugin.bot.get_user(self.proposer_id)
 
     @property
     def spouse(self):
-        return self._plugin.bot.get_user(self.spouse_id)
+        return self.plugin.bot.get_user(self.spouse_id)
 
     async def propose(self, author_profile):
         self.proposer_id = author_profile.id
         author_profile.proposed_id = self.id
 
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$set": {"relationship.marriage.proposer": self.proposer_id}}
         )
-        await self._collection.update_one(
+        await self.collection.update_one(
             author_profile.document_filter, {"$set": {"relationship.marriage.proposed": author_profile.proposed_id}}
         )
 
@@ -42,10 +42,10 @@ class Marriage(ProfileModelsBase, ABC):
         self.proposer_id = None
         target_profile.proposed_id = None
 
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$unset": {"relationship.marriage.proposer": "$"}}
         )
-        await self._collection.update_one(
+        await self.collection.update_one(
             target_profile.document_filter, {"$unset": {"relationship.marriage.proposed": "$"}}
         )
 
@@ -53,10 +53,10 @@ class Marriage(ProfileModelsBase, ABC):
         self.proposed_id = None
         target_profile.proposer_id = None
 
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$unset": {"relationship.marriage.proposed": "$"}}
         )
-        await self._collection.update_one(
+        await self.collection.update_one(
             target_profile.document_filter, {"$unset": {"relationship.marriage.proposer": "$"}}
         )
 
@@ -66,7 +66,7 @@ class Marriage(ProfileModelsBase, ABC):
         author_profile.spouse_id = self.id
         author_profile.marriage_timestamp = self.marriage_timestamp
 
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {
                 "$set": {
                     "relationship.marriage.spouse": self.spouse_id,
@@ -74,7 +74,7 @@ class Marriage(ProfileModelsBase, ABC):
                 }
             }
         )
-        await self._collection.update_one(
+        await self.collection.update_one(
             author_profile.document_filter, {
                 "$set": {
                     "relationship.marriage.spouse": author_profile.spouse_id,
@@ -91,10 +91,10 @@ class Marriage(ProfileModelsBase, ABC):
         target_profile.proposed_id = None
         target_profile.proposer_id = None
 
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$unset": {"relationship.marriage": "$"}}
         )
-        await self._collection.update_one(
+        await self.collection.update_one(
             target_profile.document_filter, {"$unset": {"relationship.marriage": "$"}}
         )
 
@@ -109,11 +109,11 @@ class Relationship(Marriage, ABC):
 
     @property
     def children(self):
-        return [self._plugin.bot.get_user(child_id) for child_id in self._children]
+        return [self.plugin.bot.get_user(child_id) for child_id in self._children]
 
     @property
     def parents(self):
-        return [self._plugin.bot.get_user(parent_id) for parent_id in self._parents]
+        return [self.plugin.bot.get_user(parent_id) for parent_id in self._parents]
 
     async def adopt(self, target_profile):
         self._children.append(target_profile.id)

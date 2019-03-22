@@ -8,11 +8,11 @@ from .family import Relationship
 class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     @property
-    def _plugin(self):
+    def plugin(self):
         return self.__plugin
 
     @property
-    def _collection(self):
+    def collection(self):
         return self.__collection
 
     @property
@@ -25,7 +25,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     @property
     def description(self):
-        return self._description or self._plugin.data.profile.default_description
+        return self._description or self.plugin.data.profile.default_description
 
     @classmethod
     def from_document(cls, plugin, document: dict):
@@ -48,8 +48,8 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         self.rank: int = None
         # self.inventory = []
         # self.on_time: int = None
-        self.user = self._plugin.bot.get_user(self.id)
-        self.__collection = self._plugin.collection
+        self.user = self.plugin.bot.get_user(self.id)
+        self.__collection = self.plugin.collection
 
     @property
     def can_rep(self):
@@ -59,21 +59,21 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     @property
     def next_rep(self):
-        return self.get_future_arrow(self.rep_timestamp, hours=self._plugin.data.profile.rep_cooldown)
+        return self.get_future_arrow(self.rep_timestamp, hours=self.plugin.data.profile.rep_cooldown)
 
     async def rep(self, author_profile):
         self.reps += 1
         author_profile.rep_timestamp = arrow.utcnow()
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$set": {"reputation.points": self.reps}}
         )
-        await self._collection.update_one(
+        await self.collection.update_one(
             author_profile.document_filter, {"$set": {"reputation.timestamp": author_profile.rep_timestamp.datetime}}
         )
 
     async def set_description(self, description: str):
         self._description = description
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$set": {"description": self.description}}
         )
 
@@ -82,7 +82,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
             birthday = arrow.get(birthday)
         self.birthday = birthday
 
-        await self._collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$set": {"birthday": birthday.datetime}}
         )
 
@@ -97,7 +97,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         return self.document_filter, update
 
     def get_embed(self):
-        embed = self._plugin.bot.theme.embeds.primary(title="Cosmos Profile")
+        embed = self.plugin.bot.theme.embeds.primary(title="Cosmos Profile")
         embed.set_author(name=self.user.name, icon_url=self.user.avatar_url)
         embed.add_field(name="Level", value=self.level)
         embed.add_field(name="Experience points", value=self.xp)

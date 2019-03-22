@@ -22,9 +22,9 @@ class UserExperience(UserLevel, ABC):
         self._xp = int(xp)
 
     async def give_xp(self):
-        xp = random.randint(self._plugin.data.xp.default_min, self._plugin.data.xp.default_max)
+        xp = random.randint(self.plugin.data.xp.default_min, self.plugin.data.xp.default_max)
         self._xp += xp
 
         self.in_xp_buffer = True    # Put user in xp cooldown buffer.
-        await asyncio.sleep(self._plugin.data.xp.buffer_cooldown)
+        await asyncio.sleep(self.plugin.data.xp.buffer_cooldown)
         self.in_xp_buffer = False
