@@ -13,8 +13,6 @@ class GuildMemberProfile(GuildPoints):
 
     @classmethod
     def from_document(cls, profile, document: dict):
-        if not document:
-            return
         return cls(profile, **document)
 
     def __init__(self, profile, guild_id, **kwargs):

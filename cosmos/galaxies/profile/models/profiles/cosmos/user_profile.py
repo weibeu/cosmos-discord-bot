@@ -31,8 +31,6 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     @classmethod
     def from_document(cls, plugin, document: dict):
-        if not document:
-            return
         return cls(plugin, **document)
 
     def __init__(self, plugin, **kwargs):
