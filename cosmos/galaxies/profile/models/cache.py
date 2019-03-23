@@ -56,6 +56,7 @@ class ProfileCache(object):
         return await self.get_profile(user_id)
 
     async def give_assets(self, message):
+        assets = []
         profile = await self.get_profile(message.author.id)
         if not profile:
             embed = self.bot.theme.embeds.one_line.primary(f"Welcome {message.author.name}. Creating your profile!")
@@ -63,9 +64,11 @@ class ProfileCache(object):
             profile = await self.create_profile(message.author.id)
 
         if not profile.in_xp_buffer:
-            await profile.give_xp()
+            assets.append(profile.give_xp())
         if not profile.in_boson_buffer:
-            await profile.give_default_bosons()
+            assets.append(profile.give_default_bosons())
+        for asset in assets:
+            self.bot.loop.create_task(asset)
 
     async def __update_database(self):
         while True:
