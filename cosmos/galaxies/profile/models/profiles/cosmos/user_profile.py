@@ -132,6 +132,6 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
                 self.document_filter, {f"guilds.{guild_id}": "$"}
             ) or dict()
             document = document.get("guilds", dict())
-            profile = GuildMemberProfile.from_document(self, document)
+            profile = GuildMemberProfile.from_document(self, guild_id, document)
             self.guild_profiles.set(guild_id, profile)
         return profile

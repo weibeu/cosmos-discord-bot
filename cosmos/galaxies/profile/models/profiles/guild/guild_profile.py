@@ -12,8 +12,8 @@ class GuildMemberProfile(GuildPoints):
         return self._guild_id
 
     @classmethod
-    def from_document(cls, profile, document: dict):
-        return cls(profile, **document)
+    def from_document(cls, profile, guild_id, document: dict):
+        return cls(profile, guild_id, **document)
 
     def __init__(self, profile, guild_id, **kwargs):
         self._profile = profile    # CosmosUserProfile
