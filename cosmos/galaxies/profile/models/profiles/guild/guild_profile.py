@@ -8,8 +8,8 @@ class GuildMemberProfile(GuildPoints):
         return self._profile
 
     @property
-    def guild_id(self):
-        return self._guild_id
+    def guild(self):
+        return self.profile.plugin.bot.get_guild(self._guild_id)
 
     @classmethod
     def from_document(cls, profile, guild_id, document: dict):

@@ -12,7 +12,7 @@ class GuildProfileModelsBase(ProfileModelsBase):
 
     @property
     @abstractmethod
-    def guild_id(self):
+    def guild(self):
         raise NotImplementedError
 
     @property
