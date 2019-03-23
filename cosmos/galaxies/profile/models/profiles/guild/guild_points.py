@@ -11,7 +11,7 @@ class GuildPoints(GuildProfileModelsBase, ABC):
 
     def __init__(self, **kwargs):
         raw_points = kwargs.get("points", dict())
-        self.points = raw_points.get("points")
+        self.points = raw_points.get("points", 0)
         self.points_daily_timestamp = raw_points.get("daily_timestamp")
 
         self.in_points_buffer = False
