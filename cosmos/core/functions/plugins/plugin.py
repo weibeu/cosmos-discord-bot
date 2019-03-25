@@ -80,9 +80,8 @@ class Plugin(object):   # Extension
         # self._cogs.update({cog.name: cog})
         self.bot.log.info("Done.")
 
-    def load_cogs(self, cogs: list = None):
-        cog_list = cogs or self.module.__all__
-        for cog in cog_list:
+    def load_cogs(self, cogs: list):    # TODO: Fetch all cogs from module.__all__
+        for cog in cogs:
             self.load_cog(cog)
 
     def get_cog(self, cog_name: str):
