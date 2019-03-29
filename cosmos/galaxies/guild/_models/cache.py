@@ -3,6 +3,10 @@ from .guild_profile import CosmosGuild
 
 class GuildCache(object):
 
+    DEFAULT_PROJECTION = {
+        "prefixes": False
+    }
+
     def __init__(self, plugin):
         self.plugin = plugin
         self.bot = self.plugin.bot
@@ -20,7 +24,9 @@ class GuildCache(object):
     async def get_profile(self, guild_id) -> CosmosGuild:
         profile = await self.redis.get_object(self.collection.name, guild_id)
         if not profile:
-            profile_document = (await self.collection.find_one({"guild_id": guild_id})) or {"guild_id": guild_id}
+            profile_document = (await self.collection.find_one(
+                {"guild_id": guild_id}, projection=self.DEFAULT_PROJECTION
+            )) or {"guild_id": guild_id}
             profile = CosmosGuild.from_document(profile_document)
             await self.redis.set_object(self.collection.name, guild_id, profile)
         return profile
