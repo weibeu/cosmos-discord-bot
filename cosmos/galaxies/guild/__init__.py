@@ -12,3 +12,5 @@ def setup(bot):
     plugin.cache = GuildCache(plugin)
 
     plugin.load_cogs(__all__)
+
+    bot.guilds_prefixes = plugin.cache.prefixes
