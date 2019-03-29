@@ -6,13 +6,19 @@ from .utilities import *
 
 class InitialTasks(commands.Bot):
 
+    @classmethod
+    def __get_prefix(cls, bot, message):
+        prefixes = bot.configs.cosmos.prefixes
+        # TODO: Get various prefixes from message.
+
+        return commands.when_mentioned_or(*prefixes)(bot, message)
+
     def __init__(self):
         self._init_time()
         self._init_utilities()
         self._init_configs()
         super().__init__(
-            command_prefix=commands.when_mentioned_or(*self.configs.cosmos.prefixes),
-            case_insensitive=True
+            command_prefix=self.__get_prefix, case_insensitive=True
         )
         self._init_logger()
         self._init_exception_handler()
