@@ -6,5 +6,4 @@ from .base import CosmosGuildBase
 class GuildSettings(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
-        # raw_settings = kwargs.get("settings", dict())
-        pass
+        raw_settings = kwargs.get("settings", dict())
