@@ -1,7 +1,7 @@
-from .base import CosmosGuildBase
+from .settings import GuildSettings
 
 
-class CosmosGuild(CosmosGuildBase):
+class CosmosGuild(GuildSettings):
 
     # @property
     # def plugin(self):
@@ -22,3 +22,4 @@ class CosmosGuild(CosmosGuildBase):
     def __init__(self, **kwargs):
         self.__id = kwargs["guild_id"]
         self.is_prime = kwargs.get("is_prime", False)
+        GuildSettings.__init__(self, **kwargs)
