@@ -9,8 +9,8 @@ class InitialTasks(commands.Bot):
     @classmethod
     def __get_prefix(cls, bot, message):
         prefixes = bot.configs.cosmos.prefixes
-        # TODO: Get various prefixes from message.
-
+        if message.guild:
+            prefixes += bot.guilds_prefixes.get(message.guild.id, list())
         return commands.when_mentioned_or(*prefixes)(bot, message)
 
     def __init__(self):
