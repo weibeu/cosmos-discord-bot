@@ -29,7 +29,7 @@ class GuildSettings(Cog):
         res = f"{ctx.guild.name} custom prefixes: {prefixes}."
         await ctx.send_line(res, ctx.guild.icon_url)
 
-    @prefix.command(name="set", ignore_extra=False)
+    @prefix.command(name="set")
     async def set_prefix(self, ctx, prefix):
         if not await self.__check_prefix(ctx, prefix):
             return
@@ -39,7 +39,7 @@ class GuildSettings(Cog):
         )
         await ctx.send_line(f"{prefix} has been set as custom prefix of {ctx.guild.name}.", ctx.guild.icon_url)
 
-    @prefix.command(name="add", ignore_extra=False)
+    @prefix.command(name="add")
     async def add_prefix(self, ctx, prefix):
         if not await self.__check_prefix(ctx, prefix):
             return
