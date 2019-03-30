@@ -1,12 +1,13 @@
-from .initial import FatalError
-from .commands import MemberMissingPermissions
+from .commands import *
 
+from .initial import FatalError
 from .handler import ExceptionHandler
 
 
 __all__ = [
-    "FatalError",
-    "MemberMissingPermissions",
-
     "ExceptionHandler",
+
+    "MemberMissingPermissions",
+    "GuildNotPrime",
+    "MemberNotPrime",
 ]

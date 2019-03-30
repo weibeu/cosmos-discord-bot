@@ -1,10 +1,12 @@
 from ..core import Cog
 
-from ..core.functions import MemberMissingPermissions
+from ..core.functions.exceptions import *
 
 
 __all__ = [
     "Cog",
 
     "MemberMissingPermissions",
+    "GuildNotPrime",
+    "MemberNotPrime",
 ]
