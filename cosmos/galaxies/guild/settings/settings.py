@@ -18,5 +18,5 @@ class GuildSettings(Cog):
         prefixes = self.bot.guilds_prefixes.get(ctx.guild.id)
         if not prefixes:
             return await ctx.send_line(f"{ctx.guild.name} doesn't has any custom prefixes.", ctx.guild.icon_url)
-        res = f"{ctx.guild.name} custom prefixes: {', '.join(prefixes)}."
+        res = f"{ctx.guild.name} custom prefixes ----> {prefixes}."
         await ctx.send_line(res, ctx.guild.icon_url)
