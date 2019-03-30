@@ -21,3 +21,5 @@ def setup(bot):
     plugin.cache = ProfileCache(plugin)
 
     plugin.load_cogs(__all__)
+
+    bot.profile_cache = plugin.cache

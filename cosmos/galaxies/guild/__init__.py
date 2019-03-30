@@ -15,4 +15,4 @@ def setup(bot):
 
     plugin.load_cogs(__all__)
 
-    bot.guilds_prefixes = plugin.cache.prefixes
+    bot.guild_cache = plugin.cache
