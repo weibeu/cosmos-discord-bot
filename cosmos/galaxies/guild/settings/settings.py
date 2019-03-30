@@ -46,7 +46,7 @@ class GuildSettings(Cog):
         prefixes = self.cache.prefixes.get(ctx.guild.id, list())
         max_prefixes = self.plugin.data.guild.max_prefixes
         if len(prefixes) >= max_prefixes:
-            return await ctx.send_line(f"❌    Sorry but servers can have maximum upto {max_prefixes} custom prefixes.")
+            return await ctx.send_line(f"❌    Sorry but servers can have maximum up-to {max_prefixes} custom prefixes.")
         prefixes.append(prefix)
         self.cache.prefixes.update({ctx.guild.id: prefixes})
         await self.plugin.collection.update_one(
