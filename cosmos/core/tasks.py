@@ -10,7 +10,11 @@ class InitialTasks(commands.Bot):
     def __get_prefix(cls, bot, message):
         prefixes = bot.configs.cosmos.prefixes.copy()
         if message.guild:
-            prefixes += bot.guilds_prefixes.get(message.guild.id, list())
+            try:
+                prefixes += bot.guilds_prefixes.get(message.guild.id, list())
+            except AttributeError:
+                if bot.guilds_prefixes is None:
+                    bot.log.error("Attribute self.guilds_prefixes isn't overridden by dict of prefixes.")
         return commands.when_mentioned_or(*prefixes)(bot, message)
 
     def __init__(self):

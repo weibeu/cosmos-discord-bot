@@ -17,6 +17,7 @@ class Cosmos(InitialTasks):
         self.emotes = None
         self.plugins = None
         self.theme = None
+        self.guilds_prefixes = None    # Intended to be overridden with dict() of prefixes.
         super().__init__()
 
     async def get_context(self, message, *, context_class=CosmosContext):
