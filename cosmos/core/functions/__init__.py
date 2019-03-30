@@ -1,9 +1,8 @@
-from .exceptions import *
-
 from .cacher.handler import CacheHandler
 from .configs.handler import ConfigHandler
 from .context import CosmosContext
 from .database.database import DatabaseClient
+from .exceptions import ExceptionHandler
 from .emotes.emotes import CosmosEmotes
 from .logger.handler import LoggerHandler
 from .plugins.handler import PluginHandler
@@ -21,9 +20,6 @@ __all__ = [
     "PluginHandler",
     "CosmosContext",
     "CosmosTheme",
-
-    "FatalError",
-    "MemberMissingPermissions",
 
     "Cog",
 ]
