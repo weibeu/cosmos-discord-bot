@@ -3,7 +3,7 @@ import os
 
 from discord import ClientException
 
-from cosmos.core.functions.plugins.models import Cog
+from .models import Cog
 from ..data.models import PluginData
 
 
