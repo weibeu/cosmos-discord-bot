@@ -3,10 +3,12 @@ from discord.ext import commands
 from .checks import CosmosChecks
 
 
-class Cog(commands.Cog, CosmosChecks, metaclass=commands.CogMeta):
+class Cog(commands.Cog, metaclass=commands.CogMeta):
 
     command = commands.command
     group = commands.group
+
+    checks = CosmosChecks
 
     def __init__(self, *args, **kwargs):
         self.name = self.__class__.__name__
