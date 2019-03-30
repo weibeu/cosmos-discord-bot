@@ -25,8 +25,10 @@ class GuildCache(object):
         profile = await self.redis.get_object(self.collection.name, guild_id)
         if not profile:
             profile_document = (await self.collection.find_one(
-                {"guild_id": guild_id}, projection=self.DEFAULT_PROJECTION
-            )) or {"guild_id": guild_id}
+                {"guild_id": guild_id}, projection=self.DEFAULT_PROJECTION))
+            if not profile_document:
+                profile_document = {"guild_id": guild_id}
+                await self.collection.insert_one(profile_document)
             profile = CosmosGuild.from_document(profile_document)
             await self.redis.set_object(self.collection.name, guild_id, profile)
         return profile
