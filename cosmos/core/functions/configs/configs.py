@@ -104,3 +104,11 @@ class CosmosColorScheme(Config):
             color_int = int(self.raw[color_type], 16)
             discord_color = discord.Color(color_int)
             self.__setattr__(color_type, discord_color)
+
+
+class CosmosImagesConfig(Config):
+
+    PATH = "cfg/theme/images.yaml"
+
+    def __init__(self):
+        super().__init__()

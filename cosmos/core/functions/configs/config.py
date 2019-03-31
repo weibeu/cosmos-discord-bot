@@ -9,7 +9,7 @@ class Config(ABC):
     PATH = str()
 
     def __init__(self):
-        self.raw: dict = None
+        self.raw = None
         self.PATH = os.path.join(self.PATH)
         self._fetch_config()
 
