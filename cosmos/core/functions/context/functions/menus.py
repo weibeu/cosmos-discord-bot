@@ -89,7 +89,7 @@ class BaseMenu(BasePaginator):
             response = discord.utils.get(self.entries, emote=r.emoji, page=self.current_page)
 
             if response:
-                await self._clean("Menu disabled.", self.CHECK_IMAGE_URL)
+                await self._clean("Menu disabled.", self.ctx.bot.theme.images.check)
                 return response
             else:
                 try:

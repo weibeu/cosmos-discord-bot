@@ -6,9 +6,6 @@ EmptyEmbed = discord.Embed.Empty
 
 class BasePaginator(object):
 
-    CHECK_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/556367793952653333/check.png"
-    CANCEL_IMAGE_URL = "https://cdn.discordapp.com/attachments/553149607534919691/553154076183887872/cancel.png"
-
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=False, is_menu=False, **kwargs):
         self.ctx = ctx
         self.loop = self.ctx.bot.loop
@@ -135,7 +132,7 @@ class BasePaginator(object):
 
     async def _clean(self, message: str = None, icon_url: str = None):
         message = message or "This menu was closed due to inactivity."
-        icon_url = icon_url or self.CANCEL_IMAGE_URL
+        icon_url = icon_url or self.ctx.bot.theme.images.cancel
         self.embed.set_footer(text=message, icon_url=icon_url)
         await self.message.edit(embed=self.embed)
         await self.message.clear_reactions()
