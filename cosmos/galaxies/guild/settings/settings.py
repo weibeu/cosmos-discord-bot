@@ -55,3 +55,27 @@ class GuildSettings(Cog):
         )
         await ctx.send_line(
             f"{prefix} has been added to list of custom prefixes of {ctx.guild.name}.", ctx.guild.icon_url)
+
+    @prefix.command(name="remove", aliases=["delete"])
+    async def remove_prefix(self, ctx, prefix):
+        prefixes = self.cache.prefixes.get(ctx.guild.id, list())
+        try:
+            prefixes.remove(prefix)
+        except ValueError:
+            return await ctx.send_line("⚠    Sorry but that prefix is not registered.")
+        else:
+            await self.plugin.collection.update_one(
+                {"guild_id": ctx.guild.id}, {"$addToSet": {"prefixes": prefix}}
+            )
+        await ctx.send_line(f"✅    Prefix {prefix} has been removed from list of custom prefixes of {ctx.guild.name}.")
+
+    @prefix.command(name="clear", aliases=["clean"])
+    async def clear_prefixes(self, ctx):
+        # TODO: Add confirm menu here.
+        try:
+            self.cache.prefixes.pop(ctx.guild.id)
+        except KeyError:
+            return await ctx.send_line(f"{ctx.guild.name} doesn't has any custom prefixes set.", ctx.guild.icon_url)
+        else:
+            await self.plugin.collection.update_one({"guild_id": ctx.guild.id}, {"$unset": {"prefixes": ""}})
+        await ctx.send(f"✅    Cleared all custom prefixes of {ctx.guild.name}.")
