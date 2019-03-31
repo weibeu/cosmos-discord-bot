@@ -29,7 +29,7 @@ class GuildSettings(Cog):
         res = f"{ctx.guild.name} custom prefixes: {prefixes}."
         await ctx.send_line(res, ctx.guild.icon_url)
 
-    @prefix.command(name="set")
+    @prefix.command(name="set", ignore_extra=False)
     async def set_prefix(self, ctx, *, prefix):
         if not await self.__check_prefix(ctx, prefix):
             return
@@ -40,7 +40,7 @@ class GuildSettings(Cog):
         await ctx.send_line(f"{prefix} has been set as custom prefix of {ctx.guild.name}.", ctx.guild.icon_url)
 
     @Cog.checks.prime_guild()
-    @prefix.command(name="add")
+    @prefix.command(name="add", ignore_extra=False)
     async def add_prefix(self, ctx, *, prefix):
         if not await self.__check_prefix(ctx, prefix):
             return
@@ -57,7 +57,7 @@ class GuildSettings(Cog):
             f"{prefix} has been added to list of custom prefixes of {ctx.guild.name}.", ctx.guild.icon_url)
 
     @prefix.command(name="remove", aliases=["delete"])
-    async def remove_prefix(self, ctx, *, prefix):
+    async def remove_prefix(self, ctx, *, prefix, ignore_extra=False):
         prefixes = self.cache.prefixes.get(ctx.guild.id, list())
         try:
             prefixes.remove(prefix)
