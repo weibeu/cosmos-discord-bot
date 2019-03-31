@@ -39,6 +39,7 @@ class GuildSettings(Cog):
         )
         await ctx.send_line(f"{prefix} has been set as custom prefix of {ctx.guild.name}.", ctx.guild.icon_url)
 
+    @Cog.checks.prime_guild()
     @prefix.command(name="add")
     async def add_prefix(self, ctx, prefix):
         if not await self.__check_prefix(ctx, prefix):
