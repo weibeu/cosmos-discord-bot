@@ -47,7 +47,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         # self.badges = []
         self._description: str = kwargs.get("description", str())
         self.birthday = self.get_arrow(kwargs.get("birthday"))
-        self.rank: int = None
+        self.rank = None
         # self.inventory = []
         # self.on_time: int = None
         self.guild_profiles = self.plugin.bot.cache.lfu(self.plugin.data.profile.guild_profiles_cache_max_size)
