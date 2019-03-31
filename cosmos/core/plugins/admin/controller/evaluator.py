@@ -30,7 +30,7 @@ class Evaluator(Cog):
         # remove `foo`
         return content.strip('` \n')
 
-    @Cog.command(hidden=True, name='eval')
+    @Cog.command(name='eval', aliases=["py", "evaluate"])
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
 
