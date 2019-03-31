@@ -43,10 +43,10 @@ class Marriage(ProfileModelsBase, ABC):
         target_profile.proposed_id = None
 
         await self.collection.update_one(
-            self.document_filter, {"$unset": {"relationship.marriage.proposer": "$"}}
+            self.document_filter, {"$unset": {"relationship.marriage.proposer": ""}}
         )
         await self.collection.update_one(
-            target_profile.document_filter, {"$unset": {"relationship.marriage.proposed": "$"}}
+            target_profile.document_filter, {"$unset": {"relationship.marriage.proposed": ""}}
         )
 
     async def cancel_proposal(self, target_profile):
@@ -54,10 +54,10 @@ class Marriage(ProfileModelsBase, ABC):
         target_profile.proposer_id = None
 
         await self.collection.update_one(
-            self.document_filter, {"$unset": {"relationship.marriage.proposed": "$"}}
+            self.document_filter, {"$unset": {"relationship.marriage.proposed": ""}}
         )
         await self.collection.update_one(
-            target_profile.document_filter, {"$unset": {"relationship.marriage.proposer": "$"}}
+            target_profile.document_filter, {"$unset": {"relationship.marriage.proposer": ""}}
         )
 
     async def marry(self, author_profile):
@@ -92,10 +92,10 @@ class Marriage(ProfileModelsBase, ABC):
         target_profile.proposer_id = None
 
         await self.collection.update_one(
-            self.document_filter, {"$unset": {"relationship.marriage": "$"}}
+            self.document_filter, {"$unset": {"relationship.marriage": ""}}
         )
         await self.collection.update_one(
-            target_profile.document_filter, {"$unset": {"relationship.marriage": "$"}}
+            target_profile.document_filter, {"$unset": {"relationship.marriage": ""}}
         )
 
 
