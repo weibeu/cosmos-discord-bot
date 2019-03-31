@@ -9,6 +9,7 @@ import discord
 from ....functions import Cog
 
 
+# noinspection PyBroadException
 class Evaluator(Cog):
 
     def __init__(self, plugin):
@@ -16,7 +17,7 @@ class Evaluator(Cog):
         self.plugin = plugin
         self._last_result = None
 
-    async def __local_check(self, ctx):     # ! Never ever remove this method.
+    async def cog_check(self, ctx):    # ! Never ever remove this method.
         return await self.bot.is_owner(ctx.author)
 
     @staticmethod
@@ -29,7 +30,6 @@ class Evaluator(Cog):
         # remove `foo`
         return content.strip('` \n')
 
-    # noinspection PyBroadException
     @Cog.command(hidden=True, name='eval')
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
@@ -61,7 +61,7 @@ class Evaluator(Cog):
             try:
                 with redirect_stdout(stdout):
                     ret = await func()
-            except Exception as e:
+            except Exception as _:
                 value = stdout.getvalue()
                 await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
             else:
