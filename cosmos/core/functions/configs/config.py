@@ -6,6 +6,7 @@ from ...utilities import handlers
 
 class Config(ABC):
 
+    NAME = str()
     PATH = str()
 
     def __init__(self):

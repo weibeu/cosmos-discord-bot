@@ -1,14 +1,13 @@
-from .configs import *
+from . import configs
 
 
 class ConfigHandler(object):
 
-    discord = DiscordConfig
-    cosmos = CosmosConfig
-    plugins = PluginsConfig
-    logger = LoggerConfig
-    db = DatabaseConfig
-    sentry = SentryConfig
-    emotes = CosmosEmotesConfig
-    color_scheme = CosmosColorScheme
-    images = CosmosImagesConfig
+    def __init__(self):
+        self.__fetch_configs()
+
+    def __fetch_configs(self):
+        for string in dir(configs):
+            attr = getattr(configs, string)
+            if hasattr(attr, "NAME") and hasattr(attr, "PATH") and (attr.PATH or attr.NAME):
+                self.__setattr__(attr.NAME, attr())

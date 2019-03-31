@@ -8,6 +8,7 @@ from ..exceptions.initial import FatalError
 
 class DiscordConfig(Config):
 
+    NAME = "discord"
     PATH = "cfg/core/discord.yaml"
 
     def __init__(self):
@@ -19,6 +20,7 @@ class DiscordConfig(Config):
 
 class CosmosConfig(Config):
 
+    NAME = "cosmos"
     PATH = "cfg/core/cosmos.yaml"
 
     def __init__(self):
@@ -28,6 +30,7 @@ class CosmosConfig(Config):
 
 class PluginsConfig(Config):
 
+    NAME = "plugins"
     PATH = "cfg/core/plugins.yaml"
 
     def __init__(self):
@@ -36,6 +39,7 @@ class PluginsConfig(Config):
 
 class LoggerConfig(Config):
 
+    NAME = "logger"
     PATH = "cfg/core/logger.yaml"
 
     def __init__(self):
@@ -44,6 +48,7 @@ class LoggerConfig(Config):
 
 class DatabaseConfig(Config):
 
+    NAME = "db"
     PATH = "cfg/core/database.yaml"
 
     def __init__(self):
@@ -74,6 +79,7 @@ class DatabaseConfig(Config):
 
 class SentryConfig(Config):
 
+    NAME = "sentry"
     PATH = "cfg/core/sentry.yaml"
 
     def __init__(self):
@@ -85,6 +91,7 @@ class SentryConfig(Config):
 
 class CosmosEmotesConfig(Config):
 
+    NAME = "emotes"
     PATH = "cfg/core/emotes.yaml"
 
     def __init__(self):
@@ -93,6 +100,7 @@ class CosmosEmotesConfig(Config):
 
 class CosmosColorScheme(Config):
 
+    NAME = "color_scheme"
     PATH = "cfg/theme/color_scheme.yaml"
 
     def __init__(self):
@@ -108,6 +116,7 @@ class CosmosColorScheme(Config):
 
 class CosmosImagesConfig(Config):
 
+    NAME = "images"
     PATH = "cfg/theme/images.yaml"
 
     def __init__(self):
