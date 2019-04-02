@@ -6,22 +6,6 @@ from .functions import CosmosContext
 
 class Cosmos(InitialTasks):
 
-    def __init__(self):
-        self.time = None
-        self.configs = None
-        self.eh = None
-        self.log = None
-        self.cache = None
-        self.db_client = None
-        self.db = None
-        self.emotes = None
-        self.plugins = None
-        self.theme = None
-        self.image_processor = None
-        self.profile_cache = None    # Intended to be overridden by profile galaxy.
-        self.guild_cache = None    # Intended to be overridden by guild galaxy.
-        super().__init__()
-
     async def get_context(self, message, *, context_class=CosmosContext):
         return await super().get_context(message, cls=context_class)
 

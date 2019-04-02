@@ -19,6 +19,19 @@ class InitialTasks(commands.Bot):
         return commands.when_mentioned_or(*prefixes)(bot, message)
 
     def __init__(self):
+        self.time = None
+        self.configs = None
+        self.eh = None
+        self.log = None
+        self.cache = None
+        self.db_client = None
+        self.db = None
+        self.emotes = None
+        self.plugins = None
+        self.theme = None
+        self.image_processor = None
+        self.profile_cache = None    # Intended to be overridden by profile galaxy.
+        self.guild_cache = None    # Intended to be overridden by guild galaxy.
         self._init_time()
         self._init_utilities()
         self._init_configs()
