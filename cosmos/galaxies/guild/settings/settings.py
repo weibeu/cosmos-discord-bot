@@ -78,4 +78,4 @@ class GuildSettings(Cog):
             return await ctx.send_line(f"{ctx.guild.name} doesn't has any custom prefixes set.", ctx.guild.icon_url)
         else:
             await self.plugin.collection.update_one({"guild_id": ctx.guild.id}, {"$unset": {"prefixes": ""}})
-        await ctx.send(f"✅    Cleared all custom prefixes of {ctx.guild.name}.")
+        await ctx.send_line(f"✅    Cleared all custom prefixes of {ctx.guild.name}.")
