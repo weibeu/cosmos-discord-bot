@@ -7,3 +7,4 @@ motor
 sentry_sdk
 cachetools
 aioredis
+image-processor-client
