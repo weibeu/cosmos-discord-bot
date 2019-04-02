@@ -1,0 +1,3 @@
+# ! Configs for image processor client used to connect to image processing server.
+
+base_url: ""    # If left empty, image_processor_client will try to use default server.

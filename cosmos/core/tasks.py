@@ -1,4 +1,5 @@
 from discord.ext import commands
+from image_processor_client import Client as ImageProcessorClient
 
 from .functions import *
 from .utilities import *
@@ -31,6 +32,7 @@ class InitialTasks(commands.Bot):
         self._init_emotes()
         self._init_plugins()
         self._init_theme()
+        self._init_image_processor()
 
     @Time.calc_time
     def _init_time(self):
@@ -87,3 +89,9 @@ class InitialTasks(commands.Bot):
     def _init_theme(self):
         self.log.info("Initialising cosmos theme.")
         self.theme = CosmosTheme(self)
+
+    @Time.calc_time
+    def _init_image_processor(self):
+        self.log.info("Initialising image processor client.")
+        self.image_processor = ImageProcessorClient(
+            self.configs.image_processor.base_url, loop=self.loop)

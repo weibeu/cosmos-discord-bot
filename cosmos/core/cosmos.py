@@ -17,6 +17,7 @@ class Cosmos(InitialTasks):
         self.emotes = None
         self.plugins = None
         self.theme = None
+        self.image_processor = None
         self.profile_cache = None    # Intended to be overridden by profile galaxy.
         self.guild_cache = None    # Intended to be overridden by guild galaxy.
         super().__init__()

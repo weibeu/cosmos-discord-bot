@@ -121,3 +121,12 @@ class CosmosImagesConfig(Config):
 
     def __init__(self):
         super().__init__()
+
+
+class ImageProcessorClientConfig(Config):
+
+    NAME = "image_processor"
+    PATH = "cfg/core/image_processor.yaml"
+
+    def __init__(self):
+        super().__init__()
