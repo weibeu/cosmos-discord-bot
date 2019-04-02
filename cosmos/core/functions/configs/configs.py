@@ -23,27 +23,17 @@ class CosmosConfig(Config):
     NAME = "cosmos"
     PATH = "cfg/core/cosmos.yaml"
 
-    def __init__(self):
-        self.prefixes = None
-        super().__init__()
-
 
 class PluginsConfig(Config):
 
     NAME = "plugins"
     PATH = "cfg/core/plugins.yaml"
 
-    def __init__(self):
-        super().__init__()
-
 
 class LoggerConfig(Config):
 
     NAME = "logger"
     PATH = "cfg/core/logger.yaml"
-
-    def __init__(self):
-        super().__init__()
 
 
 class DatabaseConfig(Config):
@@ -94,9 +84,6 @@ class CosmosEmotesConfig(Config):
     NAME = "emotes"
     PATH = "cfg/core/emotes.yaml"
 
-    def __init__(self):
-        super().__init__()
-
 
 class CosmosColorScheme(Config):
 
@@ -119,14 +106,8 @@ class CosmosImagesConfig(Config):
     NAME = "images"
     PATH = "cfg/theme/images.yaml"
 
-    def __init__(self):
-        super().__init__()
-
 
 class ImageProcessorClientConfig(Config):
 
     NAME = "image_processor"
     PATH = "cfg/core/image_processor.yaml"
-
-    def __init__(self):
-        super().__init__()
