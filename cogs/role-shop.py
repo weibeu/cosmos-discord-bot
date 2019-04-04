@@ -62,6 +62,8 @@ class RoleShop(object):
 
     @points.command(name="credit", aliases=["give", "transfer"])
     async def credit_points(self, ctx, member: discord.Member, points: int):
+        if member.bot:
+            return
         self_points = await db.get_points(ctx.guild.id, ctx.author.id)
         if points > int(self_points):
             return await ctx.send(f"{ctx.author.name}, you don't have enough points to make this transaction.")
