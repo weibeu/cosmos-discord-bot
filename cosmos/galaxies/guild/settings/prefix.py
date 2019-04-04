@@ -47,6 +47,7 @@ class PrefixSettings(GuildSettingsBase):
     @prefix.command(name="remove", aliases=["delete"])
     async def remove_prefix(self, ctx, prefix):
         prefixes = self.cache.prefixes.get(ctx.guild.id, list())
+        # TODO: Probably add reaction based menu to remove prefixes.
         try:
             prefixes.remove(prefix)
         except ValueError:
