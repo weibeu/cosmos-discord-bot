@@ -29,6 +29,10 @@ class Economy(Cog):
 
     @bosons.command(name="credit", aliases=["transfer", "give"])
     async def transfer_bosons(self, ctx, user: discord.Member, bosons: int):
+        if user.bot:
+            return await ctx.send_line("❌    They don't really need it.")
+        if bosons < 0:
+            return await ctx.send_line("❌    Sorry but my calculations involving negative numbers sucks.")
         author_profile = await self.cache.get_profile(ctx.author.id)
         target_profile = await self.cache.get_profile(user.id)
         if target_profile is None:
