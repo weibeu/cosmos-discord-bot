@@ -7,4 +7,4 @@ motor
 sentry_sdk
 cachetools
 aioredis
-image-processor-client
+image-processor-client==2.0.5
