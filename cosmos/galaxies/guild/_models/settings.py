@@ -25,6 +25,11 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
             }}
         )
 
+    async def enable_welcome_banner(self, enable=True):
+        self.welcome_banner_enabled = enable
+
+        await self.collection.update_one(self.document_filter, {"$set": {"settings.welcome.banner.enabled": enable}})
+
 
 class GuildSettings(WelcomeBannerSettings, ABC):
 
