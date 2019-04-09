@@ -1,1 +1,6 @@
+banner_formats:
+    - jpg
+    - jpeg
+    - png
+    - gif
 banner_max_size: 3    # Max size of template used for guild banners in Mega Bytes.
