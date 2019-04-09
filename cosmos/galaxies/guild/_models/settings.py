@@ -15,7 +15,7 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
     async def set_welcome_banner(self, banner_url, text):
         self.welcome_banner_url = banner_url
         self.welcome_banner_text = text
-        self.welcome_banner_enabled = True
+        self.welcome_banner_enabled = False
 
         await self.collection.update_one(
             self.document_filter, {"$set": {
