@@ -42,4 +42,4 @@ class GuildSettings(WelcomeBannerSettings, ABC):
 
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
-        super().__init__(raw_settings)
+        super().__init__(**raw_settings)
