@@ -14,7 +14,8 @@ class Settings(Cog):
         return True
 
     async def cog_before_invoke(self, ctx):
-        _ = await self.cache.get_profile(ctx.guild.id)    # Ensure CosmosGuild is in cache before changing its settings.
+        ctx.guild_profile = await self.cache.get_profile(ctx.guild.id)
+        # Ensure CosmosGuild is in cache before changing its settings and dynamically pass it to ctx.guild_profile.
 
     @Cog.group(name="welcome", aliases=["join"])
     async def welcome(self, ctx):
