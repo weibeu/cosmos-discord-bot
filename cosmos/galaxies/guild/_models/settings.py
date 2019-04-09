@@ -10,15 +10,18 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
         raw_banner_settings = raw_welcome_settings.get("banner", dict())
         self.welcome_banner_url = raw_banner_settings.get("url", str())
         self.welcome_banner_text = raw_banner_settings.get("text", str())
+        self.welcome_banner_enabled = raw_banner_settings.get("enabled", False)
 
     async def set_welcome_banner(self, banner_url, text):
         self.welcome_banner_url = banner_url
         self.welcome_banner_text = text
+        self.welcome_banner_enabled = True
 
         await self.collection.update_one(
             self.document_filter, {"$set": {
                 "settings.welcome.banner.url": self.welcome_banner_url,
-                "settings.welcome.banner.text": self.welcome_banner_text
+                "settings.welcome.banner.text": self.welcome_banner_text,
+                "settings.welcome.banner.enabled": self.welcome_banner_enabled
             }}
         )
 
