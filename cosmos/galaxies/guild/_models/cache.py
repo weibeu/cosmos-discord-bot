@@ -31,7 +31,7 @@ class GuildCache(object):
             if not profile_document:
                 profile_document = {"guild_id": guild_id}
                 await self.collection.insert_one(profile_document)
-            profile = CosmosGuild.from_document(profile_document)
+            profile = CosmosGuild.from_document(self.plugin, profile_document)
             # await self.redis.set_object(self.collection.name, guild_id, profile)
             self.lru.set(guild_id, profile)
         return profile
