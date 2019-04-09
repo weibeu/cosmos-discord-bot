@@ -10,9 +10,10 @@ class GuildCache(object):
     def __init__(self, plugin):
         self.plugin = plugin
         self.bot = self.plugin.bot
-        self.redis = None
         self.collection = self.plugin.collection
-        self.bot.loop.create_task(self.__fetch_redis_client())
+        self.lru = self.bot.cache.lru()
+        # self.redis = None
+        # self.bot.loop.create_task(self.__fetch_redis_client())
 
         self.prefixes = self.bot.cache.dict()
         self.bot.loop.create_task(self.__precache_prefixes())
@@ -22,7 +23,8 @@ class GuildCache(object):
         self.redis = self.bot.cache.redis
 
     async def get_profile(self, guild_id) -> CosmosGuild:
-        profile = await self.redis.get_object(self.collection.name, guild_id)
+        # profile = await self.redis.get_object(self.collection.name, guild_id)
+        profile = self.lru.get(guild_id)
         if not profile:
             profile_document = (await self.collection.find_one(
                 {"guild_id": guild_id}, projection=self.DEFAULT_PROJECTION))
@@ -30,7 +32,8 @@ class GuildCache(object):
                 profile_document = {"guild_id": guild_id}
                 await self.collection.insert_one(profile_document)
             profile = CosmosGuild.from_document(profile_document)
-            await self.redis.set_object(self.collection.name, guild_id, profile)
+            # await self.redis.set_object(self.collection.name, guild_id, profile)
+            self.lru.set(guild_id, profile)
         return profile
 
     async def __precache_prefixes(self):
