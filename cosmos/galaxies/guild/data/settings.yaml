@@ -4,3 +4,4 @@ banner_formats:
     - png
     - gif
 banner_max_size: 3    # Max size of template used for guild banners in Mega Bytes.
+banner_name: welcome    # Default filename for all of banner files sent to channels.
