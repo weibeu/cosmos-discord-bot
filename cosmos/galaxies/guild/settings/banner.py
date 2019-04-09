@@ -1,4 +1,5 @@
 import discord
+import typing
 
 from .base import Settings
 
@@ -19,11 +20,11 @@ class BannerSettings(Settings):
         pass
 
     @welcome_banner.command(name="set")
-    async def set_welcome_banner(self, ctx, banner_url, text, channel: discord.TextChannel = None):
+    async def set_welcome_banner(self, ctx, banner_url, channel: typing.Optional[discord.TextChannel] = None, *, text):
         channel = channel or ctx.channel
         if not banner_url.split(".")[-1] in self.plugin.data.settings.banner_formats:
             return await ctx.send_line("❌    Please use supported image format.")
-        banner_size = (await self.bot.image_processor.utils.fetch_size(banner_url)) / 1048576
+        banner_size = round((await self.bot.image_processor.utils.fetch_size(banner_url)) / 1048576, 2)
         banner_max_size = self.plugin.data.settings.banner_max_size
         if banner_size > banner_max_size:
             return await ctx.send_line(f"❌    Banner should be less than {banner_max_size} MB in size however size of "
