@@ -27,7 +27,7 @@ class CosmosGuild(GuildSettings):
 
     async def send_welcome_banner(self, name, avatar_url, channel: discord.TextChannel = None):
         channel = channel or self.welcome_banner_channel
-        banner_bytes = await self.plugin.bot.image_processor.get_welcome_banner(
+        banner_bytes = await self.plugin.bot.image_processor.discord.get_welcome_banner(
             self.welcome_banner_url, avatar_url, name, self.welcome_banner_text
         )
         banner_format = self.welcome_banner_url.split(".")[-1]
