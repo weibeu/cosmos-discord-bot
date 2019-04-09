@@ -25,7 +25,7 @@ class CosmosGuild(GuildSettings):
         self.is_prime = kwargs.get("is_prime", False)
         GuildSettings.__init__(self, **kwargs)
 
-    async def send_welcome_banner(self, member: discord.Member) -> discord.File:
+    async def send_welcome_banner(self, member: discord.Member):
         banner_bytes = await self.plugin.bot.image_processor.get_welcome_banner(
             self.welcome_banner_url, member.avatar_url, member.name, self.welcome_banner_text
         )
