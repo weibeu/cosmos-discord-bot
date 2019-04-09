@@ -1,6 +1,7 @@
 from .prefix import PrefixSettings
+from .banner import BannerSettings
 
 
-class GuildSettings(PrefixSettings):
+class GuildSettings(PrefixSettings, BannerSettings):
 
     pass
