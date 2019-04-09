@@ -2,7 +2,7 @@ aiohttp
 aioredis
 arrow
 cachetools
-discord.py[voice]
+discord.py
 image-processor-client>=2.0.7
 motor
 pymongo
