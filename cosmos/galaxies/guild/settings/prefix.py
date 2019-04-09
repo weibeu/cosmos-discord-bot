@@ -1,8 +1,8 @@
 from ... import Cog
-from .base import GuildSettingsBase
+from .base import Settings
 
 
-class PrefixSettings(GuildSettingsBase):
+class PrefixSettings(Settings):
 
     async def __check_prefix(self, ctx, prefix):
         if prefix not in self.bot.configs.cosmos.prefixes:

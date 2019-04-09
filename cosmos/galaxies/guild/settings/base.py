@@ -1,7 +1,7 @@
 from ... import Cog, MemberMissingPermissions
 
 
-class GuildSettingsBase(Cog):
+class Settings(Cog):
 
     def __init__(self, plugin):
         super().__init__()
@@ -15,3 +15,7 @@ class GuildSettingsBase(Cog):
 
     async def cog_before_invoke(self, ctx):
         _ = await self.cache.get_profile(ctx.guild.id)    # Ensure CosmosGuild is in cache before changing its settings.
+
+    @Cog.group(name="welcome", aliases=["join"])
+    async def welcome(self, ctx):
+        pass
