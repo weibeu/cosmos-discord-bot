@@ -16,7 +16,7 @@ class BannerSettings(Settings):
     async def welcome_banner(self, ctx):
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
-        await ctx.guild_profile.send_welcome_banner(ctx.author.name, ctx.author.avatar_url)
+        await ctx.guild_profile.send_welcome_banner(ctx.author.name, ctx.author.avatar_url, ctx.channel)
 
     @welcome_banner.command(name="set")
     async def set_welcome_banner(self, ctx, banner_url, channel: typing.Optional[discord.TextChannel] = None, *, text):
