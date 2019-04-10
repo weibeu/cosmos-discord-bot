@@ -60,7 +60,7 @@ class RoleShop(object):
             points = await db.get_points(ctx.guild.id, user.id)
             await ctx.send(user.name+" has **"+points+"** guild points.")
 
-    @points.command(name="credit", aliases=["give", "transfer"])
+    """@points.command(name="credit", aliases=["give", "transfer"])
     async def credit_points(self, ctx, member: discord.Member, points: int):
         if member.bot:
             return
@@ -73,7 +73,7 @@ class RoleShop(object):
             await db.give_points(ctx.guild.id, ctx.author.id, -points)
             points = points - int((points/100)*self.TAX)
             await db.give_points(ctx.guild.id, member.id, points)
-            await ctx.send(f"{ctx.author.name} gave **{points}** points to {member.mention}. *After {self.TAX}% TAX.*")
+            await ctx.send(f"{ctx.author.name} gave **{points}** points to {member.mention}. *After {self.TAX}% TAX.*")"""
 
     @commands.group(name="roleshop", aliases=["role-shop", "rs", "shop"])
     @commands.guild_only()
