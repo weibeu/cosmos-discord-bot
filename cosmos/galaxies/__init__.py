@@ -6,7 +6,6 @@ from ..core.functions.exceptions import *
 __all__ = [
     "Cog",
 
-    "MemberMissingPermissions",
     "GuildNotPrime",
     "MemberNotPrime",
 ]

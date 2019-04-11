@@ -1,4 +1,6 @@
-from ... import Cog, MemberMissingPermissions
+from ... import Cog
+
+from discord.ext.commands import MissingPermissions
 
 
 class Settings(Cog):
@@ -10,7 +12,7 @@ class Settings(Cog):
 
     def cog_check(self, ctx):
         if not ctx.author.guild_permissions.manage_guild:
-            raise MemberMissingPermissions(["manage_guild"])
+            raise MissingPermissions(["manage_guild"])
         return True
 
     async def cog_before_invoke(self, ctx):

@@ -9,8 +9,3 @@ class GuildNotPrime(commands.CheckFailure):
 class MemberNotPrime(commands.CheckFailure):
 
     pass
-
-
-class MemberMissingPermissions(commands.MissingPermissions):
-
-    pass

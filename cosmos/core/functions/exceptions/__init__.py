@@ -7,7 +7,6 @@ from .handler import ExceptionHandler
 __all__ = [
     "ExceptionHandler",
 
-    "MemberMissingPermissions",
     "GuildNotPrime",
     "MemberNotPrime",
 ]
