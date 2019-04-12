@@ -23,3 +23,8 @@ class Settings(Cog):
     @Cog.group(name="welcome", aliases=["join"])
     async def welcome(self, ctx):
         pass
+
+    @has_permissions(manage_roles=True)
+    @Cog.group(name="role", aliases=["roles"])
+    async def roles(self, ctx):
+        pass
