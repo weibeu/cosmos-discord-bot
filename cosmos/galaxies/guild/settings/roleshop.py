@@ -7,11 +7,11 @@ from .base import Settings
 
 class RoleShopSettings(Settings):
 
-    @Settings.group(name="roleshop", aliases=["shop", "roleshop"])
-    async def roleshop(self, ctx):
+    @Settings.roles.group(name="roleshop", aliases=["shop"])
+    async def role_shop(self, ctx):
         pass
 
-    @roleshop.command(name="create")
+    @role_shop.command(name="create")
     async def create_role(self, ctx, points: int, *, role: typing.Union[discord.Role, str]):
         # if len(ctx.guild_profile.roleshop) >= self.plugin.data.roleshop.max_roles:
         #     res = f"❌    Sorry but role shop can't have more than {self.plugin.data.roleshop.max_roles} roles."
