@@ -1,8 +1,9 @@
-from io import BytesIO
-
 import discord
 
+from io import BytesIO
+
 from .settings import GuildSettings
+from .roleshop import RoleShop
 
 
 class CosmosGuild(GuildSettings):
@@ -24,6 +25,9 @@ class CosmosGuild(GuildSettings):
         self.__id = kwargs["guild_id"]
         self.is_prime = kwargs.get("is_prime", False)
         GuildSettings.__init__(self, **kwargs)
+
+        if kwargs.get("roleshop"):
+            self.roleshop = RoleShop(**kwargs)
 
     async def send_welcome_banner(self, name, avatar_url, channel: discord.TextChannel = None):
         channel = channel or self.welcome_banner_channel
