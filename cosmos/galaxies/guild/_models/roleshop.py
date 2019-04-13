@@ -34,5 +34,4 @@ class RoleShop(object):
 class GuildRoleShop(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
-        if kwargs.get("roleshop"):
-            self.roleshop = RoleShop(self)
+        self.roleshop = RoleShop(self)
