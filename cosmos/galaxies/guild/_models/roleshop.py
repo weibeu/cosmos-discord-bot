@@ -5,22 +5,34 @@ from .base import CosmosGuildBase
 
 class RoleShopRole(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, **kwargs):
+        self.points = kwargs["points"]
 
 
 class RoleShop(object):
 
-    def __init__(self, **kwargs):
+    def __init__(self, guild_profile, **kwargs):
+        self.__profile = guild_profile
         raw_roleshop = kwargs["roleshop"]
         self.__raw_roles = raw_roleshop.get("roles", dict())
 
-    def __len__(self):
-        return len(self.__raw_roles)
+    async def create_role(self, role_id, points,):
+        raw_role = {
+            "points": points,
+            # "prime": True,
+        }
+        self.__raw_roles.update({role_id: raw_role})
+
+        self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$set": {
+                f"settings.roleshop.roles.{role_id}.points": points,
+                # f"settings.roleshop.roles.{role_id}.prime": True,
+            }}
+        )
 
 
 class GuildRoleShop(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
         if kwargs.get("roleshop"):
-            self.roleshop = RoleShop()
+            self.roleshop = RoleShop(self)
