@@ -13,7 +13,7 @@ class RoleShop(object):
 
     def __init__(self, guild_profile, **kwargs):
         self.__profile = guild_profile
-        raw_roleshop = kwargs["roleshop"]
+        raw_roleshop = kwargs.get("roleshop", dict())
         self.__raw_roles = raw_roleshop.get("roles", dict())
 
     async def create_role(self, role_id, points,):
