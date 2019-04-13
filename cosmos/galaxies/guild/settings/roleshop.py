@@ -20,4 +20,4 @@ class RoleShopSettings(Settings):
         if isinstance(role, str):
             role = await ctx.guild.create_role(name=role, reason=f"Role created for role shop. [{ctx.author}]")
         await ctx.guild_profile.roleshop.create_role(role.id, points)
-        await ctx.send_line(f"✅    Added {role.name} to role shop for {points} points.")
+        await ctx.send_line(f"✅    Added role {role.name} to role shop with {points} points.")

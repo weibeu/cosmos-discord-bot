@@ -25,8 +25,8 @@ class RoleShop(object):
 
         self.__profile.collection.update_one(
             self.__profile.document_filter, {"$set": {
-                f"settings.roleshop.roles.{role_id}.points": points,
-                # f"settings.roleshop.roles.{role_id}.prime": True,
+                f"roleshop.roles.{role_id}.points": points,
+                # f"roleshop.roles.{role_id}.prime": True,
             }}
         )
 
@@ -34,4 +34,4 @@ class RoleShop(object):
 class GuildRoleShop(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
-        self.roleshop = RoleShop(self)
+        self.roleshop = RoleShop(self, **kwargs)
