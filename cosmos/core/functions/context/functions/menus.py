@@ -152,9 +152,14 @@ class ConfirmMenu(object):
             return True
         return False
 
+    async def __clean(self):
+        for emote in self.emotes:
+            await self.message.remove_reaction(emote, self.ctx.me)
+            await self.message.add_reaction(self.ctx.bot.emotes.misc.timer)
+
     async def wait_for_confirmation(self):
         if isinstance(self.message, str):
-            self.message = await self.ctx.send_line(self.message)
+            self.message = await self.ctx.send_line(self.message, self.ctx.author.avatar_url)
 
         for emote in self.emotes:
             await self.message.add_reaction(emote)
@@ -172,10 +177,18 @@ class ConfirmMenu(object):
             except TypeError:    # discord.Message
                 if response.content in self.TRUE_STRINGS:
                     self.confirmed = True
+            finally:
+                for emote in self.emotes:
+                    await self.message.remove_reaction(emote, self.ctx.author)
+                if self.confirmed:
+                    await self.message.remove_reaction(self.ctx.bot.emotes.misc.close, self.ctx.me)
+                else:
+                    await self.message.remove_reaction(self.ctx.bot.emotes.misc.check, self.ctx.me)
+
         except asyncio.TimeoutError:
-            for emote in self.emotes:
-                await self.message.remove_reaction(emote, self.ctx.me)
-                await self.message.add_reaction(self.ctx.bot.emotes.misc.timer)
+            await self.__clean()
+        except KeyError:
+            await self.__clean()
 
         for future in pending:
             future.cancel()
