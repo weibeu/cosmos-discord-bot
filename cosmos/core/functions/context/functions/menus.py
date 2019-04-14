@@ -1,5 +1,4 @@
 import asyncio
-
 import discord
 
 from .paginators import BasePaginator, FieldPaginator
@@ -116,3 +115,67 @@ class FieldMenu(BaseMenu, FieldPaginator):
             if counter == self.per_page:
                 counter = 0
                 page += 1
+
+
+class ConfirmMenu(object):
+
+    TRUE_STRINGS = ["yes", "yep", "yeah", "yea", ]
+    FALSE_STRINGS = ["no", "nope", "negative", ]
+
+    def __init__(self, ctx, message=None):
+        self.ctx = ctx
+        self.message = message or self.ctx.message
+        self.emotes = [
+            self.ctx.bot.emotes.misc.check,
+            self.ctx.bot.emotes.misc.close
+        ]
+        self.confirmed = False
+
+    def __bool__(self):
+        return self.confirmed
+
+    def __reaction_check(self, reaction, user):
+        if user is None or user.id != self.ctx.author.id:
+            return False
+        if reaction.message.id != self.message.id:
+            return False
+        if reaction.emoji in self.emotes:
+            return True
+        return False
+
+    def __message_check(self, message):
+        if message.author.id != self.ctx.author.id:
+            return False
+        if message.channel.id != self.ctx.channel.id:
+            return False
+        if message.content in self.TRUE_STRINGS + self.FALSE_STRINGS:
+            return True
+        return False
+
+    async def wait_for_confirmation(self):
+        if isinstance(self.message, str):
+            self.message = await self.ctx.send_line(self.message)
+
+        for emote in self.emotes:
+            await self.message.add_reaction(emote)
+
+        done, pending = await asyncio.wait([
+            self.ctx.bot.wait_for("message", check=self.__message_check),
+            self.ctx.bot.wait_for("reaction_add", check=self.__reaction_check)
+        ], timeout=30, return_when=asyncio.FIRST_COMPLETED)
+        try:
+            response = done.pop().result()
+            try:
+                reaction, user = response
+                if reaction.emoji == self.ctx.bot.emotes.misc.check:
+                    self.confirmed = True
+            except TypeError:    # discord.Message
+                if response.content in self.TRUE_STRINGS:
+                    self.confirmed = True
+        except asyncio.TimeoutError:
+            for emote in self.emotes:
+                await self.message.remove_reaction(emote, self.ctx.me)
+                await self.message.add_reaction(self.ctx.bot.emotes.misc.timer)
+
+        for future in pending:
+            future.cancel()

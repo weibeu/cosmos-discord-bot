@@ -30,3 +30,8 @@ class CosmosContext(commands.Context):
 
     def get_paginator(self, entries, per_page=10, timeout=90, show_author=True, inline=False, **kwargs):
         return BasePaginator(self, entries, per_page, timeout, show_author, inline, **kwargs)
+
+    async def confirm(self, message=None):
+        menu = ConfirmMenu(self, message)
+        await menu.wait_for_confirmation()
+        return menu.confirmed
