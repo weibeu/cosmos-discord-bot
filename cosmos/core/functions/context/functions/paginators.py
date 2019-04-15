@@ -201,7 +201,7 @@ class FieldPaginator(BasePaginator):
         if self.is_menu:
             for entry in entries:
                 bullet = entry.emote
-                key, value = await entry.get_key_value()
+                key, value = await entry.get_string()
                 key = f"{bullet}   {key}"
                 self.reaction_bullets.append(bullet)
                 self.embed.add_field(name=key, value=value, inline=self.inline)

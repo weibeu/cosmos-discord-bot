@@ -4,47 +4,35 @@ import discord
 from .paginators import BasePaginator, FieldPaginator
 
 
-class BaseMenuEntry(object):
+class MenuEntry(object):
 
     async def __default_parser(self, *_, **__):
-        return str(self.raw)
+        return str(self.entry)
 
-    def __init__(self, ctx, raw, emote, page, entry_parser=None):
+    def __init__(self, ctx, entry, entries, emote, page, entry_parser=None):
         self.ctx = ctx
-        self.raw = raw
+        self.entry = entry
+        self.entries = entries
         self.emote = emote
         self.page = page
-        self.string_parser = entry_parser or self.__default_parser
-        self.string = str()
+        self.parser = entry_parser or self.__default_parser
 
     async def get_string(self):
-        self.string = await self.string_parser(self.ctx, self.raw)
-        return self.string
+        return await self.parser(self.ctx, self.entry, self.entries)
 
 
-class FieldMenuEntry(object):
+class FieldMenuEntry(MenuEntry):
 
     async def __default_parser(self, *_, **__):
-        return str(self.raw_key), str(self.raw_value)
-
-    def __init__(self, ctx, key, value, emote, page, parser=None):
-        self.ctx = ctx
-        self.raw_key = key
-        self.key = str()
-        self.raw_value = value
-        self.value = str()
-        self.emote = emote
-        self.page = page
-        self.parser = parser
-
-    async def get_key_value(self):
-        self.key, self.value = await self.parser(self.ctx, self.raw_key, self.raw_value)
-        return self.key, self.value
+        if isinstance(self.entries, dict):
+            return str(self.entry), str(self.entries[self.entry])
+        elif isinstance(self.entry, tuple):
+            return self.entry[0], self.entry[1]
 
 
 class BaseMenu(BasePaginator):
 
-    EntryClass = BaseMenuEntry
+    EntryClass = MenuEntry
 
     def __init__(self, ctx, entries, entry_parser=None, per_page=12, *args, **kwargs):
         self.ctx = ctx
@@ -106,17 +94,6 @@ class BaseMenu(BasePaginator):
 class FieldMenu(BaseMenu, FieldPaginator):
 
     EntryClass = FieldMenuEntry
-
-    def fetch_entries(self):
-        counter = 0
-        page = 1
-        for key, value in self.raw_entries:
-            entry = self.EntryClass(self.ctx, key, value, self.bullets[counter], page, self.entry_parser)
-            self.entries.append(entry)
-            counter += 1
-            if counter == self.per_page:
-                counter = 0
-                page += 1
 
 
 class ConfirmMenu(object):
