@@ -9,7 +9,8 @@ class BaseMenuEntry(object):
     async def __default_parser(self, *_, **__):
         return str(self.raw)
 
-    def __init__(self, raw, emote, page, entry_parser=None):
+    def __init__(self, ctx, raw, emote, page, entry_parser=None):
+        self.ctx = ctx
         self.raw = raw
         self.emote = emote
         self.page = page
@@ -17,7 +18,7 @@ class BaseMenuEntry(object):
         self.string = str()
 
     async def get_string(self):
-        self.string = await self.string_parser(self.raw)
+        self.string = await self.string_parser(self.ctx, self.raw)
         return self.string
 
 
@@ -26,7 +27,8 @@ class FieldMenuEntry(object):
     async def __default_parser(self, *_, **__):
         return str(self.raw_key), str(self.raw_value)
 
-    def __init__(self, key, value, emote, page, parser=None):
+    def __init__(self, ctx, key, value, emote, page, parser=None):
+        self.ctx = ctx
         self.raw_key = key
         self.key = str()
         self.raw_value = value
@@ -36,7 +38,7 @@ class FieldMenuEntry(object):
         self.parser = parser
 
     async def get_key_value(self):
-        self.key, self.value = await self.parser(self.raw_key, self.raw_value)
+        self.key, self.value = await self.parser(self.ctx, self.raw_key, self.raw_value)
         return self.key, self.value
 
 
@@ -58,7 +60,7 @@ class BaseMenu(BasePaginator):
         counter = 0
         page = 1
         for raw_entry in self.raw_entries:
-            entry = self.EntryClass(raw_entry, self.bullets[counter], page, self.entry_parser)
+            entry = self.EntryClass(self.ctx, raw_entry, self.bullets[counter], page, self.entry_parser)
             self.entries.append(entry)
             counter += 1
             if counter == self.per_page:
@@ -109,7 +111,7 @@ class FieldMenu(BaseMenu, FieldPaginator):
         counter = 0
         page = 1
         for key, value in self.raw_entries:
-            entry = self.EntryClass(key, value, self.bullets[counter], page, self.entry_parser)
+            entry = self.EntryClass(self.ctx, key, value, self.bullets[counter], page, self.entry_parser)
             self.entries.append(entry)
             counter += 1
             if counter == self.per_page:
