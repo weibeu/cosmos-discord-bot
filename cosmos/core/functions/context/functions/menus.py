@@ -85,7 +85,7 @@ class BaseMenu(BasePaginator):
                 except discord.Forbidden:
                     pass
                 finally:
-                    break
+                    raise asyncio.TimeoutError
 
             response = discord.utils.get(self.entries, emote=r.emoji, page=self.current_page)
 
@@ -100,7 +100,7 @@ class BaseMenu(BasePaginator):
                 except discord.NotFound:
                     self.ctx.bot.eh.sentry.capture_exception()
 
-                await self.match()
+            await self.match()
 
 
 class FieldMenu(BaseMenu, FieldPaginator):
