@@ -24,10 +24,12 @@ class MenuEntry(object):
 class FieldMenuEntry(MenuEntry):
 
     async def __default_parser(self, *_, **__):
-        if isinstance(self.entries, dict):
+        if isinstance(self.entries, list):
+            if isinstance(self.entry, tuple):
+                return str(self.entry[0]), str(self.entry[1])
+            return str(self.entry), str(None)
+        elif isinstance(self.entries, dict):
             return str(self.entry), str(self.entries[self.entry])
-        elif isinstance(self.entry, tuple):
-            return self.entry[0], self.entry[1]
 
 
 class BaseMenu(BasePaginator):
