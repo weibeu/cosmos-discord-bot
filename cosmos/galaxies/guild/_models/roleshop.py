@@ -20,6 +20,10 @@ class Roles(dict):
         raw.update(kwargs)
         self.update({str(role_id): raw})
 
+    def __iter__(self):
+        for key in super().__iter__():
+            yield int(key)
+
 
 class RoleShop(object):
 
