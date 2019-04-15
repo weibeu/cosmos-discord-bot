@@ -9,12 +9,12 @@ class RoleShopRole(object):
         self.id = kwargs["role_id"]
         self.points = kwargs["points"]
 
-    @property
-    def document(self):
-        return {
-            "role_id": self.id,
-            "points": self.points,
-        }
+    # @property
+    # def document(self):
+    #     return {
+    #         "role_id": self.id,
+    #         "points": self.points,
+    #     }
 
 
 class Roles(list):
