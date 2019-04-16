@@ -163,6 +163,8 @@ class BasePaginator(object):
         return False
 
     async def paginate(self, **kwargs):
+        if not self.entries:
+            return await self.ctx.send_line("❌    Couldn't find any entries for that query.")
         first_page = self.show_page(1, first=True, **kwargs)
         if not self.is_paginating:
             await first_page
