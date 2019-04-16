@@ -64,8 +64,10 @@ class RoleShop(object):
         role = self.roles.get(role_id)
         role.points = points
 
+        document_filter = self.__profile.document_filter.copy()
+        document_filter.update({"roleshop.roles.role_id": role_id})
         self.__profile.collection.update_one(
-            self.__profile.document_filter.update({"roleshop.roles.role_id": role_id}), {"$set": {
+            document_filter, {"$set": {
                 "roleshop.roles.$.points": role.points
             }}
         )
