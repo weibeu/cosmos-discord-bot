@@ -141,7 +141,7 @@ class ConfirmMenu(object):
 
     async def wait_for_confirmation(self):
         if isinstance(self.message, str):
-            self.message = await self.ctx.send_line(self.message, self.ctx.author.avatar_url)
+            self.message = await self.ctx.send_line(self.message)
 
         for emote in self.emotes:
             await self.message.add_reaction(emote)
