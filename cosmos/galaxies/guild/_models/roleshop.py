@@ -56,6 +56,7 @@ class RoleShop(object):
                 "roleshop.roles": {"role_id": role_id}
             }}
         )
+        # TODO: Remove ^ role data from all users documents who have it.
 
 
 class GuildRoleShop(CosmosGuildBase, ABC):
