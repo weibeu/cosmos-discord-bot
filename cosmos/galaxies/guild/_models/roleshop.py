@@ -9,20 +9,20 @@ class RoleShopRole(object):
         self.id = kwargs["role_id"]
         self.points = kwargs["points"]
 
-    # @property
-    # def document(self):
-    #     return {
-    #         "role_id": self.id,
-    #         "points": self.points,
-    #     }
+    @property
+    def document(self):
+        return {
+            "role_id": self.id,
+            "points": self.points,
+        }
 
 
 class Roles(list):
 
     def get(self, role_id):
-        for role_document in self:
-            if role_document["role_id"] == role_id:
-                return RoleShopRole(**role_document)
+        for role in self:
+            if role.id == role_id:
+                return role
 
     def remove(self, role_id):
         super().remove(self.get(role_id))
@@ -33,18 +33,20 @@ class RoleShop(object):
     def __init__(self, guild_profile, **kwargs):
         self.__profile = guild_profile
         raw_roleshop = kwargs.get("roleshop", dict())
-        self.roles = Roles(raw_roleshop.get("roles", list()))
+        self.roles = Roles()
+        self.__fetch_roles(raw_roleshop)
+
+    def __fetch_roles(self, raw_roleshop):
+        for role_document in raw_roleshop.get("roles", list()):
+            self.roles.append(RoleShopRole(**role_document))
 
     async def create_role(self, role_id, points):
-        role_document = {
-            "role_id": role_id,
-            "points": points,
-        }
-        self.roles.append(role_document)
+        role = RoleShopRole(role_id=role_id, points=points)
+        self.roles.append(role)
 
         self.__profile.collection.update_one(
             self.__profile.document_filter, {"$addToSet": {
-                "roleshop.roles": role_document
+                "roleshop.roles": role.document
             }}
         )
 
@@ -57,6 +59,16 @@ class RoleShop(object):
             }}
         )
         # TODO: Remove ^ role data from all users documents who have it.
+
+    async def set_points(self, role_id, points):
+        role = self.roles.get(role_id)
+        role.points = points
+
+        self.__profile.collection.update_one(
+            self.__profile.document_filter.update({"roleshop.roles.role_id": role_id}), {"$set": {
+                "roleshop.roles.$.points": role.points
+            }}
+        )
 
     def has_role(self, role_id):
         if self.roles.get(role_id):
