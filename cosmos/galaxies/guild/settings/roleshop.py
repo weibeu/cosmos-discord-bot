@@ -21,9 +21,9 @@ class RoleShopSettings(Settings):
         return ctx.guild.get_role(response.raw_key)
 
     @staticmethod
-    async def __paginator_parser(ctx, role_id, role_document):
-        role = ctx.guild.get_role(role_id)
-        points = role_document.get("points")
+    async def __paginator_parser(ctx, roleshop_role, _):
+        role = ctx.guild.get_role(roleshop_role.id)
+        points = roleshop_role.points
         return role.name, f"{ctx.bot.emotes.misc.coins} {points}"
 
     @role_shop.command(name="create")
