@@ -35,17 +35,17 @@ class RoleShopSettings(Settings):
         if isinstance(role, str):
             role = await ctx.guild.create_role(name=role, reason=f"Role created for role shop. [{ctx.author}]")
         await ctx.guild_profile.roleshop.create_role(role.id, points)
-        await ctx.send_line(f"✅    Added role {role.name} to role shop with {points} points.")
+        await ctx.send_line(f"✅    Added {role.name} to role shop with {points} points.")
 
     @role_shop.command(name="remove", aliases=["delete"])
     async def delete_role(self, ctx, *, role: discord.Role = None):
         role = await self.__get_role(ctx, role)
 
-        if await ctx.confirm(f"⚠    Are you sure to delete role {role.name} from role shop?"):
+        if await ctx.confirm(f"⚠    Are you sure to remove {role.name} from role shop?"):
             await role.delete(reason=f"Role deleted from role shop. [{ctx.author}]")
             await ctx.guild_profile.roleshop.remove_role(role.id)
 
-            await ctx.send_line(f"✅    Role {role.name} has been removed from role shop.")
+            await ctx.send_line(f"✅    {role.name} has been removed from role shop.")
 
     @role_shop.group(name="modify", aliases=["edit"])
     async def modify_role(self, ctx):
@@ -55,7 +55,7 @@ class RoleShopSettings(Settings):
     async def modify_points(self, ctx, new_points: int, *, role: discord.Role = None):
         role = await self.__get_role(ctx, role)
 
-        if await ctx.confirm(f"⚠    Are you sure to change points of role {role.name} to {new_points}?"):
+        if await ctx.confirm(f"⚠    Are you sure to change points of {role.name} to {new_points}?"):
             await ctx.guild_profile.roleshop.set_points(role.id, new_points)
 
             await ctx.send(f"✅    {role.name} points has been changed to {new_points}.")
