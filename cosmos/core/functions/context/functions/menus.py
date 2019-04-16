@@ -50,7 +50,8 @@ class BaseMenu(BasePaginator):
         counter = 0
         page = 1
         for raw_entry in self.raw_entries:
-            entry = self.EntryClass(self.ctx, raw_entry, self.bullets[counter], page, self.entry_parser)
+            entry = self.EntryClass(
+                self.ctx, raw_entry, self.raw_entries, self.bullets[counter], page, self.entry_parser)
             self.entries.append(entry)
             counter += 1
             if counter == self.per_page:
