@@ -6,7 +6,7 @@ from .base import Settings
 
 class RoleShopSettings(Settings):
 
-    @Settings.roles.group(name="roleshop", aliases=["shop"])
+    @Settings.roles.group(name="shop", aliases=["roleshop"])
     async def role_shop(self, ctx):
         pass
 
@@ -58,4 +58,4 @@ class RoleShopSettings(Settings):
         if await ctx.confirm(f"⚠    Are you sure to change points of {role.name} to {new_points}?"):
             await ctx.guild_profile.roleshop.set_points(role.id, new_points)
 
-            await ctx.send(f"✅    {role.name} points has been changed to {new_points}.")
+            await ctx.send_line(f"✅    {role.name} points has been changed to {new_points}.")
