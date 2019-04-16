@@ -58,6 +58,11 @@ class RoleShop(object):
         )
         # TODO: Remove ^ role data from all users documents who have it.
 
+    def has_role(self, role_id):
+        if self.roles.get(role_id):
+            return True
+        return False
+
 
 class GuildRoleShop(CosmosGuildBase, ABC):
 
