@@ -18,7 +18,7 @@ class RoleShopSettings(Settings):
             return role
         menu = ctx.get_field_menu(ctx.guild_profile.roleshop.roles, self.__paginator_parser)
         response = await menu.wait_for_response()
-        return ctx.guild.get_role(response.raw_key)
+        return ctx.guild.get_role(response.entry.id)
 
     @staticmethod
     async def __paginator_parser(ctx, roleshop_role, _):
