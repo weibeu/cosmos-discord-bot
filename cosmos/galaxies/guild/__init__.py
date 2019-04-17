@@ -1,9 +1,10 @@
-from .settings import GuildSettings
-
 from ._models import GuildCache
+from .roleshop import RoleShop
+from .settings import GuildSettings
 
 
 __all__ = [
+    RoleShop,
     GuildSettings,
 ]
 
