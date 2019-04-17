@@ -16,7 +16,7 @@ class RoleShopBase(GuildBaseCog):
     async def role_shop(self, ctx):
         pass
 
-    @role_shop.error()
+    @role_shop.error
     async def role_shop_error(self, ctx, error):
         if isinstance(error, NotRoleShopRoleError):
             await ctx.send_line(f"❌    {error.role.name} is not a role shop role.")
