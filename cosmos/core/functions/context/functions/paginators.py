@@ -1,7 +1,15 @@
 import asyncio
 import discord
 
+from discord.ext import commands
+
+
 EmptyEmbed = discord.Embed.Empty
+
+
+class NoEntriesError(commands.CommandError):
+
+    pass
 
 
 class BasePaginator(object):
@@ -12,8 +20,7 @@ class BasePaginator(object):
         self.emotes = self.ctx.bot.emotes
         self.entries = entries
         if not self.entries:
-            self.loop.create_task(self.ctx.send_line("❌    Couldn't find any entries for that query."))
-            raise ValueError
+            raise NoEntriesError
         self.per_page = per_page
         self.max_pages = self.__count_pages()
         self.embed = self.ctx.bot.theme.embeds.primary()
