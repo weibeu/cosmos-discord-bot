@@ -1,7 +1,7 @@
 import discord
 import typing
 
-from .base import RoleShopBase
+from .base import RoleShopBase, NotRoleShopRoleError
 
 
 class RoleShopSettings(RoleShopBase):
@@ -9,8 +9,7 @@ class RoleShopSettings(RoleShopBase):
     async def __get_role(self, ctx, role=None) -> discord.Role:
         if role:
             if not ctx.guild_profile.roleshop.has_role(role.id):
-                await ctx.send_line(f"❌    {role.name} is not a role shop role.")
-                raise LookupError
+                raise NotRoleShopRoleError(role)
             return role
         menu = ctx.get_field_menu(ctx.guild_profile.roleshop.roles, self.__paginator_parser)
         response = await menu.wait_for_response()
