@@ -11,6 +11,9 @@ class BasePaginator(object):
         self.loop = self.ctx.bot.loop
         self.emotes = self.ctx.bot.emotes
         self.entries = entries
+        if not self.entries:
+            self.loop.create_task(self.ctx.send_line("❌    Couldn't find any entries for that query."))
+            raise ValueError
         self.per_page = per_page
         self.max_pages = self.__count_pages()
         self.embed = self.ctx.bot.theme.embeds.primary()
@@ -163,8 +166,6 @@ class BasePaginator(object):
         return False
 
     async def paginate(self, **kwargs):
-        if not self.entries:
-            return await self.ctx.send_line("❌    Couldn't find any entries for that query.")
         first_page = self.show_page(1, first=True, **kwargs)
         if not self.is_paginating:
             await first_page
