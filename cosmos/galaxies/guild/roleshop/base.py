@@ -33,6 +33,6 @@ class RoleShopBase(GuildBaseCog):
         pass
 
     @role_shop.error
-    async def role_shop_error(self, ctx, error):
+    async def role_shop_error(self, ctx, error):    # TODO: Override Command with custom dispatch_error method.
         if isinstance(error, NotRoleShopRoleError):
             await ctx.send_line(f"❌    {error.role.name} is not a role shop role.")
