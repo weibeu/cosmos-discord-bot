@@ -81,7 +81,7 @@ class API:
         paginator.show_help = show_help
         await paginator.paginate()
 
-    @commands.command(name="hastebin")
+    @commands.command(name="hastebin", aliases=["haste"])
     async def haste(self, ctx, *, content):
         url = await self.bot.hastebin.haste(content)
         await ctx.send(url)
