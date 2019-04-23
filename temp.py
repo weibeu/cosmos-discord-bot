@@ -81,6 +81,32 @@ doggo = {'color': 15277667,
 
 from discord import Embed
 
+class _EmptyEmbed:
+    def __bool__(self):
+        return False
+
+    def __repr__(self):
+        return 'Embed.Empty'
+
+    def __len__(self):
+        return 0
+
+EmptyEmbed = _EmptyEmbed()
+
+class EmbedProxy:
+    def __init__(self, layer):
+        self.__dict__.update(layer)
+
+    def __len__(self):
+        return len(self.__dict__)
+
+    def __repr__(self):
+        return 'EmbedProxy(%s)' % ', '.join(('%s=%r' % (k, v) for k, v in self.__dict__.items() if not k.startswith('_')))
+
+    def __getattr__(self, attr):
+        return EmptyEmbed
+
+
 def from_dict(data):
     """Converts a :class:`dict` to a :class:`Embed` provided it is in the
     format that Discord expects it to be in.
