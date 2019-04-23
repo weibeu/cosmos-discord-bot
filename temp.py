@@ -1,6 +1,6 @@
 rules = {'color': 15277667,
  'fields': [{'inline': False,
-             'name': '<a:pointer:440925289317531668>    ** Discord tos apply**',
+             'name': '<a:pointer:440925289317531668>    ** Discord TOS apply**',
              'value': 'ANY violation will result in an immediate ban and report to Discord: [Discord '
                       'Tos](https://discordapp.com/tos)'},
             {'inline': False,
@@ -43,7 +43,7 @@ rules = {'color': 15277667,
             {'inline': False,
              'name': '<a:pointer:440925289317531668>    ** Respect channel topics and rules. **',
              'value': 'Every channel on this server has its own specific guidelines and rules. They can be found in '
-                      'the channel description.'}],
+                      'the channel description.'},
             {'inline': False,
              'name': '<a:pointer:440925289317531668>            ** No Unbanning **',
              'value': 'Previously banned users can no longer appeal for an unban.'},
@@ -52,14 +52,14 @@ rules = {'color': 15277667,
              'value': 'We follow a nickname policy. Meaning if your nickname is NSFW we can and will change your nickname to something else.'},
             {'inline': False,
              'name': '<a:pointer:440925289317531668>    ** Dont organise raids. **',
-             'value': 'Members who are reported/seen organising raids and actually participate in them will be banned.'},
+             'value': 'Members who are reported/seen organising raids and actually participate in them will be banned.'}],
 'footer': {'icon_url': 'https://cdn.discordapp.com/icons/244998983112458240/d2702db072fdba5fd7be9123db9a668d.webp?size=1024',
             'proxy_icon_url': 'https://images-ext-1.discordapp.net/external/dCF2D_-HwWo85rIAC7x6hdiKSEfwn19Q-EwTBMd3Ri8/%3Fsize%3D1024/https/cdn.discordapp.com/icons/244998983112458240/d2702db072fdba5fd7be9123db9a668d.webp',
             'text': 'The Anime Discord'},
  'title': 'RULES',
  'type': 'rich'}
 
- doggo = {'color': 15277667,
+doggo = {'color': 15277667,
  'description': 'If one or more of the rules are broken by a member, the staff will be obligated to follow the bad '
                 'doggo protocol:\n'
                 '\n'
