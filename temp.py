@@ -78,3 +78,48 @@ doggo = {'color': 15277667,
             'text': 'The Anime Discord'},
  'title': 'PUNISHMENTS',
  'type': 'rich'}
+
+from discord import Embed
+
+def from_dict(data):
+    """Converts a :class:`dict` to a :class:`Embed` provided it is in the
+    format that Discord expects it to be in.
+    You can find out about this format in the `official Discord documentation`__.
+    .. _DiscordDocs: https://discordapp.com/developers/docs/resources/channel#embed-object
+    __ DiscordDocs_
+    Parameters
+    -----------
+    data: :class:`dict`
+        The dictionary to convert into an embed.
+    """
+    # we are bypassing __init__ here since it doesn't apply here
+    self = Embed()
+
+    # fill in the basic fields
+
+    self.title = data.get('title', EmptyEmbed)
+    self.type = data.get('type', EmptyEmbed)
+    self.description = data.get('description', EmptyEmbed)
+    self.url = data.get('url', EmptyEmbed)
+
+    # try to fill in the more rich fields
+
+    try:
+        self._colour = Colour(value=data['color'])
+    except KeyError:
+        pass
+
+    try:
+        self._timestamp = utils.parse_time(data['timestamp'])
+    except KeyError:
+        pass
+
+    for attr in ('thumbnail', 'video', 'provider', 'author', 'fields', 'image', 'footer'):
+        try:
+            value = data[attr]
+        except KeyError:
+            continue
+        else:
+            setattr(self, '_' + attr, value)
+
+    return self
