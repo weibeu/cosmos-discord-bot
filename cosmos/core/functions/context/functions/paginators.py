@@ -14,6 +14,10 @@ class NoEntriesError(commands.CommandError):
 
 class BasePaginator(object):
 
+    @staticmethod
+    async def __default_entry_parser(entry, entries):
+        return str(entry)
+
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=True, is_menu=False, **kwargs):
         self.ctx = ctx
         self.loop = self.ctx.bot.loop
@@ -33,6 +37,7 @@ class BasePaginator(object):
         self.show_entry_count = kwargs.get("show_entry_count", False)
         self.show_controllers = kwargs.get("show_controllers", True)
         self.show_return = kwargs.get("show_return", True)
+        self.entry_parser = kwargs.get("entry_parser") or self.__default_entry_parser
         self.reaction_bullets = []
         self.controllers = [
             (self.emotes.misc.backward, self.first_page),
@@ -76,6 +81,7 @@ class BasePaginator(object):
     async def show_page(self, page, first=False, **kwargs):
         self.current_page = page
         entries = self.get_page(page)
+        print(entries)
         para = []
 
         if self.is_menu:
@@ -86,10 +92,11 @@ class BasePaginator(object):
                 para.append(f"{bullet} {string}")
         else:
             for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
+                text = await self.entry_parser(entry, entries)
                 if self.show_entry_count:
-                    prefix = f"{index}. {entry}"
+                    prefix = f"{index}. {text}"
                 else:
-                    prefix = entry
+                    prefix = text
                 para.append(prefix)
 
         if self.max_pages > 1:
@@ -203,6 +210,13 @@ class BasePaginator(object):
 
 class FieldPaginator(BasePaginator):
 
+    @staticmethod
+    async def __default_entry_parser(entry, entries):
+        try:
+            return entry[0], entry[1]    # list of (key, value)
+        except TypeError:
+            return str(entry), str(entries[entry])    # dict
+
     async def show_page(self, page, first=False, **kwargs):
         self.current_page = page
         entries = self.get_page(page)
@@ -216,7 +230,9 @@ class FieldPaginator(BasePaginator):
                 self.reaction_bullets.append(bullet)
                 self.embed.add_field(name=key, value=value, inline=self.inline)
         else:
-            for key, value in entries:
+            for entry in entries:
+
+                key, value = await self.entry_parser(entry, entries)
                 self.embed.add_field(name=key, value=value)
 
         if self.max_pages > 1:
