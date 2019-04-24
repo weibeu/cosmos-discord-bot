@@ -30,6 +30,12 @@ class CosmosContext(commands.Context):
     def get_paginator(self, *args, **kwargs):
         return BasePaginator(self, *args, **kwargs)
 
+    def get_field_paginator(self, *args, **kwargs):
+        return FieldPaginator(self, *args, **kwargs)
+
+    def get_menu(self, *args, **kwargs):
+        return BaseMenu(self, *args, **kwargs)
+
     def get_field_menu(self, *args, **kwargs):
         return FieldMenu(self, *args, **kwargs)
 
