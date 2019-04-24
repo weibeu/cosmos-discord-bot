@@ -12,7 +12,7 @@ class NotRoleShopRoleError(CommandError):
 
 class RoleShopBase(GuildBaseCog):
 
-    async def __get_role(self, ctx, role=None) -> discord.Role:
+    async def _get_role(self, ctx, role=None) -> discord.Role:
         if role:
             if not ctx.guild_profile.roleshop.has_role(role.id):
                 raise NotRoleShopRoleError(role)
