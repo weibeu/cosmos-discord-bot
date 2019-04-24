@@ -211,7 +211,7 @@ class BasePaginator(object):
 class FieldPaginator(BasePaginator):
 
     @staticmethod
-    async def __default_entry_parser(entry, entries):
+    async def __default_entry_parser(entry, entries):    # TODO: Check why it doesn't overrides.
         try:
             return entry[0], entry[1]    # list of (key, value)
         except TypeError:
