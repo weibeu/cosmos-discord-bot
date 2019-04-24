@@ -6,7 +6,7 @@ from .paginators import BasePaginator, FieldPaginator
 
 class MenuEntry(object):
 
-    async def __default_parser(self, *_, **__):
+    async def _default_parser(self, *_, **__):
         return str(self.entry)
 
     def __init__(self, ctx, entry, entries, emote, page, entry_parser=None):
@@ -15,7 +15,7 @@ class MenuEntry(object):
         self.entries = entries
         self.emote = emote
         self.page = page
-        self.parser = entry_parser or self.__default_parser
+        self.parser = entry_parser or self._default_parser
 
     async def get_string(self):
         return await self.parser(self.ctx, self.entry, self.entries)
@@ -23,13 +23,11 @@ class MenuEntry(object):
 
 class FieldMenuEntry(MenuEntry):
 
-    async def __default_parser(self, *_, **__):
-        if isinstance(self.entries, list):
-            if isinstance(self.entry, tuple):
-                return str(self.entry[0]), str(self.entry[1])
-            return str(self.entry), str(None)
-        elif isinstance(self.entries, dict):
-            return str(self.entry), str(self.entries[self.entry])
+    async def _default_parser(self, *_, **__):
+        try:
+            return self.entry[0], self.entry[1]
+        except TypeError:
+            return self.entry, self.entries[self.entry]
 
 
 class BaseMenu(BasePaginator):

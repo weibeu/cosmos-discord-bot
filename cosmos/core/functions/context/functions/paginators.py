@@ -15,8 +15,8 @@ class NoEntriesError(commands.CommandError):
 class BasePaginator(object):
 
     @staticmethod
-    async def __default_entry_parser(entry, entries):
-        return str(entry)
+    async def _default_entry_parser(entry, _):
+        return entry
 
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=True, is_menu=False, **kwargs):
         self.ctx = ctx
@@ -37,7 +37,7 @@ class BasePaginator(object):
         self.show_entry_count = kwargs.get("show_entry_count", False)
         self.show_controllers = kwargs.get("show_controllers", True)
         self.show_return = kwargs.get("show_return", True)
-        self.entry_parser = kwargs.get("entry_parser") or self.__default_entry_parser
+        self.entry_parser = kwargs.get("entry_parser") or self._default_entry_parser
         self.reaction_bullets = []
         self.controllers = [
             (self.emotes.misc.backward, self.first_page),
@@ -81,7 +81,6 @@ class BasePaginator(object):
     async def show_page(self, page, first=False, **kwargs):
         self.current_page = page
         entries = self.get_page(page)
-        print(entries)
         para = []
 
         if self.is_menu:
@@ -211,11 +210,11 @@ class BasePaginator(object):
 class FieldPaginator(BasePaginator):
 
     @staticmethod
-    async def __default_entry_parser(entry, entries):    # TODO: Check why it doesn't overrides.
+    async def _default_entry_parser(entry, entries):
         try:
-            return entry[0], entry[1]    # list of (key, value)
+            return entry[0], entry[1]
         except TypeError:
-            return str(entry), str(entries[entry])    # dict
+            return entry, entries[entry]
 
     async def show_page(self, page, first=False, **kwargs):
         self.current_page = page
@@ -231,7 +230,6 @@ class FieldPaginator(BasePaginator):
                 self.embed.add_field(name=key, value=value, inline=self.inline)
         else:
             for entry in entries:
-
                 key, value = await self.entry_parser(entry, entries)
                 self.embed.add_field(name=key, value=value)
 
