@@ -19,3 +19,8 @@ class GuildMemberProfile(GuildPoints):
         self._profile = profile    # CosmosUserProfile
         GuildPoints.__init__(self, **kwargs)
         self._guild_id = guild_id
+
+    def to_update_document(self):
+        return {
+            f"{self.guild_filter}.points.points": self.points,
+        }
