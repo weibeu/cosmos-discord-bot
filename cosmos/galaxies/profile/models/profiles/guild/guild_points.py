@@ -45,3 +45,4 @@ class GuildPoints(GuildProfileModelsBase, ABC):
             self.document_filter,
             {"$set": {f"{self.guild_filter}.points.daily_timestamp": self.points_daily_timestamp.datetime}}
         )
+        return self.plugin.data.points.default_daily
