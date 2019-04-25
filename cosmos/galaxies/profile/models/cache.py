@@ -51,7 +51,8 @@ class ProfileCache(object):
 
     async def get_guild_profile(self, user_id: int, guild_id: int) -> GuildMemberProfile:
         profile = await self.get_profile(user_id)
-        return await profile.get_guild_profile(guild_id)
+        if profile:
+            return await profile.get_guild_profile(guild_id)
 
     async def create_profile(self, user_id: int) -> CosmosUserProfile:
         profile_document = self.plugin.data.profile.document_schema.copy()
