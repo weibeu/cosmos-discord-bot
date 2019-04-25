@@ -1,6 +1,6 @@
 import asyncio
 
-from .profiles import CosmosUserProfile
+from .profiles import CosmosUserProfile, GuildMemberProfile
 
 
 class ProfileCache(object):
@@ -48,6 +48,10 @@ class ProfileCache(object):
                 # await self._redis.set_object(self.__collection_name, user_id, profile)
                 self.lfu.set(user_id, profile)
         return profile
+
+    async def get_guild_profile(self, user_id: int, guild_id: int) -> GuildMemberProfile:
+        profile = await self.get_profile(user_id)
+        return await profile.get_guild_profile(guild_id)
 
     async def create_profile(self, user_id: int) -> CosmosUserProfile:
         profile_document = self.plugin.data.profile.document_schema.copy()
