@@ -96,7 +96,7 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
                 "xp": self.xp,
                 "level": self.level,
                 "currency.bosons": self.bosons
-            }
+            }.update({profile.to_update_document() for profile in self.guild_profiles.values()})
         }
         return self.document_filter, update
 
