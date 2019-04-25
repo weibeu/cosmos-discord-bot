@@ -91,14 +91,16 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         )
 
     def to_update_document(self) -> tuple:
-        update = {
-            "$set": {
-                "xp": self.xp,
-                "level": self.level,
-                "currency.bosons": self.bosons
-            }.update({profile.to_update_document() for profile in self.guild_profiles.values()})
+        updates = {
+            "xp": self.xp,
+            "level": self.level,
+            "currency.bosons": self.bosons,
         }
-        return self.document_filter, update
+
+        for profile in self.guild_profiles.values():
+            updates.update(profile.to_update_document())
+
+        return self.document_filter, {"$set": updates}
 
     def get_embed(self):
         embed = self.plugin.bot.theme.embeds.primary(title="Cosmos Profile")
