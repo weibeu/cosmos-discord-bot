@@ -3,10 +3,13 @@ import typing
 
 from .base import RoleShopBase
 
+from discord.ext.commands import has_permissions
+
 
 class RoleShopSettings(RoleShopBase):
 
     @RoleShopBase.role_shop.command(name="create")
+    @has_permissions(manage_roles=True)
     async def create_role(self, ctx, points: int, *, role: typing.Union[discord.Role, str]):
         if len(ctx.guild_profile.roleshop.roles) >= self.plugin.data.roleshop.max_roles:
             res = f"❌    Sorry but role shop can't have more than {self.plugin.data.roleshop.max_roles} roles."
@@ -18,6 +21,7 @@ class RoleShopSettings(RoleShopBase):
         await ctx.send_line(f"✅    Added {role.name} to role shop with {points} points.")
 
     @RoleShopBase.role_shop.command(name="remove", aliases=["delete"])
+    @has_permissions(manage_roles=True)
     async def delete_role(self, ctx, *, role: discord.Role = None):
         role = await self._get_role(ctx, role)
 
@@ -28,6 +32,7 @@ class RoleShopSettings(RoleShopBase):
             await ctx.send_line(f"✅    {role.name} has been removed from role shop.")
 
     @RoleShopBase.role_shop.group(name="modify", aliases=["edit"])
+    @has_permissions(manage_roles=True)
     async def modify_role(self, ctx):
         pass
 

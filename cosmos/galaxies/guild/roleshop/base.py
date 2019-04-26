@@ -1,5 +1,5 @@
 import discord
-from discord.ext.commands import has_permissions, CommandError
+from discord.ext.commands import CommandError
 
 from .._models import GuildBaseCog
 
@@ -28,7 +28,6 @@ class RoleShopBase(GuildBaseCog):
         return role.name, f"{ctx.bot.emotes.misc.coins} {points}"
 
     @GuildBaseCog.group(name="roleshop")
-    @has_permissions(manage_roles=True)
     async def role_shop(self, ctx):
         pass
 
