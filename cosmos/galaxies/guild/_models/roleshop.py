@@ -36,6 +36,9 @@ class RoleShop(object):
         self.roles = Roles()
         self.__fetch_roles(raw_roleshop)
 
+    def __bool__(self):
+        return bool(self.roles)
+
     def __fetch_roles(self, raw_roleshop):
         for role_document in raw_roleshop.get("roles", list()):
             self.roles.append(RoleShopRole(**role_document))
