@@ -15,7 +15,7 @@ class NoEntriesError(commands.CommandError):
 class BasePaginator(object):
 
     @staticmethod
-    async def _default_entry_parser(entry, _):
+    async def _default_entry_parser(ctx, entry, _):
         return entry
 
     def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=True, is_menu=False, **kwargs):
@@ -91,7 +91,7 @@ class BasePaginator(object):
                 para.append(f"{bullet} {string}")
         else:
             for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
-                text = await self.entry_parser(entry, entries)
+                text = await self.entry_parser(self.ctx, entry, entries)
                 if self.show_entry_count:
                     prefix = f"{index}. {text}"
                 else:
@@ -210,7 +210,7 @@ class BasePaginator(object):
 class FieldPaginator(BasePaginator):
 
     @staticmethod
-    async def _default_entry_parser(entry, entries):
+    async def _default_entry_parser(ctx, entry, entries):
         try:
             return entry[0], entry[1]
         except TypeError:
@@ -230,7 +230,7 @@ class FieldPaginator(BasePaginator):
                 self.embed.add_field(name=key, value=value, inline=self.inline)
         else:
             for entry in entries:
-                key, value = await self.entry_parser(entry, entries)
+                key, value = await self.entry_parser(self.ctx, entry, entries)
                 self.embed.add_field(name=key, value=value)
 
         if self.max_pages > 1:
