@@ -27,9 +27,12 @@ class RoleShopBase(GuildBaseCog):
         points = roleshop_role.points
         return role.name, f"{ctx.bot.emotes.misc.coins} {points}"
 
-    @GuildBaseCog.group(name="roleshop")
+    @GuildBaseCog.group(name="roleshop", invoke_without_command=True)
     async def role_shop(self, ctx):
-        pass
+        if not ctx.guild_profile.roleshop:
+            return await ctx.send_line("❌    This server has no roles created or assigned to role shop.")
+        paginator = ctx.get_field_paginator(ctx.guild_profile.roleshop.roles, entry_parser=self.__paginator_parser)
+        await paginator.paginate()
 
     @role_shop.error
     async def role_shop_error(self, ctx, error):    # TODO: Override Command with custom dispatch_error method.
