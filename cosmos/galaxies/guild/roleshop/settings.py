@@ -26,7 +26,7 @@ class RoleShopSettings(RoleShopBase):
         role = await self._get_role(ctx, role)
 
         if await ctx.confirm(f"⚠    Are you sure to remove {role.name} from role shop?"):
-            await role.delete(reason=f"Role deleted from role shop. [{ctx.author}]")
+            # await role.delete(reason=f"Role deleted from role shop. [{ctx.author}]")
             await ctx.guild_profile.roleshop.remove_role(role.id)
 
             await ctx.send_line(f"✅    {role.name} has been removed from role shop.")
