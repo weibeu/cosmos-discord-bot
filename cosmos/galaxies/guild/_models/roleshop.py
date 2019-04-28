@@ -75,6 +75,25 @@ class RoleShop(object):
             }}
         )
 
+    @staticmethod
+    async def buy_role(profile, role):
+        profile.points -= role.points
+        await profile.collection.update_one(profile.document_filter, {
+            "$addToSet": {f"{profile.guild_filter}.roleshop.roles": {
+                "role_id": role.id,
+                "equipped": False,
+            }}
+        })
+
+    @staticmethod
+    async def sell_role(profile, role):
+        profile.points += role.points
+        await profile.collection.update_one(
+            profile.document_filter, {"$pull": {
+                f"{profile.guild_filter}.roleshop.roles": {"role_id": role.id}
+            }}
+        )
+
     def has_role(self, role_id):
         if self.roles.get(role_id):
             return True
