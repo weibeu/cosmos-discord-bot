@@ -75,24 +75,23 @@ class RoleShop(object):
             }}
         )
 
-    @staticmethod
-    async def buy_role(profile, role):
+    async def buy_role(self, profile, role_id):
+        role = self.roles.get(role_id)
+        if profile.points < role.points:
+            raise TypeError
         profile.points -= role.points
         await profile.collection.update_one(profile.document_filter, {
-            "$addToSet": {f"{profile.guild_filter}.roleshop.roles": {
-                "role_id": role.id,
-                "equipped": False,
-            }}
+            "$addToSet": {f"{profile.guild_filter}.roleshop.roles": role.id}
         })
 
-    @staticmethod
-    async def sell_role(profile, role):
+    async def sell_role(self, profile, role_id):
+        role = self.roles.get(role_id)
+        result = await profile.collection.update_one(profile.document_filter, {
+            "$pull": {f"{profile.guild_filter}.roleshop.roles": role.id}
+        })
+        if not result.modified_count:
+            raise ValueError
         profile.points += role.points
-        await profile.collection.update_one(
-            profile.document_filter, {"$pull": {
-                f"{profile.guild_filter}.roleshop.roles": {"role_id": role.id}
-            }}
-        )
 
     def has_role(self, role_id):
         if self.roles.get(role_id):
