@@ -26,3 +26,15 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
     async def buy_error(self, ctx, error):
         if isinstance(error, NotEnoughPointsError):
             return await ctx.send_line("❌    Sorry but you don't have enough guild points to purchase that role.")
+
+    @RoleShopSettings.role_shop.command(name="sell")
+    async def sell_role(self, ctx, *, role: discord.Role = None):
+        profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
+        role = await self._get_role(ctx, role, profile.roleshop.roles)
+        _role = ctx.guild_profile.roleshop.roles.get(role.id)
+        if _role not in profile.roleshop.roles:
+            return await ctx.send_line(f"❌    You haven't purchased {role.name} yet.")
+        if await ctx.confirm(f"⚠    Are you sure to sell {role.name}?"):
+            await ctx.guild_profile.roleshop.sell_role(profile, role.id)
+            await ctx.author.remove_roles(role)
+            await ctx.send_line(f"✅    You sold {role.name} earning {_role.points} guild points.")
