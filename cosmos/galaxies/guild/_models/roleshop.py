@@ -19,6 +19,9 @@ class RoleShopRole(object):
 
 class Roles(list):
 
+    def __contains__(self, item):
+        return item == self.get(item).id
+
     def get(self, role_id):
         for role in self:
             if role.id == role_id:
