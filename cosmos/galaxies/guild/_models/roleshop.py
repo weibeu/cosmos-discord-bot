@@ -20,12 +20,6 @@ class RoleShopRole(object):
 
 class Roles(list):
 
-    def __contains__(self, item):
-        try:
-            return item == self.get(item).id
-        except AttributeError:
-            return super().__contains__(item)
-
     def get(self, role_id):
         for role in self:
             if role.id == role_id:

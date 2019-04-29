@@ -13,7 +13,8 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in ctx.guild_profile.roleshop.roles if role not in profile.roleshop.roles]
         role = await self._get_role(ctx, role, roles)
-        if role.id in profile.roleshop.roles:
+        _role = ctx.guild_profile.roleshop.roles.get(role.id)
+        if _role in profile.roleshop.roles:
             return await ctx.send_line(f"❌    You have already purchased {role.name}.")
         if await ctx.confirm(f"⚠    Are you sure to purchase {role.name}?"):
             await ctx.guild_profile.roleshop.buy_role(profile, role.id)
