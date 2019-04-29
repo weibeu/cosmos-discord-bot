@@ -20,9 +20,10 @@ class RoleShopRole(object):
 class Roles(list):
 
     def __contains__(self, item):
-        if isinstance(item, RoleShopRole):
+        try:
             return item == self.get(item).id
-        return super().__contains__(item)
+        except AttributeError:
+            return super().__contains__(item)
 
     def get(self, role_id):
         for role in self:
