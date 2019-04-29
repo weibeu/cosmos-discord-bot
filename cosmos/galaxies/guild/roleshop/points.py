@@ -12,7 +12,7 @@ class RoleShopPoints(RoleShopBase):
             self.bot.loop.create_task(profile.give_default_points())
 
     @RoleShopBase.group(invoke_without_command=True)
-    async def points(self, ctx, member: discord.Member = None):
+    async def points(self, ctx, *, member: discord.Member = None):
         if member:
             adverb = f"{member.name} has"
         else:
@@ -25,7 +25,7 @@ class RoleShopPoints(RoleShopBase):
         await ctx.send_line(f"💰    {adverb} {profile.points} guild points.")
 
     @points.command(name="daily")
-    async def daily_points(self, ctx, member: discord.Member = None):
+    async def daily_points(self, ctx, *, member: discord.Member = None):
         author_profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         target_name = "you"
         if (member and member.bot) or not member:
@@ -45,7 +45,7 @@ class RoleShopPoints(RoleShopBase):
         await ctx.send_line(res)
 
     @points.command(name="credit", aliases=["transfer", "give"])
-    async def transfer_points(self, ctx, member: discord.Member, points: int):
+    async def transfer_points(self, ctx, points: int, *, member: discord.Member):
         if member.bot:
             return await ctx.send_line("❌    You can't transfer points to robos.")
         if points < 0:

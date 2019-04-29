@@ -9,7 +9,7 @@ from .._models.exceptions import *
 class RoleShop(RoleShopPoints, RoleShopSettings):
 
     @RoleShopSettings.role_shop.command(name="buy", aliases=["purchase"])
-    async def buy_role(self, ctx, role: discord.Role = None):
+    async def buy_role(self, ctx, *, role: discord.Role = None):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in ctx.guild_profile.roleshop.roles if role not in profile.roleshop.roles]
         role = await self._get_role(ctx, role, roles)

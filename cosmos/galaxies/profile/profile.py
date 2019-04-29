@@ -28,7 +28,7 @@ class Profile(Cog):
         await self.cache.give_assets(message)
 
     @Cog.group(invoke_without_command=True)
-    async def profile(self, ctx, user: discord.Member = None):
+    async def profile(self, ctx, *, user: discord.Member = None):
         user = user or ctx.author
         profile = await self.cache.get_profile(user.id)
         if profile is None:
@@ -74,7 +74,7 @@ class Profile(Cog):
         await ctx.send_line(res, ctx.author.avatar_url)
 
     @Cog.command(name="rep")
-    async def rep_user(self, ctx, user: discord.Member = None):
+    async def rep_user(self, ctx, *, user: discord.Member = None):
         if user and user.bot:
             return await ctx.send_line("😔    Sorry but I just can't do that.")
         if user and user.id == ctx.author.id:

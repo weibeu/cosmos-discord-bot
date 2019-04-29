@@ -11,7 +11,7 @@ class Economy(Cog):
         self.cache = self.plugin.cache
 
     @Cog.group(name="bosons", aliases=["boson", "$"], invoke_without_command=True)
-    async def bosons(self, ctx, user: discord.Member = None):
+    async def bosons(self, ctx, *, user: discord.Member = None):
         if user:
             adverb = f"{user.name} has"
         else:
@@ -28,7 +28,7 @@ class Economy(Cog):
         await ctx.send_line(res)
 
     @bosons.command(name="credit", aliases=["transfer", "give"])
-    async def transfer_bosons(self, ctx, user: discord.Member, bosons: int):
+    async def transfer_bosons(self, ctx, bosons: int, *, user: discord.Member):
         if user.bot:
             return await ctx.send_line("❌    They don't really need it.")
         if bosons < 0:
@@ -47,7 +47,7 @@ class Economy(Cog):
         await ctx.send_line(res)
 
     @Cog.command(name="daily", aliases=["dailies"])
-    async def daily_bosons(self, ctx, user: discord.Member = None):
+    async def daily_bosons(self, ctx, *, user: discord.Member = None):
         author_profile = await self.cache.get_profile(ctx.author.id)
         target_name = "you"
         if (user and user.bot) or not user:
