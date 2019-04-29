@@ -20,6 +20,8 @@ class RoleShopRole(object):
 class Roles(list):
 
     def __contains__(self, item):
+        if isinstance(item, RoleShopRole):
+            return super().__contains__(item)
         return item == self.get(item).id
 
     def get(self, role_id):
