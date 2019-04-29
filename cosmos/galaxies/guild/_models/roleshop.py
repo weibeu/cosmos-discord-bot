@@ -49,6 +49,7 @@ class RoleShop(object):
     def __fetch_roles(self, raw_roleshop):
         for role_document in raw_roleshop.get("roles", list()):
             self.roles.append(RoleShopRole(**role_document))
+            # TODO: Remove role IDs from database if role gets deleted.
 
     async def create_role(self, role_id, points):
         role = RoleShopRole(role_id=role_id, points=points)
