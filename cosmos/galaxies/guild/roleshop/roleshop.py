@@ -39,7 +39,7 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
             await ctx.author.remove_roles(role)
             await ctx.send_line(f"✅    You sold {role.name} earning {_role.points} guild points.")
 
-    @RoleShopSettings.role_shop.command(name="equip")
+    @RoleShopSettings.role_shop.group(name="equip", invoke_without_command=True)
     async def equip_role(self, ctx, *, role: discord.Role = None):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in profile.roleshop.roles if ctx.guild.get_role(role.id) not in ctx.author.roles]
@@ -49,7 +49,17 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         await ctx.author.add_roles(role, reason="Role equipped from role shop.")
         await ctx.send_line(f"✅    {role.name} equipped.")
 
-    @RoleShopSettings.role_shop.command(name="unequip")
+    @equip_role.command(name="all")
+    async def equip_all_roles(self, ctx):
+        if not await ctx.confirm():
+            return
+        profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
+        for _role in profile.roleshop.roles:
+            role = ctx.guild.get_role(_role.id)
+            await ctx.author.add_roles(role, reason="Role equipped from role shop.")
+        await ctx.send_line("✅    Equipped all purchased roles.")
+
+    @RoleShopSettings.role_shop.group(name="unequip", invoke_without_command=True)
     async def unequip_role(self, ctx, *, role: discord.Role = None):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in profile.roleshop.roles if ctx.guild.get_role(role.id) in ctx.author.roles]
@@ -58,3 +68,13 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
             return await ctx.send_line(f"❌    You've already un-equipped {role.name}.")
         await ctx.author.remove_roles(role)
         await ctx.send_line(f"✅    {role.name} un-equipped.")
+
+    @unequip_role.command(name="all")
+    async def unequip_all_roles(self, ctx):
+        if not await ctx.confirm():
+            return
+        profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
+        for _role in profile.roleshop.roles:
+            role = ctx.guild.get_role(_role.id)
+            await ctx.author.remove_roles(role, reason="Role un-equipped from role shop.")
+        await ctx.send_line("✅    Un-equipped all role shop roles.")
