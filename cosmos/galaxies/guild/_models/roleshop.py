@@ -82,6 +82,7 @@ class RoleShop(object):
         role = self.roles.get(role_id)
         if profile.points < role.points:
             raise TypeError
+        profile.roleshop.roles.append(role)
         profile.points -= role.points
         await profile.collection.update_one(profile.document_filter, {
             "$addToSet": {f"{profile.guild_filter}.roleshop.roles": role.id}
@@ -94,6 +95,7 @@ class RoleShop(object):
         })
         if not result.modified_count:
             raise ValueError
+        profile.roleshop.roles.remove(role)
         profile.points += role.points
 
     def has_role(self, role_id):
