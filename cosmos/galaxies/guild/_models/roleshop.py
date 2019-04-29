@@ -1,5 +1,6 @@
 from abc import ABC
 
+from .exceptions import *
 from .base import CosmosGuildBase
 
 
@@ -84,7 +85,7 @@ class RoleShop(object):
     async def buy_role(self, profile, role_id):
         role = self.roles.get(role_id)
         if profile.points < role.points:
-            raise TypeError
+            raise NotEnoughPointsError
         profile.roleshop.roles.append(role)
         profile.points -= role.points
         await profile.collection.update_one(profile.document_filter, {
@@ -97,7 +98,7 @@ class RoleShop(object):
             "$pull": {f"{profile.guild_filter}.roleshop.roles": role.id}
         })
         if not result.modified_count:
-            raise ValueError
+            raise RoleNotFoundError
         profile.roleshop.roles.remove(role)
         profile.points += role.points
 
