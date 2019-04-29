@@ -11,7 +11,7 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
     @RoleShopSettings.role_shop.command(name="purchased")
     async def purchased_roles(self, ctx):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
-        paginator = ctx.get_field_paginator(profile.roleshop.roles, entry_parser=self.__paginator_parser)
+        paginator = ctx.get_field_paginator(profile.roleshop.roles, entry_parser=self._paginator_parser)
         await paginator.paginate()
 
     @RoleShopSettings.role_shop.command(name="buy", aliases=["purchase"])

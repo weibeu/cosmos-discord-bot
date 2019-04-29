@@ -18,12 +18,12 @@ class RoleShopBase(GuildBaseCog):
             if not ctx.guild_profile.roleshop.has_role(role.id):
                 raise NotRoleShopRoleError(role)
             return role
-        menu = ctx.get_field_menu(roles, self.__paginator_parser)
+        menu = ctx.get_field_menu(roles, self._paginator_parser)
         response = await menu.wait_for_response()
         return ctx.guild.get_role(response.entry.id)
 
     @staticmethod
-    async def __paginator_parser(ctx, roleshop_role, _):
+    async def _paginator_parser(ctx, roleshop_role, _):
         role = ctx.guild.get_role(roleshop_role.id)
         points = roleshop_role.points
         return role.name, f"{ctx.bot.emotes.misc.coins} {points}"
@@ -32,7 +32,7 @@ class RoleShopBase(GuildBaseCog):
     async def role_shop(self, ctx):
         if not ctx.guild_profile.roleshop:
             return await ctx.send_line("❌    This server has no roles created or assigned to role shop.")
-        paginator = ctx.get_field_paginator(ctx.guild_profile.roleshop.roles, entry_parser=self.__paginator_parser)
+        paginator = ctx.get_field_paginator(ctx.guild_profile.roleshop.roles, entry_parser=self._paginator_parser)
         await paginator.paginate()
 
     @role_shop.error
