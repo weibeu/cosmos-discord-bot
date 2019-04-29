@@ -3,6 +3,8 @@ import discord
 from .points import RoleShopPoints
 from .settings import RoleShopSettings
 
+from .._models.exceptions import *
+
 
 class RoleShop(RoleShopPoints, RoleShopSettings):
 
@@ -21,5 +23,5 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
 
     @buy_role.error
     async def buy_error(self, ctx, error):
-        if isinstance(error, TypeError):
+        if isinstance(error, NotEnoughPointsError):
             return await ctx.send_line("❌    Sorry but you don't have enough guild points to purchase that role.")
