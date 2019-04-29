@@ -12,12 +12,13 @@ class NotRoleShopRoleError(CommandError):
 
 class RoleShopBase(GuildBaseCog):
 
-    async def _get_role(self, ctx, role=None) -> discord.Role:
+    async def _get_role(self, ctx, role=None, roles=None) -> discord.Role:
+        roles = roles or ctx.guild_profile.roleshop.roles
         if role:
             if not ctx.guild_profile.roleshop.has_role(role.id):
                 raise NotRoleShopRoleError(role)
             return role
-        menu = ctx.get_field_menu(ctx.guild_profile.roleshop.roles, self.__paginator_parser)
+        menu = ctx.get_field_menu(roles, self.__paginator_parser)
         response = await menu.wait_for_response()
         return ctx.guild.get_role(response.entry.id)
 
