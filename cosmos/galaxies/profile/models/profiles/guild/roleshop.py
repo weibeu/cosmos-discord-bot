@@ -1,9 +1,12 @@
+from .....guild._models.roleshop import Roles
+
+
 class MemberRoleShop(object):
 
     def __init__(self, profile, **kwargs):
         self.profile = profile
         raw_roleshop = kwargs.get("roleshop", dict())
-        self.roles = []
+        self.roles = Roles()
         self.profile.plugin.bot.loop.create_task(raw_roleshop.get("roles", list()))
 
     async def __fetch_roles(self, raw_roles):
