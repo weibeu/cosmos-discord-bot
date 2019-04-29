@@ -7,7 +7,8 @@ class MemberRoleShop(object):
         self.profile = profile
         raw_roleshop = kwargs.get("roleshop", dict())
         self.roles = Roles()
-        self.profile.plugin.bot.loop.create_task(raw_roleshop.get("roles", list()))
+        self.profile.plugin.bot.loop.create_task(
+            self.__fetch_roles(raw_roleshop.get("roles", list())))
 
     async def __fetch_roles(self, raw_roles):
         roles = (await self.profile.fetch_guild_profile()).roles
