@@ -50,6 +50,9 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in profile.roleshop.roles if ctx.guild.get_role(role.id) not in ctx.author.roles]
         role = await self._get_role(ctx, role, roles)
+        _role = ctx.guild_profile.roleshop.roles.get(role.id)
+        if _role not in profile.roleshop.roles:
+            return await ctx.send_line(f"❌    You haven't purchased {role.name} yet.")
         if role in ctx.author.roles:
             return await ctx.send_line(f"❌    You've already equipped {role.name}.")
         await ctx.author.add_roles(role, reason="Role equipped from role shop.")
