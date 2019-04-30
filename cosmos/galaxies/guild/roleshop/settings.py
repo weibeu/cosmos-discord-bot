@@ -23,7 +23,7 @@ class RoleShopSettings(RoleShopBase):
     @RoleShopBase.role_shop.command(name="remove", aliases=["delete"])
     @has_permissions(manage_roles=True)
     async def delete_role(self, ctx, *, role: discord.Role = None):
-        role = await self._get_role(ctx, role)
+        role = await self._get_role(ctx, role, ctx.guild_profile.roleshop.roles)
 
         if await ctx.confirm(f"⚠    Are you sure to remove {role.name} from role shop?"):
             # await role.delete(reason=f"Role deleted from role shop. [{ctx.author}]")
@@ -38,7 +38,7 @@ class RoleShopSettings(RoleShopBase):
 
     @modify_role.command(name="points", aliases=["point"])
     async def modify_points(self, ctx, new_points: int, *, role: discord.Role = None):
-        role = await self._get_role(ctx, role)
+        role = await self._get_role(ctx, role, ctx.guild_profile.roleshop.roles)
 
         if await ctx.confirm(f"⚠    Are you sure to change points of {role.name} to {new_points}?"):
             await ctx.guild_profile.roleshop.set_points(role.id, new_points)
