@@ -111,6 +111,7 @@ class CosmosUserProfile(Boson, Fermion, Relationship):
         embed.add_field(name="Bosons", value=self.bosons)
         embed.add_field(name="Fermions", value=self.fermions)
         embed.add_field(name="Rank", value=self.rank)
+        embed.add_field(name="Voice Experience Points", value=guild_profile.voice_xp)
         embed.add_field(name="💖  Proposed", value=self.proposed)
         embed.add_field(name="🖤  Proposer", value=self.proposer)
         if self.spouse_id:
