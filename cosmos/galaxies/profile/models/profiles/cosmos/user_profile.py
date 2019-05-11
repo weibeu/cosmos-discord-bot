@@ -102,12 +102,14 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
         return self.document_filter, {"$set": updates}
 
-    def get_embed(self):
+    async def get_embed(self, guild_id):
+        guild_profile = await self.get_guild_profile(guild_id)
+        placeholder = "**Guild:** {}\n**Global:** {}"
         embed = self.plugin.bot.theme.embeds.primary(title="Cosmos Profile")
         embed.set_author(name=self.user.name, icon_url=self.user.avatar_url)
-        embed.add_field(name="Level", value=self.level)
-        embed.add_field(name="Experience points", value=self.xp)
-        embed.add_field(name="Delta Experience points", value=self.delta_xp)
+        embed.add_field(name="Level", value=placeholder.format(guild_profile.level, self.level))
+        embed.add_field(name="Experience points", value=placeholder.format(guild_profile.xp, self.xp))
+        embed.add_field(name="Delta Experience points", value=placeholder.format(guild_profile.delta_xp, self.delta_xp))
         embed.add_field(name="Reputation points", value=self.reps)
         embed.add_field(name="Prime", value=self.is_prime)
         embed.add_field(name="Bosons", value=self.bosons)
