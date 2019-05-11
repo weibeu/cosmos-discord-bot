@@ -23,7 +23,7 @@ class GuildMemberProfile(GuildPoints, GuildUserExperience):
     def __init__(self, profile, guild_id, **kwargs):
         self._profile = profile    # CosmosUserProfile
         GuildPoints.__init__(self, **kwargs)
-        GuildUserExperience.__init__(**kwargs)
+        GuildUserExperience.__init__(self, **kwargs)
         self._guild_id = guild_id
         self.roleshop = MemberRoleShop(self, **kwargs)
 

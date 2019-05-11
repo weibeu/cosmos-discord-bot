@@ -34,7 +34,7 @@ class Profile(Cog):
         if profile is None:
             res = self.plugin.data.responses.no_profile.format(user_name=user.name)
             return await ctx.send_line(res)
-        await ctx.send(embed=await profile.get_embed())
+        await ctx.send(embed=await profile.get_embed(ctx.guild.id))
 
     @profile.group(name="description", aliases=["text"], invoke_without_command=True)
     async def profile_description(self, ctx):
