@@ -30,6 +30,7 @@ class GuildMemberProfile(GuildPoints, UserExperience):
     def to_update_document(self):
         return {
             f"{self.guild_filter}.stats.xp.chat": self.xp,
+            f"{self.guild_filter}.stats.xp.voice": self.voice_xp,
             f"{self.guild_filter}.stats.level.chat": self.level,
             f"{self.guild_filter}.points.points": self.points,
         }
