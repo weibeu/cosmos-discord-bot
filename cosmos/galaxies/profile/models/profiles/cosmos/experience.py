@@ -9,8 +9,10 @@ from .level import UserLevel
 class UserExperience(UserLevel, ABC):
 
     def __init__(self, **kwargs):
-        self._xp = kwargs.get("xp", 0)
-        super().__init__(kwargs.get("level", 0))
+        raw_xp = kwargs.get("stats", dict()).get("xp", dict())
+        raw_level = kwargs.get("stats", dict()).get("level", dict())
+        self._xp = raw_xp.get("chat", 0)
+        super().__init__(raw_level.get("chat", 0))
         self.in_xp_buffer = False
 
     @property
