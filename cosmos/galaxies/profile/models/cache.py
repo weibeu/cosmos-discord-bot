@@ -72,6 +72,11 @@ class ProfileCache(object):
             assets.append(profile.give_xp())
         if not profile.in_boson_buffer:
             assets.append(profile.give_default_bosons())
+
+        guild_profile = await profile.get_guild_profile(message.guild.id)
+        if not guild_profile.in_xp_buffer:
+            assets.append((guild_profile.give_xp()))
+
         for asset in assets:
             self.bot.loop.create_task(asset)
 
