@@ -92,8 +92,8 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     def to_update_document(self) -> tuple:
         updates = {
-            "xp": self.xp,
-            "level": self.level,
+            "stats.xp": self.xp,
+            "stats.level": self.level,
             "currency.bosons": self.bosons,
         }
 
