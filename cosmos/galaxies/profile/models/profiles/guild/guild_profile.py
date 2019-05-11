@@ -1,8 +1,9 @@
 from .roleshop import MemberRoleShop
 from .guild_points import GuildPoints
+from .experience import GuildUserExperience
 
 
-class GuildMemberProfile(GuildPoints):
+class GuildMemberProfile(GuildPoints, GuildUserExperience):
 
     @property
     def profile(self):
@@ -22,6 +23,7 @@ class GuildMemberProfile(GuildPoints):
     def __init__(self, profile, guild_id, **kwargs):
         self._profile = profile    # CosmosUserProfile
         GuildPoints.__init__(self, **kwargs)
+        GuildUserExperience.__init__(**kwargs)
         self._guild_id = guild_id
         self.roleshop = MemberRoleShop(self, **kwargs)
 
