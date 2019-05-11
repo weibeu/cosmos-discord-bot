@@ -1,13 +1,12 @@
 import arrow
 
 from .currency import Boson, Fermion
-from .experience import UserExperience
 from .family import Relationship
 
 from ..guild import GuildMemberProfile
 
 
-class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
+class CosmosUserProfile(Boson, Fermion, Relationship):
 
     @property
     def plugin(self):
@@ -34,7 +33,6 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
         return cls(plugin, **document)
 
     def __init__(self, plugin, **kwargs):
-        UserExperience.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
         Relationship.__init__(self, **kwargs)
@@ -92,8 +90,6 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     def to_update_document(self) -> tuple:
         updates = {
-            "stats.xp.chat": self.xp,
-            "stats.level.chat": self.level,
             "currency.bosons": self.bosons,
         }
 
@@ -104,12 +100,12 @@ class CosmosUserProfile(UserExperience, Boson, Fermion, Relationship):
 
     async def get_embed(self, guild_id):
         guild_profile = await self.get_guild_profile(guild_id)
-        placeholder = "**Guild:** {}\n**Global:** {}"
+        # placeholder = "**Guild:** {}\n**Global:** {}"    # TODO
         embed = self.plugin.bot.theme.embeds.primary(title="Cosmos Profile")
         embed.set_author(name=self.user.name, icon_url=self.user.avatar_url)
-        embed.add_field(name="Level", value=placeholder.format(guild_profile.level, self.level))
-        embed.add_field(name="Experience points", value=placeholder.format(guild_profile.xp, self.xp))
-        embed.add_field(name="Delta Experience points", value=placeholder.format(guild_profile.delta_xp, self.delta_xp))
+        embed.add_field(name="Level", value=guild_profile.level)
+        embed.add_field(name="Experience points", value=guild_profile.xp)
+        embed.add_field(name="Delta Experience points", value=guild_profile.delta_xp)
         embed.add_field(name="Reputation points", value=self.reps)
         embed.add_field(name="Prime", value=self.is_prime)
         embed.add_field(name="Bosons", value=self.bosons)

@@ -12,21 +12,6 @@ class Profile(Cog):
         if self.plugin.data.profile.__dict__.get("cache_all"):
             self.bot.loop.create_task(self.cache.prepare())
 
-    def __is_ignored(self, message):
-        if message.author.id == self.bot.user.id:
-            return True
-        if message.author.bot:
-            return True
-        if not message.guild:
-            return True
-
-    @Cog.listener()
-    async def on_message(self, message):
-        if self.__is_ignored(message):
-            return
-
-        await self.cache.give_assets(message)
-
     @Cog.group(invoke_without_command=True)
     async def profile(self, ctx, *, user: discord.Member = None):
         user = user or ctx.author

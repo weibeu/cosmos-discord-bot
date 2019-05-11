@@ -68,8 +68,6 @@ class ProfileCache(object):
             await message.channel.send(embed=embed)
             profile = await self.create_profile(message.author.id)
 
-        if not profile.in_xp_buffer:
-            assets.append(profile.give_xp())
         if not profile.in_boson_buffer:
             assets.append(profile.give_default_bosons())
 

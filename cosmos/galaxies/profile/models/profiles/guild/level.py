@@ -1,7 +1,7 @@
 import math
 
 from abc import ABC, abstractmethod
-from ..base import ProfileModelsBase
+from cosmos.galaxies.profile.models.profiles.base import ProfileModelsBase
 
 
 class UserLevel(ProfileModelsBase, ABC):
