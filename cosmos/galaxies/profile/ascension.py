@@ -22,3 +22,20 @@ class Levels(Cog):
             return
 
         await self.cache.give_assets(message)
+
+    @Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        if member.bot or after.afk:
+            return
+
+        if ((before.mute and not after.mute)
+                or (before.self_mute and not after.self_mute)
+                or (not before.channel and after.channel and not (after.mute or after.self_mute))):
+            profile = await self.cache.get_guild_profile(member.id, member.guild.id)
+            profile.record_voice_activity()
+
+        if ((not before.mute and after.mute)
+                or (not before.self_mute and after.self_mute)
+                or (before.channel and not after.channel and not (before.mute or before.self_mute))):
+            profile = await self.cache.get_guild_profile(member.id, member.guild.id)
+            profile.close_voice_activity()

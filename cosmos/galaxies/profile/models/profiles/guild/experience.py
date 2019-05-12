@@ -16,7 +16,8 @@ class UserExperience(UserLevel, ABC):
         self._voice_xp = raw_xp.get("voice", 0)
         super().__init__(raw_level.get("chat", 0))
         self.in_xp_buffer = False
-        self.voice_activity_time = None
+        self.is_speaking = False
+        self.__voice_activity_time = None
 
     @property
     def xp(self):
@@ -36,11 +37,15 @@ class UserExperience(UserLevel, ABC):
 
     @property
     def voice_xp(self):
+        if self.is_speaking:
+            return self._voice_xp + round(time.time() - self.__voice_activity_time)
         return self._voice_xp
 
     def record_voice_activity(self):
-        self.voice_activity_time = time.time()
+        self.is_speaking = True
+        self.__voice_activity_time = time.time()
 
     def close_voice_activity(self):
-        self._voice_xp += round(time.time() - self.voice_activity_time)
-        self.voice_activity_time = None
+        self._voice_xp += round(time.time() - self.__voice_activity_time)
+        self.is_speaking = False
+        self.__voice_activity_time = None
