@@ -15,6 +15,10 @@ class GuildProfileModelsBase(ProfileModelsBase):
     def guild(self):
         raise NotImplementedError
 
+    @abstractmethod
+    async def fetch_guild_profile(self):
+        raise NotImplementedError
+
     @property
     def plugin(self):
         return self.profile.plugin
