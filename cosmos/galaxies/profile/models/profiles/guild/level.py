@@ -34,3 +34,6 @@ class UserLevel(GuildProfileModelsBase, ABC):
     @property
     def level(self):
         return self.from_delta_xp()
+
+    async def level_up_callback(self):
+        pass
