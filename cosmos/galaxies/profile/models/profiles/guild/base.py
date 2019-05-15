@@ -20,6 +20,10 @@ class GuildMemberProfileBase(ProfileModelsBase):
         raise NotImplementedError
 
     @property
+    def member(self):
+        return self.guild.get_member(self.id)
+
+    @property
     def plugin(self):
         return self.profile.plugin
 
