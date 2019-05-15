@@ -3,7 +3,7 @@ from abc import abstractmethod
 from ..base import ProfileModelsBase
 
 
-class GuildProfileModelsBase(ProfileModelsBase):
+class GuildMemberProfileBase(ProfileModelsBase):
 
     @property
     @abstractmethod

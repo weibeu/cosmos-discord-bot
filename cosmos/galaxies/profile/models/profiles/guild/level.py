@@ -1,10 +1,10 @@
 import math
 
-from .base import GuildProfileModelsBase
+from .base import GuildMemberProfileBase
 from abc import ABC, abstractmethod
 
 
-class UserLevel(GuildProfileModelsBase, ABC):
+class UserLevel(GuildMemberProfileBase, ABC):
 
     K = 5777
 

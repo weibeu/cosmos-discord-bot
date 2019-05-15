@@ -4,10 +4,10 @@ from abc import ABC
 
 import arrow
 
-from .base import GuildProfileModelsBase
+from .base import GuildMemberProfileBase
 
 
-class GuildPoints(GuildProfileModelsBase, ABC):
+class GuildPoints(GuildMemberProfileBase, ABC):
 
     def __init__(self, **kwargs):
         raw_points = kwargs.get("points", dict())
