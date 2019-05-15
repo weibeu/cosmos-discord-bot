@@ -1,6 +1,5 @@
 from discord.ext.commands import has_permissions
 
-from ... import Cog
 from .base import Settings
 
 
@@ -11,7 +10,7 @@ class PrefixSettings(Settings):
             return True
         await ctx.send_line("❌    That prefix is already part of default global prefixes.")
 
-    @Cog.group(name="prefix", aliases=["prefixes"], invoke_without_command=True)
+    @Settings.group(name="prefix", aliases=["prefixes"], invoke_without_command=True)
     @has_permissions(manage_guild=True)
     async def prefix(self, ctx):
         prefixes = self.cache.prefixes.get(ctx.guild.id)
@@ -30,7 +29,7 @@ class PrefixSettings(Settings):
         )
         await ctx.send_line(f"{prefix} has been set as custom prefix of {ctx.guild.name}.", ctx.guild.icon_url)
 
-    @Cog.checks.prime_guild()
+    @Settings.checks.prime_guild()
     @prefix.command(name="add")
     async def add_prefix(self, ctx, prefix):
         if not await self.__check_prefix(ctx, prefix):
