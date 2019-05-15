@@ -36,4 +36,5 @@ class UserLevel(GuildMemberProfileBase, ABC):
         return self.from_delta_xp()
 
     async def level_up_callback(self):
-        pass
+        guild_profile = await self.fetch_guild_profile()
+        await guild_profile.levels.give_rewards(self)

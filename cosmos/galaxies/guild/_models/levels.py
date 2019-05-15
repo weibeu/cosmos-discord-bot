@@ -37,3 +37,14 @@ class Levels(object):
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$addToSet": {
             "levels.rewards": reward.document
         }})
+
+    async def give_rewards(self, profile):
+        reward = self.rewards.get(profile.level)
+        if not reward:
+            return
+
+        profile.give_points(reward.points)
+
+        for role_id in reward.roles:
+            role = self.__profile.guild.get_role(role_id)
+            await profile.member.add_roles(role, reason=f"Level {profile.level} reward.")
