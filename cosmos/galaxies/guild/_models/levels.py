@@ -30,8 +30,8 @@ class Levels(object):
     async def set_rewards(self, level, roles, points=0):
         reward = LevelReward(**{
             "level": level,
-            roles: roles or list(),
-            points: points,
+            "roles": roles or list(),
+            "points": points,
         })
 
         self.rewards.update({reward.level: reward})
