@@ -1,9 +1,11 @@
+from .levels import Levels
 from ._models import GuildCache
 from .roleshop import RoleShop
 from .settings import GuildSettings
 
 
 __all__ = [
+    Levels,
     RoleShop,
     GuildSettings,
 ]
