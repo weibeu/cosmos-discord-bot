@@ -1,10 +1,39 @@
-from abc import ABC
-
-from .base import CosmosGuildBase
-
-
-class GuildLevels(CosmosGuildBase, ABC):
+class LevelReward(object):
 
     def __init__(self, **kwargs):
+        self.level = kwargs["level"]
+        self.roles = kwargs.get("roles", list())
+        self.points = kwargs.get("points", 0)
+
+    @property
+    def document(self):
+        return {
+            "level": self.level,
+            "roles": self.roles,
+            "points": self.points,
+        }
+
+
+class Levels(object):
+
+    def __init__(self, guild_profile, **kwargs):
+        self.__profile = guild_profile
         raw_levels = kwargs.get("levels", dict())
-        roles = raw_levels.get("roles", list())
+        self.rewards = self.__fetch_rewards(raw_levels.get("rewards", list()))
+
+    @staticmethod
+    def __fetch_rewards(raw_rewards):
+        return {raw_reward["level"]: LevelReward(**raw_reward) for raw_reward in raw_rewards}
+
+    async def set_rewards(self, level, roles=None, points=0):
+        reward = LevelReward(**{
+            "level": level,
+            roles: roles or list(),
+            points: points,
+        })
+
+        self.rewards.update({reward.level: reward})
+
+        await self.__profile.collection.update_one(self.__profile.document_filter, {"$addToSet": {
+            "levels.rewards": reward.document
+        }})
