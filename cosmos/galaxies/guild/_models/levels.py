@@ -2,16 +2,18 @@ class LevelReward(object):
 
     def __init__(self, **kwargs):
         self.level = kwargs["level"]
-        self.roles = kwargs.get("roles", list())
+        self.roles = kwargs["roles"]
         self.points = kwargs.get("points", 0)
 
     @property
     def document(self):
-        return {
+        _document = {
             "level": self.level,
             "roles": self.roles,
-            "points": self.points,
         }
+        if self.points:
+            _document["points"] = self.points
+        return _document
 
 
 class Levels(object):
@@ -25,7 +27,7 @@ class Levels(object):
     def __fetch_rewards(raw_rewards):
         return {raw_reward["level"]: LevelReward(**raw_reward) for raw_reward in raw_rewards}
 
-    async def set_rewards(self, level, roles=None, points=0):
+    async def set_rewards(self, level, roles, points=0):
         reward = LevelReward(**{
             "level": level,
             roles: roles or list(),
