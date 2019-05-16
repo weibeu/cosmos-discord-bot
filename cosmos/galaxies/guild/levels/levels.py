@@ -46,3 +46,11 @@ class Levels(GuildBaseCog):
         if await ctx.confirm(await ctx.send(embed=embed)):
             await ctx.guild_profile.levels.set_rewards(level, [role.id for role in roles], points)
             await ctx.send_line(f"✅    Rewards for Level {level} has been set.")
+
+    @rewards.command(name="remove", aliases=["delete"])
+    @has_permissions(administrator=True)
+    async def remove_rewards(self, ctx, level: int):
+        if not await ctx.confirm():
+            return
+        await ctx.guild_profile.levels.remove_rewards(level)
+        await ctx.send_line(f"✅    Rewards for Level {level} has been removed.")
