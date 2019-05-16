@@ -48,7 +48,6 @@ class Levels(object):
                 "levels.rewards": {"level": level}
             }}
         )
-        # TODO: Remove ^ role data from all users documents who have it.
 
     async def give_rewards(self, profile):
         reward = self.rewards.get(profile.level)
