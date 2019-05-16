@@ -40,6 +40,16 @@ class Levels(object):
             "levels.rewards": reward.document
         }})
 
+    async def remove_rewards(self, level):
+        self.rewards.pop(level)
+
+        self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$pull": {
+                "levels.rewards": {"level": level}
+            }}
+        )
+        # TODO: Remove ^ role data from all users documents who have it.
+
     async def give_rewards(self, profile):
         reward = self.rewards.get(profile.level)
         if not reward:
