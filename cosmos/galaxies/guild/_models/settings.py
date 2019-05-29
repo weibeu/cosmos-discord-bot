@@ -1,6 +1,13 @@
 from abc import ABC
+from discord import Color
 
 from .base import CosmosGuildBase
+
+
+class _Color(Color):
+
+    def __bool__(self):
+        return bool(self.value)
 
 
 class WelcomeBannerSettings(CosmosGuildBase, ABC):
@@ -37,9 +44,19 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
 
         await self.collection.update_one(self.document_filter, {"$set": {"settings.welcome.banner.enabled": enable}})
 
+# TODO: Don't pass whole document. Rather pass the embedded document of only that model to remove raw_..._settings.
+
+
+class ThemeSettings(CosmosGuildBase, ABC):
+
+    def __init__(self, **kwargs):
+        raw_theme_settings = kwargs.get("theme", dict())
+        self.primary_color = _Color(raw_theme_settings.get("primary_color", int()))
+
 
 class GuildSettings(WelcomeBannerSettings, ABC):
 
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
         super().__init__(**raw_settings)
+        self.theme = ThemeSettings(**kwargs)
