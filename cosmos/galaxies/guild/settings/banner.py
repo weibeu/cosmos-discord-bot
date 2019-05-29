@@ -12,7 +12,11 @@ class BannerSettings(Settings):
         if guild_profile.welcome_banner_enabled:
             await guild_profile.send_welcome_banner(member.name, member.avatar_url)
 
-    @Settings.welcome.group(name="banner", invoke_without_command=True)
+    @Settings.group(name="welcome", aliases=["join"])
+    async def welcome(self, ctx):
+        pass
+
+    @welcome.group(name="banner", invoke_without_command=True)
     async def welcome_banner(self, ctx):
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
