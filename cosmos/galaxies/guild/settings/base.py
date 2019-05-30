@@ -9,3 +9,7 @@ class Settings(GuildBaseCog):
         if not ctx.author.guild_permissions.manage_guild:
             raise MissingPermissions(["manage_guild"])
         return True
+
+    @GuildBaseCog.group(name="guild", aliases=["server"])
+    async def guild(self, ctx):
+        pass
