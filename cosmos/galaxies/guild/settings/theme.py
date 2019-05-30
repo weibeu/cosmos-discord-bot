@@ -5,7 +5,7 @@ from .base import Settings
 
 class ThemeSettings(Settings):
 
-    @Settings.guild.group(name="theme", aliases=["themes"])
+    @Settings.group(name="theme", aliases=["themes"])
     async def theme_setting(self, ctx):
         pass
 
