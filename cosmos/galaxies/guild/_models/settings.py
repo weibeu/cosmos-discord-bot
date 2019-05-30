@@ -47,7 +47,7 @@ class ThemeSettings(object):
         self.__profile = guild_profile
         raw_theme_settings = kwargs.get("theme", dict())
         color = raw_theme_settings.get("color")
-        if color:
+        if color is not None:
             self.color = Color(color)
         else:
             self.color = None
