@@ -59,6 +59,13 @@ class ThemeSettings(object):
             self.__profile.document_filter, {"$set": {"settings.theme.color": self.color.value}}
         )
 
+    async def remove_color(self):
+        self.color = None
+
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$unset": {"settings.theme.color": ""}}
+        )
+
 
 class GuildSettings(WelcomeBannerSettings, ABC):
 

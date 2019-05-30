@@ -26,3 +26,8 @@ class ThemeSettings(Settings):
         await ctx.send_line(
             f"{ctx.guild.name} theme color has been set to {ctx.guild_profile.theme.color}.", ctx.guild.icon_url
         )
+
+    @theme_color.command(name="remove", aliases=["delete"])
+    async def remove_theme_color(self, ctx):
+        if await ctx.confirm():
+            await ctx.guild_profile.theme.remove_color()
