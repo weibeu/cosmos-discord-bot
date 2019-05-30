@@ -51,7 +51,7 @@ class ThemeSettings(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
         raw_theme_settings = kwargs.get("theme", dict())
-        self.primary_color = _Color(raw_theme_settings.get("primary_color", int()))
+        self.color = _Color(raw_theme_settings.get("color", int()))
 
 
 class GuildSettings(WelcomeBannerSettings, ABC):
