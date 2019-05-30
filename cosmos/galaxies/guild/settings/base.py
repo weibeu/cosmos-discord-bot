@@ -1,6 +1,6 @@
 from .._models import GuildBaseCog
 
-from discord.ext.commands import MissingPermissions
+from discord.ext.commands import MissingPermissions, has_permissions
 
 
 class Settings(GuildBaseCog):
@@ -11,5 +11,6 @@ class Settings(GuildBaseCog):
         return True
 
     @GuildBaseCog.group(name="guild", aliases=["server"])
+    @has_permissions(manage_guild=True)
     async def guild(self, ctx):
         pass
