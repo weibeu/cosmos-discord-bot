@@ -34,12 +34,15 @@ class Evaluator(Cog):
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
 
+        guild_profile = await self.bot.guild_cache.get_profile(ctx.guild.id)
+
         env = {
             'bot': self.bot,
             'ctx': ctx,
             'channel': ctx.channel,
             'author': ctx.author,
             'guild': ctx.guild,
+            'guild_profile': guild_profile,
             'message': ctx.message,
             '_': self._last_result
         }
