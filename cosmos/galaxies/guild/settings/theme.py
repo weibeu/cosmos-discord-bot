@@ -1,3 +1,5 @@
+from discord.ext.commands import has_permissions
+
 import discord
 
 from .base import Settings
@@ -6,6 +8,7 @@ from .base import Settings
 class ThemeSettings(Settings):
 
     @Settings.group(name="theme", aliases=["themes"])
+    @has_permissions(manage_guild=True)
     async def theme_setting(self, ctx):
         pass
 
