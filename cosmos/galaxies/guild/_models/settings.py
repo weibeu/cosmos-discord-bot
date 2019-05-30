@@ -47,7 +47,7 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
 # TODO: Don't pass whole document. Rather pass the embedded document of only that model to remove raw_..._settings.
 
 
-class ThemeSettings(CosmosGuildBase, ABC):
+class ThemeSettings(object):
 
     def __init__(self, guild_profile, **kwargs):
         self.__profile = guild_profile
@@ -67,4 +67,4 @@ class GuildSettings(WelcomeBannerSettings, ABC):
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
         super().__init__(**raw_settings)
-        self.theme = ThemeSettings(**kwargs)
+        self.theme = ThemeSettings(self, **kwargs)
