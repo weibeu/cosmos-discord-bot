@@ -1,13 +1,7 @@
 from abc import ABC
+
 from discord import Color
-
 from .base import CosmosGuildBase
-
-
-class _Color(Color):
-
-    def __bool__(self):
-        return bool(self.value)
 
 
 class WelcomeBannerSettings(CosmosGuildBase, ABC):
@@ -52,10 +46,14 @@ class ThemeSettings(object):
     def __init__(self, guild_profile, **kwargs):
         self.__profile = guild_profile
         raw_theme_settings = kwargs.get("theme", dict())
-        self.color = _Color(raw_theme_settings.get("color", int()))
+        color = raw_theme_settings.get("color")
+        if color:
+            self.color = Color(color)
+        else:
+            self.color = None
 
     async def set_color(self, color):
-        self.color = _Color(color)
+        self.color = color
 
         await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$set": {"settings.theme.color": self.color.value}}
@@ -67,4 +65,4 @@ class GuildSettings(WelcomeBannerSettings, ABC):
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
         super().__init__(**raw_settings)
-        self.theme = ThemeSettings(self, **kwargs)
+        self.theme = ThemeSettings(self, **raw_settings)
