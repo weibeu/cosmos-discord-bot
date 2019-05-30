@@ -22,4 +22,6 @@ class ThemeSettings(Settings):
             return await ctx.send_line(res, ctx.guild.icon_url)
 
         await ctx.guild_profile.theme.set_color(color.value)
-        await ctx.send_line(f"{ctx.guild.name} theme color has been set to {ctx.guild_profile.theme.color}.")
+        await ctx.send_line(
+            f"{ctx.guild.name} theme color has been set to {ctx.guild_profile.theme.color}.", ctx.guild.icon_url
+        )
