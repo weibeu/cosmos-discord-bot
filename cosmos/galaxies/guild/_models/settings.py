@@ -49,9 +49,17 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
 
 class ThemeSettings(CosmosGuildBase, ABC):
 
-    def __init__(self, **kwargs):
+    def __init__(self, guild_profile, **kwargs):
+        self.__profile = guild_profile
         raw_theme_settings = kwargs.get("theme", dict())
         self.color = _Color(raw_theme_settings.get("color", int()))
+
+    async def set_color(self, color):
+        self.color = _Color(color)
+
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$set": {"settings.theme.color": self.color.value}}
+        )
 
 
 class GuildSettings(WelcomeBannerSettings, ABC):
