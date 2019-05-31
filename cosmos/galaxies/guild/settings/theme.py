@@ -21,7 +21,7 @@ class ThemeSettings(Settings):
 
     @theme_color.command(name="set")
     @has_permissions(manage_guild=True)
-    async def set_theme_color(self, ctx, color: discord.Color):
+    async def set_theme_color(self, ctx, *, color: discord.Color):
         await ctx.guild_profile.theme.set_color(color)
         await ctx.send_line(
             f"{ctx.guild.name} theme color has been set to {ctx.guild_profile.theme.color}.", ctx.guild.icon_url
