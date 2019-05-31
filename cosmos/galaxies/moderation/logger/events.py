@@ -40,5 +40,5 @@ class LoggerEvents(Cog):
         pass
 
     @Cog.listener()
-    async def on_member_moderation(self, member, action):
+    async def on_moderation(self, member, action):
         pass
