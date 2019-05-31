@@ -1,5 +1,8 @@
-__all__ = [
+from .logger import Logger
 
+
+__all__ = [
+    Logger,
 ]
 
 
