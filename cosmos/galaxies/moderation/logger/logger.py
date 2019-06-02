@@ -1,10 +1,11 @@
 import discord
+import typing
 
 from .events import LoggerEvents
 from discord.ext import commands
 
 
-class LoggerNameConvertor(commands.Converter):
+class NameConvertor(commands.Converter):
 
     async def convert(self, ctx, argument):
         if not argument.lower().startswith("on"):
@@ -26,7 +27,8 @@ class Logger(LoggerEvents):
         pass
 
     @logger.command(name="enable", aliases=["create"])
-    async def enable_logger(self, ctx, channel: discord.TextChannel, *, name: LoggerNameConvertor = None):
+    async def enable_logger(self, ctx, channel: typing.Optional[discord.TextChannel], *, name: NameConvertor = None):
+        channel = channel or ctx.channel
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [name for name in self.loggers if not guild_profile.get_logger(name)]
         if not name:
