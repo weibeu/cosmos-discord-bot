@@ -67,9 +67,56 @@ class ThemeSettings(object):
         )
 
 
-class GuildSettings(WelcomeBannerSettings, ABC):
+class GuildLogger(object):
+
+    def __init__(self, name, channel):
+        self.name = name
+        self.channel = channel
+
+    @property
+    def document(self):
+        return {
+            "name": self.name,
+            "channel": self.channel.id,
+        }
+
+
+class LoggerSettings(CosmosGuildBase, ABC):
+
+    def __init__(self, **kwargs):
+        raw_logger_settings = kwargs.get("loggers", list())
+        self.loggers = self.__get_loggers(raw_logger_settings)
+
+    def __get_loggers(self, raw_settings):
+        return [GuildLogger(_["name"], self.guild.get_channel(_["channel"])) for _ in raw_settings]
+
+    def get_logger(self, name):
+        for logger in self.loggers:
+            if logger.name == name:
+                return logger
+
+    async def enable_logger(self, name, channel):
+        logger = GuildLogger(name, channel)
+        self.loggers.append(logger)
+
+        self.collection.update_one(
+            self.document_filter, {"$addToSet": {"settings.loggers": logger.document}}
+        )
+
+    async def remove_logger(self, name):
+        for logger in self.loggers:
+            if logger.name == name:
+                self.loggers.remove(logger)
+
+        self.collection.update_one(
+            self.document_filter, {"$pull": {"settings.loggers": {"name": name}}}
+        )
+
+
+class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
 
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
-        super().__init__(**raw_settings)
+        WelcomeBannerSettings.__init__(self, **raw_settings)
+        LoggerSettings.__init__(self, **raw_settings)
         self.theme = ThemeSettings(self, **raw_settings)
