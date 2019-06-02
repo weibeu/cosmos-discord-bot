@@ -16,10 +16,6 @@ class LoggerNameConvertor(commands.Converter):
 
 class Logger(LoggerEvents):
 
-    @property
-    def loggers(self):
-        return [name for name, _ in self.get_listeners()]
-
     @staticmethod
     async def __logger_entry_parser(_, entry, __):
         return entry.replace("_", " ").title()

@@ -6,6 +6,7 @@ class LoggerEvents(Cog):
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
+        self.loggers = [name for name, _ in self.get_listeners()]
 
     @Cog.listener()
     async def on_message_delete(self, message):
