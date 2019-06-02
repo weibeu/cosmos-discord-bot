@@ -39,7 +39,7 @@ class Logger(LoggerEvents):
             return await ctx.send_line(f"❌    Sorry but logging for event '{name}' isn't supported yet.")
         logger = guild_profile.get_logger(name)
         if logger:
-            return await ctx.send_line(f"❌    Logs for event '{logger.name}' are already enabled in #{logger.channel}")
+            return await ctx.send_line(f"❌    Logs for event '{logger.name}' is already enabled in #{logger.channel}")
 
         await guild_profile.enable_logger(name, channel)
         await ctx.send_line(f"✅    Logs for event '{name}' has been enabled in #{channel.name} channel.")
