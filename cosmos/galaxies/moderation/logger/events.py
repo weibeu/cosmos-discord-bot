@@ -34,7 +34,7 @@ class LoggerEvents(Cog):
 
     @property
     def embed(self):
-        return self.bot.theme.embeds.primary()
+        return self.bot.theme.embeds.primary
 
     @logger_event()
     async def on_message_delete(self, embed, message):
