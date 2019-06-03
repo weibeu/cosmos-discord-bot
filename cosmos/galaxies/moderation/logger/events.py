@@ -44,6 +44,8 @@ class LoggerEvents(Cog):
             return
         embed.add_field(name="Deleted Message", value=message.clean_content, inline=False)
         embed.add_field(name="Author", value=message.author.mention)
+        embed.add_field(name="Author Name", value=message.author)
+        embed.add_field(name="Author ID", value=message.author.id)
         embed.add_field(name="From Channel", value=message.channel.mention)
         return embed
 
@@ -61,13 +63,15 @@ class LoggerEvents(Cog):
         embed.add_field(name="Before Edit", value=before.clean_content)
         embed.add_field(name="After Edit", value=after.clean_content)
         embed.add_field(name="Author", value=after.author.mention)
+        embed.add_field(name="Author Name", value=after.author)
+        embed.add_field(name="Author ID", value=after.author.id)
         embed.add_field(name="In Channel", value=after.channel.mention)
         return embed
 
     @logger_event()
     async def on_guild_channel_pins_update(self, embed, channel, _):
         embed.title = "Message Pinned"
-        message = (await channel.pins())[-1]
+        message = (await channel.pins())[0]
         embed.add_field(name="Message Content", value=message.clean_content, inline=False)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="In Channel", value=channel.mention)
