@@ -56,8 +56,8 @@ class LoggerEvents(Cog):
     async def on_message_edit(self, embed, before, after):
         if message.author.bot:
             return
-        embed.add_field(name="Before Edit", value=before.clean_content, inline=False)
-        embed.add_field(name="After", value=before.clean_content, inline=False)
+        embed.add_field(name="Before Edit", value=before.clean_content)
+        embed.add_field(name="After", value=after.clean_content)
         embed.add_field(name="Author", value=after.author.mention)
         embed.add_field(name="In Channel", value=after.channel.mention)
         return embed
