@@ -16,7 +16,7 @@ def logger_event(*args, **kwargs):
                 return
             embed = cog.embed(title=function.__name__.lstrip("on_").replace("_", " ").title())
             embed.timestamp = datetime.now()
-            embed = await function(embed, cog, *_args)
+            embed = await function(cog, embed, *_args)
             await logger.channel.send(embed=embed)
         return wrapper
 
