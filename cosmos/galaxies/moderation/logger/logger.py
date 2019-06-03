@@ -21,7 +21,7 @@ class Logger(LoggerEvents):
     async def __logger_entry_parser(_, entry, __):
         return entry.replace("_", " ").title()
 
-    @LoggerEvents.group(name="logger", aliases=["log", "logging"])
+    @LoggerEvents.group(name="logger", aliases=["log", "logging", "loggers"])
     @commands.has_permissions(administrator=True)
     async def logger(self, ctx):
         pass
