@@ -38,6 +38,8 @@ class LoggerEvents(Cog):
 
     @logger_event()
     async def on_message_delete(self, embed, message):
+        if message.author.bot:
+            return
         embed.add_field(name="Deleted Message", value=message.clean_content, inline=False)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="From Channel", value=message.channel.mention)
@@ -52,6 +54,8 @@ class LoggerEvents(Cog):
 
     @logger_event()
     async def on_message_edit(self, embed, before, after):
+        if message.author.bot:
+            return
         embed.add_field(name="Before Edit", value=before.clean_content, inline=False)
         embed.add_field(name="After", value=before.clean_content, inline=False)
         embed.add_field(name="Author", value=after.author.mention)
