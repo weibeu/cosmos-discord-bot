@@ -8,12 +8,12 @@ class CosmosContext(commands.Context):
     async def fetch_guild_profile(self):
         return await self.bot.guild_cache.get_profile(self.guild.id)
 
-    async def send(self, **kwargs):
+    async def send(self, *args, **kwargs):
         if kwargs.get("embed"):
             guild_profile = await self.fetch_guild_profile()
             if guild_profile.theme.color:
                 kwargs["embed"].color = guild_profile.theme.color
-        await super().send(**kwargs)
+        await super().send(*args, **kwargs)
 
     @property
     def emotes(self):
