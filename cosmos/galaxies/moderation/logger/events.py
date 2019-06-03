@@ -66,6 +66,7 @@ class LoggerEvents(Cog):
         embed.add_field(name="Author Name", value=after.author)
         embed.add_field(name="Author ID", value=after.author.id)
         embed.add_field(name="In Channel", value=after.channel.mention)
+        embed.add_field(name="Actual Message", value=f"[Jump to the message]({after.jump_url})")
         return embed
 
     @logger_event()
