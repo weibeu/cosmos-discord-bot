@@ -35,6 +35,7 @@ class GuildBaseCog(Cog):
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
+        self.cache = self.plugin.cache
 
     async def cog_before_invoke(self, ctx):
         ctx.guild_profile = await ctx.fetch_guild_profile()
