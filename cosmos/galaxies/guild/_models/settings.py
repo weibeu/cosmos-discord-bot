@@ -120,3 +120,18 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
         WelcomeBannerSettings.__init__(self, **raw_settings)
         LoggerSettings.__init__(self, **raw_settings)
         self.theme = ThemeSettings(self, **raw_settings)
+        self.moderators = raw_settings.get("moderators", list())
+
+    async def add_moderator(self, _id):
+        self.moderators.append(_id)
+
+        await self.collection.update_one(
+            self.document_filter, {"$addToSet": {"settings.moderators": _id}}
+        )
+
+    async def remove_moderator(self, _id):
+        self.moderators.remove(_id)
+
+        await self.collection.update_one(
+            self.document_filter, {"$pull": {"settings.moderators": _id}}
+        )
