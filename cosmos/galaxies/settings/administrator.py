@@ -13,9 +13,19 @@ class AdministratorSettings(Cog):
             raise commands.MissingPermissions(["administrator"])
         return True
 
-    @Cog.group(name="moderators", aliases=["moderator", "mod", "mods"])
+    @Cog.group(name="moderators", aliases=["moderator", "mod", "mods"], invoke_without_command=True)
     async def moderators(self, ctx):
-        pass
+        guild_profile = await ctx.fetch_guild_profile()
+        roles = [ctx.guild.get_role(_id).mention for _id in guild_profile.moderators if ctx.guild.get_role(_id)]
+        members = [ctx.guild.get_member(_id).mention for _id in guild_profile.moderators if ctx.guild.get_member(_id)]
+        embed = ctx.embeds.one_line.primary(f"{ctx.guild.name} Moderators", ctx.guild.icon_url)
+        if roles:
+            embed.add_field(name="Moderator Roles", value=" ".join(roles))
+        if members:
+            embed.add_field(name="Moderator Members", value=" ".join(members))
+        if not roles and members:
+            embed.description = f"No special roles or members are assigned yet for {ctx.guild.name} moderators."
+        await ctx.send(embed=embed)
 
     @moderators.command(name="add")
     async def add_moderator(self, ctx, moderator: typing.Union[discord.Role, discord.Member]):
