@@ -49,6 +49,7 @@ class UserExperience(UserLevel, ABC):
     def record_voice_activity(self):
         self.is_speaking = True
         self.__voice_activity_time = time.time()
+        # TODO: Also record voice activity of members who are already in voice channel on_ready.
 
     def close_voice_activity(self):
         self._voice_xp += round(time.time() - self.__voice_activity_time)
