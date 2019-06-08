@@ -26,6 +26,7 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         UserExperience.__init__(self, **kwargs)
         self._guild_id = guild_id
         self.roleshop = MemberRoleShop(self, **kwargs)
+        self.warnings = kwargs.get("warnings", list())
 
     def to_update_document(self):
         return {
