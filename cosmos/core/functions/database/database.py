@@ -1,5 +1,7 @@
-from .batch import DatabaseBatch
 from motor.motor_asyncio import AsyncIOMotorClient
+
+from .discord import DiscordDB
+from .batch import DatabaseBatch
 
 
 class DatabaseClient(AsyncIOMotorClient):
@@ -10,6 +12,7 @@ class DatabaseClient(AsyncIOMotorClient):
         self.database_name = self.bot.configs.db.database
         super().__init__(self.uri)
         self.db = self.get_database()
+        self.discordDB = DiscordDB(self.bot)
 
     def get_database(self, database_name: str = None):
         name = self.database_name or database_name
