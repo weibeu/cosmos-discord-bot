@@ -708,6 +708,8 @@ class Guild_Admin(object):
         if ctx.guild:
             return
         guild = self.bot.get_guild(int(guild_id))
+        if not guild.get_member(ctx.author.id):
+            return await ctx.send(f"Sorry, but you must be in {guild.name} server to make this confession.")
         if self.sc_settings[str(guild.id)]["enabled"]:
             gif = get_gif("Anime", limit=30)
             color = get_random_embed_color()
