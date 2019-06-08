@@ -81,6 +81,7 @@ class InitialTasks(commands.Bot):
         self.log.info("Initialising database.")
         self.db_client = DatabaseClient(self)
         self.db = self.db_client.db
+        self.discordDB = self.db_client.discordDB
 
     @Time.calc_time
     def _init_caches(self):
