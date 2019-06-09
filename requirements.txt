@@ -3,6 +3,7 @@ aioredis
 arrow
 cachetools
 discord.py
+DiscordDB
 image-processor-client>=2.0.7
 motor
 pymongo

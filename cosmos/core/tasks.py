@@ -1,5 +1,7 @@
-from discord.ext import commands
 from image_processor_client import Client as ImageProcessorClient
+
+from discordDB import DiscordDB
+from discord.ext import commands
 
 from .functions import *
 from .utilities import *
@@ -81,7 +83,7 @@ class InitialTasks(commands.Bot):
         self.log.info("Initialising database.")
         self.db_client = DatabaseClient(self)
         self.db = self.db_client.db
-        self.discordDB = self.db_client.discordDB
+        self.discordDB = DiscordDB(self, self.configs.db.channel_id)
 
     @Time.calc_time
     def _init_caches(self):
