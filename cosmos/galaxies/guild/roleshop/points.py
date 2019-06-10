@@ -7,6 +7,8 @@ class RoleShopPoints(RoleShopBase):
 
     @RoleShopBase.listener()
     async def on_message(self, message):
+        if not message.guild:
+            return
         profile = await self.bot.profile_cache.get_guild_profile(message.author.id, message.guild.id)
         if profile and not profile.in_points_buffer:
             self.bot.loop.create_task(profile.give_default_points())
