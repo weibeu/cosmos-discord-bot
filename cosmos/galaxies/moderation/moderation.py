@@ -47,7 +47,7 @@ class Moderation(Cog):
             reason = log.reason
         except AttributeError:
             reason = "Reason not specified."
-        value = f"**Reason:** {reason}\n**Moderator:** {moderator.mention}"
+        value = f"**Reason:** {reason}\n**Moderator:** {moderator}"
         return log.action_type, value
 
     @Cog.group(name="modlogs", invoke_without_command=True)
