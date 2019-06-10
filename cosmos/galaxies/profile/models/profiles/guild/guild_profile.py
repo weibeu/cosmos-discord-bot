@@ -26,6 +26,7 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         UserExperience.__init__(self, **kwargs)
         self._guild_id = guild_id
         self.roleshop = MemberRoleShop(self, **kwargs)
+        self.moderation_logs = kwargs.get("logs", dict()).get("moderation", list())
 
     def to_update_document(self):
         return {
@@ -36,11 +37,15 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         }
 
     async def log_moderation(self, _id):
+        self.moderation_logs.append(_id)
+
         await self.collection.update_one(self.document_filter, {
             "$addToSet": {f"{self.guild_filter}.logs.moderation": _id}
         })
 
     async def clear_moderation_logs(self):
+        self.moderation_logs.clear()
+
         await self.collection.update_one(self.document_filter, {
             "$unset": {f"{self.guild_filter}.logs.moderation": ""}
         })
