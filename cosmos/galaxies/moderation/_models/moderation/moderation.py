@@ -22,7 +22,7 @@ class ModerationAction(object):
         return _
 
     async def warn(self, title):
-        self.ctx.bot.dispatch("on_moderation", self)
+        self.ctx.bot.dispatch("moderation", self)
         _ = self.ctx.embed_line(title)
         _.description = f"**Reason:** {self.reason}"
         _.timestamp = datetime.datetime.now()
