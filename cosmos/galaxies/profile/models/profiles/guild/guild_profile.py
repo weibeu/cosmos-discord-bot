@@ -41,4 +41,6 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         })
 
     async def clear_moderation_logs(self):
-        pass
+        await self.collection.update_one(self.document_filter, {
+            "$unset": {f"{self.guild_filter}.logs.moderation": ""}
+        })
