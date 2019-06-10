@@ -37,8 +37,8 @@ def check_mod(**perms):
 class Moderation(Cog):
 
     def __init__(self, plugin):
-        self.plugin = plugin
         super().__init__()
+        self.plugin = plugin
 
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
@@ -52,5 +52,5 @@ class Moderation(Cog):
         finally:
             profile = await ctx.fetch_member_profile()
             _id = await self.bot.discordDB.set(action.document)
-            await profile.add_warning(_id)
+            await profile.log_moderation(_id)
         await ctx.send_line(res)

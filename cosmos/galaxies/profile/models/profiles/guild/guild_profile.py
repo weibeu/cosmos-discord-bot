@@ -36,12 +36,12 @@ class GuildMemberProfile(GuildPoints, UserExperience):
             f"{self.guild_filter}.points.points": self.points,
         }
 
-    async def add_warning(self, _id):
+    async def log_moderation(self, _id):
         self.moderation_logs.append(_id)
 
         await self.collection.update_one(self.document_filter, {
             "$addToSet": {f"{self.guild_filter}.logs.moderation": _id}
         })
 
-    async def clear_warnings(self):
+    async def clear_moderation_logs(self):
         self.moderation_logs.clear()
