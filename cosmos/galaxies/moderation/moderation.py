@@ -49,8 +49,4 @@ class Moderation(Cog):
             res = f"✅    {member.name} has been warned."
         except discord.HTTPException:
             res = f"✅    Failed to warn {member.name}. Warning logged."
-        finally:
-            profile = await ctx.fetch_member_profile()
-            _id = await self.bot.discordDB.set(action.document)
-            await profile.log_moderation(_id)
         await ctx.send_line(res)

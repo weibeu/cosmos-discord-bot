@@ -27,3 +27,6 @@ class ModerationAction(object):
         _.description = self.reason
         _.timestamp = datetime.datetime.now()
         await self.target.send(embed=_)
+        profile = await self.ctx.fetch_member_profile()
+        _id = await self.ctx.bot.discordDB.set(self.document)
+        await profile.log_moderation(_id)
