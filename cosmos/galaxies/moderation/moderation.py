@@ -40,6 +40,25 @@ class Moderation(Cog):
         super().__init__()
         self.plugin = plugin
 
+    async def __modlogs_parser(self, ctx, _id, _):
+        log = await self.bot.discordDB.get(_id)
+        moderator = ctx.guild.get_member(log.moderator_id)
+        try:
+            reason = log.reason
+        except AttributeError:
+            reason = "Reason not specified."
+        value = f"**Reason:** {reason}\n**Moderator:** {moderator.mention}"
+        return log.action_type, value
+
+    @Cog.group(name="modlogs", invoke_without_command=True)
+    @check_mod(kick_members=True)
+    async def moderation_logs(self, ctx, *, member: discord.Member):
+        profile = await ctx.fetch_member_profile()
+        if not profile.moderation_logs:
+            return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
+        paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
+        await paginator.paginate()
+
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason=None):
@@ -50,3 +69,4 @@ class Moderation(Cog):
         except discord.HTTPException:
             res = f"✅    Failed to warn {member.name}. Warning logged."
         await ctx.send_line(res)
+        # TODO: Add warning limits.
