@@ -26,7 +26,7 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         UserExperience.__init__(self, **kwargs)
         self._guild_id = guild_id
         self.roleshop = MemberRoleShop(self, **kwargs)
-        self.warnings = kwargs.get("warnings", list())
+        self.moderation_logs = kwargs.get("warnings", list())
 
     def to_update_document(self):
         return {
@@ -37,11 +37,11 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         }
 
     async def add_warning(self, _id):
-        self.warnings.append(_id)
+        self.moderation_logs.append(_id)
 
         await self.collection.update_one(self.document_filter, {
             "$addToSet": {f"{self.guild_filter}.logs.moderation": _id}
         })
 
     async def clear_warnings(self):
-        self.warnings.clear()
+        self.moderation_logs.clear()
