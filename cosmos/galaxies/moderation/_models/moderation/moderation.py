@@ -9,6 +9,7 @@ class ModerationAction(object):
         self.target = target
         self.moderator = self.ctx.author
         self.reason = reason
+        self.guild = self.ctx.guild
 
     @property
     def document(self):
