@@ -1,4 +1,3 @@
-from .moderation import actions
 from .moderation import ModerationAction
 
 

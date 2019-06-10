@@ -1,4 +1,7 @@
+from ._models import ModerationAction, actions
 from discord.ext import commands
+
+import discord
 
 from .. import Cog
 
@@ -33,4 +36,17 @@ def check_mod(**perms):
 
 class Moderation(Cog):
 
-    pass
+    @Cog.command(name="warn")
+    @check_mod(kick_members=True)
+    async def warn(self, ctx, member: discord.Member, *, reason=None):
+        action = ModerationAction(ctx, actions.Warned, member, reason)
+        try:
+            await action.warn(f"⚠    You were warned in {ctx.guild.name}.")
+            res = f"✅    {member.name} has been warned."
+        except discord.HTTPException:
+            res = f"✅    Failed to warn {member.name}. Warning logged."
+        finally:
+            profile = await ctx.fetch_member_profile()
+            _id = await self.bot.discordDB.set(action.document)
+            await profile.add_warning(_id)
+        await ctx.send_line(res)
