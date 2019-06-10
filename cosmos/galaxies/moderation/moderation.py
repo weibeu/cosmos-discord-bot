@@ -36,6 +36,10 @@ def check_mod(**perms):
 
 class Moderation(Cog):
 
+    def __init__(self, plugin):
+        self.plugin = plugin
+        super().__init__()
+
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason=None):
