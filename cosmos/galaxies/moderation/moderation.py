@@ -53,7 +53,7 @@ class Moderation(Cog):
     @Cog.group(name="modlogs", invoke_without_command=True)
     @check_mod(kick_members=True)
     async def moderation_logs(self, ctx, *, member: discord.Member):
-        profile = await ctx.fetch_member_profile()
+        profile = await ctx.fetch_member_profile(member.id)
         if not profile.moderation_logs:
             return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
         paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
