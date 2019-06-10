@@ -1,5 +1,5 @@
+import datetime
 import functools
-from datetime import datetime
 
 from ... import Cog
 
@@ -15,7 +15,7 @@ def logger_event(*args, **kwargs):
             if not logger:
                 return
             embed = cog.embed(title=function.__name__.lstrip("on_").replace("_", " ").title())
-            embed.timestamp = datetime.now()
+            embed.timestamp = datetime.datetime.now()
             embed = await function(cog, embed, *_args)
             if not embed:
                 return
