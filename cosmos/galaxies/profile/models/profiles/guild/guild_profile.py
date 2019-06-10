@@ -35,3 +35,13 @@ class GuildMemberProfile(GuildPoints, UserExperience):
             f"{self.guild_filter}.stats.level.chat": self.level,
             f"{self.guild_filter}.points.points": self.points,
         }
+
+    async def add_warning(self, _id):
+        self.warnings.append(_id)
+
+        await self.collection.update_one(self.document_filter, {
+            "$addToSet": {f"{self.guild_filter}.logs.warnings": _id}
+        })
+
+    async def clear_warnings(self):
+        self.warnings.clear()
