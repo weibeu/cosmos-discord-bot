@@ -57,8 +57,10 @@ class Moderation(Cog):
         if not profile.moderation_logs:
             return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
         paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
+        paginator.embed.description = f"**User:** {member}\n**User ID:** `{member.id}`"
         await paginator.paginate()
         # TODO: Add moderation logs limits.
+        # TODO: Use discord.User.
 
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
