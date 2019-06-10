@@ -58,6 +58,7 @@ class Moderation(Cog):
             return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
         paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
         await paginator.paginate()
+        # TODO: Add moderation logs limits.
 
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
@@ -69,4 +70,3 @@ class Moderation(Cog):
         except discord.HTTPException:
             res = f"✅    Failed to warn {member.name}. Warning logged."
         await ctx.send_line(res)
-        # TODO: Add warning limits.
