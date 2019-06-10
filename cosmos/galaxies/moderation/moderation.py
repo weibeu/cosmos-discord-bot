@@ -45,7 +45,7 @@ class Moderation(Cog):
     async def warn(self, ctx, member: discord.Member, *, reason=None):
         action = ModerationAction(ctx, actions.Warned, member, reason)
         try:
-            await action.warn(f"⚠    You were warned in {ctx.guild.name}.")
+            await action.dispatch(f"⚠    You were warned in {ctx.guild.name}.")
             res = f"✅    {member.name} has been warned."
         except discord.HTTPException:
             res = f"✅    Failed to warn {member.name}. Warning logged."
