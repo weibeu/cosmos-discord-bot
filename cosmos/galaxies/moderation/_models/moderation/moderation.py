@@ -14,7 +14,7 @@ class ModerationAction(object):
     @property
     def document(self):
         _ = {
-            "action": self.action_type.__name__,
+            "action_type": self.action_type.__name__,
             "target_id": self.target.id,
             "moderator_id": self.moderator.id,
         }
