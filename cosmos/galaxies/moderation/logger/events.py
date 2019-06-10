@@ -106,5 +106,5 @@ class LoggerEvents(Cog):
     #     pass
 
     @logger_event()
-    async def on_moderation(self, embed, member, action):
+    async def on_moderation(self, embed, action):
         pass
