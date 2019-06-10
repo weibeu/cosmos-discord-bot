@@ -231,7 +231,7 @@ class FieldPaginator(BasePaginator):
         else:
             for entry in entries:
                 key, value = await self.entry_parser(self.ctx, entry, entries)
-                self.embed.add_field(name=key, value=value)
+                self.embed.add_field(name=key, value=value, inline=self.inline)
 
         if self.max_pages > 1:
             if self.show_entry_count:
