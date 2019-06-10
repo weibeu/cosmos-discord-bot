@@ -22,9 +22,9 @@ class ModerationAction(object):
         return _
 
     async def warn(self, title):
-        await self.ctx.bot.dispatch("on_moderation", self)
+        self.ctx.bot.dispatch("on_moderation", self)
         _ = self.ctx.embed_line(title)
-        _.description = self.reason
+        _.description = f"**Reason:** {self.reason}"
         _.timestamp = datetime.datetime.now()
         await self.target.send(embed=_)
         profile = await self.ctx.fetch_member_profile()
