@@ -10,7 +10,7 @@ def logger_event(*args, **kwargs):
         @Cog.listener(*args, **kwargs)
         @functools.wraps(function)
         async def wrapper(cog, *_args):
-            if not args[0].guild:
+            if not _args[0].guild:
                 return
             guild_profile = await cog.bot.guild_cache.get_profile(_args[0].guild.id)
             logger = guild_profile.get_logger(function.__name__)
