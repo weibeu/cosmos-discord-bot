@@ -8,8 +8,8 @@ class CosmosContext(commands.Context):
     async def fetch_guild_profile(self):
         return await self.bot.guild_cache.get_profile(self.guild.id)
 
-    async def fetch_member_profile(self):
-        return await self.bot.profile_cache.get_guild_profile(self.author.id, self.guild.id)
+    async def fetch_member_profile(self, _id):
+        return await self.bot.profile_cache.get_guild_profile(_id, self.guild.id)
 
     async def send(self, *args, **kwargs):
         if kwargs.get("embed"):
