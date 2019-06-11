@@ -86,3 +86,16 @@ class Moderation(Cog):
         except discord.HTTPException:
             res = f"✅    Failed to warn {member}. Warning logged."
         await ctx.send_line(res)
+
+    @Cog.command(name="kick")
+    @check_mod(kick_members=True)
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
+        action = ModerationAction(ctx, actions.Kicked, member, reason)
+        try:
+            await member.kick(reason=reason)
+            await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
+        except discord.Forbidden:
+            return await ctx.send_line(f"❌    Can't kick {member}.")
+        except discord.HTTPException:
+            pass
+        await ctx.send_line(f"✅    {member} has been kicked from the server.")
