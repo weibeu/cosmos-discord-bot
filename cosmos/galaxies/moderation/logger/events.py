@@ -76,7 +76,7 @@ class LoggerEvents(Cog):
         embed.title = "Message Pinned"
         message = (await channel.pins())[0]
         embed.add_field(name="Message Content", value=message.clean_content, inline=False)
-        embed.add_field(name="Author", value=message.author.mention)
+        embed.add_field(name="Author", value=message.author)
         embed.add_field(name="In Channel", value=channel.mention)
         embed.add_field(name="Actual Message", value=f"[Jump to the message]({message.jump_url})")
         return embed
@@ -113,7 +113,7 @@ class LoggerEvents(Cog):
         try:
             _id = action.target.id
             embed.add_field(name="Member", value=action.target.mention)
-            embed.add_field(name="Member Name", value=action.target.name)
+            embed.add_field(name="Member Name", value=action.target)
         except AttributeError:
             _id = action.target
         embed.add_field(name="Member ID", value=f"`{_id}`")
