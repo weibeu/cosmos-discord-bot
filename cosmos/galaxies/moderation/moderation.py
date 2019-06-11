@@ -89,6 +89,7 @@ class Moderation(Cog):
 
     @Cog.command(name="kick")
     @check_mod(kick_members=True)
+    @commands.bot_has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         action = ModerationAction(ctx, actions.Kicked, member, reason)
         try:
