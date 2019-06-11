@@ -67,6 +67,15 @@ class Moderation(Cog):
         # TODO: Add moderation logs limits.
         # TODO: Use discord.User.
 
+    @moderation_logs.command(name="clean", aliases=["purge"])
+    @check_mod(administrator=True)
+    async def clean_moderation_logs(self, ctx, *, member: discord.Member):
+        if not await ctx.confirm(f"⚠    Are you sure to purge moderation logs of {member}?"):
+            return
+        profile = await ctx.fetch_member_profile(member.id)
+        await profile.clear_moderation_logs()
+        await ctx.send_line(f"✅    Moderation logs of {member} has been purged.")
+
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
