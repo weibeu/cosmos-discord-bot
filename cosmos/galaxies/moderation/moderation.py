@@ -36,7 +36,7 @@ def check_mod(**perms):
 
 
 def check_hierarchy(moderator, target):
-    return moderator.top_role > target.top_role
+    return (moderator.top_role > target.top_role) or moderator.guild.owner == moderator
 
 
 class Moderation(Cog):
