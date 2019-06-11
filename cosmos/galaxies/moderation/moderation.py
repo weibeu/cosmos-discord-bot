@@ -115,7 +115,7 @@ class Moderation(Cog):
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None):
         action = ModerationAction(ctx, actions.Banned, member, reason)
         try:
-            if isinstance(member, discord.Member)
+            if isinstance(member, discord.Member):
                 if not check_hierarchy(ctx.author, member):
                     return await ctx.send_line(f"❌    You can't ban {member.name}.")
                 await member.ban(reason=reason)
