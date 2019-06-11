@@ -2,6 +2,7 @@ from ._models import ModerationAction, actions
 from discord.ext import commands
 
 import discord
+import typing
 
 from .. import Cog
 
@@ -52,12 +53,16 @@ class Moderation(Cog):
 
     @Cog.group(name="modlogs", invoke_without_command=True)
     @check_mod(kick_members=True)
-    async def moderation_logs(self, ctx, *, member: discord.Member):
-        profile = await ctx.fetch_member_profile(member.id)
+    async def moderation_logs(self, ctx, *, member: typing.Union[discord.Member, int]):
+        try:
+            _id = member.id
+        except AttributeError:
+            _id = member
+        profile = await ctx.fetch_member_profile(_id)
         if not profile.moderation_logs:
             return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
         paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
-        paginator.embed.description = f"**User:** `{member}`\n**User ID:** `{member.id}`"
+        paginator.embed.description = f"**User:** `{member}`\n**User ID:** `{_id}`"
         await paginator.paginate()
         # TODO: Add moderation logs limits.
         # TODO: Use discord.User.
@@ -68,7 +73,7 @@ class Moderation(Cog):
         action = ModerationAction(ctx, actions.Warned, member, reason)
         try:
             await action.dispatch(f"⚠    You were warned in {ctx.guild.name}.")
-            res = f"✅    {member.name} has been warned."
+            res = f"✅    {member} has been warned."
         except discord.HTTPException:
-            res = f"✅    Failed to warn {member.name}. Warning logged."
+            res = f"✅    Failed to warn {member}. Warning logged."
         await ctx.send_line(res)

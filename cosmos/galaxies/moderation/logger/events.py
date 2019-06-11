@@ -110,9 +110,13 @@ class LoggerEvents(Cog):
     @logger_event()
     async def on_moderation(self, embed, action):
         embed.title = action.action_type.TITLE
-        embed.add_field(name="Member", value=action.target.mention)
-        embed.add_field(name="Member Name", value=action.target.name)
-        embed.add_field(name="Member ID", value=f"`{action.target.id}`")
+        try:
+            _id = action.target.id
+            embed.add_field(name="Member", value=action.target.mention)
+            embed.add_field(name="Member Name", value=action.target.name)
+        except AttributeError:
+            _id = action.target
+        embed.add_field(name="Member ID", value=f"`{_id}`")
         if action.reason:
             embed.add_field(name="Reason", value=action.reason)
         embed.add_field(name="Moderator", value=action.moderator.mention)

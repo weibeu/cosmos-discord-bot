@@ -15,9 +15,12 @@ class ModerationAction(object):
     def document(self):
         _ = {
             "action_type": self.action_type.__name__,
-            "target_id": self.target.id,
             "moderator_id": self.moderator.id,
         }
+        try:
+            _["target_id"] = self.target.id
+        except AttributeError:
+            _["target_id"] = self.target
         if self.reason:
             _["reason"] = self.reason
         return _
@@ -27,7 +30,11 @@ class ModerationAction(object):
         _ = self.ctx.embed_line(title)
         _.description = f"**Reason:** {self.reason}"
         _.timestamp = datetime.datetime.now()
-        await self.target.send(embed=_)
-        profile = await self.ctx.fetch_member_profile(self.target.id)
+        try:
+            await self.target.send(embed=_)
+        except AttributeError:
+            profile = await self.ctx.fetch_member_profile(self.target)
+        else:
+            profile = await self.ctx.fetch_member_profile(self.target.id)
         _id = await self.ctx.bot.discordDB.set(self.document)
         await profile.log_moderation(_id)
