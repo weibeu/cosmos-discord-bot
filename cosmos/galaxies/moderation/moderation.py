@@ -35,6 +35,10 @@ def check_mod(**perms):
     return commands.check(predicate)
 
 
+def check_hierarchy(moderator, target):
+    return moderator.top_role > target.top_role
+
+
 class Moderation(Cog):
 
     def __init__(self, plugin):
