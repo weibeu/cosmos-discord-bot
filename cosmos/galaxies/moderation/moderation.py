@@ -69,7 +69,7 @@ class Moderation(Cog):
 
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
-    async def warn(self, ctx, member: discord.Member, *, reason=None):
+    async def warn(self, ctx, member: discord.Member, *, reason):
         action = ModerationAction(ctx, actions.Warned, member, reason)
         try:
             await action.dispatch(f"⚠    You were warned in {ctx.guild.name}.")
