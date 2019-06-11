@@ -83,6 +83,8 @@ class Moderation(Cog):
     @Cog.command(name="warn")
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
+        if not check_hierarchy(ctx.author, member):
+            return await ctx.send_line(f"❌    You can't warn {member.name}.")
         action = ModerationAction(ctx, actions.Warned, member, reason)
         try:
             await action.dispatch(f"⚠    You were warned in {ctx.guild.name}.")
@@ -95,6 +97,8 @@ class Moderation(Cog):
     @check_mod(kick_members=True)
     @commands.bot_has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
+        if not check_hierarchy(ctx.author, member):
+            return await ctx.send_line(f"❌    You can't kick {member.name}.")
         action = ModerationAction(ctx, actions.Kicked, member, reason)
         try:
             await member.kick(reason=reason)
