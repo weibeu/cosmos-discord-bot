@@ -31,10 +31,9 @@ class ModerationAction(object):
         _.description = f"**Reason:** {self.reason}"
         _.timestamp = datetime.datetime.now()
         try:
-            await self.target.send(embed=_)
+            profile = await self.ctx.fetch_member_profile(self.target.id)
         except AttributeError:
             profile = await self.ctx.fetch_member_profile(self.target)
-        else:
-            profile = await self.ctx.fetch_member_profile(self.target.id)
         _id = await self.ctx.bot.discordDB.set(self.document)
         await profile.log_moderation(_id)
+        await self.target.send(embed=_)
