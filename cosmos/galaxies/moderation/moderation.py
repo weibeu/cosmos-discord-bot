@@ -86,10 +86,9 @@ class Moderation(Cog):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't warn {member.name}.")
         action = ModerationAction(ctx, actions.Warned, member, reason)
-        try:
-            await action.dispatch(f"⚠    You were warned in {ctx.guild.name}.")
+        if await action.dispatch(f"⚠    You were warned in {ctx.guild.name}."):
             res = f"✅    {member} has been warned."
-        except (discord.HTTPException, discord.Forbidden):
+        else:
             res = f"✅    Failed to warn {member}. Warning logged."
         await ctx.send_line(res)
 
@@ -114,13 +113,17 @@ class Moderation(Cog):
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None):
         action = ModerationAction(ctx, actions.Banned, member, reason)
         try:
+            await action.dispatch(f"‼    You were banned from {ctx.guild.name}")
+        except discord.Forbidden:
+            pass
+        try:
             if isinstance(member, discord.Member):
                 if not check_hierarchy(ctx.author, member):
                     return await ctx.send_line(f"❌    You can't ban {member.name}.")
                 await member.ban(reason=reason)
             else:
                 await ctx.guild.ban(discord.Object(member), reason=reason)
-            await action.dispatch(f"‼    You were banned from {ctx.guild.name}")
+
         except discord.Forbidden:
             return await ctx.send_line(f"❌    Can't ban {member}.")
         except discord.HTTPException:
