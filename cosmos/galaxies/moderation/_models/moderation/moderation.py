@@ -2,7 +2,6 @@ import discord
 import datetime
 
 
-
 class ModerationAction(object):
 
     def __init__(self, ctx, action_type, target, reason=None):
