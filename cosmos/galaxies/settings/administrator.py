@@ -48,17 +48,3 @@ class AdministratorSettings(Cog):
 
         await guild_profile.remove_moderator(moderator.id)
         await ctx.send_line(f"✅    {moderator.name} has been removed from server's moderators.")
-
-    @Cog.group(name="preset")
-    async def preset(self, ctx):
-        pass
-
-    @preset.command(name="kick")
-    async def preset_kick(self, ctx, image_url: typing.Optional, *, text=None):
-        if not (image_url and text):
-            return await ctx.send_line("❌    Please specify at least one parameter from image URL or text.")
-
-    @preset.command(name="ban")
-    async def preset_ban(self, ctx, image_url: typing.Optional, *, text=None):
-        if not (image_url and text):
-            return await ctx.send_line("❌    Please specify at least one parameter from image URL or text.")
