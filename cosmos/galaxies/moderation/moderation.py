@@ -89,7 +89,7 @@ class Moderation(Cog):
         try:
             await action.dispatch(f"⚠    You were warned in {ctx.guild.name}.")
             res = f"✅    {member} has been warned."
-        except discord.HTTPException:
+        except (discord.HTTPException, discord.Forbidden):
             res = f"✅    Failed to warn {member}. Warning logged."
         await ctx.send_line(res)
 
