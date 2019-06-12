@@ -117,7 +117,7 @@ class Moderation(Cog):
             else:
                 await ctx.guild.ban(discord.Object(member), reason=reason)
         except discord.HTTPException:
-            return await ctx.send_line(f"❌    Can't ban {member}.")
+            return await ctx.send_line(f"❌    Failed to ban {member}.")
         await ctx.send_line(f"✅    {member} has been banned from the server.")
 
     @Cog.command(name="unban")
@@ -129,8 +129,5 @@ class Moderation(Cog):
             await ctx.guild.unban(discord.Object(user_id), reason=reason)
         except discord.HTTPException:
             return await ctx.send_line(f"❌    Failed to unban {user_id}.")
-        try:
-            await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
-        except discord.HTTPException:
-            pass
+        await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
