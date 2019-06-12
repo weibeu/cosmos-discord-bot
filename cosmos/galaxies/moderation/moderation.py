@@ -99,12 +99,8 @@ class Moderation(Cog):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't kick {member.name}.")
         action = ModerationAction(ctx, actions.Kicked, member, reason)
-        try:
-            await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
-        except discord.Forbidden:
-            pass
-        finally:
-            await member.kick(reason=reason)
+        await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
+        await member.kick(reason=reason)
         await ctx.send_line(f"✅    {member} has been kicked from the server.")
 
     @Cog.command(name="ban")
@@ -112,10 +108,7 @@ class Moderation(Cog):
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None):
         action = ModerationAction(ctx, actions.Banned, member, reason)
-        try:
-            await action.dispatch(f"‼    You were banned from {ctx.guild.name}")
-        except discord.Forbidden:
-            pass
+        await action.dispatch(f"‼    You were banned from {ctx.guild.name}")
         try:
             if isinstance(member, discord.Member):
                 if not check_hierarchy(ctx.author, member):
@@ -123,11 +116,8 @@ class Moderation(Cog):
                 await member.ban(reason=reason)
             else:
                 await ctx.guild.ban(discord.Object(member), reason=reason)
-
-        except discord.Forbidden:
-            return await ctx.send_line(f"❌    Can't ban {member}.")
         except discord.HTTPException:
-            pass
+            return await ctx.send_line(f"❌    Can't ban {member}.")
         await ctx.send_line(f"✅    {member} has been banned from the server.")
 
     @Cog.command(name="unban")
