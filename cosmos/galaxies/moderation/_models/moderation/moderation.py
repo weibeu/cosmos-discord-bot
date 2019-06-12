@@ -1,4 +1,6 @@
+import discord
 import datetime
+
 
 
 class ModerationAction(object):
@@ -36,4 +38,7 @@ class ModerationAction(object):
             profile = await self.ctx.fetch_member_profile(self.target)
         _id = await self.ctx.bot.discordDB.set(self.document)
         await profile.log_moderation(_id)
-        await self.target.send(embed=_)
+        try:
+            await self.target.send(embed=_)
+        except (discord.Forbidden, AttributeError):
+            pass
