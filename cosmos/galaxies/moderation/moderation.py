@@ -124,7 +124,7 @@ class Moderation(Cog):
     @check_mod(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, user_id: int, *, reason=None):
-        action = ModerationAction(ctx, actions.UnBanned, user_id, reason)
+        action = ModerationAction(ctx, actions.Unbanned, user_id, reason)
         try:
             await ctx.guild.unban(discord.Object(user_id), reason=reason)
         except discord.HTTPException:
