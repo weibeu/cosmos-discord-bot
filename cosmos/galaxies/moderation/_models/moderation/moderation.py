@@ -39,6 +39,6 @@ class ModerationAction(object):
         _id = await self.ctx.bot.discordDB.set(self.document)
         await profile.log_moderation(_id)
         try:
-            await self.target.send(embed=_)
+            return await self.target.send(embed=_)
         except (discord.Forbidden, AttributeError):
             pass
