@@ -19,3 +19,8 @@ class Kicked(ActionsBase):
 class Banned(ActionsBase):
 
     TITLE = "User Banned"
+
+
+class UnBanned(ActionsBase):
+
+    TITLE = "User Unbanned"
