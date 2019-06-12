@@ -101,12 +101,11 @@ class Moderation(Cog):
             return await ctx.send_line(f"❌    You can't kick {member.name}.")
         action = ModerationAction(ctx, actions.Kicked, member, reason)
         try:
-            await member.kick(reason=reason)
             await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         except discord.Forbidden:
-            return await ctx.send_line(f"❌    Can't kick {member}.")
-        except discord.HTTPException:
             pass
+        finally:
+            await member.kick(reason=reason)
         await ctx.send_line(f"✅    {member} has been kicked from the server.")
 
     @Cog.command(name="ban")
