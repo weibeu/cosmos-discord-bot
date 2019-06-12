@@ -21,6 +21,6 @@ class Banned(ActionsBase):
     TITLE = "User Banned"
 
 
-class UnBanned(ActionsBase):
+class Unbanned(ActionsBase):
 
     TITLE = "User Unbanned"
