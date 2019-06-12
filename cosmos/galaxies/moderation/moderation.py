@@ -127,3 +127,18 @@ class Moderation(Cog):
         except discord.HTTPException:
             pass
         await ctx.send_line(f"✅    {member} has been banned from the server.")
+
+    @Cog.command(name="unban")
+    @check_mod(ban_members=True)
+    @commands.bot_has_permissions(ban_members=True)
+    async def unban(self, ctx, user_id: int, *, reason=None):
+        action = ModerationAction(ctx, actions.UnBanned, user_id, reason)
+        try:
+            await ctx.guild.unban(discord.Object(user_id), reason=reason)
+        except discord.HTTPException:
+            return await ctx.send_line(f"❌    Failed to unban {user_id}.")
+        try:
+            await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
+        except discord.HTTPException:
+            pass
+        await ctx.send_line(f"✅    {user_id} has been unbanned.")
