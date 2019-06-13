@@ -55,9 +55,7 @@ class AdministratorSettings(Cog):
         await ctx.send_line(f"✅    {moderator.name} has been removed from server's moderators.")
 
     @Cog.group(name="preset", aliases=["presets"], invoke_without_command=True)
-    async def preset(self, ctx, command_name, image_url: typing.Optional, *, text=None):
-        if not (image_url and text):
-            return await ctx.send_line("❌    Please specify at least one parameter from image URL or text.")
+    async def preset(self, ctx, command_name, image_url, *, text=None):
         if command_name.lower() not in self.PRESET_COMMANDS:
             return await ctx.send_line(f"❌    Sorry but preset for command {command_name} isn't available yet.")
         guild_profile = await ctx.fetch_guild_profile()
