@@ -68,7 +68,7 @@ class Moderation(Cog):
             embed.set_image(url=image_url)
         if text:
             if reason:
-                embed.description = f"**>>** {text} **Reason:** {reason}"
+                embed.description = f"**Reason:** {reason} **|** {text}"
             else:
                 embed.description = text
         return embed
