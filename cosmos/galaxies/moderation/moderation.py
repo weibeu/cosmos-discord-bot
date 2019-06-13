@@ -55,6 +55,24 @@ class Moderation(Cog):
         value = f"**Reason:** {reason}\n**Moderator:** {moderator}"
         return log.action_type, value
 
+    @staticmethod
+    async def __inject_presets(ctx, embed):
+        guild_profile = await ctx.fetch_guild_profile()
+        presets = guild_profile.presets.get(ctx.command.name, dict())
+        if not presets:
+            return embed
+        image_url = presets.get("image_url")
+        text = presets.get("text")
+        reason = ctx.kwargs.get("reason")
+        if image_url:
+            embed.set_image(url=image_url)
+        if text:
+            if reason:
+                embed.description = f"**>>** {text}\n{reason}"
+            else:
+                embed.description = text
+        return embed
+
     @Cog.group(name="modlogs", invoke_without_command=True)
     @check_mod(kick_members=True)
     async def moderation_logs(self, ctx, *, member: typing.Union[discord.Member, int]):
@@ -101,7 +119,9 @@ class Moderation(Cog):
         action = ModerationAction(ctx, actions.Kicked, member, reason)
         await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         await member.kick(reason=reason)
-        await ctx.send_line(f"✅    {member} has been kicked from the server.")
+        embed = ctx.embed_line(f"✅    {member} has been kicked from the server.")
+        await self.__inject_presets(ctx, embed)
+        await ctx.send(embed=embed)
 
     @Cog.command(name="ban")
     @check_mod(ban_members=True)
@@ -118,7 +138,9 @@ class Moderation(Cog):
                 await ctx.guild.ban(discord.Object(member), reason=reason)
         except discord.HTTPException:
             return await ctx.send_line(f"❌    Failed to ban {member}.")
-        await ctx.send_line(f"✅    {member} has been banned from the server.")
+        embed = ctx.embed_line(f"✅    {member} has been banned from the server.")
+        await self.__inject_presets(ctx, embed)
+        await ctx.send(embed=embed)
 
     @Cog.command(name="unban")
     @check_mod(ban_members=True)
