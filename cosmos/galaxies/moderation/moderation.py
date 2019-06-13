@@ -128,7 +128,7 @@ class Moderation(Cog):
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None):
         action = ModerationAction(ctx, actions.Banned, member, reason)
-        await action.dispatch(f"‼    You were banned from {ctx.guild.name}")
+        await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
         try:
             if isinstance(member, discord.Member):
                 if not check_hierarchy(ctx.author, member):
