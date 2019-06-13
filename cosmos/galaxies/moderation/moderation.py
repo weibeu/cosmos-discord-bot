@@ -61,7 +61,7 @@ class Moderation(Cog):
         presets = guild_profile.presets.get(ctx.command.name, dict())
         if not presets:
             return embed
-        image_url = presets.get("image_url")
+        image_url = presets["image_url"]
         text = presets.get("text")
         reason = ctx.kwargs.get("reason")
         if image_url:
