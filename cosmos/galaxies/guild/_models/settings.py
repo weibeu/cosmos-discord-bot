@@ -121,6 +121,7 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
         LoggerSettings.__init__(self, **raw_settings)
         self.theme = ThemeSettings(self, **raw_settings)
         self.moderators = raw_settings.get("moderators", list())
+        self.presets = raw_settings.get("presets", dict())
 
     async def add_moderator(self, _id):
         self.moderators.append(_id)
@@ -134,4 +135,18 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
 
         await self.collection.update_one(
             self.document_filter, {"$pull": {"settings.moderators": _id}}
+        )
+
+    async def set_preset(self, command_name, **kwargs):
+        self.presets[command_name] = kwargs
+
+        await self.collection.update_one(
+            self.document_filter, {"$set": {f"settings.presets.{command_name}": kwargs}}
+        )
+
+    async def remove_preset(self, command_name):
+        self.presets.pop(command_name)
+
+        await self.collection.update_one(
+            self.document_filter, {"$unset": {f"settings.presets.{command_name}": ""}}
         )
