@@ -8,6 +8,11 @@ from discord.ext import commands
 
 class AdministratorSettings(Cog):
 
+    PRESET_COMMANDS = [
+        "kick",
+        "ban",
+    ]
+
     async def cog_check(self, ctx):
         if not ctx.author.guild_permissions.administrator:
             raise commands.MissingPermissions(["administrator"])
@@ -48,3 +53,23 @@ class AdministratorSettings(Cog):
 
         await guild_profile.remove_moderator(moderator.id)
         await ctx.send_line(f"✅    {moderator.name} has been removed from server's moderators.")
+
+    @Cog.group(name="preset", aliases=["presets"], invoke_without_command=True)
+    async def preset(self, ctx, command_name, image_url: typing.Optional, *, text=None):
+        if not (image_url and text):
+            return await ctx.send_line("❌    Please specify at least one parameter from image URL or text.")
+        if command_name.lower() not in self.PRESET_COMMANDS:
+            return await ctx.send_line(f"❌    Sorry but preset for command {command_name} isn't available yet.")
+        guild_profile = await ctx.fetch_guild_profile()
+        await guild_profile.set_preset(
+            command_name.lower(), image_url=image_url, text=text
+        )
+        await ctx.send_line(f"✅    Provided presets has been set for {command_name} command.")
+
+    @preset.command(name="remove", aliases=["clear", "delete"])
+    async def remove_preset(self, ctx, command_name):
+        if command_name.lower() not in self.PRESET_COMMANDS:
+            return await ctx.send_line(f"❌    Sorry but preset for command {command_name} isn't available yet.")
+        guild_profile = await ctx.fetch_guild_profile()
+        await guild_profile.remove_preset(command_name)
+        await ctx.send_line(f"✅    Presets has been removed from {command_name} command.")
