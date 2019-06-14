@@ -122,6 +122,7 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
         self.theme = ThemeSettings(self, **raw_settings)
         self.moderators = raw_settings.get("moderators", list())
         self.presets = raw_settings.get("presets", dict())
+        self.roles = raw_settings.get("roles", dict())
 
     async def add_moderator(self, _id):
         self.moderators.append(_id)
