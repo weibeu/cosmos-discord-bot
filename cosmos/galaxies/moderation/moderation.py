@@ -153,3 +153,5 @@ class Moderation(Cog):
             return await ctx.send_line(f"❌    Failed to unban {user_id}.")
         await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
+
+    # TODO: Mute command.
