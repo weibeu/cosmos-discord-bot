@@ -24,3 +24,13 @@ class Banned(ActionsBase):
 class Unbanned(ActionsBase):
 
     TITLE = "User Unbanned"
+
+
+class Muted(ActionsBase):
+
+    TITLE = "Member Muted"
+
+
+class UnMuted(ActionsBase):
+
+    TITLE = "Member Unmuted"
