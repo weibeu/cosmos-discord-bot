@@ -102,7 +102,7 @@ class Moderation(Cog):
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
         if not check_hierarchy(ctx.author, member):
-            return await ctx.send_line(f"❌    You can't warn {member.name}.")
+            return await ctx.send_line(f"❌    You can't warn {member}.")
         action = ModerationAction(ctx, actions.Warned, member, reason)
         if await action.dispatch(f"⚠    You were warned in {ctx.guild.name}."):
             res = f"✅    {member} has been warned."
@@ -115,7 +115,7 @@ class Moderation(Cog):
     @commands.bot_has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         if not check_hierarchy(ctx.author, member):
-            return await ctx.send_line(f"❌    You can't kick {member.name}.")
+            return await ctx.send_line(f"❌    You can't kick {member}.")
         action = ModerationAction(ctx, actions.Kicked, member, reason)
         await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         await member.kick(reason=reason)
@@ -132,7 +132,7 @@ class Moderation(Cog):
         try:
             if isinstance(member, discord.Member):
                 if not check_hierarchy(ctx.author, member):
-                    return await ctx.send_line(f"❌    You can't ban {member.name}.")
+                    return await ctx.send_line(f"❌    You can't ban {member}.")
                 await member.ban(reason=reason)
             else:
                 await ctx.guild.ban(discord.Object(member), reason=reason)
@@ -154,4 +154,45 @@ class Moderation(Cog):
         await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
 
-    # TODO: Mute command.
+    @Cog.group(name="mute", invoke_without_command=True)
+    @check_mod(mute_members=True)
+    @commands.bot_has_permissions(mute_members=True)
+    async def mute(self, ctx, member: discord.Member, *, reason=None):
+        if not check_hierarchy(ctx.author, member):
+            return await ctx.send_line(f"❌    You can't mute {member}.")
+        action = ModerationAction(ctx, actions.Muted, member, reason)
+        guild_profile = await ctx.fetch_guild_profile()
+        muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
+        if not muted_role:
+            return await ctx.send_line(f"❌    Muted role has not been set yet.")
+        await member.edit(mute=True, reason=reason)
+        await member.add_roles(muted_role, reason=reason)
+        await action.dispatch(f"🤐    You were muted in {ctx.guild.name}.")
+        await ctx.send_line(f"✅    {member} was muted.")
+        # TODO: Add an optional time duration.
+        # TODO: Keep track of member leaving and joining back guild.
+
+    @Cog.command(name="unmute")
+    @check_mod(mute_members=True)
+    @commands.bot_has_permissions(mute_members=True)
+    async def unmute(self, ctx, member: discord.Member):
+        action = ModerationAction(ctx, actions.UnMuted, member)
+        guild_profile = await ctx.fetch_guild_profile()
+        muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
+        if not muted_role:
+            return await ctx.send_line(f"❌    Muted role has not been set yet.")
+        if muted_role not in member.roles:
+            return await ctx.send_line(f"❌    {member} is not muted yet.")
+        await member.edit(mute=False)
+        await member.remove_roles(muted_role)
+        await action.dispatch(f"✅    You have been unmuted in {ctx.guild.name}.")
+        await ctx.send_line(f"✅    {member} has been unmuted.")
+
+    @mute.command(name="role")
+    @commands.has_permissions(administrator=True)
+    async def muted_role(self, ctx, *, role: discord.Role):
+        if not await ctx.confirm():
+            return
+        guild_profile = await ctx.fetch_guild_profile()
+        await guild_profile.set_role("muted", role.id)
+        await ctx.send_line(f"✅    {role.name} has been assigned to be used as muted role.")
