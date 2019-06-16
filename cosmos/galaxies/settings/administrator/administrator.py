@@ -1,7 +1,7 @@
 import typing
 import discord
 
-from .. import Cog
+from ... import Cog
 
 from discord.ext import commands
 
