@@ -196,3 +196,4 @@ class Moderation(Cog):
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.set_role("muted", role.id)
         await ctx.send_line(f"✅    {role.name} has been assigned to be used as muted role.")
+        # TODO: Create muted role yourself if not provided.
