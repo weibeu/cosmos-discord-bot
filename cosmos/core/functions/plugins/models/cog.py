@@ -10,9 +10,9 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
 
     checks = CosmosChecks
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, plugin, *args, **kwargs):
         self.name = self.__class__.__name__
-        self._plugin = None
+        self._plugin = plugin
         self._bot = None
 
     @property
