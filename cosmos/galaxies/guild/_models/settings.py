@@ -151,3 +151,17 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
         await self.collection.update_one(
             self.document_filter, {"$unset": {f"settings.presets.{command_name}": ""}}
         )
+
+    async def set_role(self, role_for, **kwargs):
+        self.roles[role_for] = kwargs
+
+        await self.collection.update_one(
+            self.document_filter, {"$set": {f"settings.roles.{role_for}": kwargs}}
+        )
+
+    async def remove_role(self, role_for):
+        self.roles.pop(role_for)
+
+        await self.collection.update_one(
+            self.document_filter, {"$unset": {f"settings.roles.{role_for}": ""}}
+        )
