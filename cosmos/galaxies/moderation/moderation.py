@@ -184,7 +184,7 @@ class Moderation(Cog):
         finally:
             await member.add_roles(muted_role, reason=reason)
         await action.dispatch(f"🤐    You were muted in {ctx.guild.name}.")
-        await ctx.send_line(f"✅    {member} was muted.")
+        await ctx.send_line(f"✅    {member} has been muted.")
         # TODO: Add an optional time duration.
         # TODO: Keep track of member leaving and joining back guild.
 
