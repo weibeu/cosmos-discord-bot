@@ -211,3 +211,4 @@ class Moderation(Cog):
                 await channel.set_permissions(role, send_messages=False)
         await guild_profile.set_role("muted", role.id)
         await ctx.send_line(f"✅    {role.name} has been assigned to be used as muted role.")
+        # TODO: Set overrides if new channel has been created.
