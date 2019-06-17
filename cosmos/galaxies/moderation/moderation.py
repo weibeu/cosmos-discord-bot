@@ -177,8 +177,12 @@ class Moderation(Cog):
         muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
         if not muted_role:
             return await ctx.send_line(f"❌    Muted role has not been set yet.")
-        await member.edit(mute=True, reason=reason)
-        await member.add_roles(muted_role, reason=reason)
+        try:
+            await member.edit(mute=True, reason=reason)
+        except discord.HTTPException:
+            pass    # TODO: Maybe mute them later whenever they join voice channel.
+        finally:
+            await member.add_roles(muted_role, reason=reason)
         await action.dispatch(f"🤐    You were muted in {ctx.guild.name}.")
         await ctx.send_line(f"✅    {member} was muted.")
         # TODO: Add an optional time duration.
