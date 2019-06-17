@@ -198,8 +198,12 @@ class Moderation(Cog):
             return await ctx.send_line(f"❌    Muted role has not been set yet.")
         if muted_role not in member.roles:
             return await ctx.send_line(f"❌    {member} is not muted yet.")
-        await member.edit(mute=False)
-        await member.remove_roles(muted_role)
+        try:
+            await member.edit(mute=False)
+        except discord.HTTPException:
+            pass
+        finally:
+            await member.remove_roles(muted_role)
         await action.dispatch(f"✅    You have been unmuted in {ctx.guild.name}.")
         await ctx.send_line(f"✅    {member} has been unmuted.")
 
