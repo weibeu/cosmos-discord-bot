@@ -35,6 +35,19 @@ def check_mod(**perms):
     return commands.check(predicate)
 
 
+def check_voice_perms(**perms):
+
+    async def predicate(ctx):
+        permissions = ctx.author.guild_permissions
+
+        if [perm for perm, value in perms.items() if getattr(permissions, perm, None) != value]:
+            if not await _moderators_check(ctx):
+                raise commands.CheckFailure
+        return True
+
+    return commands.check(predicate)
+
+
 def check_hierarchy(moderator, target):
     return (moderator.top_role > target.top_role) or moderator.guild.owner == moderator
 
@@ -155,8 +168,7 @@ class Moderation(Cog):
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
 
     @Cog.group(name="mute", invoke_without_command=True)
-    @check_mod(mute_members=True)
-    @commands.bot_has_permissions(mute_members=True)
+    @check_voice_perms(mute_members=True)
     async def mute(self, ctx, member: discord.Member, *, reason=None):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't mute {member}.")
@@ -173,8 +185,7 @@ class Moderation(Cog):
         # TODO: Keep track of member leaving and joining back guild.
 
     @Cog.command(name="unmute")
-    @check_mod(mute_members=True)
-    @commands.bot_has_permissions(mute_members=True)
+    @check_voice_perms(mute_members=True)
     async def unmute(self, ctx, member: discord.Member):
         action = ModerationAction(ctx, actions.UnMuted, member)
         guild_profile = await ctx.fetch_guild_profile()
