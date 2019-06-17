@@ -117,7 +117,6 @@ class LoggerEvents(Cog):
         except AttributeError:
             _id = action.target
         embed.add_field(name="Member ID", value=f"`{_id}`")
-        if action.reason:
-            embed.add_field(name="Reason", value=action.reason)
+        embed.add_field(name="Reason", value=action.reason)
         embed.add_field(name="Moderator", value=action.moderator.mention)
         return embed
