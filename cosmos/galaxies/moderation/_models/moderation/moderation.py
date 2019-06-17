@@ -9,21 +9,24 @@ class ModerationAction(object):
         self.action_type = action_type
         self.target = target
         self.moderator = self.ctx.author
-        self.reason = reason
+        self._reason = reason
         self.guild = self.ctx.guild
+
+    @property
+    def reason(self):
+        return self._reason or "Reason not specified."
 
     @property
     def document(self):
         _ = {
             "action_type": self.action_type.__name__,
             "moderator_id": self.moderator.id,
+            "reason": self.reason,
         }
         try:
             _["target_id"] = self.target.id
         except AttributeError:
             _["target_id"] = self.target
-        if self.reason:
-            _["reason"] = self.reason
         return _
 
     async def dispatch(self, title):
