@@ -1,10 +1,12 @@
 from .logger import Logger
 from .moderation import Moderation
+from .automoderation import AutoModeration
 
 
 __all__ = [
     Logger,
     Moderation,
+    AutoModeration,
 ]
 
 
