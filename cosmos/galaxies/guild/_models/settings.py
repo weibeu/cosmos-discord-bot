@@ -113,12 +113,34 @@ class LoggerSettings(CosmosGuildBase, ABC):
         )
 
 
-class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
+class AutoModerationSettings(CosmosGuildBase, ABC):
+
+    def __init__(self, **kwargs):
+        _settings = kwargs.get("auto_moderation", dict())
+        self.banned_words = set(_settings.get("banned_words", list()))
+
+    async def ban_word(self, word):
+        self.banned_words.add(word)
+
+        await self.collection.update_one(
+            self.document_filter, {"$addToSet": {"settings.auto_moderation.banned_words": word}}
+        )
+
+    async def clear_banned_words(self):
+        self.banned_words.clear()
+
+        await self.collection.update_one(
+            self.document_filter, {"$unset": {"settings.auto_moderation.banned_words": ""}}
+        )
+
+
+class GuildSettings(WelcomeBannerSettings, LoggerSettings, AutoModerationSettings, ABC):
 
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
         WelcomeBannerSettings.__init__(self, **raw_settings)
         LoggerSettings.__init__(self, **raw_settings)
+        AutoModerationSettings.__init__(self, **raw_settings)
         self.theme = ThemeSettings(self, **raw_settings)
         self.moderators = raw_settings.get("moderators", list())
         self.presets = raw_settings.get("presets", dict())
