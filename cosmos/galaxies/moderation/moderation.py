@@ -201,10 +201,13 @@ class Moderation(Cog):
 
     @mute.command(name="role")
     @commands.has_permissions(administrator=True)
-    async def muted_role(self, ctx, *, role: discord.Role):
+    async def muted_role(self, ctx, *, role: discord.Role = None):
         if not await ctx.confirm():
             return
         guild_profile = await ctx.fetch_guild_profile()
+        if not role:
+            role = await ctx.guild.create_role(name="Muted")
+            for channel in ctx.guild.text_channels:
+                await channel.set_permissions(role, send_messages=False)
         await guild_profile.set_role("muted", role.id)
         await ctx.send_line(f"✅    {role.name} has been assigned to be used as muted role.")
-        # TODO: Create muted role yourself if not provided.
