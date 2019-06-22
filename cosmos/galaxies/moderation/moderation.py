@@ -1,4 +1,4 @@
-from ._models import ModerationAction, actions
+from .models import ModerationAction, actions
 from discord.ext import commands
 
 import discord

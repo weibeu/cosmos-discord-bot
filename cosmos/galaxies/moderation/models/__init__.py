@@ -1,3 +1,5 @@
+from . import automoderation
+
 from .moderation import actions
 from .moderation import ModerationAction
 

@@ -3,6 +3,8 @@ from abc import ABC
 from discord import Color
 from .base import CosmosGuildBase
 
+from ...moderation.models import automoderation
+
 
 class WelcomeBannerSettings(CosmosGuildBase, ABC):
 
@@ -118,21 +120,25 @@ class AutoModerationSettings(object):
     def __init__(self, guild_profile, **kwargs):
         self.__profile = guild_profile
         _settings = kwargs.get("auto_moderation", dict())
-        self.banned_words = set(_settings.get("banned_words", list()))
+        self.triggers = self.__get_triggers(_settings.get("triggers", list()))
 
-    async def ban_word(self, word):
-        self.banned_words.add(word)
+    @staticmethod
+    def __get_triggers(raw_triggers):
+        return {_["name"]: automoderation.AutoModerationTrigger(_) for _ in raw_triggers}
 
-        await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$addToSet": {"settings.auto_moderation.banned_words": word}}
-        )
-
-    async def clear_banned_words(self):
-        self.banned_words.clear()
-
-        await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$unset": {"settings.auto_moderation.banned_words": ""}}
-        )
+    # async def ban_word(self, word):
+    #     self.banned_words.add(word)
+    #
+    #     await self.__profile.collection.update_one(
+    #         self.__profile.document_filter, {"$addToSet": {"settings.auto_moderation.banned_words": word}}
+    #     )
+    #
+    # async def clear_banned_words(self):
+    #     self.banned_words.clear()
+    #
+    #     await self.__profile.collection.update_one(
+    #         self.__profile.document_filter, {"$unset": {"settings.auto_moderation.banned_words": ""}}
+    #     )
 
 
 class GuildSettings(WelcomeBannerSettings, LoggerSettings, AutoModerationSettings, ABC):
