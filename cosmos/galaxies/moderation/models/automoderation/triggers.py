@@ -15,6 +15,10 @@ class AutoModerationTrigger(object):
         except KeyError:
             raise AttributeError
 
+    @property
+    def title(self):
+        return self.name.replace("_", " ").title()
+
     async def dispatch(self, member):
         for action in self.actions:
             await action(member)
