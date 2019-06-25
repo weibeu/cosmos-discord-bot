@@ -1,6 +1,11 @@
 from .actions import AutoModerationActions
 
 
+__triggers__ = [
+    "banned_words",
+]
+
+
 class AutoModerationTrigger(object):
 
     def __init__(self, _document):
