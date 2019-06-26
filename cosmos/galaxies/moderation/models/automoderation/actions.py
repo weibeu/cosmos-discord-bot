@@ -1,16 +1,21 @@
 class AutoModerationActions(object):
 
-    async def delete(self, message):
+    @staticmethod
+    async def delete(message):
         pass
 
-    async def warn(self, member):
+    @staticmethod
+    async def warn(member):
         pass
 
-    async def mute(self, member):
+    @staticmethod
+    async def mute(member):
         pass
 
-    async def kick(self, member):
+    @staticmethod
+    async def kick(member):
         pass
 
-    async def ban(self, member):
+    @staticmethod
+    async def ban(member):
         pass
