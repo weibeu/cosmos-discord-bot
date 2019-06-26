@@ -73,21 +73,27 @@ class AutoModeration(Cog):
         await guild_profile.auto_moderation.remove_trigger(trigger)
         await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been removed.")
 
-    # @Cog.group(name="banword", aliases=["bannedwords", "banwords"], invoke_without_command=True)
-    # async def ban_word(self, ctx, word=None):
-    #     guild_profile = await ctx.fetch_guild_profile()
-    #     if not word:
-    #         embed = ctx.embed_line(f"List of banned words in {ctx.guild.name}", ctx.guild.icon_url)
-    #         if guild_profile.auto_moderation.banned_words:
-    #             embed.description = ", ".join(guild_profile.banned_words)
-    #         else:
-    #             embed.description = "No words banned yet."
-    #         return await ctx.send(embed=embed)
-    #     await guild_profile.auto_moderation.ban_word(word.lower())
-    #     await ctx.send_line(f"✅    {word} has been added to list of banned words.")
-    #
-    # @ban_word.command(name="clear", aliases=["clean", "purge"])
-    # async def clear_banned_words(self, ctx):
-    #     guild_profile = await ctx.fetch_guild_profile()
-    #     await guild_profile.clear_banned_words()
-    #     await ctx.send_line(f"✅    List of banned words in this server has been cleared.")
+    @Cog.group(name="banword", aliases=["bannedwords", "banwords"], invoke_without_command=True)
+    async def ban_word(self, ctx, word=None):
+        guild_profile = await ctx.fetch_guild_profile()
+        trigger = guild_profile.auto_moderation.triggers.get("banned_words")
+        if not trigger:
+            return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")
+        if not word:
+            embed = ctx.embed_line(f"List of banned words in {ctx.guild.name}", ctx.guild.icon_url)
+            try:
+                embed.description = ", ".join(trigger.banned_words)
+            except AttributeError:
+                embed.description = "❌    No words banned yet."
+            return await ctx.send(embed=embed)
+        await guild_profile.auto_moderation.ban_word(word.lower())
+        await ctx.send_line(f"✅    {word} has been added to list of banned words.")
+
+    @ban_word.command(name="clear", aliases=["clean", "purge"])
+    async def clear_banned_words(self, ctx):
+        guild_profile = await ctx.fetch_guild_profile()
+        trigger = guild_profile.auto_moderation.triggers.get("banned_words")
+        if not trigger:
+            return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")
+        await guild_profile.clear_banned_words()
+        await ctx.send_line(f"✅    List of banned words in this server has been cleared.")
