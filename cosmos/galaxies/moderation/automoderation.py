@@ -8,9 +8,8 @@ from discord.ext import commands
 class ActionConvertor(commands.Converter):
 
     def convert(self, ctx, argument):
-        argument = argument.lower().replace(" ", "_")
         try:
-            return getattr(triggers.AutoModerationActions, argument).__name__
+            return getattr(triggers.AutoModerationActions, argument.lower()).__name__
         except AttributeError:
             raise commands.BadArgument(f"❌    Action {argument} isn't supported yet.")
 
@@ -18,10 +17,9 @@ class ActionConvertor(commands.Converter):
 class TriggerConvertor(commands.Converter):
 
     def convert(self, ctx, argument):
-        _ = argument.lower().replace(" ", "_")
-        if _ not in triggers.__triggers__:
+        if argument.lower() not in triggers.__triggers__:
             raise commands.BadArgument(f"❌    Trigger or violation {argument} isn't supported yet.")
-        return _
+        return argument.lower()
 
 
 class AutoModeration(Cog):
