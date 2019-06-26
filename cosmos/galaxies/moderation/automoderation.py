@@ -41,7 +41,7 @@ class AutoModeration(Cog):
 
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if trigger and set(message.content.lower().split()) & trigger.banned_words:
-            await trigger.dispatch(message.author)
+            await trigger.dispatch(author=message.author)
 
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
