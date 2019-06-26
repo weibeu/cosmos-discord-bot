@@ -55,7 +55,9 @@ class AutoModeration(Cog):
 
     @triggers.command(name="create", aliases=["set", "add"])
     async def create_trigger(self, ctx, trigger: TriggerConvertor, *actions: ActionConvertor):
-        pass
+        guild_profile = await ctx.fetch_guild_profile()
+        await guild_profile.auto_moderation.create_trigger(trigger, actions)
+        await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been created.")
 
     @create_trigger.error
     async def create_trigger_error(self, ctx, error):
@@ -63,8 +65,12 @@ class AutoModeration(Cog):
             return await ctx.send_line(str(error))
 
     @triggers.command(name="remove", aliases=["delete"])
-    async def remove_trigger(self, ctx):
-        pass
+    async def remove_trigger(self, ctx, trigger: TriggerConvertor):
+        guild_profile = await ctx.fetch_guild_profile()
+        if trigger not in guild_profile.auto_moderation.triggers:
+            return await ctx.send_line(f"❌    You haven't created that trigger yet.")
+        await guild_profile.auto_moderation.remove_trigger(trigger)
+        await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been removed.")
 
     # @Cog.group(name="banword", aliases=["bannedwords", "banwords"], invoke_without_command=True)
     # async def ban_word(self, ctx, word=None):
