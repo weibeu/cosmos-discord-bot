@@ -17,6 +17,10 @@ class AutoModerationTrigger(object):
     def actions(self):
         return [getattr(AutoModerationActions, _) for _ in self._actions]
 
+    @actions.setter
+    def actions(self, value):
+        self._actions.append(value)
+
     def __getattr__(self, item):
         try:
             return self._document[item]
@@ -35,7 +39,7 @@ class AutoModerationTrigger(object):
     def document(self):
         return {
             "name": self.name,
-            "actions": [_.__name__ for _ in self.actions],
+            "actions": self._actions,
         }
 
 
