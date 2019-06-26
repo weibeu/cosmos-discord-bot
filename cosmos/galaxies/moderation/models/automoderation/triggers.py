@@ -12,10 +12,6 @@ class AutoModerationTrigger(object):
         self._document = _document
         self.name = self._document["name"]
         self._actions = self._document["actions"]
-        self.__fetch_special_attributes()
-
-    def __fetch_special_attributes(self):
-        self.banned_words = set(self._document.get("banned_words", set()))
 
     @property
     def actions(self):
@@ -29,7 +25,7 @@ class AutoModerationTrigger(object):
         try:
             return self._document[item]
         except KeyError:
-            raise AttributeError
+            pass
 
     @property
     def title(self):
