@@ -8,7 +8,7 @@ __triggers__ = [
 
 class AutoModerationTrigger(object):
 
-    def __init__(self, _document):
+    def __init__(self, **_document):
         self._document = _document
         self.__actions = AutoModerationActions()
         self.name = self._document["name"]
