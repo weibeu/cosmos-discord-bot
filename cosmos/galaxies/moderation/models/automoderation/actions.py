@@ -1,7 +1,7 @@
 class AutoModerationActions(object):
 
     @staticmethod
-    async def delete(*, message):
+    async def delete(message=None, **kwargs):
         pass
 
     @staticmethod
