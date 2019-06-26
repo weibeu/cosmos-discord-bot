@@ -7,7 +7,7 @@ from discord.ext import commands
 
 class ActionConvertor(commands.Converter):
 
-    def convert(self, ctx, argument):
+    async def convert(self, ctx, argument):
         try:
             return getattr(triggers.AutoModerationActions, argument.lower()).__name__
         except AttributeError:
@@ -16,7 +16,7 @@ class ActionConvertor(commands.Converter):
 
 class TriggerConvertor(commands.Converter):
 
-    def convert(self, ctx, argument):
+    async def convert(self, ctx, argument):
         if argument.lower() not in triggers.__triggers__:
             raise commands.BadArgument(f"❌    Trigger or violation {argument} isn't supported yet.")
         return argument.lower()
