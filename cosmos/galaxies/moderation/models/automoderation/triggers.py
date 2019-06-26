@@ -10,9 +10,9 @@ class AutoModerationTrigger(object):
 
     def __init__(self, **_document):
         self._document = _document
-        self.__actions = AutoModerationActions()
+        self._actions = AutoModerationActions()
         self.name = self._document["name"]
-        self.actions = [getattr(self.__actions, _) for _ in self._document["actions"]]
+        self.actions = [getattr(self._actions, _) for _ in self._document["actions"]]
 
     def __getattr__(self, item):
         try:
