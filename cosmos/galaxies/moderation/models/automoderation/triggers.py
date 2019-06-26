@@ -10,9 +10,12 @@ class AutoModerationTrigger(object):
 
     def __init__(self, **_document):
         self._document = _document
-        self._actions = AutoModerationActions()
         self.name = self._document["name"]
-        self.actions = [getattr(self._actions, _) for _ in self._document["actions"]]
+        self._actions = self._document["actions"]
+
+    @property
+    def actions(self):
+        return [getattr(AutoModerationActions, _) for _ in self._actions]
 
     def __getattr__(self, item):
         try:
