@@ -25,7 +25,7 @@ class AutoModerationTrigger(object):
         try:
             return self._document[item]
         except KeyError:
-            pass
+            raise AttributeError
 
     @property
     def title(self):
