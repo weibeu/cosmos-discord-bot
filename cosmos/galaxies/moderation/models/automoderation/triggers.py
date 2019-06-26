@@ -28,5 +28,12 @@ class AutoModerationTrigger(object):
         for action in self.actions:
             await action(member)
 
+    @property
+    def document(self):
+        return {
+            "name": self.name,
+            "actions": [_.__name__ for _ in self.actions],
+        }
+
 
 _base = AutoModerationTrigger
