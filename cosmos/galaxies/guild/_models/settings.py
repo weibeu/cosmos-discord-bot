@@ -124,7 +124,28 @@ class AutoModerationSettings(object):
 
     @staticmethod
     def __get_triggers(raw_triggers):
-        return {_["name"]: automoderation.AutoModerationTrigger(_) for _ in raw_triggers}
+        return {_["name"]: automoderation.AutoModerationTrigger(**_) for _ in raw_triggers}
+
+    async def create_trigger(self, trigger_name, actions):
+        trigger = automoderation.AutoModerationTrigger(
+            name=trigger_name, actions=actions,
+        )
+        self.triggers[trigger_name] = trigger
+
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$addToSet": {
+                "settings.auto_moderation.triggers": trigger.document
+            }}
+        )
+
+    async def remove_trigger(self, trigger_name):
+        self.triggers.pop(trigger_name)
+
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$pull": {
+                "settings.auto_moderation.triggers": {"name": trigger_name}
+            }}
+        )
 
     # async def ban_word(self, word):
     #     self.banned_words.add(word)
