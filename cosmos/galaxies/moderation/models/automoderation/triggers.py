@@ -31,9 +31,9 @@ class AutoModerationTrigger(object):
     def title(self):
         return self.name.replace("_", " ").title()
 
-    async def dispatch(self, member):
+    async def dispatch(self, **kwargs):
         for action in self.actions:
-            await action(member)
+            await action(**kwargs)
 
     @property
     def document(self):
