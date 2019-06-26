@@ -147,19 +147,30 @@ class AutoModerationSettings(object):
             }}
         )
 
-    # async def ban_word(self, word):
-    #     self.banned_words.add(word)
-    #
-    #     await self.__profile.collection.update_one(
-    #         self.__profile.document_filter, {"$addToSet": {"settings.auto_moderation.banned_words": word}}
-    #     )
-    #
-    # async def clear_banned_words(self):
-    #     self.banned_words.clear()
-    #
-    #     await self.__profile.collection.update_one(
-    #         self.__profile.document_filter, {"$unset": {"settings.auto_moderation.banned_words": ""}}
-    #     )
+    async def ban_word(self, word):
+        trigger = self.triggers["banned_words"]
+        try:
+            trigger.words.add(word)
+        except AttributeError:
+            trigger.words = {word, }
+
+        document_filter = self.__profile.document_filter.copy()
+        document_filter.update({"settings.auto_moderation.triggers.name": trigger.name})
+
+        await self.__profile.collection.update_one(
+            document_filter, {"$addToSet": {"settings.auto_moderation.triggers.$.words": word}}
+        )
+
+    async def clear_banned_words(self):
+        trigger = self.triggers["banned_words"]
+        trigger.words.clear()
+
+        document_filter = self.__profile.document_filter.copy()
+        document_filter.update({"settings.auto_moderation.triggers.name": trigger.name})
+
+        await self.__profile.collection.update_one(
+            document_filter, {"$unset": {"settings.auto_moderation.triggers.$.words": ""}}
+        )
 
 
 class GuildSettings(WelcomeBannerSettings, LoggerSettings, AutoModerationSettings, ABC):
