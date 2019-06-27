@@ -14,7 +14,7 @@ class AutoModerationTrigger(object):
         self.name = self._document["name"]
         self._actions = self._document["actions"]
         self.__fetch_special_attributes()
-        self.__actions = AutoModerationActions()
+        self.__actions = AutoModerationActions(self._profile)
 
     def __fetch_special_attributes(self):
         if self.name == "banned_words":
