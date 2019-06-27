@@ -49,7 +49,9 @@ class AutoModeration(Cog):
         guild_profile = await ctx.fetch_guild_profile()
         embed = ctx.embed_line(f"Active auto moderation triggers or violations", ctx.guild.icon_url)
         if guild_profile.auto_moderation.triggers:
-            embed.description = ", ".join([trigger.title for trigger in guild_profile.auto_moderation.triggers])
+            embed.description = ", ".join(
+                [trigger.title for trigger in guild_profile.auto_moderation.triggers.values()]
+            )
         else:
             embed.description = "❌    No auto moderation triggers or violations has been set yet."
         await ctx.send(embed=embed)
@@ -82,7 +84,7 @@ class AutoModeration(Cog):
         if not word:
             embed = ctx.embed_line(f"List of banned words in {ctx.guild.name}", ctx.guild.icon_url)
             try:
-                embed.description = ", ".join(trigger.banned_words)
+                embed.description = ", ".join(trigger.words)
             except AttributeError:
                 embed.description = "❌    No words banned yet."
             return await ctx.send(embed=embed)
