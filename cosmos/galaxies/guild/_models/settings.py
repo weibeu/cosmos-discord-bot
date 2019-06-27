@@ -122,13 +122,12 @@ class AutoModerationSettings(object):
         _settings = kwargs.get("auto_moderation", dict())
         self.triggers = self.__get_triggers(_settings.get("triggers", list()))
 
-    @staticmethod
-    def __get_triggers(raw_triggers):
-        return {_["name"]: automoderation.AutoModerationTrigger(**_) for _ in raw_triggers}
+    def __get_triggers(self, raw_triggers):
+        return {_["name"]: automoderation.AutoModerationTrigger(self.__profile, **_) for _ in raw_triggers}
 
     async def create_trigger(self, trigger_name, actions):
         trigger = automoderation.AutoModerationTrigger(
-            name=trigger_name, actions=actions,
+            self.__profile, name=trigger_name, actions=actions,
         )
         self.triggers[trigger_name] = trigger
 
