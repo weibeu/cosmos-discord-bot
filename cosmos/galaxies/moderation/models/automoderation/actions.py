@@ -1,21 +1,19 @@
 class AutoModerationActions(object):
 
-    @staticmethod
-    async def delete(message=None, **kwargs):
+    def __init__(self, guild_profile):
+        self._profile = guild_profile
+
+    async def delete(self, message=None, **kwargs):
         pass
 
-    @staticmethod
-    async def warn(*, member):
+    async def warn(self, *, member, **kwargs):
         pass
 
-    @staticmethod
-    async def mute(*, member):
+    async def mute(self, *, member, **kwargs):
         pass
 
-    @staticmethod
-    async def kick(*, member):
+    async def kick(self, *, member, **kwargs):
         pass
 
-    @staticmethod
-    async def ban(*, member):
+    async def ban(self, *, member, **kwargs):
         pass

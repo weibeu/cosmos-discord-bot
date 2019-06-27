@@ -8,11 +8,13 @@ __triggers__ = [
 
 class AutoModerationTrigger(object):
 
-    def __init__(self, **_document):
+    def __init__(self, guild_profile, **_document):
+        self._profile = guild_profile
         self._document = _document
         self.name = self._document["name"]
         self._actions = self._document["actions"]
         self.__fetch_special_attributes()
+        self.__actions = AutoModerationActions()
 
     def __fetch_special_attributes(self):
         if self.name == "banned_words":
@@ -20,7 +22,7 @@ class AutoModerationTrigger(object):
 
     @property
     def actions(self):
-        return [getattr(AutoModerationActions, _) for _ in self._actions]
+        return [getattr(self.__actions, _) for _ in self._actions]
 
     @actions.setter
     def actions(self, value):
