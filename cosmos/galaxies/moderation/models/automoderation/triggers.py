@@ -13,6 +13,10 @@ class AutoModerationTrigger(object):
         self.name = self._document["name"]
         self._actions = self._document["actions"]
 
+    def __fetch_special_attributes(self):
+        if self.name == "banned_words":
+            self.words = set(self._document.get("words", list()))
+
     @property
     def actions(self):
         return [getattr(AutoModerationActions, _) for _ in self._actions]
