@@ -20,8 +20,11 @@ class AutoModerationActions(object):
     async def delete(message=None, **_):
         await message.delete()
 
-    async def warn(self, *, member, **kwargs):
-        pass
+    async def warn(self, *, message=None, **_):
+        if message:
+            await message.channel.send(
+                message.author.mention, embed=self.embed(self.warning)
+            )
 
     async def mute(self, *, member, **kwargs):
         pass
