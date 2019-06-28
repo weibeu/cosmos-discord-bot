@@ -40,7 +40,10 @@ class AutoModerationTrigger(object):
 
     async def dispatch(self, **kwargs):
         for action in self.actions:
-            await action(**kwargs)
+            try:
+                await action(**kwargs)
+            except AttributeError:
+                pass
 
     @property
     def document(self):
