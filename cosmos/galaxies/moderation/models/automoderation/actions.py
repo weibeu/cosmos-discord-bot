@@ -1,11 +1,11 @@
 class AutoModerationActions(object):
 
-    def __init__(self, guild_profile):
-        self._profile = guild_profile
+    def __init__(self, trigger):
+        self._trigger = trigger
 
     @property
     def embed(self):
-        return self._profile.plugin.bot.themes.embed.one_line.primary
+        return self._trigger.profile.plugin.bot.themes.embed.one_line.primary
 
     @staticmethod
     async def delete(message=None, **_):
