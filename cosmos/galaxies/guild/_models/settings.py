@@ -126,13 +126,9 @@ class AutoModerationSettings(object):
         return {_["name"]: automoderation.AutoModerationTrigger(self.__profile, **_) for _ in raw_triggers}
 
     async def create_trigger(self, trigger_name, actions):
-        x_trigger = self.triggers.get("banned_words")
-
         trigger = automoderation.AutoModerationTrigger(
             self.__profile, name=trigger_name, actions=actions,
         )
-        if x_trigger:
-            trigger.words = x_trigger.words
         self.triggers[trigger_name] = trigger
 
         await self.__profile.collection.update_one(
