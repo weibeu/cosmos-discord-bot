@@ -10,7 +10,7 @@ class AutoModerationActions(object):
                 self._trigger.profile.plugin.data.triggers_warning, self._trigger.name
             )
         except AttributeError:
-            return str()
+            return f"⚠    You are being warned for violating {self._trigger.name}."
 
     @property
     def embed(self):
