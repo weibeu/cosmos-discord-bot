@@ -1,0 +1,270 @@
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done. [0.001s].
+
+
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Initialising exception handler.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done. [0.098s].
+
+
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Initialising database.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done. [0.09s].
+
+
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Initialising caches.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Initialising cosmos emotes.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Initialising plugins.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetching 'core' plugins.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetched 'presence'. [cosmos.core.plugins.presence]
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetched 'admin'. [cosmos.core.plugins.admin]
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetched 'error_handler'. [cosmos.core.plugins.error_handler]
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetching 'galaxy' plugins.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetched 'profile'. [cosmos.galaxies.profile]
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetched 'guild'. [cosmos.galaxies.guild]
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetched 'settings'. [cosmos.galaxies.settings]
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Fetched 'moderation'. [cosmos.galaxies.moderation]
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading all fetched plugins.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG Presence.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Plugin 'presence' loaded.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG Evaluator.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Plugin 'admin' loaded.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG BotErrorHandler.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG CommandErrorHandler.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Plugin 'error_handler' loaded.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG Profile.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG Levels.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG Economy.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG Marriage.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Plugin 'profile' loaded.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG Levels.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG RoleShop.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Loading COG GuildSettings.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:45 | Cosmos   ] Plugin 'guild' loaded.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Loading COG AdministratorSettings.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Plugin 'settings' loaded.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Loading COG Logger.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Loading COG Moderation.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Loading COG AutoModeration.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Plugin 'moderation' loaded.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Done. [0.676s].
+
+
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Initialising cosmos theme.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Initialising image processor client.
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] Done. [0.003s].
+
+
+[   INFO   | 2019.06.27 15:56:46 | Cosmos   ] All initial tasks completed. [0.934 seconds.]
+[   INFO   | 2019.06.27 15:56:53 | Cosmos   ] Cosmos Dev#2817 Ready! [7.985 seconds.]
+[   INFO   | 2019.06.27 15:56:53 | Cosmos   ] User Id: 490732332240863233
+[   INFO   | 2019.06.27 15:56:53 | Cosmos   ] ------------------------
+[   INFO   | 2019.06.27 15:57:46 | Cosmos   ] Writing [profiles] batch updates.
+[   INFO   | 2019.06.27 15:57:48 | Cosmos   ] - Done. [profiles] {'writeErrors': [], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 1, 'nModified': 1, 'nRemoved': 0, 'upserted': []}.
+[   INFO   | 2019.06.27 15:58:48 | Cosmos   ] Writing [profiles] batch updates.
+[   INFO   | 2019.06.27 15:58:49 | Cosmos   ] - Done. [profiles] {'writeErrors': [], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 2, 'nModified': 1, 'nRemoved': 0, 'upserted': []}.
+[   INFO   | 2019.06.27 15:58:54 | Cosmos   ] Stopping presence rotation.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.001s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Initialising exception handler.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.026s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Initialising database.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.006s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Initialising caches.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Initialising cosmos emotes.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Initialising plugins.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetching 'core' plugins.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetched 'presence'. [cosmos.core.plugins.presence]
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetched 'admin'. [cosmos.core.plugins.admin]
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetched 'error_handler'. [cosmos.core.plugins.error_handler]
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetching 'galaxy' plugins.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetched 'profile'. [cosmos.galaxies.profile]
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetched 'guild'. [cosmos.galaxies.guild]
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetched 'settings'. [cosmos.galaxies.settings]
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Fetched 'moderation'. [cosmos.galaxies.moderation]
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading all fetched plugins.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Presence.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Plugin 'presence' loaded.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Evaluator.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Plugin 'admin' loaded.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG BotErrorHandler.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG CommandErrorHandler.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Plugin 'error_handler' loaded.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Profile.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Levels.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Economy.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Marriage.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Plugin 'profile' loaded.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Levels.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG RoleShop.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG GuildSettings.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Plugin 'guild' loaded.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG AdministratorSettings.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Plugin 'settings' loaded.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Logger.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG Moderation.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Loading COG AutoModeration.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Plugin 'moderation' loaded.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.284s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Initialising cosmos theme.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.002s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Initialising image processor client.
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] Done. [0.003s].
+
+
+[   INFO   | 2019.06.27 15:59:03 | Cosmos   ] All initial tasks completed. [0.38 seconds.]
+[   INFO   | 2019.06.27 15:59:09 | Cosmos   ] Cosmos Dev#2817 Ready! [6.386 seconds.]
+[   INFO   | 2019.06.27 15:59:09 | Cosmos   ] User Id: 490732332240863233
+[   INFO   | 2019.06.27 15:59:09 | Cosmos   ] ------------------------
+[  DEBUG   | 2019.06.27 16:00:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:01:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:02:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:03:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:04:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:05:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:06:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:07:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:08:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:09:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:10:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:11:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:12:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:13:03 | Cosmos   ] [profiles] batch is empty.
+[  DEBUG   | 2019.06.27 16:14:03 | Cosmos   ] [profiles] batch is empty.
+[   INFO   | 2019.06.27 16:15:03 | Cosmos   ] Stopping presence rotation.
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Done. [0.001s].
+
+
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Initialising exception handler.
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Done. [0.042s].
+
+
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Initialising database.
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Done. [0.006s].
+
+
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Initialising caches.
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Initialising cosmos emotes.
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Initialising plugins.
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Fetching 'core' plugins.
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Fetched 'presence'. [cosmos.core.plugins.presence]
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Fetched 'admin'. [cosmos.core.plugins.admin]
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Fetched 'error_handler'. [cosmos.core.plugins.error_handler]
+[   INFO   | 2019.06.27 16:15:11 | Cosmos   ] Fetching 'galaxy' plugins.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Fetched 'profile'. [cosmos.galaxies.profile]
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Fetched 'guild'. [cosmos.galaxies.guild]
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Fetched 'settings'. [cosmos.galaxies.settings]
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Fetched 'moderation'. [cosmos.galaxies.moderation]
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading all fetched plugins.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Presence.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Plugin 'presence' loaded.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Evaluator.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Plugin 'admin' loaded.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG BotErrorHandler.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG CommandErrorHandler.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Plugin 'error_handler' loaded.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Profile.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Levels.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Economy.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Marriage.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Plugin 'profile' loaded.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Levels.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG RoleShop.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG GuildSettings.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Plugin 'guild' loaded.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG AdministratorSettings.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Plugin 'settings' loaded.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Logger.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG Moderation.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Loading COG AutoModeration.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Plugin 'moderation' loaded.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done. [0.611s].
+
+
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Initialising cosmos theme.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done. [0.0s].
+
+
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Initialising image processor client.
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] Done. [0.004s].
+
+
+[   INFO   | 2019.06.27 16:15:12 | Cosmos   ] All initial tasks completed. [0.765 seconds.]
+[   INFO   | 2019.06.27 16:15:17 | Cosmos   ] Cosmos Dev#2817 Ready! [5.618 seconds.]
+[   INFO   | 2019.06.27 16:15:17 | Cosmos   ] User Id: 490732332240863233
+[   INFO   | 2019.06.27 16:15:17 | Cosmos   ] ------------------------
+[   INFO   | 2019.06.27 16:16:12 | Cosmos   ] Writing [profiles] batch updates.
+[   INFO   | 2019.06.27 16:16:13 | Cosmos   ] - Done. [profiles] {'writeErrors': [], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 1, 'nModified': 1, 'nRemoved': 0, 'upserted': []}.
+[   INFO   | 2019.06.27 16:16:50 | Cosmos   ] Stopping presence rotation.
