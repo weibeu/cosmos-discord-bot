@@ -3,8 +3,13 @@ class AutoModerationActions(object):
     def __init__(self, guild_profile):
         self._profile = guild_profile
 
-    async def delete(self, message=None, **kwargs):
-        pass
+    @property
+    def embed(self):
+        return self._profile.plugin.bot.themes.embed.one_line.primary
+
+    @staticmethod
+    async def delete(message=None, **_):
+        await message.delete()
 
     async def warn(self, *, member, **kwargs):
         pass
