@@ -4,6 +4,15 @@ class AutoModerationActions(object):
         self._trigger = trigger
 
     @property
+    def warning(self):
+        try:
+            return "⚠    " + getattr(
+                self._trigger.profile.plugin.data.triggers_warning, self._trigger.name
+            )
+        except AttributeError:
+            return str()
+
+    @property
     def embed(self):
         return self._trigger.profile.plugin.bot.themes.embed.one_line.primary
 
