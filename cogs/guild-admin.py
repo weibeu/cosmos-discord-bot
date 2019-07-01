@@ -782,14 +782,14 @@ class Guild_Admin(object):
             await ctx.send(to_send, delete_after=10)
 
     @remove.command()
-    async def embeds(self, ctx, search=100):
-        """Removes messages that have embeds in them."""
-        await self.do_removal(ctx, search, lambda e: len(e.embeds))
-
-    @remove.command()
     async def text(self, ctx, search=100):
         """Removes text, ignores files."""
         await self.do_removal(ctx, search, lambda e: not e.files)
+
+    @remove.command()
+    async def embeds(self, ctx, search=100):
+        """Removes messages that have embeds in them."""
+        await self.do_removal(ctx, search, lambda e: len(e.embeds))
 
     @remove.command()
     async def files(self, ctx, search=100):
