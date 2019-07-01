@@ -781,7 +781,7 @@ class Guild_Admin(object):
         else:
             await ctx.send(to_send, delete_after=10)
 
-    @remove.command(name="text")
+    @remove.command()
     async def text(self, ctx, search=100):
         """Removes text, ignores files."""
         await self.do_removal(ctx, search, lambda e: not e.files)
