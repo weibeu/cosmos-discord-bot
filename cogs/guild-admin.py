@@ -787,6 +787,11 @@ class Guild_Admin(object):
         await self.do_removal(ctx, search, lambda e: len(e.embeds))
 
     @remove.command()
+    async def text(self, ctx, search=100):
+        """Removes text, ignores files."""
+        await self.do_removal(ctx, search, lambda e: not e.files)
+
+    @remove.command()
     async def files(self, ctx, search=100):
         """Removes messages that have attachments in them."""
         await self.do_removal(ctx, search, lambda e: len(e.attachments))
