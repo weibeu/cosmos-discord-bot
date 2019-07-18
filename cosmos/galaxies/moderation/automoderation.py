@@ -80,7 +80,7 @@ class AutoModeration(Cog):
         guild_profile = await ctx.fetch_guild_profile()
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if not trigger:
-            return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")
+            return await ctx.send_line(f"❌    You haven't set banned_words trigger or violation yet.")
         if not word:
             embed = ctx.embed_line(f"List of banned words in {ctx.guild.name}", ctx.guild.icon_url)
             try:
