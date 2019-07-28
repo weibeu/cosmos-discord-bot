@@ -28,7 +28,7 @@ class Plugin(object):   # Extension
 
     def get_details(self):
         self.name = os.path.basename(self.dir_path)
-        self.python_path = f"{self.dir_path.replace('/', '.')}"
+        self.python_path = self.dir_path.replace('/', '.').replace('\\', '.')
 
     def get_data(self):
         self.data = PluginData(self.bot, self)
