@@ -36,6 +36,10 @@ class Levels(object):
 
         self.rewards.update({reward.level: reward})
 
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$pull": {"levels.rewards": {"level": reward.level}}}
+        )
+
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$addToSet": {
             "levels.rewards": reward.document
         }})

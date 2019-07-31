@@ -50,6 +50,10 @@ class RoleShop(object):
         self.roles.append(role)
 
         await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$pull": {"roleshop.roles": {"role_id": role.id}}}
+        )
+
+        await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$addToSet": {
                 "roleshop.roles": role.document
             }}

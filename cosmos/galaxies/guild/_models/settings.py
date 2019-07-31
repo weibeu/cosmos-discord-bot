@@ -102,6 +102,10 @@ class LoggerSettings(CosmosGuildBase, ABC):
         self.loggers.append(logger)
 
         await self.collection.update_one(
+            self.document_filter, {"$pull": {"settings.loggers": {"name": logger.name}}}
+        )
+
+        await self.collection.update_one(
             self.document_filter, {"$addToSet": {"settings.loggers": logger.document}}
         )
 
