@@ -49,7 +49,7 @@ class RoleShop(object):
         role = RoleShopRole(role_id=role_id, points=points)
         self.roles.append(role)
 
-        self.__profile.collection.update_one(
+        await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$addToSet": {
                 "roleshop.roles": role.document
             }}
@@ -58,7 +58,7 @@ class RoleShop(object):
     async def remove_role(self, role_id):
         self.roles.remove(role_id)
 
-        self.__profile.collection.update_one(
+        await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$pull": {
                 "roleshop.roles": {"role_id": role_id}
             }}
