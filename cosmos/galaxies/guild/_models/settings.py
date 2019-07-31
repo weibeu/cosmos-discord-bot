@@ -101,7 +101,7 @@ class LoggerSettings(CosmosGuildBase, ABC):
         logger = GuildLogger(name, channel)
         self.loggers.append(logger)
 
-        self.collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$addToSet": {"settings.loggers": logger.document}}
         )
 
@@ -110,7 +110,7 @@ class LoggerSettings(CosmosGuildBase, ABC):
             if logger.name == name:
                 self.loggers.remove(logger)
 
-        self.collection.update_one(
+        await self.collection.update_one(
             self.document_filter, {"$pull": {"settings.loggers": {"name": name}}}
         )
 
