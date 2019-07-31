@@ -132,6 +132,10 @@ class AutoModerationSettings(object):
         self.triggers[trigger_name] = trigger
 
         await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$pull": {"settings.auto_moderation.triggers": {"name": trigger.name}}}
+        )    # Remove if trigger already exists.
+
+        await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$addToSet": {
                 "settings.auto_moderation.triggers": trigger.document
             }}
