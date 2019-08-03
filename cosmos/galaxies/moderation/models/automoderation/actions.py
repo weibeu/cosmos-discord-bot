@@ -14,7 +14,7 @@ class AutoModerationActions(object):
 
     @property
     def embed(self):
-        return self._trigger.profile.plugin.bot.theme.embed.one_line.primary
+        return self._trigger.profile.plugin.bot.theme.embeds.one_line.primary
 
     @staticmethod
     async def delete(message=None, **_):
