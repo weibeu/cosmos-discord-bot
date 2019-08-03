@@ -97,5 +97,5 @@ class AutoModeration(Cog):
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if not trigger:
             return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")
-        await guild_profile.clear_banned_words()
+        await guild_profile.auto_moderation.clear_banned_words()
         await ctx.send_line(f"✅    List of banned words in this server has been cleared.")
