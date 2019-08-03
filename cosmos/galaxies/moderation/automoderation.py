@@ -90,6 +90,7 @@ class AutoModeration(Cog):
                 embed.description = ", ".join(trigger.words)
             except AttributeError:
                 embed.description = "❌    No words banned yet."
+            # TODO: Provide, accept banned words file as well.
             return await ctx.send(embed=embed)
         await guild_profile.auto_moderation.ban_word(word)
         await ctx.send_line(f"✅    {word} has been added to list of banned words.")
