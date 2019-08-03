@@ -91,7 +91,7 @@ class AutoModeration(Cog):
             except AttributeError:
                 embed.description = "❌    No words banned yet."
             return await ctx.send(embed=embed)
-        await guild_profile.auto_moderation.ban_word(word.lower())
+        await guild_profile.auto_moderation.ban_word(word)
         await ctx.send_line(f"✅    {word} has been added to list of banned words.")
 
     @ban_word.command(name="clear", aliases=["clean", "purge"])
