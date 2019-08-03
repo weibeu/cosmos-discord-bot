@@ -39,7 +39,8 @@ class AutoModeration(Cog):
 
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         try:
-            if set(message.content.lower().split()) & trigger.words:
+            # if set(message.content.lower().split()) & trigger.words:
+            if [word for word in trigger.words if word.lower() in message.content.lower()]:    # TODO: Use RE.
                 await trigger.dispatch(message=message)
         except AttributeError:
             pass    # No banned word set.
