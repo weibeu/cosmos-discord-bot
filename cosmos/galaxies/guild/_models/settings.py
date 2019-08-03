@@ -180,7 +180,7 @@ class AutoModerationSettings(object):
         )
 
 
-class GuildSettings(WelcomeBannerSettings, LoggerSettings, AutoModerationSettings, ABC):
+class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
 
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
