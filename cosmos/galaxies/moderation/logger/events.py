@@ -19,6 +19,7 @@ def logger_event(*args, **kwargs):
             embed = cog.embed(title=function.__name__.lstrip("on_").replace("_", " ").title())
             embed.timestamp = datetime.datetime.now()
             embed = await function(cog, embed, *_args)
+            # TODO: Add auto moderation details on logs.
             if not embed:
                 return
             await logger.channel.send(embed=embed)
