@@ -26,15 +26,17 @@ class Logger(LoggerEvents):
     async def logger(self, ctx):
         pass
 
+    async def __get_logger_name_from_menu(self, ctx, loggers):
+        menu = ctx.get_menu(loggers, entry_parser=self.__logger_entry_parser)
+        response = await menu.wait_for_response()
+        return response.entry
+
     @logger.command(name="enable", aliases=["create"])
     async def enable_logger(self, ctx, channel: typing.Optional[discord.TextChannel], *, name: NameConvertor = None):
         channel = channel or ctx.channel
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [name for name in self.loggers if not guild_profile.get_logger(name)]
-        if not name:
-            menu = ctx.get_menu(loggers, entry_parser=self.__logger_entry_parser)
-            response = await menu.wait_for_response()
-            name = response.entry
+        name = name or self.__get_logger_name_from_menu(ctx, loggers)
         if name not in self.loggers:
             return await ctx.send_line(f"❌    Sorry but logging for event '{name}' isn't supported yet.")
         logger = guild_profile.get_logger(name)
@@ -48,10 +50,7 @@ class Logger(LoggerEvents):
     async def disable_logger(self, ctx, *, name: NameConvertor = None):
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [logger.name for logger in guild_profile.loggers]
-        if not name:
-            menu = ctx.get_menu(loggers, entry_parser=self.__logger_entry_parser)
-            response = await menu.wait_for_response()
-            name = response.entry
+        name = name or self.__get_logger_name_from_menu(ctx, loggers)
         if name not in self.loggers:
             return await ctx.send_line(f"❌    Sorry but logging for event '{name}' isn't supported yet.")
         logger = guild_profile.get_logger(name)
