@@ -10,7 +10,6 @@ class ModerationAction(object):
         self.target = target
         self.moderator = self.ctx.author
         self.reason = reason or "Reason not specified."
-        self.guild = self.ctx.guild
 
     @property
     def document(self):
