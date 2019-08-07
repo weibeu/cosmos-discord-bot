@@ -8,6 +8,8 @@ class GuildMemberProfileBase(ProfileModelsBase):
     def __str__(self):
         return self.member.__str__()
 
+    # TODO: Add a special dunder method which returns attribute from self.member if its not found in self.
+
     @property
     @abstractmethod
     def profile(self):
