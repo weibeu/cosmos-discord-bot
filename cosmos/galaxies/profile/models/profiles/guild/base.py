@@ -5,6 +5,9 @@ from ..base import ProfileModelsBase
 
 class GuildMemberProfileBase(ProfileModelsBase):
 
+    def __str__(self):
+        return self.member.__str__()
+
     @property
     @abstractmethod
     def profile(self):
