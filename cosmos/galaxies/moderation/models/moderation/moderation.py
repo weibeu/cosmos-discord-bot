@@ -4,11 +4,12 @@ import datetime
 
 class ModerationAction(object):
 
-    def __init__(self, ctx, action_type, target, reason=None):
-        self.ctx = ctx
-        self.action_type = action_type
+    def __init__(self, guild_profile, target, moderator, action_type, reason=None):
+        self.guild_profile = guild_profile
+        self.bot = self.guild_profile.plugin.bot
         self.target = target
-        self.moderator = self.ctx.author
+        self.moderator = moderator
+        self.action_type = action_type
         self.reason = reason or "Reason not specified."
 
     @property
@@ -25,15 +26,15 @@ class ModerationAction(object):
         return _
 
     async def dispatch(self, title):
-        self.ctx.bot.dispatch("moderation", self)
-        _ = self.ctx.embed_line(title)
+        self.bot.dispatch("moderation", self)
+        _ = self.bot.theme.embeds.one_line.primary(title)
         _.description = f"**Reason:** {self.reason}"
         _.timestamp = datetime.datetime.now()
         try:
-            profile = await self.ctx.fetch_member_profile(self.target.id)
+            profile = await self.guild_profile.fetch_member_profile(self.target.id)
         except AttributeError:
-            profile = await self.ctx.fetch_member_profile(self.target)
-        _id = await self.ctx.bot.discordDB.set(self.document)
+            profile = await self.guild_profile.fetch_member_profile(self.target)
+        _id = await self.bot.discordDB.set(self.document)
         await profile.log_moderation(_id)
         try:
             return await self.target.send(embed=_)
