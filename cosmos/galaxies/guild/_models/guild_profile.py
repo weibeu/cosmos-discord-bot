@@ -21,6 +21,9 @@ class CosmosGuild(GuildSettings, GuildRoleShop):
     def from_document(cls, plugin, document: dict):
         return cls(plugin, **document)
 
+    async def fetch_member_profile(self, _id):
+        return await self.plugin.bot.profile_cache.get_guild_profile(_id, self.id)
+
     def __init__(self, plugin, **kwargs):
         self.__plugin = plugin
         self.__id = kwargs["guild_id"]
