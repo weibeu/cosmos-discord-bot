@@ -52,6 +52,18 @@ def check_hierarchy(moderator, target):
     return (moderator.top_role > target.top_role) or moderator.guild.owner == moderator
 
 
+class _GuildMemberProfile(commands.Converter):
+
+    # TODO: Implement similar global convertors returning custom profiles.
+
+    async def convert(self, ctx, argument):
+        member = await commands.MemberConverter().convert(ctx, argument)
+        profile = await ctx.fetch_member_profile(member.id)
+        if not profile:
+            raise commands.BadArgument
+        return profile
+
+
 class Moderation(Cog):
 
     def __init__(self, plugin):
