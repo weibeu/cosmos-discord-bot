@@ -42,7 +42,7 @@ class Logger(LoggerEvents):
         channel = channel or ctx.channel
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [name for name in self.loggers if not guild_profile.get_logger(name)]
-        name = name or self.__get_logger_name_from_menu(ctx, loggers)
+        name = name or await self.__get_logger_name_from_menu(ctx, loggers)
         if name not in self.loggers:
             return await ctx.send_line(f"❌    Sorry but logging for event '{name}' isn't supported yet.")
         logger = guild_profile.get_logger(name)
@@ -56,7 +56,7 @@ class Logger(LoggerEvents):
     async def disable_logger(self, ctx, *, name: NameConvertor = None):
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [logger.name for logger in guild_profile.loggers]
-        name = name or self.__get_logger_name_from_menu(ctx, loggers)
+        name = name or await self.__get_logger_name_from_menu(ctx, loggers)
         if name not in self.loggers:
             return await ctx.send_line(f"❌    Sorry but logging for event '{name}' isn't supported yet.")
         logger = guild_profile.get_logger(name)
