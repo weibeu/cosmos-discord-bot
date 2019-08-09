@@ -10,9 +10,12 @@ def logger_event(*args, **kwargs):
         @Cog.listener(*args, **kwargs)
         @functools.wraps(function)
         async def wrapper(cog, *_args):
-            if not _args[0].guild:
-                return
-            guild_profile = await cog.bot.guild_cache.get_profile(_args[0].guild.id)
+            try:
+                if not _args[0].guild:
+                    return
+                guild_profile = await cog.bot.guild_cache.get_profile(_args[0].guild.id)
+            except AttributeError:
+                guild_profile = _args[0].guild_profile    # Event triggered from ModerationAction.
             logger = guild_profile.get_logger(function.__name__)
             if not logger:
                 return
