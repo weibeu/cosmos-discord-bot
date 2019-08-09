@@ -21,10 +21,16 @@ class Logger(LoggerEvents):
     async def __logger_entry_parser(_, entry, __):
         return entry.replace("_", " ").title()
 
-    @LoggerEvents.group(name="logger", aliases=["log", "logging", "loggers"])
+    @LoggerEvents.group(name="logger", aliases=["log", "logging", "loggers"], invoke_without_command=True)
     @commands.has_permissions(administrator=True)
     async def logger(self, ctx):
-        pass
+        guild_profile = await ctx.fetch_guild_profile()
+        if not guild_profile.loggers:
+            return await ctx.send_line(f"❌    {ctx.guild.name} doesn't has any loggers enabled.")
+        embed = ctx.embeds.one_line.primary(f"{ctx.guild.name} Loggers", ctx.guild.icon_url)
+        for logger in guild_profile.loggers:
+            embed.add_field(name=logger.name, value=logger.channel.mention)
+        await ctx.send(embed=embed)
 
     async def __get_logger_name_from_menu(self, ctx, loggers):
         menu = ctx.get_menu(loggers, entry_parser=self.__logger_entry_parser)
