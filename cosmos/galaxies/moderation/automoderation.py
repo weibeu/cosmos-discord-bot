@@ -35,6 +35,9 @@ class AutoModeration(Cog):
 
     @Cog.listener()
     async def on_message(self, message):
+        if not message.guild or message.author == self.bot.user:
+            return
+
         guild_profile = await self.bot.guild_cache.get_profile(message.guild.id)
 
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
