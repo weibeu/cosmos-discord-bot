@@ -98,6 +98,11 @@ class Moderation(Cog):
                 embed.description = text
         return embed
 
+    @staticmethod
+    async def __get_action(ctx, target, action_type, *args, **kwargs):
+        return ModerationAction(
+            await ctx.fetch_guild_profile(), target, ctx.author, action_type, *args, **kwargs)
+
     @Cog.group(name="modlogs", invoke_without_command=True)
     @check_mod(kick_members=True)
     async def moderation_logs(self, ctx, *, member: typing.Union[discord.Member, int]):
@@ -128,7 +133,7 @@ class Moderation(Cog):
     async def warn(self, ctx, member: discord.Member, *, reason):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't warn {member}.")
-        action = ModerationAction(ctx, actions.Warned, member, reason)
+        action = await self.__get_action(ctx, member, actions.Warned, reason)
         if await action.dispatch(f"⚠    You were warned in {ctx.guild.name}."):
             res = f"✅    {member} has been warned."
         else:
@@ -141,7 +146,7 @@ class Moderation(Cog):
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't kick {member}.")
-        action = ModerationAction(ctx, actions.Kicked, member, reason)
+        action = await self.__get_action(ctx, member, actions.Kicked, reason)
         await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         await member.kick(reason=reason)
         embed = ctx.embed_line(f"✅    {member} has been kicked from the server.")
@@ -152,7 +157,7 @@ class Moderation(Cog):
     @check_mod(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None):
-        action = ModerationAction(ctx, actions.Banned, member, reason)
+        action = await self.__get_action(ctx, member, actions.Banned, reason)
         await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
         try:
             if isinstance(member, discord.Member):
@@ -171,7 +176,7 @@ class Moderation(Cog):
     @check_mod(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, user_id: int, *, reason=None):
-        action = ModerationAction(ctx, actions.Unbanned, user_id, reason)
+        action = await self.__get_action(ctx, user_id, actions.Unbanned, reason)
         try:
             await ctx.guild.unban(discord.Object(user_id), reason=reason)
         except discord.HTTPException:
@@ -184,7 +189,7 @@ class Moderation(Cog):
     async def mute(self, ctx, member: discord.Member, *, reason=None):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't mute {member}.")
-        action = ModerationAction(ctx, actions.Muted, member, reason)
+        action = await self.__get_action(ctx, member, actions.Muted, reason)
         guild_profile = await ctx.fetch_guild_profile()
         muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
         if not muted_role:
@@ -203,7 +208,7 @@ class Moderation(Cog):
     @Cog.command(name="unmute")
     @check_voice_perms(mute_members=True)
     async def unmute(self, ctx, member: discord.Member):
-        action = ModerationAction(ctx, actions.UnMuted, member)
+        action = await self.__get_action(ctx, member, actions.Warned)
         guild_profile = await ctx.fetch_guild_profile()
         muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
         if not muted_role:
