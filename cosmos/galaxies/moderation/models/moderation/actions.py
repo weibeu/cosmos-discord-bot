@@ -7,6 +7,8 @@ class ActionsBase(object):
         self.auto = auto
 
     def __str__(self):
+        if self.auto:
+            return f"[Auto Mod] {self.TITLE}"
         return self.TITLE
 
 
