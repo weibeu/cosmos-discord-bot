@@ -1,7 +1,12 @@
-class ActionsBase(object):
+class ActionsBaseMeta(type):
 
-    auto = False
-    TITLE = str()
+    def __new__(cls, *args, **kwargs):
+        cls.auto = False
+        cls.TITLE = str()
+        return super().__new__(cls, *args, **kwargs)
+
+
+class ActionsBase(metaclass=ActionsBaseMeta):
 
     def __init__(self, auto=False):
         self.auto = auto
