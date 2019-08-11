@@ -1,15 +1,12 @@
-class ActionsBaseMeta(type):
+class ActionsBase(object):
 
-    def __new__(cls, *args, **kwargs):
-        cls.auto = False
-        cls.TITLE = str()
-        return super().__new__(cls, *args, **kwargs)
-
-
-class ActionsBase(metaclass=ActionsBaseMeta):
+    auto = False
+    TITLE = str()
 
     def __init__(self, auto=False):
         self.auto = auto
+        if self.auto:
+            self.__class__.__name__ = f"[Auto] {self.__class__.__name__}"
 
     def __str__(self):
         if self.auto:
