@@ -4,14 +4,13 @@ import datetime
 
 class ModerationAction(object):
 
-    def __init__(self, guild_profile, target, moderator, action_type, reason=None, auto=False):
+    def __init__(self, guild_profile, target, moderator, action_type, reason=None):
         self.guild_profile = guild_profile
         self.bot = self.guild_profile.plugin.bot
         self.target = target
         self.moderator = moderator
         self.action_type = action_type
         self.reason = reason or "Reason not specified."
-        self.auto = auto
 
     @property
     def document(self):
