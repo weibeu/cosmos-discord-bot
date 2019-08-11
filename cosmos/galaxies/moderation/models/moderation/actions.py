@@ -1,6 +1,10 @@
 class ActionsBase(object):
 
+    auto = False
     TITLE = str()
+
+    def __init__(self, auto=False):
+        self.auto = auto
 
     def __str__(self):
         return self.TITLE
