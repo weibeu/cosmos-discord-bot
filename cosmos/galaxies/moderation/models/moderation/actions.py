@@ -5,8 +5,12 @@ class ActionsBase(object):
 
     def __init__(self, auto=False):
         self.auto = auto
+
+    @property
+    def __name__(self):
         if self.auto:
-            self.__class__.__name__ = f"[Auto] {self.__class__.__name__}"
+            return f"[Auto] {self.__class__.__name__}"
+        return self.__class__.__name__
 
     def __str__(self):
         if self.auto:
