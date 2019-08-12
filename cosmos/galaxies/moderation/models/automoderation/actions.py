@@ -9,13 +9,6 @@ class AutoModerationActions(object):
         self._trigger = trigger
 
     @property
-    def warning(self):
-        try:
-            return getattr(self._trigger.profile.plugin.data.triggers_warning, self._trigger.name)
-        except AttributeError:
-            return f"You are being warned for violating {self._trigger.name}."
-
-    @property
     def embed(self):
         return self._trigger.profile.plugin.bot.theme.embeds.one_line.primary
 
@@ -25,8 +18,8 @@ class AutoModerationActions(object):
 
     async def warn(self, *, message=None, **_):
         if message:
-            await message.channel.send(
-                message.author.mention, embed=self.embed("⚠    " + self.warning), delete_after=4)
+            await message.channel.send(message.author.mention, embed=self.embed(
+                    f"⚠    You are being warned for violating {self._trigger.name}."), delete_after=4)
             await ModerationAction(
                 self._trigger.profile, message.author, message.guild.me,
                 actions.Warned(True), f"For violating {self._trigger.name}").dispatch(
