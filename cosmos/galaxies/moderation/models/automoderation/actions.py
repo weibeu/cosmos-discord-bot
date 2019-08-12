@@ -11,9 +11,11 @@ class AutoModerationActions(object):
     @property
     def warning(self):
         try:
-            return getattr(self._trigger.profile.plugin.data.triggers_warning, self._trigger.name)
+            return "⚠    " + getattr(
+                self._trigger.profile.plugin.data.triggers_warning, self._trigger.name
+            )
         except AttributeError:
-            return f"You are being warned for violating {self._trigger.name}."
+            return f"⚠    You are being warned for violating {self._trigger.name}."
 
     @property
     def embed(self):
