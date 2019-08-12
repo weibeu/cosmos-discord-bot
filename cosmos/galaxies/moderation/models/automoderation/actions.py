@@ -31,7 +31,8 @@ class AutoModerationActions(object):
                 message.author.mention, embed=self.embed(self.warning), delete_after=4)
             await ModerationAction(
                 self._trigger.profile, message.author, message.guild.me, actions.Warned(True), self.warning
-            ).dispatch(f"⚠    You were warned in {self._trigger.profile.guild.name}.")
+            ).dispatch(
+                f"⚠    You were warned in {self._trigger.profile.guild.name} for violating {self._trigger.name}.")
 
     async def mute(self, *, member, **kwargs):
         pass
