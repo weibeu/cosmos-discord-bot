@@ -113,7 +113,7 @@ class LoggerEvents(Cog):
 
     @logger_event()
     async def on_moderation(self, embed, action):
-        embed.title = action.action_type.TITLE
+        embed.title = str(action.action_type)
         try:
             _id = action.target.id
             embed.add_field(name="Member", value=action.target.mention)
