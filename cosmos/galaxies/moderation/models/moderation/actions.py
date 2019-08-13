@@ -14,7 +14,7 @@ class ActionsBase(object):
 
     def __str__(self):
         if self.auto:
-            return f"[Auto Mod] {self.TITLE}"
+            return f"[Auto] {self.TITLE}"
         return self.TITLE
 
 
