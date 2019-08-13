@@ -54,9 +54,8 @@ class AutoModeration(Cog):
         guild_profile = await ctx.fetch_guild_profile()
         embed = ctx.embed_line(f"Active auto moderation triggers or violations", ctx.guild.icon_url)
         if guild_profile.auto_moderation.triggers:
-            embed.description = ", ".join(
-                [trigger.title for trigger in guild_profile.auto_moderation.triggers.values()]
-            )
+            for trigger in guild_profile.auto_moderation.triggers.values():
+                embed.add_field(name=trigger.title, value=", ".join(trigger._actions))    # pylint: disable=w0212
         else:
             embed.description = "❌    No auto moderation triggers or violations has been set yet."
         await ctx.send(embed=embed)
