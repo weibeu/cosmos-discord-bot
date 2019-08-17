@@ -1,6 +1,16 @@
-class ActionsBase(object):
+class ActionBaseMeta(type):
 
     auto = False
+    TITLE = str()
+
+    def __str__(self):
+        if self.auto:
+            return f"[Auto] {self.TITLE}"
+        return self.TITLE
+
+
+class ActionsBase(metaclass=ActionBaseMeta):
+
     TITLE = str()
 
     def __init__(self, auto=False):
