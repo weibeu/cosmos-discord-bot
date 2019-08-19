@@ -125,6 +125,7 @@ class AutoModerationSettings(object):
         self.__profile = guild_profile
         _settings = kwargs.get("auto_moderation", dict())
         self.triggers = self.__get_triggers(_settings.get("triggers", list()))
+        self.auto_mute_timer = _settings.get("auto_mute_timer", 0)
 
     def __get_triggers(self, raw_triggers):
         return {_["name"]: automoderation.AutoModerationTrigger(self.__profile, **_) for _ in raw_triggers}
@@ -178,6 +179,11 @@ class AutoModerationSettings(object):
         await self.__profile.collection.update_one(
             document_filter, {"$unset": {"settings.auto_moderation.triggers.$.words": ""}}
         )
+
+    async def set_auto_mute_timer(self, minutes):
+        self.auto_mute_timer = minutes
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$set": {"settings.auto_moderation.auto_mute_timer": minutes}})
 
 
 class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
