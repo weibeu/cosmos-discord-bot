@@ -12,6 +12,10 @@ class AutoModerationActions(object):
     def embed(self):
         return self._trigger.profile.plugin.bot.theme.embeds.one_line.primary
 
+    @property
+    def _reason(self):
+        return f"For violating {self._trigger.name}."
+
     @staticmethod
     async def delete(message=None, **_):
         await message.delete()
@@ -22,7 +26,7 @@ class AutoModerationActions(object):
                     f"⚠    You are being warned for violating {self._trigger.name}."), delete_after=4)
             await ModerationAction(
                 self._trigger.profile, message.author, message.guild.me,
-                actions.Warned(True), f"For violating {self._trigger.name}.").dispatch(
+                actions.Warned(True), self._reason).dispatch(
                 f"⚠    You were warned in {self._trigger.profile.guild.name}.")
 
     async def mute(self, *, member, **kwargs):
