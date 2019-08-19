@@ -1,3 +1,7 @@
+import asyncio
+
+import discord
+
 from ..moderation.moderation import ModerationAction
 
 from ..moderation import actions
@@ -27,10 +31,27 @@ class AutoModerationActions(object):
             await ModerationAction(
                 self._trigger.profile, message.author, message.guild.me,
                 actions.Warned(True), self._reason).dispatch(
-                f"⚠    You were warned in {self._trigger.profile.guild.name}.")
+                f"⚠    You were auto warned in {self._trigger.profile.guild.name}.")
 
-    async def mute(self, *, member, **kwargs):
-        pass
+    async def mute(self, *, member, **_):
+        await member.edit(mute=True, reason=self._reason)
+        muted_role = self._trigger.profile.guild.get_role(self._trigger.profile.roles.get("muted"))
+        try:
+            await member.edit(mute=True, reason=self._reason)
+        except discord.HTTPException:
+            pass    # TODO: Maybe mute them later whenever they join voice channel.
+        finally:
+            await member.add_roles(muted_role, reason=self._reason)
+        await asyncio.sleep(600)
+        try:
+            await member.edit(mute=False, reason="[Auto] Unmute")
+        except discord.HTTPException:
+            pass    # TODO: Maybe mute them later whenever they join voice channel.
+        finally:
+            await member.remove_roles(muted_role, reason="[Auto] Unmute")
+        await ModerationAction(
+            self._trigger.profile, member, member.guild.me, actions.Muted(True), self._reason
+        ).dispatch(f"⚠    You were auto muted in {self._trigger.profile.guild.name}")
 
     async def kick(self, *, member, **kwargs):
         pass
