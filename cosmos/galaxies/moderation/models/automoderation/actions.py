@@ -22,7 +22,7 @@ class AutoModerationActions(object):
                     f"⚠    You are being warned for violating {self._trigger.name}."), delete_after=4)
             await ModerationAction(
                 self._trigger.profile, message.author, message.guild.me,
-                actions.Warned(True), f"For violating {self._trigger.name}").dispatch(
+                actions.Warned(True), f"For violating {self._trigger.name}.").dispatch(
                 f"⚠    You were warned in {self._trigger.profile.guild.name}.")
 
     async def mute(self, *, member, **kwargs):
