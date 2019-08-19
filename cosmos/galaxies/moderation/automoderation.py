@@ -106,3 +106,5 @@ class AutoModeration(Cog):
             return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")
         await guild_profile.auto_moderation.clear_banned_words()
         await ctx.send_line(f"✅    List of banned words in this server has been cleared.")
+
+    # TODO: Command to set auto mute timer.
