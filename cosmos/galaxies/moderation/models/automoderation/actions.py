@@ -34,7 +34,6 @@ class AutoModerationActions(object):
                 f"⚠    You were auto warned in {self._trigger.profile.guild.name}.")
 
     async def mute(self, *, member, **_):
-        await member.edit(mute=True, reason=self._reason)
         muted_role = self._trigger.profile.guild.get_role(self._trigger.profile.roles.get("muted"))
         try:
             await member.edit(mute=True, reason=self._reason)
