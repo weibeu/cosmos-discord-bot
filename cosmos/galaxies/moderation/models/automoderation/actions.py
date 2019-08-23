@@ -56,8 +56,13 @@ class AutoModerationActions(object):
             self._trigger.profile, member, member.guild.me, actions.Muted(True), self._reason
         ).dispatch(f"⚠    You were auto muted in {self._trigger.profile.guild.name}")
 
-    async def kick(self, *, member, **kwargs):
-        pass
+    async def kick(self, *, member, **_):
+        await member.kick(reason=self._reason)
+        await ModerationAction(
+            self._trigger.profile, member, member.guild.me, actions.Kicked(True), self._reason
+        ).dispatch(f"⚠    You were auto muted from {self._trigger.profile.guild.name}")
 
-    async def ban(self, *, member, **kwargs):
-        pass
+    async def ban(self, *, member, **_):
+        await ModerationAction(
+            self._trigger.profile, member, member.guild.me, actions.Banned(True), self._reason
+        ).dispatch(f"⚠    You were auto banned from {self._trigger.profile.guild.name}")
