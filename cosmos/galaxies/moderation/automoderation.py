@@ -45,7 +45,7 @@ class AutoModeration(Cog):
             try:
                 # if set(message.content.lower().split()) & trigger.words:
                 if [word for word in trigger.words if word.lower() in message.content.lower()]:    # TODO: Use RE.
-                    await trigger.dispatch(message=message)
+                    await trigger.dispatch(message=message, member=message.author)
             except AttributeError:
                 pass    # No banned word set.
 
