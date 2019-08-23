@@ -43,6 +43,9 @@ class AutoModerationActions(object):
             await member.add_roles(muted_role, reason=self._reason)
         except AttributeError:
             pass
+        await ModerationAction(
+            self._trigger.profile, member, member.guild.me, actions.Muted(True), self._reason
+        ).dispatch(f"⚠    You were auto muted in {self._trigger.profile.guild.name}")
         await asyncio.sleep(600)
         try:
             await member.edit(mute=False, reason="[Auto] Unmute")
@@ -52,9 +55,6 @@ class AutoModerationActions(object):
             await member.remove_roles(muted_role, reason="[Auto] Unmute")
         except AttributeError:
             pass
-        await ModerationAction(
-            self._trigger.profile, member, member.guild.me, actions.Muted(True), self._reason
-        ).dispatch(f"⚠    You were auto muted in {self._trigger.profile.guild.name}")
 
     async def kick(self, *, member, **_):
         await member.kick(reason=self._reason)
