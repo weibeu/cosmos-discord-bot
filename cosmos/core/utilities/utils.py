@@ -33,3 +33,7 @@ class Utils(HasteBin):
         for url in urls:
             string.replace(url, str())
         return string, urls
+
+    @staticmethod
+    def count_emojis(string):
+        return len(re.findall(r"<(a?):([A-Za-z0-9_]+):([0-9]+)>", string))
