@@ -38,6 +38,8 @@ class AutoModeration(Cog):
         if not message.guild or message.author == self.bot.user:
             return
 
+        # TODO: Ignore admins and moderators.
+
         guild_profile = await self.bot.guild_cache.get_profile(message.guild.id)
 
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
