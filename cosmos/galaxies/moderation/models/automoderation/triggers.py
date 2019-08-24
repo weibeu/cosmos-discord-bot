@@ -3,6 +3,7 @@ from .actions import AutoModerationActions
 
 __triggers__ = [
     "banned_words",
+    "mass_mentions",
 ]
 
 
