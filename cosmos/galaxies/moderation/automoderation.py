@@ -54,6 +54,10 @@ class AutoModeration(Cog):
             if len(message.mentions) > self.plugin.data.auto_moderation.mass_mentions_count:
                 await trigger.dispatch(message=message, member=message.author)
 
+        trigger = guild_profile.auto_moderation.triggers.get("emoji_spam")
+        if trigger:
+            pass    # TODO: Write regex.
+
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
         guild_profile = await ctx.fetch_guild_profile()
