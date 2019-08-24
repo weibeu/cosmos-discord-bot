@@ -2,7 +2,7 @@ from .actions import AutoModerationActions
 
 
 __triggers__ = [
-    # "emoji_spam",
+    "emoji_spam",
     "banned_words",
     "mass_mentions",
 ]
