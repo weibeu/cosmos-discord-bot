@@ -185,6 +185,9 @@ class AutoModerationSettings(object):
         await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$set": {"settings.auto_moderation.auto_mute_timer": minutes}})
 
+    def has_trigger(self, trigger):
+        return trigger in self.triggers
+
 
 class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
 
