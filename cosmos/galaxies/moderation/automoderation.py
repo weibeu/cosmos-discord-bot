@@ -61,6 +61,8 @@ class AutoModeration(Cog):
             if self.bot.utilities.count_emojis(message.content) > self.plugin.data.auto_moderation.emoji_spam_count:
                 await trigger.dispatch(message=message, member=message.author)
 
+            # TODO: Consider multi line emoji spams as well.
+
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
         guild_profile = await ctx.fetch_guild_profile()
