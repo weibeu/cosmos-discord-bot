@@ -69,6 +69,11 @@ class AutoModeration(Cog):
             if self.bot.utilities.get_invites(message.content):
                 await trigger.dispatch(message=message, member=message.author)
 
+        trigger = guild_profile.auto_moderation.triggers.get("spoilers")
+        if trigger:
+            if [_ for _ in message.attachments if _.is_spoiler()]:
+                await trigger.dispatch(message=message, member=message.author)
+
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
         guild_profile = await ctx.fetch_guild_profile()
