@@ -71,7 +71,7 @@ class AutoModeration(Cog):
 
         trigger = guild_profile.auto_moderation.triggers.get("spoilers")
         if trigger:
-            if [_ for _ in message.attachments if _.is_spoiler()]:
+            if [_ for _ in message.attachments if _.is_spoiler()]:    # TODO: Include spoiler || || regex.
                 await trigger.dispatch(message=message, member=message.author)
 
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
