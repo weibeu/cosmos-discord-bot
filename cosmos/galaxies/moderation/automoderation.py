@@ -64,6 +64,11 @@ class AutoModeration(Cog):
 
             # TODO: Consider multi line emoji spams as well.
 
+        trigger = guild_profile.auto_moderation.triggers.get("discord_invites")
+        if trigger:
+            if self.bot.utilities.get_invites(message.content):
+                await trigger.dispatch(message=message, member=message.author)
+
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
         guild_profile = await ctx.fetch_guild_profile()

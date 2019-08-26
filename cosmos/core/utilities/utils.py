@@ -37,3 +37,7 @@ class Utils(HasteBin):
     @staticmethod
     def count_emojis(string):
         return len(re.findall(r"<(a?):([A-Za-z0-9_]+):([0-9]+)>", string))
+
+    @staticmethod
+    def get_invites(string):
+        return re.findall(r"(?:https?://)?discord(?:app\.com/invite|\.gg)/?[a-zA-Z0-9]+/?", string)

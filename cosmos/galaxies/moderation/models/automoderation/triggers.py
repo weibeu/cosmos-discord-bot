@@ -5,6 +5,7 @@ __triggers__ = [
     "emoji_spam",
     "banned_words",
     "mass_mentions",
+    "discord_invites",
 ]
 
 
