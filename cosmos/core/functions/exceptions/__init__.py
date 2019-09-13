@@ -1,3 +1,4 @@
+from .misc import *
 from .commands import *
 
 from .initial import FatalError
