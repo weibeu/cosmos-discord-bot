@@ -1,6 +1,8 @@
 import discord
 import datetime
 
+from cosmos import exceptions
+
 
 class ModerationAction(object):
 
@@ -8,6 +10,8 @@ class ModerationAction(object):
         self.guild_profile = guild_profile
         self.bot = self.guild_profile.plugin.bot
         self.target = target
+        if self.target.bot:
+            raise exceptions.UserIsBotError
         self.moderator = moderator
         self.action_type = action_type
         self.reason = reason or "Reason not specified."

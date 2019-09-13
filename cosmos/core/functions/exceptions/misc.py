@@ -1,3 +1,3 @@
-class UserIsBot(Exception):
+class UserIsBotError(Exception):
 
     pass
