@@ -33,8 +33,9 @@ class Reactor(GuildBaseCog):
         embed.description = "**Emotes:** " + " ".join(reactor.emotes)
         await ctx.send(embed=embed)
 
-    @_reactor.command(name="set", aliases=["setup"])
-    async def set_reactor(self, ctx, channel: discord.TextChannel = None, *emotes: typing.Union[discord.Emoji, str]):
+    @_reactor.command(name="setup", aliases=["set"])
+    async def set_reactor(
+            self, ctx, channel: typing.Optional[discord.TextChannel] = None, *emotes: typing.Union[discord.Emoji, str]):
         channel = channel or ctx.channel
         test_message = await ctx.channel.send_line(f"👇    This is how bot will react to messages in #{channel}.")
         for emote in emotes:
