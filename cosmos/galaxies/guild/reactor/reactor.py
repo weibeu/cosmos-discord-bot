@@ -39,7 +39,7 @@ class Reactor(GuildBaseCog):
             except discord.HTTPException:
                 return await ctx.send_line("❌    Please provide valid emotes supported by Discord.")
         if await ctx.confirm(f"❓    Are you sure to set and enable those reactions in {channel}?"):
-            # TODO: Guild Profile.
+            await ctx.guild_profile.set_reactor(channel, emotes)
             await ctx.send_line(f"✅    Reactor enabled in {channel}.")
 
     @reactor.command(name="remove", aliases=["delete"])
