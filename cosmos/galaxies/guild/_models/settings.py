@@ -261,6 +261,7 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
         LoggerSettings.__init__(self, **raw_settings)
         self.auto_moderation = AutoModerationSettings(self, **raw_settings)
         self.theme = ThemeSettings(self, **raw_settings)
+        self.reactors = ReactorSettings(self, raw_settings.get("reactors", dict()))
         self.moderators = raw_settings.get("moderators", list())
         self.presets = raw_settings.get("presets", dict())
         self.roles = raw_settings.get("roles", dict())
