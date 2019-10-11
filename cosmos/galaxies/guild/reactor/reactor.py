@@ -12,7 +12,7 @@ class Reactor(GuildBaseCog):
     async def on_message(self, message):
         if not message.guild:
             return
-        guild_profile = self.plugin.cache.get_profile(message.guild.id)
+        guild_profile = await self.plugin.cache.get_profile(message.guild.id)
         if not guild_profile.reactors:
             return
         reactor = guild_profile.reactors.get_reactor(message.channel.id)
