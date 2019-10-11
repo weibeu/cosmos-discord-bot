@@ -22,12 +22,18 @@ class Reactor(GuildBaseCog):
         for emote in reactor.emotes:
             await message.add_reaction(emote)
 
-    @GuildBaseCog.group(name="reactor")
+    @GuildBaseCog.group(name="reactor", invoke_without_command=True)
     @commands.has_permissions(manage_guild=True)
-    async def reactor(self, ctx):
-        pass
+    async def _reactor(self, ctx, channel: discord.TextChannel = None):
+        channel = channel or ctx.channel
+        reactor = ctx.guild_profile.reactors.get_reactor(channel.id)
+        if not reactor:
+            return await ctx.send_line(f"❌    There's no reactor enabled in {channel} yet.")
+        embed = ctx.embeds.one_line.primary(f"{channel.name} Reactor", ctx.guild.icon_url)
+        embed.description = "**Emotes:** " + " ".join(reactor.emotes)
+        await ctx.send(embed=embed)
 
-    @reactor.command(name="set", aliases=["setup"])
+    @_reactor.command(name="set", aliases=["setup"])
     async def set_reactor(self, ctx, channel: discord.TextChannel = None, *emotes: typing.Union[discord.Emoji, str]):
         channel = channel or ctx.channel
         test_message = await ctx.channel.send_line(f"👇    This is how bot will react to messages in {channel}.")
@@ -42,7 +48,7 @@ class Reactor(GuildBaseCog):
             await ctx.guild_profile.set_reactor(channel, emotes)
             await ctx.send_line(f"✅    Reactor enabled in {channel}.")
 
-    @reactor.command(name="remove", aliases=["delete"])
+    @_reactor.command(name="remove", aliases=["delete"])
     async def remove_reactor(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
         if not ctx.guild_profile.reactors.get_reactor(channel.id):
@@ -51,7 +57,7 @@ class Reactor(GuildBaseCog):
             await ctx.guild_profile.reactors.remove_reactor(channel)
             await ctx.send_line(f"✅    Reactor was removed from {channel}.")
 
-    @reactor.command(name="enable", aliases=["on"])
+    @_reactor.command(name="enable", aliases=["on"])
     async def enable_reactor(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
         reactor = ctx.guild_profile.reactors.get_reactor(channel.id)
@@ -60,7 +66,7 @@ class Reactor(GuildBaseCog):
         await ctx.guild_profile.reactors.enable_reactor(reactor)
         await ctx.send_line(f"✅    Reactor was enabled in {channel}.")
 
-    @reactor.command(name="disable", aliases=["off"])
+    @_reactor.command(name="disable", aliases=["off"])
     async def disable_reactor(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
         reactor = ctx.guild_profile.reactors.get_reactor(channel.id)
