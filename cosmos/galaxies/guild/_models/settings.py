@@ -242,6 +242,16 @@ class ReactorSettings(object):
             self.__profile.document_filter, {"$pull": {f"settings.reactor": {"channel_id": channel.id}}}
         )
 
+    async def enable_reactor(self, reactor, enabled=True):
+        reactor.enabled = enabled
+
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$pull": {f"settings.reactor": {"channel_id": reactor.channel.id}}}
+        )
+        self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$addToSet": {"settings.reactor": {reactor.document}}}
+        )
+
 
 class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
 
