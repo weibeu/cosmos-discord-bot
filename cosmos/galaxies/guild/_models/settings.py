@@ -215,6 +215,9 @@ class ReactorSettings(object):
             ], _["enabled"]
         ) for _ in documents]
 
+    def __bool__(self):
+        return bool(self.reactors)
+
     def get_reactor(self, channel_id):
         try:
             return [reactor for reactor in self.reactors if reactor.channel.id == channel_id][0]
