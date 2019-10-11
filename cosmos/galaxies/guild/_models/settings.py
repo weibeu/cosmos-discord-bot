@@ -202,7 +202,8 @@ class Reactor(object):
         for emote in self.emotes:
             if isinstance(emote, str):
                 emotes.append(emote)
-            emotes.append(emote.id)
+            else:
+                emotes.append(emote.id)
         return {
             "channel_id": self.channel.id,
             "emotes": emotes,
