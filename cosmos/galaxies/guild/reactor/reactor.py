@@ -37,7 +37,7 @@ class Reactor(GuildBaseCog):
     async def set_reactor(
             self, ctx, channel: typing.Optional[discord.TextChannel] = None, *emotes: typing.Union[discord.Emoji, str]):
         channel = channel or ctx.channel
-        test_message = await ctx.channel.send_line(f"👇    This is how bot will react to messages in #{channel}.")
+        test_message = await ctx.send_line(f"👇    This is how bot will react to messages in #{channel}.")
         for emote in emotes:
             try:
                 await test_message.add_reaction(emote)
@@ -46,7 +46,7 @@ class Reactor(GuildBaseCog):
             except discord.HTTPException:
                 return await ctx.send_line("❌    Please provide valid emotes supported by Discord.")
         if await ctx.confirm(f"❓    Are you sure to set and enable those reactions in #{channel}?"):
-            await ctx.guild_profile.set_reactor(channel, emotes)
+            await ctx.guild_profile.reactors.set_reactor(channel, emotes)
             await ctx.send_line(f"✅    Reactor enabled in #{channel}.")
 
     @_reactor.command(name="remove", aliases=["delete"])

@@ -198,9 +198,14 @@ class Reactor(object):
 
     @property
     def document(self):
+        emotes = []
+        for emote in self.emotes:
+            if isinstance(emote, str):
+                emotes.append(emote)
+            emotes.append(emote.id)
         return {
             "channel_id": self.channel.id,
-            "emotes": [_.id for _ in self.emotes],
+            "emotes": emotes,
             "enabled": self.enabled,
         }
 
