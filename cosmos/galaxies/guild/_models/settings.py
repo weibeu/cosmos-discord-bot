@@ -189,6 +189,60 @@ class AutoModerationSettings(object):
         return trigger in self.triggers
 
 
+class Reactor(object):
+
+    def __init__(self, channel, emotes, enabled):
+        self.channel = channel
+        self.emotes = emotes
+        self.enabled = enabled
+
+    @property
+    def document(self):
+        return {
+            "channel_id": self.channel.id,
+            "emotes": [_.id for _ in self.emotes],
+            "enabled": self.enabled,
+        }
+
+
+class ReactorSettings(object):
+
+    def __init__(self, guild_profile, documents):
+        self.__profile = guild_profile
+        self.reactors = [Reactor(
+            self.__profile.guild.get_channel(_["channel_id"]), [
+                self.__profile.plugin.bot.get_emoji(_id) for _id in _["emotes"]
+            ], _["enabled"]
+        ) for _ in documents]
+
+    def get_reactor(self, channel_id):
+        try:
+            return [reactor for reactor in self.reactors if reactor.channel.id == channel_id][0]
+        except IndexError:
+            pass
+
+    def __remove_reactor(self, channel_id):
+        reactor = self.get_reactor(channel_id)
+        if reactor:
+            self.reactors.remove(reactor)
+
+    async def set_reactor(self, channel, emotes):
+        if self.get_reactor(channel.id):
+            self.__remove_reactor(channel.id)    # Replace with new reactor if a reactor already exists in that channel.
+        reactor = Reactor(channel, emotes, True)
+
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$addToSet": {f"settings.reactor": {reactor.document}}}
+        )
+
+    async def remove_reactor(self, channel):
+        self.__remove_reactor(channel.id)
+
+        await self.__profile.collection.update_one(
+            self.__profile.document_filter, {"$pull": {f"settings.reactor": {"channel_id": channel.id}}}
+        )
+
+
 class GuildSettings(WelcomeBannerSettings, LoggerSettings, ABC):
 
     def __init__(self, **kwargs):
