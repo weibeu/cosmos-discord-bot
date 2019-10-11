@@ -22,7 +22,7 @@ class Reactor(GuildBaseCog):
         for emote in reactor.emotes:
             await message.add_reaction(emote)
 
-    @GuildBaseCog.group(name="reactor", invoke_without_command=True)
+    @GuildBaseCog.group(name="reactor", aliases=["reactors"], invoke_without_command=True)
     @commands.has_permissions(manage_guild=True)
     async def _reactor(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
