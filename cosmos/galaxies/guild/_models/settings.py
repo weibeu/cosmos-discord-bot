@@ -213,13 +213,13 @@ class Reactor(object):
 
 class ReactorSettings(object):
 
-    def __init__(self, guild_profile, documents):
+    def __init__(self, guild_profile, reactors):
         self.__profile = guild_profile
         self.reactors = [Reactor(
             self.__profile.guild.get_channel(_["channel_id"]), [
-                self.__profile.plugin.bot.get_emoji(_id) for _id in _["emotes"]
+                self.__profile.plugin.bot.get_emoji(__) or __ for __ in _["emotes"]
             ], _["enabled"]
-        ) for _ in documents]
+        ) for _ in reactors]
 
     def __bool__(self):
         return bool(self.reactors)
@@ -242,24 +242,24 @@ class ReactorSettings(object):
         self.reactors.append(reactor)
 
         await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$addToSet": {f"settings.reactor": reactor.document}}
+            self.__profile.document_filter, {"$addToSet": {f"settings.reactors": reactor.document}}
         )
 
     async def remove_reactor(self, channel):
         self.__remove_reactor(channel.id)
 
         await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$pull": {f"settings.reactor": {"channel_id": channel.id}}}
+            self.__profile.document_filter, {"$pull": {f"settings.reactors": {"channel_id": channel.id}}}
         )
 
     async def enable_reactor(self, reactor, enabled=True):
         reactor.enabled = enabled
 
         await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$pull": {f"settings.reactor": {"channel_id": reactor.channel.id}}}
+            self.__profile.document_filter, {"$pull": {f"settings.reactors": {"channel_id": reactor.channel.id}}}
         )
         self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$addToSet": {"settings.reactor": {reactor.document}}}
+            self.__profile.document_filter, {"$addToSet": {"settings.reactors": reactor.document}}
         )
 
 
