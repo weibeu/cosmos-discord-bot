@@ -239,9 +239,10 @@ class ReactorSettings(object):
         if self.get_reactor(channel.id):
             self.__remove_reactor(channel.id)    # Replace with new reactor if a reactor already exists in that channel.
         reactor = Reactor(channel, emotes, True)
+        self.reactors.append(reactor)
 
         await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$addToSet": {f"settings.reactor": {reactor.document}}}
+            self.__profile.document_filter, {"$addToSet": {f"settings.reactor": reactor.document}}
         )
 
     async def remove_reactor(self, channel):
