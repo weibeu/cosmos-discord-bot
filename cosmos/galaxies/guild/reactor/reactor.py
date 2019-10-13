@@ -30,7 +30,7 @@ class Reactor(GuildBaseCog):
         if not reactor:
             return await ctx.send_line(f"❌    There's no reactor enabled in #{channel} yet.")
         embed = ctx.embeds.one_line.primary(f"#{channel.name} Reactor", ctx.guild.icon_url)
-        embed.description = "**Emotes:** " + " ".join(reactor.emotes)
+        embed.description = "**Emotes:** " + " ".join([str(emote) for emote in reactor.emotes])
         await ctx.send(embed=embed)
 
     @_reactor.command(name="setup", aliases=["set"])
