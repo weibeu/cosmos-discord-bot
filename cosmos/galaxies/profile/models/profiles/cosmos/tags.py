@@ -22,6 +22,9 @@ class UserTags(ProfileModelsBase, ABC):
     def __init__(self, documents):
         self.tags = [Tag(_["name"], _["content"]) for _ in documents]
 
+    def __bool__(self):
+        return bool(self.tags)
+
     def get_tag(self, name):
         try:
             return [tag for tag in self.tags if tag.name.lower() == name][0]
@@ -39,7 +42,7 @@ class UserTags(ProfileModelsBase, ABC):
         self.tags.append(tag)
 
         await self.collection.update_one(
-            self.document_filter, {"$pull": {"tags": {"name": tag.name}}}
+            self.document_filter, {"$pull": {"tags": {"name": {"$or": [tag.name, tag.name.lower()]}}}}
         )    # Pull if already exists.
         await self.collection.update_one(
             self.document_filter, {"$addToSet": {"tags": tag.document}}
@@ -49,5 +52,5 @@ class UserTags(ProfileModelsBase, ABC):
         self.__remove_tag(name)
 
         await self.collection.update_one(
-            self.document_filter, {"$pull": {"tags": {"name": name}}}
+            self.document_filter, {"$pull": {"tags": {"name": {"$or": [name, name.lower()]}}}}
         )
