@@ -20,7 +20,7 @@ class Utils(HasteBin):
 
     @staticmethod
     def find_image_urls(string):
-        return re.findall(r"(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)", string)
+        return re.findall(r"(?:http:|https:)?//.*\.(?:png|jpg|gif)", string)
 
     def find_urls_and_strip(self, string):
         urls = self.find_urls(string)
