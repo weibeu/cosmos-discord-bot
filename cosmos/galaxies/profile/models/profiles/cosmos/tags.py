@@ -38,9 +38,7 @@ class UserTags(ProfileModelsBase, ABC):
         tag = Tag(name, content)
         self.tags.append(tag)
 
-        await self.collection.update_one(
-            self.document_filter, {"$pull": {"tags": {"name": {"$or": [tag.name, tag.name.lower()]}}}}
-        )    # Pull if already exists.
+        await self.remove_tag(tag.name)   # Pull if already exists.
         await self.collection.update_one(
             self.document_filter, {"$addToSet": {"tags": tag.document}}
         )
@@ -49,5 +47,5 @@ class UserTags(ProfileModelsBase, ABC):
         self.__remove_tag(name)
 
         await self.collection.update_one(
-            self.document_filter, {"$pull": {"tags": {"name": {"$or": [name, name.lower()]}}}}
+            self.document_filter, {"$pull": {"tags": {"$or": [{"name": name}, {"name": name.lower()}]}}}
         )
