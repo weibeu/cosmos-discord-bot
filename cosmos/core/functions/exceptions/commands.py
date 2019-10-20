@@ -6,6 +6,6 @@ class GuildNotPrime(commands.CheckFailure):
     pass
 
 
-class MemberNotPrime(commands.CheckFailure):
+class UserNotPrime(commands.CheckFailure):
 
     pass

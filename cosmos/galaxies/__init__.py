@@ -7,5 +7,5 @@ __all__ = [
     "Cog",
 
     "GuildNotPrime",
-    "MemberNotPrime",
+    "UserNotPrime",
 ]

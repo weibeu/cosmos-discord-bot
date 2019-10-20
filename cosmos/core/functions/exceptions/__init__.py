@@ -9,5 +9,5 @@ __all__ = [
     "ExceptionHandler",
 
     "GuildNotPrime",
-    "MemberNotPrime",
+    "UserNotPrime",
 ]
