@@ -55,7 +55,7 @@ class Tags(Cog):
         await ctx.send_line(f"✅    Tag {name} has been created.")
 
     @tag.command(name="remove", aliases=["delete"])
-    async def remove_tag(self, ctx, name):
+    async def remove_tag(self, ctx, *, name):
         profile = await ctx.fetch_cosmos_user_profile()
         if not profile.get_tag(name):
             return await ctx.send_line(f"❌    You don't own any tag with such name.")
