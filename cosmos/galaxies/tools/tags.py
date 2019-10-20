@@ -9,7 +9,9 @@ class Tags(Cog):
         self.plugin = plugin
 
     async def __tags_parser(self, _, tag, __):
-        return tag.name, tag.content[:self.plugin.data.tags.tags_excerpt_size] + " ..."
+        if len(tag.content) > self.plugin.data.tags.tags_excerpt_size:
+            return tag.name, tag.content[:self.plugin.data.tags.tags_excerpt_size] + " ..."
+        return tag.name, tag.content
 
     @Cog.command(name="tags")
     async def tags(self, ctx):
