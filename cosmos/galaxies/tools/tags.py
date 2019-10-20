@@ -38,7 +38,7 @@ class Tags(Cog):
         except IndexError:
             pass
         else:
-            embed.set_image(url)
+            embed.set_image(url=url)
             content = content.replace(url, str())
         embed.description = content
         await ctx.send(embed=embed)
@@ -56,8 +56,13 @@ class Tags(Cog):
         await ctx.send_line(f"✅    Tag {name} has been created.")
 
     @tag.command(name="remove", aliases=["delete"])
-    async def remove_tag(self, ctx, *, name):
+    async def remove_tag(self, ctx, *, name=None):
         profile = await ctx.fetch_cosmos_user_profile()
+        if not name:
+            menu = ctx.get_field_menu(profile.tags, self.__tags_parser, inline=False)
+            menu.embed.title = "Remove Custom Tag"
+            response = await menu.wait_for_response()
+            name = response.entry.name
         if not profile.get_tag(name):
             return await ctx.send_line(f"❌    You don't own any tag with such name.")
         if not await ctx.confirm(f"⚠   Are you sure to remove tag {name}?"):
