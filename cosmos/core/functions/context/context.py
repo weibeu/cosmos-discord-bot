@@ -5,6 +5,9 @@ from .functions import *
 
 class CosmosContext(commands.Context):
 
+    async def fetch_cosmos_user_profile(self):
+        return await self.bot.profile_cache.get_profile(self.author.id)
+
     async def fetch_guild_profile(self):
         return await self.bot.guild_cache.get_profile(self.guild.id)
 
