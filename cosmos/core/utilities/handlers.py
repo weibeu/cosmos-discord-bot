@@ -12,7 +12,7 @@ class FileHandler(object):
         if path.endswith(".json"):
             file_data = json.load(file)
         elif path.endswith(".yaml") or path.endswith(".yml"):
-            file_data = yaml.load(file)
+            file_data = yaml.safe_load(file)
         else:
             pass
         return file_data  # dict
