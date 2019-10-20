@@ -34,11 +34,10 @@ class UserTags(ProfileModelsBase, ABC):
 
     async def create_tag(self, name, content):
         if self.get_tag(name):
-            self.__remove_tag(name)    # Replace tag with new content.
+            await self.remove_tag(name)  # Pull if already exists.
         tag = Tag(name, content)
         self.tags.append(tag)
 
-        await self.remove_tag(tag.name)   # Pull if already exists.
         await self.collection.update_one(
             self.document_filter, {"$addToSet": {"tags": tag.document}}
         )
