@@ -24,7 +24,7 @@ class UserTags(ProfileModelsBase, ABC):
 
     def get_tag(self, name):
         try:
-            return [tag for tag in self.tags if tag.name.lower() == name][0]
+            return [tag for tag in self.tags if tag.name.lower() == name.lower()][0]
         except IndexError:
             pass
 
