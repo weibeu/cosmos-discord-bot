@@ -255,11 +255,10 @@ class ReactorSettings(object):
     async def enable_reactor(self, reactor, enabled=True):
         reactor.enabled = enabled
 
+        document_filter = self.__profile.document_filter.copy()
+        document_filter.update({"settings.reactors.channel_id": reactor.channel.id})
         await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$pull": {f"settings.reactors": {"channel_id": reactor.channel.id}}}
-        )
-        await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$addToSet": {"settings.reactors": reactor.document}}
+            document_filter, {"$set": {"settings.reactors.$.enabled": reactor.enabled}}
         )
 
 
