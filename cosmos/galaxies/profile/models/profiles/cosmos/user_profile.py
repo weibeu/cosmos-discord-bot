@@ -1,12 +1,13 @@
 import arrow
 
-from .currency import Boson, Fermion
+from .tags import UserTags
 from .family import Relationship
+from .currency import Boson, Fermion
 
 from ..guild import GuildMemberProfile
 
 
-class CosmosUserProfile(Boson, Fermion, Relationship):
+class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
 
     @property
     def plugin(self):
@@ -36,6 +37,7 @@ class CosmosUserProfile(Boson, Fermion, Relationship):
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
         Relationship.__init__(self, **kwargs)
+        UserTags.__init__(self, kwargs.get("tags", dict()))
         self.__plugin = plugin
         self._id: int = kwargs["user_id"]
         self._is_prime = kwargs.get("is_prime", False)
