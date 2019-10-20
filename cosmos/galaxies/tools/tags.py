@@ -22,7 +22,7 @@ class Tags(Cog):
         await paginator.paginate()
 
     @Cog.group(name="tag", invoke_without_command=True)
-    async def tag(self, ctx, name):
+    async def tag(self, ctx, *, name):
         profile = await ctx.fetch_cosmos_user_profile()
         if not profile.tags:
             return await ctx.send_line(f"❌    You haven't created any custom tags yet.")
