@@ -37,7 +37,8 @@ class Tags(Cog):
         await ctx.send(embed=embed)
 
     @tag.command(name="create")
-    async def create_tag(self, ctx, name, *, content: commands.clean_content):
+    async def create_tag(
+            self, ctx, name, *, content: commands.clean_content(use_nicknames=False, fix_channel_mentions=True)):
         profile = await ctx.fetch_cosmos_user_profile()
         if len(profile.tags) >= self.plugin.data.tags.max_tags and not profile.is_prime:
             raise UserNotPrime
