@@ -258,7 +258,7 @@ class ReactorSettings(object):
         await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$pull": {f"settings.reactors": {"channel_id": reactor.channel.id}}}
         )
-        self.__profile.collection.update_one(
+        await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$addToSet": {"settings.reactors": reactor.document}}
         )
 
