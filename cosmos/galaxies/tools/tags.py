@@ -18,7 +18,8 @@ class Tags(Cog):
         profile = await ctx.fetch_cosmos_user_profile()
         if not profile.tags:
             return await ctx.send_line(f"❌    You haven't created any custom tags yet.")
-        paginator = ctx.get_field_paginator(profile.tags, entry_parser=self.__tags_parser)
+        paginator = ctx.get_field_paginator(profile.tags, entry_parser=self.__tags_parser, inline=False)
+        paginator.embed.title = "Custom Tags"
         await paginator.paginate()
 
     @Cog.group(name="tag", invoke_without_command=True)
