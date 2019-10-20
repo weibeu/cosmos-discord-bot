@@ -22,9 +22,6 @@ class UserTags(ProfileModelsBase, ABC):
     def __init__(self, documents):
         self.tags = [Tag(_["name"], _["content"]) for _ in documents]
 
-    def __bool__(self):
-        return bool(self.tags)
-
     def get_tag(self, name):
         try:
             return [tag for tag in self.tags if tag.name.lower() == name][0]
