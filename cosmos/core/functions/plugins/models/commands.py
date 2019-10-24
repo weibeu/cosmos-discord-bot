@@ -24,5 +24,4 @@ def cosmos_command(name: str = None, **attrs):
 
 
 def cosmos_group_command(name: str = None, **attrs):
-    attrs.setdefault('cls', CosmosGroupCommand)
-    return cosmos_command(name=name, **attrs)
+    return command(name=name, cls=CosmosGroupCommand, **attrs)
