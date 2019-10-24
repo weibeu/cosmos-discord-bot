@@ -1,10 +1,12 @@
-from discord.ext.commands import Command, Group, command
+from discord.ext.commands import Command, Group
 
 
 class CosmosCommand(Command):
 
-    def __init__(self, *args, **kwargs):
-        self.disabled_channels = []
+    def __init__(self, inescapable, *args, **kwargs):
+        if not inescapable:
+            self.disabled_channels = []
+        self.inescapable = inescapable
         super().__init__(*args, **kwargs)
 
 
@@ -15,13 +17,18 @@ class CosmosGroupCommand(Group):
         super().__init__(*args, **kwargs)
 
 
-def cosmos_command(name: str = None, **attrs):
-    return command(name=name, cls=CosmosCommand, **attrs)
-    # def decorator(function):
-    #     return command(name=name, cls=CosmosCommand, **attrs)(function)
-    #
-    # return decorator
+def cosmos_command(name: str = None, inescapable=True, cls=None, **attrs):
+
+    cls = cls or CosmosCommand
+
+    def decorator(function):
+        if isinstance(function, CosmosCommand):
+            raise TypeError('Callback is already a command.')
+        return cls(function, name=name, inescapable=inescapable, **attrs)
+
+    return decorator
 
 
-def cosmos_group_command(name: str = None, **attrs):
-    return command(name=name, cls=CosmosGroupCommand, **attrs)
+def cosmos_group_command(name: str = None, inescapable=True, **attrs):
+    attrs.setdefault('cls', CosmosGroupCommand)
+    return cosmos_command(name=name, inescapable=inescapable, **attrs)
