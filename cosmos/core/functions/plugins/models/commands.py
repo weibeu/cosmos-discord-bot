@@ -13,6 +13,8 @@ class CosmosCommand(Command):
 class CosmosGroupCommand(Group):
 
     def __init__(self, *args, inescapable=True, **kwargs):
+        if not inescapable:
+            self.disabled_channels = []
         self.inescapable = inescapable
         super().__init__(*args, **kwargs)
 
