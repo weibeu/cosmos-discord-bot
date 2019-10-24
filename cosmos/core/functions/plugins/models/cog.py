@@ -1,12 +1,13 @@
 from discord.ext import commands
 
 from .checks import CosmosChecks
+from .commands import cosmos_command, cosmos_group_command
 
 
 class Cog(commands.Cog, metaclass=commands.CogMeta):
 
-    command = commands.command
-    group = commands.group
+    command = cosmos_command
+    group = cosmos_group_command
 
     checks = CosmosChecks
 
