@@ -15,7 +15,7 @@ class DisabledFunctions(object):
         for command_name, channel_ids in _document:
             command = self.__bot.get_command(command_name)
             # Dynamically patch channels to which commands are meant to be disabled.
-            command.disabled_channels = [self.__bot.get_channel(_) for _ in channel_ids]
+            # command.disabled_channels = [self.__bot.get_channel(_) for _ in channel_ids]
             # TODO: Rather than dynamically patching, make commands use custom cls with disabled_channels
             # TODO: - as one of its attributes and append channels to it.
 
