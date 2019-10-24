@@ -12,7 +12,7 @@ class CosmosCommand(Command):
 
 class CosmosGroupCommand(Group):
 
-    def __init__(self, inescapable=True, *args, **kwargs):
+    def __init__(self, *args, inescapable=True, **kwargs):
         self.inescapable = inescapable
         super().__init__(*args, **kwargs)
 
