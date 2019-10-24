@@ -4,7 +4,7 @@ from discord.ext.commands import Command, Group
 class CosmosCommand(Command):
 
     def __init__(self, function, inescapable=True, **kwargs):
-        if inescapable:
+        if not inescapable:
             self.disabled_channels = []
         self.inescapable = inescapable
         super().__init__(function, **kwargs)
