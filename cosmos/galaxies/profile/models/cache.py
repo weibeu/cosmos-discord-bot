@@ -1,4 +1,4 @@
-import asyncio
+from discord.ext import tasks
 
 from .profiles import CosmosUserProfile, GuildMemberProfile
 
@@ -15,7 +15,12 @@ class ProfileCache(object):
         self._redis = None
         self.lfu = self.bot.cache.lfu(self.plugin.data.profile.cache_max_size)
         self.collection = self.plugin.collection
-        self.bot.loop.create_task(self.__update_database())
+        self.update_database_task = tasks.loop(
+            seconds=self.plugin.data.profile.update_task_cooldown
+        )(self.__update_database)
+        # Start above background task.
+        self.update_database_task.start()
+        # self.bot.loop.create_task(self.__update_database())
         # self.bot.loop.create_task(self.__get_redis_client())
 
     async def __get_redis_client(self):
@@ -79,8 +84,6 @@ class ProfileCache(object):
             self.bot.loop.create_task(asset)
 
     async def __update_database(self):
-        while True:
-            await asyncio.sleep(self.plugin.data.profile.update_task_cooldown)
-            for profile in self.lfu.values():
-                self.plugin.batch.queue_update(*profile.to_update_document())
-            await self.plugin.batch.write(ordered=False)
+        for profile in self.lfu.values():
+            self.plugin.batch.queue_update(*profile.to_update_document())
+        await self.plugin.batch.write(ordered=False)
