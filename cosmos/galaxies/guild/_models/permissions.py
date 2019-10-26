@@ -9,8 +9,8 @@ class DisabledFunctions(object):
         self.__bot = bot
         self.__fetch_commands(document.get("commands", list()))
 
-    def __fetch_commands(self, _document):
-        for command_name, channel_ids in _document.items():
+    def __fetch_commands(self, _documents):
+        for command_name, channel_ids in _documents:
             command = self.__bot.get_command(command_name)
             try:
                 command.disabled_channels.extend([self.__bot.get_channel(_) for _ in channel_ids])
