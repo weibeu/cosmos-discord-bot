@@ -55,7 +55,7 @@ class GuildPermissions(CosmosGuildBase, ABC):
         # self.disabled_plugins = []     # mode = "plugins"
         # self.disabled_galaxies = []    # mode = "galaxies"
         # Generalisation of above three attributes are represented using '_disabled'.
-        self.disabled = DisabledFunctions(self.plugin.bot, document.get("disabled", list()))
+        self.disabled = DisabledFunctions(self.plugin.bot, document.get("disabled", dict()))
 
     @staticmethod
     def __get(_disabled, name):
