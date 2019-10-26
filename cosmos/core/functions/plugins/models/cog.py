@@ -6,15 +6,19 @@ from .commands import cosmos_command, cosmos_group_command
 
 class Cog(commands.Cog, metaclass=commands.CogMeta):
 
+    # Some shorthands
     command = cosmos_command
     group = cosmos_group_command
-
     checks = CosmosChecks
+
+    INESCAPABLE = True    # Determines if cog can be disabled by guild admins.
 
     def __init__(self, *args, **kwargs):
         self.name = self.__class__.__name__
         self._plugin = None
         self._bot = None
+        if not self.INESCAPABLE:
+            self.disabled_channels = []
 
     @property
     def plugin(self):
