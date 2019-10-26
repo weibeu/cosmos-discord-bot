@@ -7,18 +7,23 @@ class DisabledFunctions(object):
 
     def __init__(self, bot, document):
         self.__bot = bot
-        self.commands = []
-        self.plugins = []
-        self.galaxies = []
+        self.__fetch_commands(document.get("commands", list()))
 
     def __fetch_commands(self, _document):
-        for command_name, channel_ids in _document:
+        for command_name, channel_ids in _document.items():
             command = self.__bot.get_command(command_name)
-            command.disabled_channels.extend([self.__bot.get_channel(_) for _ in channel_ids])
+            try:
+                command.disabled_channels.extend([self.__bot.get_channel(_) for _ in channel_ids])
+            except AttributeError:
+                pass    # Command is inescapable.
             # Dynamically patch channels to which commands are meant to be disabled.
             # command.disabled_channels = [self.__bot.get_channel(_) for _ in channel_ids]
-            # TODO: Rather than dynamically patching, make commands use custom cls with disabled_channels
-            # TODO: - as one of its attributes and append channels to it.
+            # Rather than dynamically patching, make commands use custom cls with disabled_channels
+            # as one of its attributes and append channels to it.
+
+    def __fetch_plugins(self, _document):    # Actually cogs.
+        for plugin_name, channel_ids in _document.items():
+            plugin = self.__bot.get_cog(plugin_name)
 
     @staticmethod
     def __get(_disabled, name):
@@ -50,7 +55,7 @@ class GuildPermissions(CosmosGuildBase, ABC):
         # self.disabled_plugins = []     # mode = "plugins"
         # self.disabled_galaxies = []    # mode = "galaxies"
         # Generalisation of above three attributes are represented using '_disabled'.
-        self.disabled = DisabledFunctions(self.plugin.bot, document.get("disabled", dict()))
+        self.disabled = DisabledFunctions(self.plugin.bot, document.get("disabled", list()))
 
     @staticmethod
     def __get(_disabled, name):
