@@ -18,7 +18,7 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
         self._plugin = None
         self._bot = None
         if not self.INESCAPABLE:
-            self.disabled_channels = []
+            self.disabled_channels = set()
 
     @property
     def plugin(self):
