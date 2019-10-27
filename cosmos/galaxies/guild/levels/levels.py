@@ -1,7 +1,11 @@
+import typing
 import discord
 
 from .._models.base import GuildBaseCog
 from discord.ext.commands import has_permissions, Converter, RoleConverter, BadArgument
+
+
+# TODO: Voice Levels.
 
 
 class _RoleConvertor(Converter):
@@ -25,9 +29,24 @@ class Levels(GuildBaseCog):
         embed.add_field(name="XP", value=profile.xp)
         await ctx.send(embed=embed)
 
+    @staticmethod
+    async def __rewards_parser(_, entry, __):    # reward, rewards
+        value = f"**Roles:** " + " ".join([f"<@&{_}>" for _ in entry.roles]) + "\n"
+        if entry.points:
+            value += f"**Points:** {entry.points}"
+        return f"Level {entry.level}", value
+
     @levels.group(name="reward", aliases=["rewards"], invoke_without_command=True)
-    async def rewards(self, ctx, level: int):
-        _reward = ctx.guild_profile.levels.rewards.get(level)
+    async def rewards(self, ctx, level: int = None):
+        rewards = ctx.guild_profile.levels.rewards
+        if not rewards:
+            return await ctx.send_line(f"❌    There are no level rewards set in this server yet.")
+        if not level:
+            paginator = ctx.get_field_paginator(
+                list(rewards.values()), show_author=False, entry_parser=self.__rewards_parser, inline=False)
+            paginator.embed.set_author(name="Level Rewards", icon_url=ctx.guild.icon_url)
+            return await paginator.paginate()
+        _reward = rewards.get(level)
         if not _reward:
             return await ctx.send_line(f"❌    There are no rewards assigned for level {level}.")
         embed = self.bot.theme.embeds.primary()
@@ -38,7 +57,7 @@ class Levels(GuildBaseCog):
 
     @rewards.command(name="set")
     @has_permissions(administrator=True)
-    async def set_rewards(self, ctx, level: int, points: int, *, roles: _RoleConvertor()):
+    async def set_rewards(self, ctx, level: int, points: typing.Optional[int] = 0, *, roles: _RoleConvertor()):
         embed = self.bot.theme.embeds.primary()
         embed.set_author(name=f"Are you sure to set following rewards for Level {level}?", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([role.mention for role in roles]))
