@@ -10,6 +10,7 @@ from ..data.models import PluginData
 class Plugin(object):   # Extension
 
     INESCAPABLE = True
+    # TODO: Auto consume such properties from __init__.py file.
 
     def __init__(self, bot, dir_path):
         self.bot = bot
