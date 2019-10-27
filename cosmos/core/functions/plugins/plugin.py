@@ -19,7 +19,7 @@ class Plugin(object):   # Extension
         self.data = None
         # self.category = None
         # self.extension = None    # __init__.py module.
-        self.__disabled_channels = []
+        self.__disabled_channels = []    # Set it to False in __init__.py to allow guild admins to disable it.
         self._cogs = {}  # All visible loaded cogs. Isn't affected by load/unload methods.
         self.cogs = {}
         self.get_details()
