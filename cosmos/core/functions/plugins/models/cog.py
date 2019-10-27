@@ -12,6 +12,7 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
     checks = CosmosChecks
 
     INESCAPABLE = True    # Determines if cog can be disabled by guild admins.
+    # TODO: Handle cog listeners.
 
     def __init__(self, *args, **kwargs):
         self.name = self.__class__.__name__
