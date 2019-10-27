@@ -9,6 +9,8 @@ from ..data.models import PluginData
 
 class Plugin(object):   # Extension
 
+    INESCAPABLE = True
+
     def __init__(self, bot, dir_path):
         self.bot = bot
         self.dir_path = dir_path
@@ -17,10 +19,17 @@ class Plugin(object):   # Extension
         self.data = None
         # self.category = None
         # self.extension = None    # __init__.py module.
+        self.__disabled_channels = []
         self._cogs = {}  # All visible loaded cogs. Isn't affected by load/unload methods.
         self.cogs = {}
         self.get_details()
         self.get_data()
+
+    @property
+    def disabled_channels(self):
+        if self.INESCAPABLE:
+            raise AttributeError
+        return self.__disabled_channels
 
     @property
     def module(self):
