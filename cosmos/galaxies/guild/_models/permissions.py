@@ -9,11 +9,14 @@ class DisabledFunctions(object):
         self.__bot = bot
         self.__fetch_commands(document.get("commands", list()))
 
+    def __get_channels(self, channel_ids):
+        return [self.__bot.get_channel(_) for _ in channel_ids]
+
     def __fetch_commands(self, _documents):
         for command_name, channel_ids in _documents:
             command = self.__bot.get_command(command_name)
             try:
-                command.disabled_channels.extend([self.__bot.get_channel(_) for _ in channel_ids])
+                command.disabled_channels.extend(self.__get_channels(channel_ids))
             except AttributeError:
                 pass    # Command is inescapable.
             # Dynamically patch channels to which commands are meant to be disabled.
@@ -24,6 +27,10 @@ class DisabledFunctions(object):
     def __fetch_plugins(self, _document):    # Actually cogs.
         for plugin_name, channel_ids in _document.items():
             plugin = self.__bot.get_cog(plugin_name)
+            try:
+                plugin.disabled_channels.extend(self.__get_channels(channel_ids))
+            except AttributeError:
+                pass    # Cog is inescapable.
 
     @staticmethod
     def __get(_disabled, name):
