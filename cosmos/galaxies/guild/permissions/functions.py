@@ -26,6 +26,7 @@ class FunctionsPermissions(GuildBaseCog):
         pass
 
     @GuildBaseCog.group(name="disable")
+    @commands.has_permissions(administrator=True)
     async def disable(self, ctx):
         pass
 
@@ -42,6 +43,7 @@ class FunctionsPermissions(GuildBaseCog):
         pass
 
     @GuildBaseCog.group(name="enable")
+    @commands.has_permissions(administrator=True)
     async def enable(self, ctx):
         pass
 
