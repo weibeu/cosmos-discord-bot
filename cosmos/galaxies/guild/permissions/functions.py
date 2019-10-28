@@ -6,19 +6,31 @@ from ..settings.base import Settings
 class CommandConverter(commands.Converter):
 
     async def convert(self, ctx, argument):
-        raise commands.BadArgument
+        if not (command := ctx.bot.get_command(argument.lower())):
+            raise commands.BadArgument
+        if not hasattr(command, "disabled_channels"):
+            raise commands.BadArgument
+        return command
 
 
 class PluginConverter(commands.Converter):
 
     async def convert(self, ctx, argument):
-        raise commands.BadArgument
+        if not (plugin := ctx.bot.get_cog(argument.lower().title().replace(" ", str()))):
+            raise commands.BadArgument
+        if not hasattr(plugin, "disabled_channels"):
+            raise commands.BadArgument
+        return plugin
 
 
 class GalaxyConverter(commands.Converter):
 
     async def convert(self, ctx, argument):
-        raise commands.BadArgument
+        if not (galaxy := ctx.bot.get_galaxy(argument.lower())):
+            raise commands.BadArgument
+        if not hasattr(galaxy, "disabled_channels"):
+            raise commands.BadArgument
+        return galaxy
 
 
 class FunctionsPermissions(Settings):
@@ -32,7 +44,7 @@ class FunctionsPermissions(Settings):
         pass
 
     @disable.command(name="plugin", aliases=["cog"])
-    async def disable_plugin(self, ctx, plugin: PluginConverter):
+    async def disable_plugin(self, ctx, *, plugin: PluginConverter):
         pass
 
     @disable.command(name="galaxy", aliases=["module"])
