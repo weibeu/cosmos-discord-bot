@@ -58,7 +58,7 @@ class GuildPermissions(object):
         # Generalisation of above three attributes are represented using '_disabled'.
         self.disabled = DisabledFunctions(self.profile.plugin.bot, document.get("disabled", dict()))
 
-    async def __disable(self, function, name, channels):
+    async def disable(self, function, name, channels):
         _ = self.disabled.get(function, name)
         _.disabled_channels.update(channels)
 
@@ -66,7 +66,7 @@ class GuildPermissions(object):
             "$addToSet": {f"settings.permissions.disabled.{function}.{name}": {"$each": [_.id for _ in channels]}}
         })
 
-    async def __enable(self, function, name, channels):
+    async def enable(self, function, name, channels):
         _ = self.disabled.get(name, function)
         _.disabled_channels.difference_update(channels)
 
