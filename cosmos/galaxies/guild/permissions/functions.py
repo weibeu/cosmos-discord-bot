@@ -23,9 +23,6 @@ class GalaxyConverter(commands.Converter):
 
 class FunctionsPermissions(Settings):
 
-    async def cog_check(self, ctx):
-        pass
-
     @Settings.group(name="disable")
     async def disable(self, ctx):
         pass
