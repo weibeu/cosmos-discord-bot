@@ -37,12 +37,12 @@ class DisabledFunctions(object):
             except AttributeError:
                 pass    # Galaxy is inescapable.
 
-    def get(self, mode, name):
-        if mode == "commands":
+    def get(self, function, name):
+        if function == "commands":
             return self.__bot.get_command(name)
-        elif mode == "plugins":
+        elif function == "plugins":
             return self.__bot.get_cog(name)
-        elif mode == "galaxies":
+        elif function == "galaxies":
             return self.__bot.get_galaxy(name)
         else:
             raise NameError
@@ -52,24 +52,24 @@ class GuildPermissions(object):
 
     def __init__(self, profile, document):
         self.profile = profile
-        # self.disabled_commands = []    # mode = "commands"
-        # self.disabled_plugins = []     # mode = "plugins"
-        # self.disabled_galaxies = []    # mode = "galaxies"
+        # self.disabled_commands = []    # function = "commands"
+        # self.disabled_plugins = []     # function = "plugins"
+        # self.disabled_galaxies = []    # function = "galaxies"
         # Generalisation of above three attributes are represented using '_disabled'.
         self.disabled = DisabledFunctions(self.profile.plugin.bot, document.get("disabled", dict()))
 
-    async def __disable(self, mode, name, channels):
-        _ = self.disabled.get(mode, name)
+    async def __disable(self, function, name, channels):
+        _ = self.disabled.get(function, name)
         _.disabled_channels.update(channels)
 
         await self.profile.collection.update_one(self.profile.document_filter, {
-            "$addToSet": {f"settings.permissions.disabled.{mode}.{name}": {"$each": [_.id for _ in channels]}}
+            "$addToSet": {f"settings.permissions.disabled.{function}.{name}": {"$each": [_.id for _ in channels]}}
         })
 
-    async def __enable(self, mode, name, channels):
-        _ = self.disabled.get(name, mode)
+    async def __enable(self, function, name, channels):
+        _ = self.disabled.get(name, function)
         _.disabled_channels.difference_update(channels)
 
         await self.profile.collection.update_one(self.profile.document_filter, {
-            "$pull": {f"settings.permissions.disabled.{mode}.{name}": {"$each": [_.id for _ in channels]}}
+            "$pull": {f"settings.permissions.disabled.{function}.{name}": {"$each": [_.id for _ in channels]}}
         })
