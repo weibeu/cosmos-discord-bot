@@ -272,13 +272,13 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, GuildPermissions, ABC
         raw_settings = kwargs.get("settings", dict())
         WelcomeBannerSettings.__init__(self, **raw_settings)
         LoggerSettings.__init__(self, **raw_settings)
-        GuildPermissions.__init__(self, raw_settings.get("permissions", dict()))
         self.auto_moderation = AutoModerationSettings(self, **raw_settings)
         self.theme = ThemeSettings(self, **raw_settings)
         self.reactors = ReactorSettings(self, raw_settings.get("reactors", dict()))
         self.moderators = raw_settings.get("moderators", list())
         self.presets = raw_settings.get("presets", dict())
         self.roles = raw_settings.get("roles", dict())
+        self.permissions = GuildPermissions(self, raw_settings.get("permissions", dict()))
 
     async def add_moderator(self, _id):
         self.moderators.append(_id)

@@ -1,8 +1,3 @@
-from abc import ABC
-
-from .base import CosmosGuildBase
-
-
 class DisabledFunctions(object):
 
     def __init__(self, bot, document):
@@ -53,20 +48,21 @@ class DisabledFunctions(object):
             raise NameError
 
 
-class GuildPermissions(CosmosGuildBase, ABC):
+class GuildPermissions(object):
 
-    def __init__(self, document):
+    def __init__(self, profile, document):
+        self.profile = profile
         # self.disabled_commands = []    # mode = "commands"
         # self.disabled_plugins = []     # mode = "plugins"
         # self.disabled_galaxies = []    # mode = "galaxies"
         # Generalisation of above three attributes are represented using '_disabled'.
-        self.disabled = DisabledFunctions(self.plugin.bot, document.get("disabled", dict()))
+        self.disabled = DisabledFunctions(self.profile.plugin.bot, document.get("disabled", dict()))
 
     async def __disable(self, mode, name, channels):
         _ = self.disabled.get(mode, name)
         _.disabled_channels.update(channels)
 
-        await self.collection.update_one(self.document_filter, {
+        await self.profile.collection.update_one(self.profile.document_filter, {
             "$addToSet": {f"settings.permissions.disabled.{mode}.{name}": {"$each": [_.id for _ in channels]}}
         })
 
@@ -74,6 +70,6 @@ class GuildPermissions(CosmosGuildBase, ABC):
         _ = self.disabled.get(name, mode)
         _.disabled_channels.difference_update(channels)
 
-        await self.collection.update_one(self.document_filter, {
+        await self.profile.collection.update_one(self.profile.document_filter, {
             "$pull": {f"settings.permissions.disabled.{mode}.{name}": {"$each": [_.id for _ in channels]}}
         })
