@@ -16,10 +16,19 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
 
     def __init__(self, *args, **kwargs):
         self.name = self.__class__.__name__
+        self.display_name = None
+        self.__get_display_name()
         self._plugin = None
         self._bot = None
         if not self.INESCAPABLE:
             self.disabled_channels = set()
+
+    def __get_display_name(self):
+        self.display_name = self.name[0]
+        for _ in self.name[1:]:
+            if _.isupper():
+                self.display_name += " "
+            self.display_name += _
 
     @property
     def plugin(self):
