@@ -3,6 +3,7 @@ from ._models import GuildCache
 from .roleshop import RoleShop
 from .reactor import Reactor
 from .settings import GuildSettings
+from .permissions import FunctionsPermissions
 
 
 __all__ = [
@@ -10,6 +11,7 @@ __all__ = [
     RoleShop,
     Reactor,
     GuildSettings,
+    FunctionsPermissions,
 ]
 
 
