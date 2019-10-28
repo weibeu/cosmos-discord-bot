@@ -1,5 +1,6 @@
 from discord.ext import commands
-from .._models import GuildBaseCog
+
+from ..settings.base import Settings
 
 
 class CommandConverter(commands.Converter):
@@ -20,13 +21,12 @@ class GalaxyConverter(commands.Converter):
         raise commands.BadArgument
 
 
-class FunctionsPermissions(GuildBaseCog):
+class FunctionsPermissions(Settings):
 
     async def cog_check(self, ctx):
         pass
 
-    @GuildBaseCog.group(name="disable")
-    @commands.has_permissions(administrator=True)
+    @Settings.group(name="disable")
     async def disable(self, ctx):
         pass
 
@@ -42,8 +42,7 @@ class FunctionsPermissions(GuildBaseCog):
     async def disable_galaxy(self, ctx, galaxy: GalaxyConverter):
         pass
 
-    @GuildBaseCog.group(name="enable")
-    @commands.has_permissions(administrator=True)
+    @Settings.group(name="enable")
     async def enable(self, ctx):
         pass
 
