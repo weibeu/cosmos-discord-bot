@@ -35,6 +35,8 @@ class GalaxyConverter(commands.Converter):
 
 class FunctionsPermissions(Settings):
 
+    # TODO: Implement menu.
+
     @Settings.group(name="disable")
     async def disable(self, ctx):
         pass
