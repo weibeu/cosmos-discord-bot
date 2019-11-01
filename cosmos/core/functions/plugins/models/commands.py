@@ -3,6 +3,8 @@ from discord.ext.commands import Command, Group
 
 class CosmosCommand(Command):
 
+    FUNCTION = "commands"
+
     def __init__(self, function, inescapable=True, **kwargs):
         if not inescapable:
             self.disabled_channels = set()

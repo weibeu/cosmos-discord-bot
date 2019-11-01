@@ -7,8 +7,9 @@ from .models import Cog
 from ..data.models import PluginData
 
 
-class Plugin(object):   # Extension
+class Plugin(object):   # Extension    # TODO: Change its name to galaxy.
 
+    FUNCTION = "galaxies"
     INESCAPABLE = True
     # TODO: Auto consume such properties from __init__.py file.
 

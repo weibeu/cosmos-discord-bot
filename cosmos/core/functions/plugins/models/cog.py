@@ -11,6 +11,7 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
     group = cosmos_group_command
     checks = CosmosChecks
 
+    FUNCTION = "plugins"
     INESCAPABLE = True    # Determines if cog can be disabled by guild admins.
     # TODO: Handle cog listeners.
 
