@@ -37,7 +37,7 @@ class FunctionsPermissions(Settings):
     @Settings.group(name="disable")
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                       *channels: discord.TextChannel):
-        channels = channels or [ctx.channel]
+        channels = channels or ctx.channel,
         await ctx.guild_profile.permissions.disable(function, channels)
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been disabled in specified channels.")
@@ -45,7 +45,7 @@ class FunctionsPermissions(Settings):
     @Settings.group(name="enable")
     async def enable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                      *channels: discord.TextChannel):
-        channels = channels or [ctx.channel]
+        channels = channels or ctx.channel,
         await ctx.guild_profile.permissions.enable(function, channels)
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been enabled back in specified channels.")
