@@ -29,7 +29,7 @@ class Plugin(object):   # Extension    # TODO: Change its name to galaxy.
 
     @property
     def display_name(self):
-        return self.name.title()
+        return self.name.upper()
 
     @property
     def disabled_channels(self):
