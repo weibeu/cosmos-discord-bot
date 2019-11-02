@@ -11,4 +11,4 @@ __all__ = [
 
 
 def setup(bot):
-    bot.plugins.setup(__file__)
+    bot.plugins.setup(__file__, INESCAPABLE=False)
