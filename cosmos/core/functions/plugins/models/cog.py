@@ -6,6 +6,8 @@ from .commands import cosmos_command, cosmos_group_command
 
 class Cog(commands.Cog, metaclass=commands.CogMeta):
 
+    # TODO: Add load kwarg to determine if cog is to be loaded into plugin.
+
     # Some shorthands
     command = cosmos_command
     group = cosmos_group_command
