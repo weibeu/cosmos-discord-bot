@@ -28,6 +28,10 @@ class Plugin(object):   # Extension    # TODO: Change its name to galaxy.
         self.get_data()
 
     @property
+    def display_name(self):
+        return self.name.title()
+
+    @property
     def disabled_channels(self):
         if self.INESCAPABLE:
             raise AttributeError
