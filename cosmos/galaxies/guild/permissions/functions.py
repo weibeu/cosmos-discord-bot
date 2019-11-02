@@ -25,7 +25,7 @@ class PluginConverter(commands.Converter):
 class GalaxyConverter(commands.Converter):
 
     async def convert(self, ctx, argument):
-        if not (galaxy := ctx.bot.get_galaxy(argument.lower())):
+        if not (galaxy := ctx.bot.get_galaxy(argument)):
             raise commands.BadArgument
         return galaxy
 

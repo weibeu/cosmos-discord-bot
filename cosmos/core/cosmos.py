@@ -17,7 +17,7 @@ class Cosmos(InitialTasks):
             raise LoginFailure
 
     def get_galaxy(self, name):
-        return self.plugins.get(name)
+        return self.plugins.get(display_name=name)
 
     async def on_ready(self):
         self.log.info(f"{self.user.name}#{self.user.discriminator} Ready! [{self.time.round_time()} seconds.]")
