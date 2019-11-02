@@ -33,6 +33,7 @@ class GalaxyConverter(commands.Converter):
 class FunctionsPermissions(Settings):
 
     # TODO: Implement menu.
+    # TODO: Actually implement checks for these permissions.
 
     @Settings.group(name="disable")
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
