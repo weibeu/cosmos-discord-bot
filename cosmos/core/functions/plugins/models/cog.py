@@ -1,3 +1,4 @@
+from cosmos import exceptions
 from discord.ext import commands
 
 from .checks import CosmosChecks
@@ -25,6 +26,11 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
         self._bot = None
         if not self.INESCAPABLE:
             self.disabled_channels = set()
+
+    async def cog_check(self, ctx):
+        if not self.INESCAPABLE and ctx.channel in self.disabled_channels:
+            raise exceptions.DisabledFunctionError
+        return True
 
     def __get_display_name(self):
         self.display_name = self.name[0]
