@@ -8,7 +8,7 @@ from ..settings.base import Settings
 class CommandConverter(commands.Converter):
 
     async def convert(self, ctx, argument):
-        if not (command := ctx.bot.get_command(argument)):
+        if not (command := ctx.bot.get_command(argument)) or argument[0].isupper():
             raise commands.BadArgument
         return command
 
