@@ -59,5 +59,5 @@ class GuildPermissions(object):
         _.disabled_channels.difference_update(channels)
 
         await self.profile.collection.update_one(self.profile.document_filter, {
-            "$pull": {f"settings.permissions.disabled.{_.function}.{_.name}": {"$each": [__.id for __ in channels]}}
+            "$pull": {f"settings.permissions.disabled.{_.FUNCTION}.{_.name}": {"$each": [__.id for __ in channels]}}
         })
