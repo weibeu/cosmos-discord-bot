@@ -5,7 +5,7 @@ from discord.ext.commands import MissingPermissions
 
 class Settings(GuildBaseCog):
 
-    def cog_check(self, ctx):
+    async def cog_check(self, ctx):
         if not ctx.author.guild_permissions.manage_guild:
             raise MissingPermissions(["manage_guild"])
         return True
