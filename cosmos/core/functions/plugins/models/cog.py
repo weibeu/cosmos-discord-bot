@@ -28,8 +28,9 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
             self.disabled_channels = set()
 
     async def cog_check(self, ctx):
-        if not self.INESCAPABLE and ctx.channel in self.disabled_channels:
-            raise exceptions.DisabledFunctionError
+        if not self.INESCAPABLE:
+            if ctx.channel in self.disabled_channels:
+                raise exceptions.DisabledFunctionError
         return True
 
     def __get_display_name(self):
