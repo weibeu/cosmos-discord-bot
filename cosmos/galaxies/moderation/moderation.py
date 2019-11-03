@@ -66,6 +66,8 @@ class _GuildMemberProfile(commands.Converter):
 
 class Moderation(Cog):
 
+    INESCAPABLE = False
+
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin

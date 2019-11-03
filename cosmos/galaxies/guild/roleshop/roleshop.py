@@ -8,6 +8,8 @@ from .._models.exceptions import *
 
 class RoleShop(RoleShopPoints, RoleShopSettings):
 
+    INESCAPABLE = False
+
     @RoleShopSettings.role_shop.command(name="purchased")
     async def purchased_roles(self, ctx, *, member: discord.Member = None):
         member = member or ctx.author

@@ -19,6 +19,8 @@ class _RoleConvertor(Converter):
 
 class Levels(GuildBaseCog):
 
+    INESCAPABLE = False
+
     @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
         member = member or ctx.author
