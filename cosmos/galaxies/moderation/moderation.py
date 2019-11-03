@@ -105,7 +105,7 @@ class Moderation(Cog):
         return ModerationAction(
             await ctx.fetch_guild_profile(), target, ctx.author, action_type, *args, **kwargs)
 
-    @Cog.group(name="modlogs", invoke_without_command=True)
+    @Cog.group(name="modlogs", invoke_without_command=True, inescapable=False)
     @check_mod(kick_members=True)
     async def moderation_logs(self, ctx, *, member: typing.Union[discord.Member, int]):
         try:
@@ -130,7 +130,7 @@ class Moderation(Cog):
         await profile.clear_moderation_logs()
         await ctx.send_line(f"✅    Moderation logs of {member} has been purged.")
 
-    @Cog.command(name="warn")
+    @Cog.command(name="warn", inescapable=False)
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
         if not check_hierarchy(ctx.author, member):
@@ -142,7 +142,7 @@ class Moderation(Cog):
             res = f"✅    Failed to warn {member}. Warning logged."
         await ctx.send_line(res)
 
-    @Cog.command(name="kick")
+    @Cog.command(name="kick", inescapable=False)
     @check_mod(kick_members=True)
     @commands.bot_has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
@@ -155,7 +155,7 @@ class Moderation(Cog):
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
 
-    @Cog.command(name="ban")
+    @Cog.command(name="ban", inescapable=False)
     @check_mod(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None):
@@ -174,7 +174,7 @@ class Moderation(Cog):
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
 
-    @Cog.command(name="unban")
+    @Cog.command(name="unban", inescapable=False)
     @check_mod(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, user_id: int, *, reason=None):
@@ -186,7 +186,7 @@ class Moderation(Cog):
         await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
 
-    @Cog.group(name="mute", invoke_without_command=True)
+    @Cog.group(name="mute", invoke_without_command=True, inescapable=False)
     @check_voice_perms(mute_members=True)
     async def mute(self, ctx, member: discord.Member, *, reason=None):
         if not check_hierarchy(ctx.author, member):

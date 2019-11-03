@@ -21,7 +21,7 @@ class Levels(GuildBaseCog):
 
     INESCAPABLE = False
 
-    @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True)
+    @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True, inescapable=False)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
         member = member or ctx.author
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)

@@ -10,14 +10,14 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
 
     INESCAPABLE = False
 
-    @RoleShopSettings.role_shop.command(name="purchased")
+    @RoleShopSettings.role_shop.command(name="purchased", inescapable=False)
     async def purchased_roles(self, ctx, *, member: discord.Member = None):
         member = member or ctx.author
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         paginator = ctx.get_field_paginator(profile.roleshop.roles, entry_parser=self._paginator_parser)
         await paginator.paginate()
 
-    @RoleShopSettings.role_shop.command(name="buy", aliases=["purchase"])
+    @RoleShopSettings.role_shop.command(name="buy", aliases=["purchase"], inescapable=False)
     async def buy_role(self, ctx, *, role: discord.Role = None):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in ctx.guild_profile.roleshop.roles if role not in profile.roleshop.roles]
@@ -36,7 +36,7 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         if isinstance(error, NotEnoughPointsError):
             return await ctx.send_line("❌    Sorry but you don't have enough guild points to purchase that role.")
 
-    @RoleShopSettings.role_shop.command(name="sell")
+    @RoleShopSettings.role_shop.command(name="sell", inescapable=False)
     async def sell_role(self, ctx, *, role: discord.Role = None):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         role = await self._get_role(ctx, role, profile.roleshop.roles)
@@ -48,7 +48,7 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
             await ctx.author.remove_roles(role)
             await ctx.send_line(f"✅    You sold {role.name} earning {_role.points} guild points.")
 
-    @RoleShopSettings.role_shop.group(name="equip", invoke_without_command=True)
+    @RoleShopSettings.role_shop.group(name="equip", invoke_without_command=True, inescapable=False)
     async def equip_role(self, ctx, *, role: discord.Role = None):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in profile.roleshop.roles if ctx.guild.get_role(role.id) not in ctx.author.roles]
@@ -71,7 +71,7 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
             await ctx.author.add_roles(role, reason="Role equipped from role shop.")
         await ctx.send_line("✅    Equipped all purchased roles.")
 
-    @RoleShopSettings.role_shop.group(name="unequip", invoke_without_command=True)
+    @RoleShopSettings.role_shop.group(name="unequip", invoke_without_command=True, inescapable=False)
     async def unequip_role(self, ctx, *, role: discord.Role = None):
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in profile.roleshop.roles if ctx.guild.get_role(role.id) in ctx.author.roles]
