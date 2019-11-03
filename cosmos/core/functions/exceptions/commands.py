@@ -9,3 +9,8 @@ class GuildNotPrime(commands.CheckFailure):
 class UserNotPrime(commands.CheckFailure):
 
     pass
+
+
+class FunctionDisabledError(commands.CheckFailure):
+
+    pass
