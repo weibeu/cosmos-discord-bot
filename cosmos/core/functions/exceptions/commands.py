@@ -11,6 +11,6 @@ class UserNotPrime(commands.CheckFailure):
     pass
 
 
-class FunctionDisabledError(commands.CheckFailure):
+class DisabledFunctionError(commands.CheckFailure):
 
     pass

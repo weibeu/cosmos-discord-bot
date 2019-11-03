@@ -10,5 +10,5 @@ __all__ = [
 
     "GuildNotPrime",
     "UserNotPrime",
-    "FunctionDisabledError",
+    "DisabledFunctionError",
 ]
