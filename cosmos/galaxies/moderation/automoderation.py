@@ -29,6 +29,7 @@ class AutoModeration(Cog):
         self.plugin = plugin
 
     async def cog_check(self, ctx):
+        await super().cog_check(ctx)
         if not ctx.author.guild_permissions.administrator:
             raise commands.MissingPermissions(["administrator"])
         return True
