@@ -111,3 +111,6 @@ class InitialTasks(commands.Bot):
         self.log.info("Initialising image processor client.")
         self.image_processor = ImageProcessorClient(
             self.configs.image_processor.base_url, loop=self.loop)
+
+    def _init_misc_tasks(self):
+        self.get_command("help").inescapable = True    # Dynamically mark help command as inescapable.
