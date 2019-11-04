@@ -19,7 +19,7 @@ class _RoleConvertor(Converter):
 
 class Levels(GuildBaseCog):
 
-    INESCAPABLE = False
+    INESCAPABLE = False    # TODO: Fix. It still shows True at runtime.
 
     @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True, inescapable=False)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
