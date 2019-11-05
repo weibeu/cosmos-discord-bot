@@ -4,6 +4,8 @@ import discord
 from discord.ext import commands
 from ..settings.base import Settings
 
+from ....core.functions import exceptions
+
 
 class CommandConverter(commands.Converter):
 
@@ -32,7 +34,35 @@ class GalaxyConverter(commands.Converter):
 class FunctionsPermissions(Settings):
 
     # TODO: Implement menu.
-    # TODO: Actually implement checks for these permissions.
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Register following checks for permissions.
+        self.bot.add_check(self.__commands_check)
+        self.bot.add_check(self.__galaxies_check)
+
+    @staticmethod
+    async def __commands_check(ctx):
+        try:
+            if not ctx.command.inescapable:
+                if ctx.channel in ctx.command.disabled_channels:
+                    raise exceptions.DisabledFunctionError
+            return True
+        except AttributeError:
+            return True
+
+    @staticmethod
+    async def __galaxies_check(ctx):
+        try:
+            plugin = ctx.command.cog.plugin
+        except AttributeError:
+            pass
+        else:
+            if not plugin.INESCAPABLE:
+                if ctx.channel in plugin.disabled_channels:
+                    raise exceptions.DisabledFunctionError
+        finally:
+            return True
 
     @Settings.group(name="disable")
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
