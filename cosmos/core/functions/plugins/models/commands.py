@@ -14,6 +14,8 @@ class CosmosCommand(Command):
 
 class CosmosGroupCommand(Group):
 
+    FUNCTION = "commands"
+
     def __init__(self, *args, inescapable=True, **kwargs):
         if not inescapable:
             self.disabled_channels = set()
