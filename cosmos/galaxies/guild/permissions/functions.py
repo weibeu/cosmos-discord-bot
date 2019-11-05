@@ -53,6 +53,7 @@ class FunctionsPermissions(Settings):
 
     @staticmethod
     async def __galaxies_check(ctx):
+        # TODO: Fix this check.    ! Important
         try:
             plugin = ctx.command.cog.plugin
         except AttributeError:
