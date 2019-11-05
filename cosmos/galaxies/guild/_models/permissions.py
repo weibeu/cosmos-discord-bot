@@ -31,7 +31,7 @@ class DisabledFunctions(object):
 
     def __fetch_galaxies(self, _document):
         for galaxy_name, channel_ids in _document.items():
-            galaxy = self.__bot.get_galaxy(galaxy_name)
+            galaxy = self.__bot.get_galaxy(galaxy_name.upper())
             try:
                 galaxy.disabled_channels.update(self.__get_channels(channel_ids))
             except AttributeError:
