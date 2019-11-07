@@ -53,7 +53,6 @@ class FunctionsPermissions(Settings):
 
     @staticmethod
     async def __galaxies_check(ctx):
-        # TODO: Fix this check.    ! Important
         try:
             plugin = ctx.command.cog.plugin
         except AttributeError:
@@ -62,8 +61,7 @@ class FunctionsPermissions(Settings):
             if not plugin.INESCAPABLE:
                 if ctx.channel in plugin.disabled_channels:
                     raise exceptions.DisabledFunctionError
-        finally:
-            return True
+        return True
 
     @Settings.group(name="disable")
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
