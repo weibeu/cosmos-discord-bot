@@ -51,13 +51,14 @@ class FunctionsPermissions(Settings):
         except AttributeError:
             return True
 
-    @staticmethod
-    async def __galaxies_check(ctx):
+    async def __galaxies_check(self, ctx):
         try:
             plugin = ctx.command.cog.plugin
         except AttributeError:
             pass
         else:
+            if ctx.command.cog.name == self.name:
+                return True    # Ignore this cog.
             if not plugin.INESCAPABLE:
                 if ctx.channel in plugin.disabled_channels:
                     raise exceptions.DisabledFunctionError
