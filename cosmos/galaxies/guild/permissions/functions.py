@@ -59,7 +59,7 @@ class FunctionsPermissions(Settings):
         else:
             if ctx.command.cog.name == self.name:
                 return True    # Ignore this cog.
-            if not plugin.INESCAPABLE:
+            if plugin and not plugin.INESCAPABLE:
                 if ctx.channel in plugin.disabled_channels:
                     raise exceptions.DisabledFunctionError
         return True
