@@ -49,7 +49,7 @@ class Admin(commands.Cog):
             await ctx.send("unknown argument provided.")
 
     @commands.command(hidden=True)
-    async def cog_reload(self, ctx):
+    async def reload_cog(self, ctx):
         for c in self.bot.cog_list:
             try:
                 self.bot.unload_extension(c)
