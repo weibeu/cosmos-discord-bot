@@ -1,4 +1,4 @@
-discord.py
+
 raven
 pymongo
 humanize
