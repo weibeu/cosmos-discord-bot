@@ -42,7 +42,7 @@ class Debugger(commands.Cog):
         self.channel = None
         self._last_result = None
 
-    async def __local_check(self, ctx):
+    async def cog_check(self, ctx):
         return ctx.author.id in [331793750273687553, 250900865446182922]
 
     def cleanup_code(self, content):

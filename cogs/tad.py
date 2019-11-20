@@ -35,7 +35,7 @@ class TAD(commands.Cog):
         m_banner = await self.server_guide.get_message(452822879067832320)
         m_info = await self.server_guide.get_message(452822935049338881)'''
 
-    async def __local_check(self, ctx):
+    async def cog_check(self, ctx):
         return ctx.guild.id in [244998983112458240]
 
     @commands.Cog.listener()

@@ -441,7 +441,7 @@ class Music(commands.Cog):
         self.bot = bot
         self.players = {}
 
-    async def __local_check(self, ctx):
+    async def cog_check(self, ctx):
         """A check which applies to all commands in Music."""
         if ctx.invoked_with == 'help':
             return True
