@@ -6,6 +6,7 @@ from cogs.utils.rmenu import Menu, confirm_menu
 from cogs.utils import checks
 import re
 import aiohttp
+from io import BytesIO
 
 class Tags(commands.Cog):
 
@@ -38,7 +39,7 @@ class Tags(commands.Cog):
         for url in urls:
             async with aiohttp.ClientSession() as ses:
                 async with ses.get(url) as r:
-                    img = await r.read()
+                    img = BytesIO(await r.read())
 
             if ".png" in url.lower():
                 filename = "tag.png"
@@ -111,7 +112,7 @@ class Tags(commands.Cog):
         for url in urls:
             async with aiohttp.ClientSession() as ses:
                 async with ses.get(url) as r:
-                    img = await r.read()
+                    img = BytesIO(await r.read())
 
             if ".png" in url.lower():
                 filename = "tag.png"
