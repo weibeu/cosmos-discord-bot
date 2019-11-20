@@ -110,6 +110,7 @@ class Core(commands.Cog):
         e.colour = get_random_embed_color()
         await ctx.send(embed=e)
 
+    @commands.Cog.listener()
     async def on_guild_join(self, guild):
         await db.add_settings(guild.id)
 

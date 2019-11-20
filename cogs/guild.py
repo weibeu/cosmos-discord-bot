@@ -56,6 +56,7 @@ class Guild(commands.Cog):
             p = Pages(ctx, entries=usernames, per_page=10)
             await p.paginate()
 
+    @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if before.nick != after.nick: #nick was changed
             nicks = await db.get_nicks(before.guild.id, before.id)

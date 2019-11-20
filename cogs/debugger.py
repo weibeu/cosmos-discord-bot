@@ -319,6 +319,7 @@ class Debugger(commands.Cog):
         self.channel = ctx.channel
         await ctx.send("Successfully redirected STDOUT and STDERR to the current channel!")
 
+    @commands.Cog.listener()
     async def on_ready(self):
         sys.stdout = self.stream
         sys.stderr = self.stream

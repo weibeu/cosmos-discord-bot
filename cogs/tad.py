@@ -38,12 +38,14 @@ class TAD(commands.Cog):
     async def __local_check(self, ctx):
         return ctx.guild.id in [244998983112458240]
 
+    @commands.Cog.listener()
     async def on_message(self, message):
 
         """if message.author.id == 280883146872979456 and message.attachments != []:
             await message.delete()
             await message.channel.send("lol steve fuck off")"""
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         if member.guild.id == 244998983112458240:
             invite = None
@@ -73,6 +75,7 @@ class TAD(commands.Cog):
             log_channel = self.guild.get_channel(249313961458008065)
             await log_channel.send(embed=embed)
 
+    @commands.Cog.listener()
     async def on_member_remove(self, member):
         if member.guild.id == 244998983112458240:
             embed = discord.Embed(title="Member Left", color=int("0xF44336", 16))

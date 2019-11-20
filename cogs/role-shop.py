@@ -34,6 +34,7 @@ class RoleShop(commands.Cog):
         self.bot = bot
         self.cd = {}
 
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot:
             return

@@ -50,6 +50,7 @@ class Guild_Admin(commands.Cog):
         self.guilds_rs_roles = await db.get_guilds_rs_roles(self.bot.guilds)
         self.welcome_settings = await db.get_welcome_settings(self.bot.guilds)
 
+    @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if before.roles != after.roles:
             try:
@@ -396,6 +397,7 @@ class Guild_Admin(commands.Cog):
         except:
             pass
 
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.guild is None:
             return
@@ -406,6 +408,7 @@ class Guild_Admin(commands.Cog):
                 except:
                     pass
 
+    @commands.Cog.listener()
     async def on_guild_role_delete(self, role):
         if str(role.guild.id) in self.guilds_rs_roles and str(role.id) in self.guilds_rs_roles[str(role.guild.id)]:
             await db.remove_role(role.guild.id, role.id)
@@ -592,6 +595,7 @@ class Guild_Admin(commands.Cog):
             return
         '''
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         M = MEMBER(name=member.name, joined_at=member.joined_at, status=member.status, mention=member.mention, display_name=member.display_name, avatar_url=member.avatar_url, discriminator=member.discriminator, id=member.id)
         try:
@@ -652,6 +656,7 @@ class Guild_Admin(commands.Cog):
         except:
             pass
 
+    @commands.Cog.listener()
     async def on_guild_channel_create(self, channel):
         if str(channel.guild.id) in list(self.omjcd_settings.keys()):   #channel was part of guild with these settings and omjcd mode is enabled
             role = discord.utils.get(channel.guild.roles, id=int(self.omjcd_settings[str(channel.guild.id)]["role"]))

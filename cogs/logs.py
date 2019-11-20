@@ -27,6 +27,7 @@ class Logs(commands.Cog):
         except:
             pass
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         if member.guild.id in self.cache and self.cache[member.guild.id]["enabled"]:
             invite = None
@@ -67,6 +68,7 @@ class Logs(commands.Cog):
             log_channel = member.guild.get_channel(self.cache[member.guild.id].get("channel"))
             await log_channel.send(embed=embed)
 
+    @commands.Cog.listener()
     async def on_member_remove(self, member):
         if member.guild.id in self.cache and self.cache[member.guild.id]["enabled"]:
             embed = discord.Embed(title="Member Left", color=int("0xF44336", 16))

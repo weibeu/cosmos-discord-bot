@@ -15,6 +15,7 @@ class Moderation(commands.Cog):
         self.bot = bot
         self.soft_muted = {}
 
+    @commands.Cog.listener()
     async def on_message(self, message):
         try:
             if message.guild.id in self.soft_muted and message.author.id in self.soft_muted[message.guild.id]:

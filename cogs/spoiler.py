@@ -91,6 +91,7 @@ class Spoiler(commands.Cog):
         self._spoiler_cache = LRU(128)
         self._spoiler_cooldown = SpoilerCooldown()
 
+    @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         if payload.emoji.id != SPOILER_EMOJI_ID:
             return
