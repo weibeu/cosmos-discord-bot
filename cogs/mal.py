@@ -18,7 +18,7 @@ from cogs.utils.checks import load_optional_config, get_google_entries, embed_pe
 '''Module for MyAnimeList search of anime, manga, and light novels.'''
 
 
-class Mal:
+class Mal(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

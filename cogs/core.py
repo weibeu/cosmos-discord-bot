@@ -11,7 +11,7 @@ from cogs.utils.util import get_random_embed_color
 from .utils.paginator import HelpPaginator, CannotPaginate
 import psutil
 
-class Core(object):
+class Core(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

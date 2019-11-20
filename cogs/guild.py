@@ -13,7 +13,7 @@ class Prefix(commands.Converter):
             raise commands.BadArgument('That is a reserved prefix already in use.')
         return argument
 
-class Guild(object):
+class Guild(commands.Cog):
     """Guild commands"""
     def __init__(self, bot):
         self.bot = bot

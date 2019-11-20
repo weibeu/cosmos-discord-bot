@@ -5,7 +5,7 @@ from cogs.utils import db
 from cogs.utils.util import get_random_embed_color
 
 
-class Logs(object):
+class Logs(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

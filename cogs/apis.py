@@ -48,7 +48,7 @@ class HasteBin(object):
                 return HasteBinURL(response["key"])
 
 
-class API:
+class API(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

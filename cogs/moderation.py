@@ -9,7 +9,7 @@ import re
 from cogs.utils.util import get_reaction_yes_no
 from cogs.utils import checks
 
-class Moderation(object):
+class Moderation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

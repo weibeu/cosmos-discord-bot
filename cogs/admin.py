@@ -7,12 +7,12 @@ from discord.ext import commands
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
 from cogs.utils import db
 
-class Admin(object):
+class Admin(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    async def __local_check(self, ctx):
+    async def cog_check(self, ctx):
         return ctx.author.id in [331793750273687553, 250900865446182922]
 
     @commands.command(hidden=True)

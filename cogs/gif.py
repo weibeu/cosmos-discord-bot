@@ -2,7 +2,7 @@ from discord.ext import commands
 from cogs.utils import util
 import discord
 
-class Gif(object):
+class Gif(commands.Cog):
     """Sends cool gifs from GIPHY"""
     def __init__(self, bot):
         self.bot = bot

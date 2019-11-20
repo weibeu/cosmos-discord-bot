@@ -3,7 +3,7 @@ import discord
 from cogs.utils.checks import get_user, embed_perms
 from cogs.utils import util
 
-class Utilities(object):
+class Utilities(commands.Cog):
     """Some extra useful commands."""
 
     def __init__(self, bot):

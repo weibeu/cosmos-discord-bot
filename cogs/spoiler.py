@@ -84,7 +84,7 @@ class SpoilerCooldown(commands.CooldownMapping):
         return bucket.update_rate_limit() is not None
 
 
-class Spoiler(object):
+class Spoiler(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

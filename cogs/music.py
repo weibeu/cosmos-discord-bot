@@ -432,7 +432,7 @@ class MusicEntry:
         self.ctx = ctx
 
 
-class Music:
+class Music(commands.Cog):
     """A robust, easy to use Music Player with reaction controls.
     Play songs with an easy to use controller and fast, reliable playback.
     Supports YouTube playlists (First 25 songs)."""

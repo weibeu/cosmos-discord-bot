@@ -34,7 +34,7 @@ import urllib
 '''Module for the python interpreter as well as saving, loading, viewing, etc. the cmds/scripts ran with the interpreter.'''
 
 
-class Debugger:
+class Debugger(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

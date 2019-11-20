@@ -1,4 +1,5 @@
 import discord
+import sys
 from discord.ext import commands
 import asyncio
 from json import load, dump
@@ -8,6 +9,7 @@ from raven import Client as sentry_Client
 import motor.motor_asyncio
 import aiohttp
 from cogs.utils import db
+import traceback
 
 with open("settings/config.json") as config_file:
     config = load(config_file)
@@ -31,6 +33,7 @@ for c in bot.cog_list:
     except Exception as e:
         bot.sentry_client.captureException()
         print("cog '{0}' load failed".format(c))
+        traceback.print_exception(type(e), e, e.__traceback__, file=sys.stderr)
 
 async def presence():
     await bot.change_presence(activity=discord.Streaming(name="in "+str(len(bot.guilds))+" Guilds | "+config["status"], url="https://www.twitch.tv/the_c0sm0s"))

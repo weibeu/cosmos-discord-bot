@@ -31,7 +31,7 @@ class Arguments(argparse.ArgumentParser):
     def error(self, message):
         raise RuntimeError(message)
 
-class Guild_Admin(object):
+class Guild_Admin(commands.Cog):
     """Cog fot guild admins"""
     def __init__(self, bot):
         self.bot = bot

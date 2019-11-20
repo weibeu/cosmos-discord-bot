@@ -5,7 +5,7 @@ import datetime
 from cogs.utils.util import get_reaction_yes_no, get_random_embed_color
 from cogs.utils import checks
 
-class TAD(object):
+class TAD(commands.Cog):
     """A custom class for tad server."""
 
     def __init__(self, bot):

@@ -22,7 +22,7 @@ DISABLED_CHANNELS = [
 ]
 
 
-class RoleShop(object):
+class RoleShop(commands.Cog):
     """Cog for guild role shop"""
 
     POINTS = 1
