@@ -2,19 +2,11 @@ import typing
 import discord
 
 from .._models.base import GuildBaseCog
-from discord.ext.commands import has_permissions, Converter, RoleConverter, BadArgument
+from cosmos.core.utilities import converters
+from discord.ext.commands import has_permissions
 
 
 # TODO: Voice Levels.
-
-
-class _RoleConvertor(Converter):
-
-    async def convert(self, ctx, argument):
-        try:
-            return [await RoleConverter().convert(ctx, argument)]
-        except BadArgument:
-            return [await RoleConverter().convert(ctx, raw_role) for raw_role in argument.split()]
 
 
 class Levels(GuildBaseCog):
@@ -59,7 +51,8 @@ class Levels(GuildBaseCog):
 
     @rewards.command(name="set")
     @has_permissions(administrator=True)
-    async def set_rewards(self, ctx, level: int, points: typing.Optional[int] = 0, *, roles: _RoleConvertor()):
+    async def set_rewards(
+            self, ctx, level: int, points: typing.Optional[int] = 0, *, roles: converters.RoleConvertor()):
         embed = self.bot.theme.embeds.primary()
         embed.set_author(name=f"Are you sure to set following rewards for Level {level}?", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([role.mention for role in roles]))
