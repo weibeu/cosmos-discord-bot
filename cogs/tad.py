@@ -54,11 +54,11 @@ class TAD(commands.Cog):
                 for old_invite in self.invites:
                     if i.uses > old_invite.uses and i.id == old_invite.id:
                         invite = i
-            if not invite:
-                async for entry in member.guild.audit_logs():
-                    if entry.action == discord.AuditLogAction.invite_create:
-                        invite = entry.target
-                        break
+            # if not invite:
+            #     async for entry in member.guild.audit_logs():
+            #         if entry.action == discord.AuditLogAction.invite_create:
+            #             invite = entry.target
+            #             break    # TODO: Bug in library.
 
             await self.get_invites()
 
