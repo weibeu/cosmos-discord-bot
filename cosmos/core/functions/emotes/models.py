@@ -7,3 +7,4 @@ class GuildEmotes(object):
     def __set(self):
         for emote in self.emotes:
             self.__setattr__(emote.name, emote)
+            # TODO: Mind unwanted memory consumptions.
