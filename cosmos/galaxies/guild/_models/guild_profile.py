@@ -32,7 +32,7 @@ class CosmosGuild(GuildSettings, GuildRoleShop):
         GuildSettings.__init__(self, **kwargs)
         GuildRoleShop.__init__(self, **kwargs)
         self.levels = Levels(self, **kwargs)
-        self.reactions = GuildReactions(self, kwargs.get(kwargs.get("reactions", dict())))
+        self.reactions = GuildReactions(self, kwargs.get("reactions", dict()))
 
     async def send_welcome_banner(self, name, avatar_url, channel: discord.TextChannel = None):
         channel = channel or self.welcome_banner_channel
