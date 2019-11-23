@@ -33,8 +33,8 @@ class CosmosContext(commands.Context):
     def embed_line(self):
         return self.bot.theme.embeds.one_line.primary
 
-    async def send_line(self, *args, **kwargs):
-        return await self.send(embed=self.bot.theme.embeds.one_line.primary(*args, **kwargs))
+    async def send_line(self, *args, delete_after=None, **kwargs):
+        return await self.send(embed=self.bot.theme.embeds.one_line.primary(*args, **kwargs), delete_after=delete_after)
 
     async def trigger_loading(self, timeout=10):
         async with Loading(self):
