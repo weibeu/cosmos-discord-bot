@@ -30,11 +30,11 @@ class ReactionRoles(Reactions):
         if not await ctx.confirm():
             return
         roles = ctx.guild_profile.reactions.get_roles_bullets(roles)
-        if not message:
+        if not isinstance(message, discord.Message):
+            message = message or "Reaction Roles"
             embed = ctx.embeds.primary()
             embed.set_author(name=message)
-            for role, emote in roles:
-                embed.description += f"{emote} {role.mention}\n"
+            embed.description = "\n".join([f"{emote} {role.mention}" for role, emote in roles])
             message = await ctx.send(embed=embed)
             for _, emote in roles:
                 await message.add_reaction(emote)

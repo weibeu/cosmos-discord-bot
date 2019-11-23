@@ -11,12 +11,13 @@ class GuildReactions(object):
         self.__profile = guild_profile
         self.roles = [
             ReactionRole(
-                message_id, self.get_roles_bullets(roles)
-            ) for message_id, roles in reactions.get("roles", dict()).items()
+                message_id, self.get_roles_bullets(raw_roles)
+            ) for message_id, raw_roles in reactions.get("roles", dict()).items()
         ]
 
-    def get_roles_bullets(self, roles):
-        return zip(roles, self.__profile.plugin.bot.emotes.foods.emotes)
+    def get_roles_bullets(self, raw_roles):
+        return list(zip(
+            [self.__profile.guild.get_role(_) for _ in raw_roles], self.__profile.plugin.bot.emotes.foods.emotes))
 
     def get_reaction_role(self, message_id):
         try:
@@ -25,9 +26,12 @@ class GuildReactions(object):
             pass
 
     async def add_roles(self, message_id, roles):
-        self.get_reaction_role(message_id).roles = roles
+        if not (existing_role := self.get_reaction_role(message_id)):
+            self.roles.append(ReactionRole(message_id, self.get_roles_bullets(roles)))
+        else:
+            existing_role.roles = roles
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$set": {
-            f"reactions.roles.{message_id}": {"$each": [role.id for role in roles]}
+            f"reactions.roles.{message_id}": [role.id for role, _ in roles]
         }})
 
     async def remove_roles(self, message_id):
