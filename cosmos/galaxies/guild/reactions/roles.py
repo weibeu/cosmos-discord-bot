@@ -16,7 +16,7 @@ class ReactionRoles(Reactions):
             raise commands.MissingPermissions
         return True
 
-    @Reactions.reaction.command(name="role", aliases=["roles"])
+    @Reactions.reaction.group(name="role", aliases=["roles"])
     async def reaction_roles(self, ctx):
         pass
 
