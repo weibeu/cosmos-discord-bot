@@ -4,6 +4,9 @@ class ReactionRole(object):
         self.message_id = int(message_id)
         self.roles = roles    # [discord.Role, ]
 
+    def __eq__(self, other):
+        return self.message_id == other.message_id
+
 
 class GuildReactions(object):
 
