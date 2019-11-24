@@ -29,14 +29,14 @@ class ReactionRoles(Reactions):
             return await ctx.send_line(f"❌    You can't include more than twenty roles.")
         if not await ctx.confirm():
             return
-        roles = ctx.guild_profile.reactions.get_roles_bullets(roles)
+        roles_emotes = list(zip(roles, self.bot.emotes.foods.emotes))
         if not isinstance(message, discord.Message):
             message = message or "Reaction Roles"
             embed = ctx.embeds.primary()
             embed.set_author(name=message)
-            embed.description = "\n".join([f"{emote} {role.mention}" for role, emote in roles])
+            embed.description = "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes])
             message = await ctx.send(embed=embed)
-            for _, emote in roles:
+            for _, emote in roles_emotes:
                 await message.add_reaction(emote)
         await ctx.guild_profile.reactions.add_roles(message.id, roles)
         await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")

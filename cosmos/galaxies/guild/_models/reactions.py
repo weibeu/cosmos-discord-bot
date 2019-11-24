@@ -2,7 +2,7 @@ class ReactionRole(object):
 
     def __init__(self, message_id, roles):
         self.message_id = int(message_id)
-        self.roles = roles    # [(discord.Role, discord.Emoji), ]
+        self.roles = roles    # [discord.Role, ]
 
 
 class GuildReactions(object):
@@ -11,13 +11,9 @@ class GuildReactions(object):
         self.__profile = guild_profile
         self.roles = [
             ReactionRole(
-                message_id, self.get_roles_bullets(raw_roles)
+                message_id, [self.__profile.guild.get_role(_) for _ in raw_roles]
             ) for message_id, raw_roles in reactions.get("roles", dict()).items()
         ]
-
-    def get_roles_bullets(self, raw_roles):
-        return list(zip(
-            [self.__profile.guild.get_role(_) for _ in raw_roles], self.__profile.plugin.bot.emotes.foods.emotes))
 
     def get_reaction_role(self, message_id):
         try:
@@ -27,11 +23,11 @@ class GuildReactions(object):
 
     async def add_roles(self, message_id, roles):
         if not (existing_role := self.get_reaction_role(message_id)):
-            self.roles.append(ReactionRole(message_id, self.get_roles_bullets(roles)))
+            self.roles.append(ReactionRole(message_id, roles))    # Create and add new reaction role set.
         else:
-            existing_role.roles = roles
+            existing_role.roles = roles    # Updated existing set.
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$set": {
-            f"reactions.roles.{message_id}": [role.id for role, _ in roles]
+            f"reactions.roles.{message_id}": [role.id for role in roles]
         }})
 
     async def remove_roles(self, message_id):
