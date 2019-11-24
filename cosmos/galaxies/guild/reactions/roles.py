@@ -36,7 +36,7 @@ class ReactionRoles(Reactions):
             embed.set_author(name=message)
             embed.description = "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes])
             message = await ctx.send(embed=embed)
-            for _, emote in roles_emotes:
-                await message.add_reaction(emote)
+        for _, emote in roles_emotes:
+            await message.add_reaction(emote)
         await ctx.guild_profile.reactions.add_roles(message.id, roles)
         await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")
