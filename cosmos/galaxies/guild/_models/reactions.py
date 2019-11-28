@@ -16,10 +16,8 @@ class GuildReactions(object):
         self.__profile = guild_profile
         self.roles = [
             ReactionRole(
-                message_id, [(
-                    self.__profile.guild.get_role(_["role"]), self.__profile.plugin.bot.get_emoji(_["emote"])
-                ) for _ in role_documents]
-            ) for message_id, role_documents in reactions.get("roles", dict()).items()
+                message_id, [self.__profile.guild.get_role(_) for _ in roles]
+            ) for message_id, roles in reactions.get("roles", dict()).items()
         ]
 
     def get_reaction_role(self, message_id):
@@ -34,7 +32,7 @@ class GuildReactions(object):
         else:
             existing_role.roles = roles    # Updated existing set.
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$set": {
-            f"reactions.roles.{message_id}": [{"role": role.id, "emote": emote.id} for role, emote in roles]
+            f"reactions.roles.{message_id}": [_.id for _ in roles]
         }})
 
     async def remove_roles(self, message_id):
