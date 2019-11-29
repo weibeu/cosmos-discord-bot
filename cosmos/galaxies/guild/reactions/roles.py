@@ -31,15 +31,15 @@ class ReactionRoles(Reactions):
         # return if self.
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
         if payload.message_id in guild_profile.reactions.roles:
-            message = await (await self.bot.fetch_channel(payload.channel_id)).fetch_message(payload.message_id)
-            try:
-                description = message.embeds[0].description
-            except IndexError:
-                description = message.content
-            for role_id, emoji_id in list(zip(
-                    re.findall(r"<@&(\d+)>", description), re.findall(r"<:[^\s]+:(\d+)*>", description))):
-                pass
-
+            pass
+            # message = await (await self.bot.fetch_channel(payload.channel_id)).fetch_message(payload.message_id)
+            # try:
+            #     description = message.embeds[0].description
+            # except IndexError:
+            #     description = message.content
+            # for role_id, emoji_id in list(zip(
+            #         re.findall(r"<@&(\d+)>", description), re.findall(r"<:[^\s]+:(\d+)*>", description))):
+            #     pass
 
     @Reactions.reaction.group(name="role", aliases=["roles"])
     async def reaction_roles(self, ctx):
@@ -63,5 +63,5 @@ class ReactionRoles(Reactions):
             message = await ctx.send(embed=embed)
         for _, emote in roles:
             await message.add_reaction(emote)
-        await ctx.guild_profile.reactions.add_roles(message.id, roles)
+        await ctx.guild_profile.reactions.add_roles(message.id, [role for role, _ in roles])
         await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")
