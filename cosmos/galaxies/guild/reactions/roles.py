@@ -12,6 +12,15 @@ class ReactionRoles(Reactions):
 
     INESCAPABLE = False
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.emotes = []
+
+    @Reactions.listener()
+    async def on_ready(self):
+        # Sort manually. Don't trust discord.
+        self.emotes = sorted(self.bot.emotes.foods.emotes, key=lambda emote: emote.created_at)
+
     async def cog_check(self, ctx):
         if not ctx.author.guild_permissions.manage_guild:
             raise commands.MissingPermissions
@@ -45,7 +54,7 @@ class ReactionRoles(Reactions):
             return await ctx.send_line(f"❌    You can't include more than twenty roles.")
         if not await ctx.confirm():
             return
-        roles = list(zip(roles, self.bot.emotes.foods.emotes))
+        roles = list(zip(roles, self.emotes))
         if not isinstance(message, discord.Message):
             message = message or "Reaction Roles"
             embed = ctx.embeds.primary()
