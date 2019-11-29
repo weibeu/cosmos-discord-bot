@@ -29,16 +29,11 @@ class ReactionRoles(Reactions):
     async def on_raw_reaction_add(self, payload):
         # return if self.
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
-        if payload.message_id in guild_profile.reactions.roles:
-            pass
-            # message = await (await self.bot.fetch_channel(payload.channel_id)).fetch_message(payload.message_id)
-            # try:
-            #     description = message.embeds[0].description
-            # except IndexError:
-            #     description = message.content
-            # for role_id, emoji_id in list(zip(
-            #         re.findall(r"<@&(\d+)>", description), re.findall(r"<:[^\s]+:(\d+)*>", description))):
-            #     pass
+        if roles := guild_profile.reactions.roles.get(payload.message_id):
+            emote = self.bot.get_emoji(payload.emoji.id)
+            role = roles[self.emotes.index(emote)]
+            member = await guild_profile.guild.fetch_member(payload.user_id)
+            await member.add_roles(role, reason="Issued reaction role.")
 
     @Reactions.reaction.group(name="role", aliases=["roles"])
     async def reaction_roles(self, ctx):
