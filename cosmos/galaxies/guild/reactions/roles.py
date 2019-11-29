@@ -1,6 +1,5 @@
 from cosmos.core.utilities import converters
 
-import re
 import typing
 import discord
 
@@ -54,14 +53,14 @@ class ReactionRoles(Reactions):
             return await ctx.send_line(f"❌    You can't include more than twenty roles.")
         if not await ctx.confirm():
             return
-        roles = list(zip(roles, self.emotes))
+        roles_emotes = list(zip(roles, self.emotes))
         if not isinstance(message, discord.Message):
             message = message or "Reaction Roles"
             embed = ctx.embeds.primary()
             embed.set_author(name=message)
-            embed.description = "\n".join([f"{emote} {role.mention}" for role, emote in roles])
+            embed.description = "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes])
             message = await ctx.send(embed=embed)
-        for _, emote in roles:
+        for _, emote in roles_emotes:
             await message.add_reaction(emote)
-        await ctx.guild_profile.reactions.add_roles(message.id, [role for role, _ in roles])
+        await ctx.guild_profile.reactions.add_roles(message.id, roles)
         await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")
