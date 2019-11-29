@@ -3,7 +3,7 @@ class GuildReactions(object):
     def __init__(self, guild_profile, reactions):
         self.__profile = guild_profile
         self.roles = {
-            message_id: [
+            int(message_id): [
                 self.__profile.guild.get_role(_) for _ in roles
             ] for message_id, roles in reactions.get("roles", dict()).items()
         }
