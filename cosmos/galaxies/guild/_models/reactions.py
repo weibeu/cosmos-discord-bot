@@ -32,7 +32,7 @@ class GuildReactions(object):
         else:
             existing_role.roles = roles    # Updated existing set.
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$set": {
-            f"reactions.roles.{message_id}": [_.id for _ in roles]
+            f"reactions.roles.{message_id}": [role.id for role, _ in roles]
         }})
 
     async def remove_roles(self, message_id):
