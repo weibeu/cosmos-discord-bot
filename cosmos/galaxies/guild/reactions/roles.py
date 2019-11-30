@@ -66,3 +66,15 @@ class ReactionRoles(Reactions):
             await message.add_reaction(emote)
         await ctx.guild_profile.reactions.add_roles(message.id, roles)
         await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")
+
+    @reaction_roles.command(name="remove", aliases=["delete"])
+    async def remove_roles(self, ctx, message: typing.Union[discord.Message, int]):
+        if not ctx.guild_profile.reactions.roles:
+            return await ctx.send_line(f"❌    {ctx.guild.name} has no reactions roles set.", ctx.guild.icon_url)
+        message_id = message.id if isinstance(message, discord.Message) else message
+        if message_id not in ctx.guild_profile.reactions.roles:
+            return await ctx.send_line("❌    That message doesn't contains any reaction roles.")
+        if not await ctx.confirm():
+            return
+        await ctx.guild_profile.reactions.remove_roles(message_id)
+        await ctx.send_line(f"✅    Reaction roles has been removed for provided message.")
