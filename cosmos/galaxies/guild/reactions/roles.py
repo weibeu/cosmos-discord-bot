@@ -42,9 +42,10 @@ class ReactionRoles(Reactions):
             except discord.Forbidden:
                 pass
 
-    @Reactions.reaction.group(name="role", aliases=["roles"])
+    @Reactions.reaction.group(name="role", aliases=["roles"], invoke_without_command=True)
     async def reaction_roles(self, ctx):
-        pass
+        if not ctx.guild_profile.reactions.roles:
+            return await ctx.send_line(f"❌    {ctx.guild.name} has no reactions roles set.", ctx.guild.icon_url)
 
     @reaction_roles.command(name="add", aliases=["setup", "set"])
     async def add_roles(self, ctx, message: typing.Optional[discord.Message], *, roles: converters.RoleConvertor):
@@ -52,7 +53,7 @@ class ReactionRoles(Reactions):
         # Lookup by message ID (the message must be in the context channel).
         # Lookup by message URL.
         if len(roles) >= self.plugin.data.reactions.max_roles:
-            return await ctx.send_line(f"❌    You can't include more than twenty roles.")
+            return await ctx.send_line(f"❌    You can't include anymore roles.")
         if not await ctx.confirm():
             return
         roles_emotes = list(zip(roles, self.emotes))
