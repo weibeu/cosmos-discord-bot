@@ -27,7 +27,9 @@ class ReactionRoles(Reactions):
 
     @Reactions.listener()
     async def on_raw_reaction_add(self, payload):
-        # return if self.
+        if payload.user_id == self.bot.user.id:
+            return
+
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
         if roles := guild_profile.reactions.roles.get(payload.message_id):
             emote = self.bot.get_emoji(payload.emoji.id)
