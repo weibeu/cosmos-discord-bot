@@ -42,10 +42,9 @@ class ReactionRoles(Reactions):
             except discord.Forbidden:
                 pass
 
-    @Reactions.reaction.group(name="role", aliases=["roles"], invoke_without_command=True)
+    @Reactions.reaction.group(name="role", aliases=["roles"])
     async def reaction_roles(self, ctx):
-        if not ctx.guild_profile.reactions.roles:
-            return await ctx.send_line(f"❌    {ctx.guild.name} has no reactions roles set.", ctx.guild.icon_url)
+        pass
 
     @reaction_roles.command(name="add", aliases=["setup", "set"])
     async def add_roles(self, ctx, message: typing.Optional[discord.Message], *, roles: converters.RoleConvertor):
