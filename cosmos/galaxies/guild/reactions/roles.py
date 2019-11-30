@@ -34,6 +34,11 @@ class ReactionRoles(Reactions):
             role = roles[self.emotes.index(emote)]
             member = await guild_profile.guild.fetch_member(payload.user_id)
             await member.add_roles(role, reason="Issued reaction role.")
+            message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+            try:
+                await message.remove_reaction(emote, member)
+            except discord.Forbidden:
+                pass
 
     @Reactions.reaction.group(name="role", aliases=["roles"])
     async def reaction_roles(self, ctx):
