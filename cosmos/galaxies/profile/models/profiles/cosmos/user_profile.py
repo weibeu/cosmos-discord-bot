@@ -107,7 +107,6 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
         embed.set_author(name=self.user.name, icon_url=self.user.avatar_url)
         embed.add_field(name="Level", value=guild_profile.level)
         embed.add_field(name="Experience points", value=guild_profile.xp)
-        embed.add_field(name="Delta Experience points", value=guild_profile.delta_xp)
         embed.add_field(name="Reputation points", value=self.reps)
         embed.add_field(name="Prime", value=self.is_prime)
         embed.add_field(name="Bosons", value=self.bosons)
