@@ -18,6 +18,11 @@ class UserLevel(GuildMemberProfileBase, ABC):
         raise NotImplementedError
 
     @property
+    @abstractmethod
+    def voice_xp(self):
+        raise NotImplementedError
+
+    @property
     def xp_level(self):
         return self._xp_level + math.log(self._level + math.e)*self.K
 
