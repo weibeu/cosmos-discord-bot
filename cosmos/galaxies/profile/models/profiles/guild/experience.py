@@ -11,10 +11,8 @@ class UserExperience(UserLevel, ABC):
 
     def __init__(self, **kwargs):
         raw_xp = kwargs.get("stats", dict()).get("xp", dict())
-        raw_level = kwargs.get("stats", dict()).get("level", dict())
         self._xp = raw_xp.get("chat", 0)
         self._voice_xp = raw_xp.get("voice", 0)
-        super().__init__(raw_level.get("chat", 0))
         self.in_xp_buffer = False
         self.is_speaking = False
         self.__voice_activity_time = None
