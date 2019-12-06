@@ -37,7 +37,9 @@ class Levels(GuildBaseCog):
             return await ctx.send_line(f"❌    There are no level rewards set in this server yet.")
         if not level:
             paginator = ctx.get_field_paginator(
-                list(rewards.values()), show_author=False, entry_parser=self.__rewards_parser, inline=False)
+                sorted(
+                    rewards.values(), key=lambda reward: reward.level
+                ), show_author=False, entry_parser=self.__rewards_parser, inline=False)
             paginator.embed.set_author(name="Level Rewards", icon_url=ctx.guild.icon_url)
             return await paginator.paginate()
         _reward = rewards.get(level)
