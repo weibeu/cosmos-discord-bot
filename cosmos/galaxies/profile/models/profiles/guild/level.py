@@ -54,6 +54,6 @@ class UserLevel(GuildMemberProfileBase, ABC):
 
     async def voice_level_up_callback(self):
         guild_profile = await self.fetch_guild_profile()
-        await guild_profile.levels.give_voice_rewards()
+        await guild_profile.levels.give_voice_rewards(self)
 
         # TODO: Level up announcements, notifications.
