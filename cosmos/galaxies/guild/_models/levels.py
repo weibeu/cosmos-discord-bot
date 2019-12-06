@@ -21,7 +21,7 @@ class Levels(object):
     def __init__(self, guild_profile, **kwargs):
         self.__profile = guild_profile
         raw_levels = kwargs.get("levels", dict())
-        self.rewards = self.__fetch_rewards(raw_levels.get("rewards", list()))
+        self.rewards = sorted(self.__fetch_rewards(raw_levels.get("rewards", list())))
 
     @staticmethod
     def __fetch_rewards(raw_rewards):
