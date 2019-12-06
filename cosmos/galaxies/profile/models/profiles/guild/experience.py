@@ -55,7 +55,7 @@ class UserExperience(UserLevel, ABC):
         self._voice_xp += round(time.time() - self.__voice_activity_time)
 
         if self.voice_level > _level:
-            self.plugin.bot.loop.create_task(self.level_up_callback())
+            self.plugin.bot.loop.create_task(self.voice_level_up_callback())
 
         self.is_speaking = False
         self.__voice_activity_time = None
