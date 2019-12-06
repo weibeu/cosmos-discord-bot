@@ -32,7 +32,7 @@ class UserExperience(UserLevel, ABC):
         self._xp += xp
 
         if self.level > last_level:
-            await self.level_up_callback()
+            self.plugin.bot.loop.create_task(self.level_up_callback())
 
         self.in_xp_buffer = True    # Put user in xp cooldown buffer.
         await asyncio.sleep(self.plugin.data.xp.buffer_cooldown)
@@ -50,6 +50,12 @@ class UserExperience(UserLevel, ABC):
         # TODO: Also record voice activity of members who are already in voice channel on_ready.
 
     def close_voice_activity(self):
+        _level = self.voice_level
+
         self._voice_xp += round(time.time() - self.__voice_activity_time)
+
+        if self.voice_level > _level:
+            self.plugin.bot.loop.create_task(self.level_up_callback())
+
         self.is_speaking = False
         self.__voice_activity_time = None
