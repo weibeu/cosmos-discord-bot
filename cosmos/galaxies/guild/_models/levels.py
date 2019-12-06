@@ -63,3 +63,6 @@ class Levels(object):
         for role_id in reward.roles:
             role = self.__profile.guild.get_role(role_id)
             await profile.member.add_roles(role, reason=f"Level {profile.level} reward.")
+
+    async def give_voice_rewards(self, profile):
+        pass
