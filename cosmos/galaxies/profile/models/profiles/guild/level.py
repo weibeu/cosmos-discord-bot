@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 class UserLevel(GuildMemberProfileBase, ABC):
 
-    K = 5777
+    # K = 5777
     LEVELS_XP = [5 * (i ** 2) + 50 * i + 100 for i in range(200)]
 
     def get_level(self, xp):
