@@ -6,9 +6,6 @@ from .._models.base import GuildBaseCog
 from cosmos.core.utilities import converters
 
 
-# TODO: Voice Levels.
-
-
 class ChannelConverter(commands.Converter):
 
     CHANNELS = [
