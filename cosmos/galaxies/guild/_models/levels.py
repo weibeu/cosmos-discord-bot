@@ -47,20 +47,22 @@ class Levels(object):
             f"levels.{channel_filter}": reward.document
         }})
 
+    def get_rewards(self, channel):
+        return self.__getattribute__(f"{channel}_rewards")
+
     async def remove_rewards(self, level, channel="text"):
-        channel_filter = f"{channel}_rewards"
-        rewards = self.__getattribute__(channel_filter)
+        rewards = self.get_rewards(channel)
 
         rewards.pop(level)
 
         self.__profile.collection.update_one(
             self.__profile.document_filter, {"$pull": {
-                f"levels.{channel_filter}": {"level": level}
+                f"levels.{channel}_rewards": {"level": level}
             }}
         )
 
     async def give_rewards(self, profile, channel="text"):
-        rewards = self.__getattribute__(f"{channel}_rewards")
+        rewards = self.get_rewards(channel)
         reward = rewards.get(profile.level)
         if not reward:
             return
