@@ -19,8 +19,10 @@ class Levels(GuildBaseCog):
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         embed = self.bot.theme.embeds.primary()
         embed.set_author(name=member.display_name, icon_url=member.avatar_url)
-        embed.add_field(name="Level", value=profile.level)
-        embed.add_field(name="XP", value=profile.xp)
+        embed.add_field(name="Text Level", value=profile.level)
+        embed.add_field(name="Text XP", value=profile.xp)
+        embed.add_field(name="Voice Level", value=profile.voice_level)
+        embed.add_field(name="Voice XP", value=profile.voice_xp)
         await ctx.send(embed=embed)
 
     @staticmethod
