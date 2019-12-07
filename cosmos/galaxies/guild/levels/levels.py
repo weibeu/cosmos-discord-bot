@@ -49,7 +49,7 @@ class Levels(GuildBaseCog):
     async def rewards(self, ctx, channel: typing.Optional[ChannelConverter] = "text", level: int = None):
         rewards = ctx.guild_profile.levels.get_rewards(channel)
         if not rewards:
-            return await ctx.send_line(f"❌    There are no level rewards set in this server yet.")
+            return await ctx.send_line(f"❌    There are no {channel} - level rewards set in this server yet.")
         if not level:
             paginator = ctx.get_field_paginator(
                 sorted(
@@ -59,7 +59,7 @@ class Levels(GuildBaseCog):
             return await paginator.paginate()
         _reward = rewards.get(level)
         if not _reward:
-            return await ctx.send_line(f"❌    There are no rewards assigned for level {level}.")
+            return await ctx.send_line(f"❌    There are no {channel} - rewards assigned for level {level}.")
         embed = self.bot.theme.embeds.primary()
         embed.set_author(name=f"Rewards for {channel} - Level {level}", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([f"<@&{role_id}>" for role_id in _reward.roles]))
