@@ -49,7 +49,7 @@ class Levels(GuildBaseCog):
     async def rewards(self, ctx, channel: typing.Optional[ChannelConverter] = "text", level: int = None):
         rewards = ctx.guild_profile.levels.get_rewards(channel)
         if not rewards:
-            return await ctx.send_line(f"❌    There are no {channel} - level rewards set in this server yet.")
+            return await ctx.send_line(f"❌    There are no {channel.title()} - Level Rewards set in this server yet.")
         if not level:
             paginator = ctx.get_field_paginator(
                 sorted(
