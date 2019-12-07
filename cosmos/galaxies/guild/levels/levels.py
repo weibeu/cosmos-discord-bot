@@ -1,12 +1,25 @@
 import typing
 import discord
 
+from discord.ext import commands
 from .._models.base import GuildBaseCog
 from cosmos.core.utilities import converters
-from discord.ext.commands import has_permissions
 
 
 # TODO: Voice Levels.
+
+
+class ChannelConverter(commands.Converter):
+
+    CHANNELS = [
+        "text",
+        "voice"
+    ]
+
+    async def convert(self, ctx, argument):
+        if argument.lower() not in self.CHANNELS:
+            raise commands.BadArgument
+        return True
 
 
 class Levels(GuildBaseCog):
@@ -33,7 +46,7 @@ class Levels(GuildBaseCog):
         return f"Level {entry.level}", value
 
     @levels.group(name="reward", aliases=["rewards"], invoke_without_command=True)
-    async def rewards(self, ctx, channel: typing.Optional[str] = "text", level: int = None):
+    async def rewards(self, ctx, channel: typing.Optional[ChannelConverter] = "text", level: int = None):
         rewards = ctx.guild_profile.levels.get_rewards(channel)
         if not rewards:
             return await ctx.send_line(f"❌    There are no level rewards set in this server yet.")
@@ -48,27 +61,27 @@ class Levels(GuildBaseCog):
         if not _reward:
             return await ctx.send_line(f"❌    There are no rewards assigned for level {level}.")
         embed = self.bot.theme.embeds.primary()
-        embed.set_author(name=f"Rewards for {channel} Level {level}", icon_url=ctx.guild.icon_url)
+        embed.set_author(name=f"Rewards for {channel} - Level {level}", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([f"<@&{role_id}>" for role_id in _reward.roles]))
         embed.add_field(name="Points", value=_reward.points)
         await ctx.send(embed=embed)
 
     @rewards.command(name="set")
-    @has_permissions(administrator=True)
-    async def set_rewards(self, ctx, level: int, channel: typing.Optional[str] = "text",
+    @commands.has_permissions(administrator=True)
+    async def set_rewards(self, ctx, level: int, channel: typing.Optional[ChannelConverter] = "text",
                           points: typing.Optional[int] = 0, *, roles: converters.RoleConvertor()):
         embed = self.bot.theme.embeds.primary()
-        embed.set_author(name=f"Are you sure to set following rewards for"
-                              f"{channel.title()} Level {level}?", icon_url=ctx.guild.icon_url)
+        embed.set_author(name=f"Are you sure to set following rewards for "
+                              f"{channel.title()} - Level {level}?", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([role.mention for role in roles]))
         embed.add_field(name="Points", value=points)
         if await ctx.confirm(await ctx.send(embed=embed)):
             await ctx.guild_profile.levels.set_rewards(level, [role.id for role in roles], points, channel=channel)
-            await ctx.send_line(f"✅    Rewards for {channel.title()} Level {level} has been set.")
+            await ctx.send_line(f"✅    Rewards for {channel.title()} - Level {level} has been set.")
 
     @rewards.command(name="remove", aliases=["delete"])
-    @has_permissions(administrator=True)
-    async def remove_rewards(self, ctx, level: int, channel="text"):
+    @commands.has_permissions(administrator=True)
+    async def remove_rewards(self, ctx, level: int, channel: ChannelConverter = "text"):
         if not ctx.guild_profile.levels.get_rewards(channel).get(level):
             return await ctx.send_line(f"❌    There are no rewards assigned for level {level}.")
         if not await ctx.confirm():
