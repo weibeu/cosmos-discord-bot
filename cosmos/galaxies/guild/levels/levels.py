@@ -19,7 +19,7 @@ class ChannelConverter(commands.Converter):
     async def convert(self, ctx, argument):
         if argument.lower() not in self.CHANNELS:
             raise commands.BadArgument
-        return True
+        return argument
 
 
 class Levels(GuildBaseCog):
