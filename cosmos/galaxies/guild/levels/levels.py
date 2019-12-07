@@ -69,9 +69,9 @@ class Levels(GuildBaseCog):
     @rewards.command(name="remove", aliases=["delete"])
     @has_permissions(administrator=True)
     async def remove_rewards(self, ctx, level: int, channel="text"):
-        if not await ctx.confirm():
-            return
         if not ctx.guild_profile.levels.get_rewards(channel).get(level):
             return await ctx.send_line(f"❌    There are no rewards assigned for level {level}.")
+        if not await ctx.confirm():
+            return
         await ctx.guild_profile.levels.remove_rewards(level, channel=channel)
         await ctx.send_line(f"✅    Rewards for Level {level} has been removed.")
