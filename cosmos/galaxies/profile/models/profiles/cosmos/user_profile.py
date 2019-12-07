@@ -107,6 +107,7 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
         embed.set_author(name=self.user.name, icon_url=self.user.avatar_url)
         embed.add_field(name="Level", value=guild_profile.level)
         embed.add_field(name="Experience points", value=guild_profile.xp)
+        embed.add_field(name="Delta Experience points", value=guild_profile.delta_xp)
         embed.add_field(name="Reputation points", value=self.reps)
         embed.add_field(name="Prime", value=self.is_prime)
         embed.add_field(name="Bosons", value=self.bosons)
@@ -114,6 +115,7 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
         embed.add_field(name="Rank", value=self.rank)
         embed.add_field(name="Voice Level", value=guild_profile.voice_level)
         embed.add_field(name="Voice Experience Points", value=guild_profile.voice_xp)
+        embed.add_field(name="Delta Voice Experience Points", value=guild_profile.delta_voice_xp)
         embed.add_field(name="💖  Proposed", value=self.proposed)
         embed.add_field(name="🖤  Proposer", value=self.proposer)
         if self.spouse_id:
