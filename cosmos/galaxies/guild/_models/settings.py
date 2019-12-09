@@ -1,5 +1,5 @@
 from abc import ABC
-from discord import Color
+from discord import Color, Embed
 
 from .base import CosmosGuildBase
 from .permissions import GuildPermissions
@@ -68,6 +68,9 @@ class ThemeSettings(object):
         await self.__profile.collection.update_one(
             self.__profile.document_filter, {"$unset": {"settings.theme.color": ""}}
         )
+
+    def get_embed(self, **kwargs):
+        return Embed(color=self.color or self.__profile.plugin.bot.configs.color_scheme.primary, **kwargs)
 
 
 class GuildLogger(object):
@@ -266,6 +269,13 @@ class ReactorSettings(object):
         )
 
 
+class GuildStarboard(object):
+
+    def __init__(self, channel, count):
+        self.channel = channel
+        self.count = count
+
+
 class GuildSettings(WelcomeBannerSettings, LoggerSettings, GuildPermissions, ABC):
 
     def __init__(self, **kwargs):
@@ -279,6 +289,28 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, GuildPermissions, ABC
         self.presets = raw_settings.get("presets", dict())
         self.roles = raw_settings.get("roles", dict())
         self.permissions = GuildPermissions(self, raw_settings.get("permissions", dict()))
+        self.starboard = None
+        if raw_starboard := raw_settings.get("starboard", dict()):
+            self.__set_starboard(self.plugin.bot.get_channel(raw_starboard["channel_id"]), raw_starboard.get("count"))
+
+    def __set_starboard(self, channel, count=None):
+        count = count or self.plugin.data.settings.default_star_count
+        self.starboard = GuildStarboard(channel, count)
+
+    async def set_starboard(self, channel, count):
+        self.__set_starboard(channel, count)
+        payload = {"channel_id": channel.id}
+        if count and count != self.plugin.data.settings.default_star_count:
+            payload["count"] = count
+        await self.collection.update_one(
+            self.document_filter, {"$set": {"settings.starboard": payload}}
+        )
+
+    async def remove_starboard(self):
+        self.starboard = None
+        await self.collection.update_one(
+            self.document_filter, {"$unset": {"settings.starboard": ""}}
+        )
 
     async def add_moderator(self, _id):
         self.moderators.append(_id)
