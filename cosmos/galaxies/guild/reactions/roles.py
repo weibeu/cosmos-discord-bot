@@ -21,6 +21,7 @@ class ReactionRoles(Reactions):
         self.emotes = sorted(self.bot.emotes.foods.emotes, key=lambda emote: emote.created_at)
 
     async def cog_check(self, ctx):
+        await super().cog_check(ctx)
         if not ctx.author.guild_permissions.manage_guild:
             raise commands.MissingPermissions
         return True

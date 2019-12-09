@@ -6,6 +6,7 @@ from .._models import GuildBaseCog
 class Reactions(GuildBaseCog):
 
     async def cog_check(self, ctx):
+        await super().cog_check(ctx)
         if ctx.author.guild_permissions.administrator:
             raise commands.MissingPermissions(["administrator"])
         return True
