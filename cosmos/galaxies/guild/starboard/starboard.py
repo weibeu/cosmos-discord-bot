@@ -16,10 +16,11 @@ class Starboard(GuildBaseCog):
             raise commands.MissingPermissions(["administrator"])
         return True
 
+    @GuildBaseCog.listener()
     async def on_raw_reaction_add(self, payload):
         if not payload.guild_id:
             return
-        if payload.emoji not in self.STARS:
+        if payload.emoji.name not in self.STARS:
             return
 
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
