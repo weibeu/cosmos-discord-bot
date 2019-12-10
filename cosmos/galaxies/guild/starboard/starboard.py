@@ -23,7 +23,7 @@ class Starboard(GuildBaseCog):
             return
 
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
-        if starboard := guild_profile.settings.starboard:
+        if starboard := guild_profile.starboard:
             message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
             count = 0
             for emoji in message.reactions:
@@ -48,12 +48,12 @@ class Starboard(GuildBaseCog):
         channel = channel or ctx.channel
         if not await ctx.confirm():
             return
-        await ctx.guild_profile.settings.set_starboard(channel, stars)
+        await ctx.guild_profile.set_starboard(channel, stars)
         await ctx.send_line(f"✅    Starboard has been enabled in #{channel}.", ctx.guild.icon_url)
 
     @starboard.command(name="remove", aliases=["delete"])
     async def remove_starboard(self, ctx):
         if not await ctx.confirm():
             return
-        await ctx.guild_profile.settings.remove_starboard()
+        await ctx.guild_profile.remove_starboard()
         await ctx.send_line("✅    Starboard has been removed.", ctx.guild.icon_url)
