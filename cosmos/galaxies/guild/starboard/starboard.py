@@ -1,4 +1,5 @@
 import discord
+import itertools
 
 from discord.ext import commands
 from .._models import GuildBaseCog
@@ -26,10 +27,8 @@ class Starboard(GuildBaseCog):
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
         if starboard := guild_profile.starboard:
             message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
-            count = 0
-            for emoji in message.reactions:
-                if emoji in self.STARS:
-                    count += emoji.count
+            count = len({member for member in itertools.chain.from_iterable([
+                await reaction.users().flatten() for reaction in message.reactions])})
             if count >= starboard.count:
                 embed = guild_profile.theme.get_embed()
                 embed.set_author(name=message.author.name, icon_url=message.author.avatar_url)
