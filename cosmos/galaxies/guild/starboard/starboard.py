@@ -49,11 +49,11 @@ class Starboard(GuildBaseCog):
         if not await ctx.confirm():
             return
         await ctx.guild_profile.set_starboard(channel, stars)
-        await ctx.send_line(f"✅    Starboard has been enabled in #{channel}.", ctx.guild.icon_url)
+        await ctx.send_line(f"Starboard has been enabled in #{channel}.", ctx.guild.icon_url)
 
     @starboard.command(name="remove", aliases=["delete"])
     async def remove_starboard(self, ctx):
         if not await ctx.confirm():
             return
         await ctx.guild_profile.remove_starboard()
-        await ctx.send_line("✅    Starboard has been removed.", ctx.guild.icon_url)
+        await ctx.send_line("Starboard has been removed.", ctx.guild.icon_url)
