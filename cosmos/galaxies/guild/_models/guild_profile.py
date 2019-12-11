@@ -38,7 +38,7 @@ class CosmosGuild(GuildSettings, GuildRoleShop):
         channel = channel or self.welcome_banner_channel
         options = dict()
         if self.theme.color:
-            options["border_color"] = str(self.theme.color)
+            options["border_color"] = options["font_color"] = options["avatar_border_color"] = str(self.theme.color)
         banner_bytes = await self.plugin.bot.image_processor.discord.get_welcome_banner(
             self.welcome_banner_url, avatar_url, name, self.welcome_banner_text, **options
         )
