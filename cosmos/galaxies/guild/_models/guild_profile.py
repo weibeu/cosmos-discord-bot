@@ -36,8 +36,11 @@ class CosmosGuild(GuildSettings, GuildRoleShop):
 
     async def send_welcome_banner(self, name, avatar_url, channel: discord.TextChannel = None):
         channel = channel or self.welcome_banner_channel
+        options = dict()
+        if self.theme.color:
+            options["border_color"] = str(self.theme.color)
         banner_bytes = await self.plugin.bot.image_processor.discord.get_welcome_banner(
-            self.welcome_banner_url, avatar_url, name, self.welcome_banner_text
+            self.welcome_banner_url, avatar_url, name, self.welcome_banner_text, **options
         )
         banner_format = self.welcome_banner_url.split(".")[-1]
         file = discord.File(BytesIO(banner_bytes), filename=f"{self.plugin.data.settings.banner_name}.{banner_format}")
