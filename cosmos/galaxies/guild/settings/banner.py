@@ -36,6 +36,7 @@ class BannerSettings(Settings):
             return await ctx.send_line(f"❌    Banner should be less than {banner_max_size} MB in size however size of "
                                        f"provided banner seems to be of {banner_size} MB.")
         await ctx.guild_profile.set_welcome_banner(banner_url, text, channel.id)
+        # TODO: Actually try generating test welcome banner.
         await ctx.send_line(f"Welcome banners set for {ctx.guild.name}.", ctx.guild.icon_url)
 
     @welcome_banner.command(name="enable")
