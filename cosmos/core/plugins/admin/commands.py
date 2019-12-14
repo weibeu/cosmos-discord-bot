@@ -22,7 +22,7 @@ class AdminCommands(Admin):
             return await ctx.send_line(f"❌    A dark argument was passed.")
 
     @Admin.command(name="removeprime")
-    async def remove_prime(self, ctx, *, target: typing.Union[CosmosGuildConverter, CosmosGuildConverter]):
+    async def remove_prime(self, ctx, *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]):
         if not await ctx.confirm():
             return
         await target.make_prime(make=False)
