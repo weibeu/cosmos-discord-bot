@@ -34,7 +34,7 @@ class AdministratorSettings(Cog):
         await ctx.send(embed=embed)
 
     @moderators.command(name="add")
-    async def add_moderator(self, ctx, moderator: typing.Union[discord.Role, discord.Member]):
+    async def add_moderator(self, ctx, *, moderator: typing.Union[discord.Role, discord.Member]):
         if not await ctx.confirm():
             return
         guild_profile = await ctx.fetch_guild_profile()
@@ -45,7 +45,7 @@ class AdministratorSettings(Cog):
         await ctx.send_line(f"✅    {moderator.name} has been added to server's moderators.")
 
     @moderators.command(name="remove")
-    async def remove_moderator(self, ctx, moderator: typing.Union[discord.Role, discord.Member]):
+    async def remove_moderator(self, ctx, *, moderator: typing.Union[discord.Role, discord.Member]):
         if not await ctx.confirm():
             return
         guild_profile = await ctx.fetch_guild_profile()
