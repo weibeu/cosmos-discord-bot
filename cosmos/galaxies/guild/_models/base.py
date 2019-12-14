@@ -5,6 +5,9 @@ from abc import ABC, abstractmethod
 
 class CosmosGuildBase(ABC):
 
+    def __init__(self):
+        self.is_prime = False
+
     @property
     @abstractmethod
     def plugin(self):

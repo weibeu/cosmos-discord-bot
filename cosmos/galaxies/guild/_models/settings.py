@@ -293,6 +293,12 @@ class GuildSettings(WelcomeBannerSettings, LoggerSettings, GuildPermissions, ABC
         if raw_starboard := raw_settings.get("starboard", dict()):
             self.__set_starboard(self.plugin.bot.get_channel(raw_starboard["channel_id"]), raw_starboard.get("count"))
 
+    async def make_prime(self, make=True):
+        self.is_prime = make
+
+        await self.collection.update_one(
+            self.document_filter, {"$set": {"is_prime": make}})
+
     def __set_starboard(self, channel, count=None):
         count = count or self.plugin.data.settings.default_star_count
         self.starboard = GuildStarboard(channel, count)
