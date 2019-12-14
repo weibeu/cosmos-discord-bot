@@ -6,20 +6,16 @@ from pprint import pformat
 
 import discord
 
-from ....functions import Cog
+from ..base import Admin
 
 
 # noinspection PyBroadException
-class Evaluator(Cog):
+class Evaluator(Admin):
 
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
         self._last_result = None
-
-    async def cog_check(self, ctx):    # ! Never ever remove this method.
-        await super().cog_check(ctx)
-        return await self.bot.is_owner(ctx.author)
 
     @staticmethod
     def cleanup_code(content):
@@ -31,7 +27,7 @@ class Evaluator(Cog):
         # remove `foo`
         return content.strip('` \n')
 
-    @Cog.command(name='eval', aliases=["py", "evaluate"])
+    @Admin.command(name='eval', aliases=["py", "evaluate"])
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
 
