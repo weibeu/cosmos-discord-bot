@@ -1,17 +1,33 @@
+from cosmos.core.utilities.converters import CosmosUserProfileConverter, CosmosGuildConverter
+
 import typing
-import discord
 
 from .base import Admin
+from discord.ext import commands
 
 
+# noinspection PyUnresolvedReferences
 class AdminCommands(Admin):
 
-    @Admin.group(name="give")
-    async def give_(self, ctx):
-        pass
+    @Admin.command(name="giveprime")
+    async def give_prime(self, ctx, *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]):
+        if not await ctx.confirm():
+            return
+        await target.make_prime()
+        await ctx.send_line(f"🎉    {target.name} has been given prime.")
 
-    @give_.command(name="prime")
-    async def give_prime(self, ctx, *, target: typing.Union[discord.User, int]):
-        if isinstance(target, int):
-            target = await ctx.fetch_guild_profile()
+    @give_prime.error
+    async def give_prime_error(self, ctx, error):
+        if isinstance(error, commands.BadArgument):
+            return await ctx.send_line(f"❌    A dark argument was passed.")
 
+    @Admin.command(name="removeprime")
+    async def remove_prime(self, ctx, *, target: typing.Union[CosmosGuildConverter, CosmosGuildConverter]):
+        if not await ctx.confirm():
+            return
+        await target.make_prime(make=False)
+        await ctx.send_line(f"✅    Removed prime from {target.name}.")
+
+    @remove_prime.error
+    async def remove_prime_error(self, ctx, error):
+        return await self.give_prime_error(ctx, error)
