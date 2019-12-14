@@ -9,6 +9,10 @@ class CosmosGuildBase(ABC):
         self.is_prime = False
 
     @property
+    def name(self):
+        return self.guild.name
+
+    @property
     @abstractmethod
     def plugin(self):
         raise NotImplementedError

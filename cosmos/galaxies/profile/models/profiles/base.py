@@ -8,6 +8,10 @@ import arrow
 class ProfileModelsBase(ABC):
 
     @property
+    def name(self):
+        return self.user.name
+
+    @property
     @abstractmethod
     def plugin(self):
         raise NotImplementedError
