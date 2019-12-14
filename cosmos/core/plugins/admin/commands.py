@@ -18,7 +18,7 @@ class AdminCommands(Admin):
 
     @give_prime.error
     async def give_prime_error(self, ctx, error):
-        if isinstance(error, commands.BadArgument):
+        if isinstance(error, commands.BadUnionArgument):
             return await ctx.send_line(f"❌    A dark argument was passed.")
 
     @Admin.command(name="removeprime")
