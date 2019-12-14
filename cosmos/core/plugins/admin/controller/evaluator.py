@@ -12,9 +12,8 @@ from ..base import Admin
 # noinspection PyBroadException
 class Evaluator(Admin):
 
-    def __init__(self, plugin):
-        super().__init__()
-        self.plugin = plugin
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._last_result = None
 
     @staticmethod
