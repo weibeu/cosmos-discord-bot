@@ -1,6 +1,7 @@
 import discord
 
 from io import BytesIO
+from cosmos import exceptions
 
 from .levels import Levels
 from .settings import GuildSettings
@@ -40,8 +41,9 @@ class CosmosGuild(GuildSettings, GuildRoleShop):
         if self.theme.color:
             options["border_color"] = options["font_color"] = options["avatar_border_color"] = str(self.theme.color)
         banner_bytes = await self.plugin.bot.image_processor.discord.get_welcome_banner(
-            self.welcome_banner_url, avatar_url, name, self.welcome_banner_text, **options
-        )
+            self.welcome_banner_url, avatar_url, name, self.welcome_banner_text, **options)
         banner_format = self.welcome_banner_url.split(".")[-1]
+        if banner_format.lower() == "gif" and not self.is_prime:
+            raise exceptions.GuildNotPrime
         file = discord.File(BytesIO(banner_bytes), filename=f"{self.plugin.data.settings.banner_name}.{banner_format}")
         await channel.send(file=file)

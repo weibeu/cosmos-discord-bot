@@ -2,6 +2,7 @@ import discord
 import typing
 
 from .base import Settings
+from cosmos import exceptions
 
 
 class BannerSettings(Settings):
@@ -10,7 +11,10 @@ class BannerSettings(Settings):
     async def on_member_join(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
         if guild_profile.welcome_banner_enabled:
-            await guild_profile.send_welcome_banner(member.name, str(member.avatar_url))
+            try:
+                await guild_profile.send_welcome_banner(member.name, str(member.avatar_url))
+            except exceptions.GuildNotPrime:
+                pass
 
     @Settings.group(name="welcome", aliases=["join"])
     async def welcome(self, ctx):
