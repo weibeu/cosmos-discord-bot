@@ -25,6 +25,10 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
     def is_prime(self):
         return self._is_prime
 
+    @is_prime.setter
+    def is_prime(self, value):
+        self._is_prime = value
+
     @property
     def description(self):
         return self._description or self.plugin.data.profile.default_description
@@ -54,6 +58,12 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
         self.__collection = self.plugin.collection
         if self.plugin.data.profile.fetch_guild_profiles:
             self.plugin.bot.create_task(self.__fetch_guild_profiles())    # TODO: Fetch profiles of all guilds.
+
+    async def make_prime(self, make=True):
+        self.is_prime = make
+
+        await self.collection.update_one(
+            self.document_filter, {"$set": {"is_prime": make}})
 
     @property
     def can_rep(self):
