@@ -29,7 +29,7 @@ class AdministratorSettings(Cog):
             embed.add_field(name="Moderator Roles", value=" ".join(roles))
         if members:
             embed.add_field(name="Moderator Members", value=" ".join(members))
-        if not (roles and members):
+        if not (roles or members):
             embed.description = f"No special roles or members are assigned yet for {ctx.guild.name} moderators."
         await ctx.send(embed=embed)
 
