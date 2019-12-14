@@ -23,7 +23,7 @@ class ReactionRoles(Reactions):
     async def cog_check(self, ctx):
         await super().cog_check(ctx)
         if not ctx.author.guild_permissions.manage_guild:
-            raise commands.MissingPermissions
+            raise commands.MissingPermissions(["manage_guild"])
         return True
 
     @Reactions.listener()
