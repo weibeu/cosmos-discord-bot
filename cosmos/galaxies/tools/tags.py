@@ -4,6 +4,8 @@ from discord.ext import commands
 
 class Tags(Cog):
 
+    INESCAPABLE = False
+
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin

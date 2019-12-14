@@ -6,6 +6,8 @@ from .. import Cog
 
 class Marriage(Cog):
 
+    INESCAPABLE = False
+
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin

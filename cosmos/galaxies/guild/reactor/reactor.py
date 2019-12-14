@@ -8,6 +8,8 @@ from .._models import GuildBaseCog
 
 class Reactor(GuildBaseCog):
 
+    INESCAPABLE = False
+
     @GuildBaseCog.listener()
     async def on_message(self, message):
         if not message.guild:

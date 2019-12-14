@@ -7,6 +7,8 @@ from .._models import GuildBaseCog
 
 class Starboard(GuildBaseCog):
 
+    INESCAPABLE = False
+
     STARS = [
         "⭐", "🌟", "🤩",
     ]
