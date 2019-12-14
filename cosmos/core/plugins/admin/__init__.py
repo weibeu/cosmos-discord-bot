@@ -1,6 +1,11 @@
+from .commands import AdminCommands
 from .controller.evaluator import Evaluator
 
-__all__ = [Evaluator]
+
+__all__ = [
+    Evaluator,
+    AdminCommands,
+]
 
 
 def setup(bot):
