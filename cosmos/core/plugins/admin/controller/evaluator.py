@@ -73,7 +73,7 @@ class Evaluator(Admin):
                         try:
                             await ctx.send(f'```py\n{value}\n```')
                         except discord.HTTPException:
-                            haste_url = await self.bot.utilities.haste(pformat(value, indent=4))
+                            haste_url = await self.bot.utilities.haste(value)
                             await ctx.send(haste_url.py)
                 else:
                     self._last_result = ret
