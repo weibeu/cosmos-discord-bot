@@ -1,12 +1,12 @@
+from contextlib import redirect_stdout
+
 import io
+import discord
 import textwrap
 import traceback
-from contextlib import redirect_stdout
-from pprint import pformat
-
-import discord
 
 from ..base import Admin
+from pprint import pformat
 
 
 # noinspection PyBroadException
