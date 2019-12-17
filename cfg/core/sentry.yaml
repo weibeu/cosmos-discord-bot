@@ -1,6 +1,6 @@
 # ! Sentry error monitoring configurations.
 
-dsn: "https://1d882968a4c84e6a9e776ffccf038fcc:1a20593fb2314ac5a72f94d748cfd7de@sentry.io/274485"
+dsn: ""    # ENV: SENTRY_DSN
 debug: True
 release: null
 environment: "Development"

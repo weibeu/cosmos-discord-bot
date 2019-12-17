@@ -13,9 +13,7 @@ class DiscordConfig(Config):
 
     def __init__(self):
         super().__init__()
-        token = os.getenv("DiscordToken")   # Use token from environment if present.
-        if token is not None:
-            self.token = token
+        self.token = os.getenv("DISCORD_TOKEN") or self.token   # Use token from environment if present.
 
 
 class CosmosConfig(Config):
@@ -50,6 +48,9 @@ class DatabaseConfig(Config):
         self.uri = None
         self.raw = None
         super().__init__()
+        self.username = os.getenv("MONGODB_USERNAME") or self.username
+        self.password = os.getenv("MONGODB_PASSWORD") or self.password
+        self.uri = os.getenv("MONGODB_URI") or self.uri
         if not self.requires_auth:
             self.host = self.host or "127.0.0.1"
             self.port = self.port or "27017"
@@ -74,6 +75,7 @@ class SentryConfig(Config):
 
     def __init__(self):
         super().__init__()
+        self.dsn = os.getenv("SENTRY_DSN") or self.dsn
         if hasattr(self, "release"):
             if self.release is None or "":
                 self.__delattr__("release")
