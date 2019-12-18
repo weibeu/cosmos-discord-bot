@@ -64,3 +64,8 @@ class Economy(Cog):
         await author_profile.take_daily_bosons(target_profile)
         res = f"🗓    {self.plugin.data.boson.default_daily} daily Bosons were given to {target_name}."
         await ctx.send_line(res)
+
+    @Cog.command(name="fermions", aliases=["fermion"])
+    async def fermions(self, ctx):
+        profile = await ctx.fetch_cosmos_user_profile()
+        await ctx.send_line(f"🔷    {ctx.author.name}, you have {profile.fermions} fermions.")
