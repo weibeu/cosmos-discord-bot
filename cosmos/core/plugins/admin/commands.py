@@ -36,5 +36,5 @@ class AdminCommands(Admin):
     async def give_fermions(self, ctx, user: CosmosUserProfileConverter, fermions: int):
         if not await ctx.confirm():
             return
-        await user.fermions += fermions
+        await user.give_fermions(fermions)
         await ctx.send_line(f"✅    Gave {fermions} fermions to {user.name}.")
