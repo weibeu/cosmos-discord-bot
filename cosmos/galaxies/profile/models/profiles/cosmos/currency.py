@@ -60,6 +60,10 @@ class Fermion(ProfileModelsBase, ABC):
     def fermions(self):
         return self._fermions
 
+    @fermions.setter
+    def fermions(self, value):
+        self.fermions = int(value)
+
     async def give_fermions(self, fermions: int):
         self._fermions += fermions
 

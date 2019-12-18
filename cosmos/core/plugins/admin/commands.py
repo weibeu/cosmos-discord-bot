@@ -31,3 +31,10 @@ class AdminCommands(Admin):
     @remove_prime.error
     async def remove_prime_error(self, ctx, error):
         return await self.give_prime_error(ctx, error)
+
+    @Admin.command(name="givefermions")
+    async def give_fermions(self, ctx, user: CosmosUserProfileConverter, fermions: int):
+        if not await ctx.confirm():
+            return
+        await user.fermions += fermions
+        await ctx.send_line(f"✅    Gave {fermions} fermions to {user.name}.")
