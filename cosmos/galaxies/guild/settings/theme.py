@@ -19,6 +19,7 @@ class ThemeSettings(Settings):
             res = f"{ctx.guild.name} theme color isn't set yet."
         return await ctx.send_line(res, ctx.guild.icon_url)
 
+    @Settings.checks.prime_guild()
     @theme_color.command(name="set")
     @has_permissions(manage_guild=True)
     async def set_theme_color(self, ctx, *, color: discord.Color):
