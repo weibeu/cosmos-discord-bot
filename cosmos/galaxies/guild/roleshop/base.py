@@ -11,6 +11,7 @@ class NotRoleShopRoleError(CommandError):
 
 
 class RoleShopBase(GuildBaseCog):
+    """Base cog for Role Shop plugin."""
 
     async def _get_role(self, ctx, role, roles) -> discord.Role:
         # roles = roles or ctx.guild_profile.roleshop.roles
@@ -30,6 +31,7 @@ class RoleShopBase(GuildBaseCog):
 
     @GuildBaseCog.group(name="roleshop", invoke_without_command=True)
     async def role_shop(self, ctx):
+        """Displays all of the roles which can be purchased from role shop."""
         if not ctx.guild_profile.roleshop:
             return await ctx.send_line("❌    This server has no roles created or assigned to role shop.")
         paginator = ctx.get_field_paginator(ctx.guild_profile.roleshop.roles, entry_parser=self._paginator_parser)

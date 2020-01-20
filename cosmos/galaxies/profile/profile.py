@@ -4,6 +4,7 @@ from .. import Cog
 
 
 class Profile(Cog):
+    """Plugin which implements Cosmos Profile."""
 
     def __init__(self, plugin):
         super().__init__()
@@ -14,6 +15,7 @@ class Profile(Cog):
 
     @Cog.group(invoke_without_command=True)
     async def profile(self, ctx, *, user: discord.Member = None):
+        """Displays your Cosmos Profile or of specified member."""
         user = user or ctx.author
         profile = await self.cache.get_profile(user.id)
         if profile is None:
@@ -23,6 +25,7 @@ class Profile(Cog):
 
     @profile.group(name="description", aliases=["text"], invoke_without_command=True)
     async def profile_description(self, ctx):
+        """Displays currently set profile description."""
         profile = await self.cache.get_profile(ctx.author.id)
         embed = self.bot.theme.embeds.primary(title="Profile Description:")
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
@@ -31,6 +34,7 @@ class Profile(Cog):
 
     @profile_description.command(name="set", aliases=["modify", "edit", "change"])
     async def set_profile_description(self, ctx, *, description: str):
+        """Add description to your profile. The profile description can't exceed char length of 250."""
         max_words = self.plugin.data.profile.max_description_length
         if len(description) > max_words:
             res = f"❌    Sorry but profile description cannot exceed {max_words} word limit."
@@ -44,6 +48,7 @@ class Profile(Cog):
 
     @profile.group(name="birthday", aliases=["birthdate", "bday"], invoke_without_command=True)
     async def profile_birthday(self, ctx):
+        """Displays your birthday if it has been set already."""
         profile = await self.cache.get_profile(ctx.author.id)
         if not profile.birthday:
             res = "You have not set your birthday on your profile yet."
@@ -53,6 +58,7 @@ class Profile(Cog):
 
     @profile_birthday.command(name="set")
     async def set_profile_birthday(self, ctx, *, birthday: str):
+        """Set your birthday to show up on the Cosmos Profile."""
         profile = await self.cache.get_profile(ctx.author.id)
         await profile.set_birthday(birthday)
         res = f"Your birthday is set to {profile.birthday.strftime('%A, %B %e, %Y')}."
@@ -60,6 +66,7 @@ class Profile(Cog):
 
     @Cog.command(name="rep")
     async def rep_user(self, ctx, *, user: discord.Member = None):
+        """Add a reputation point to specified member."""
         if user and user.bot:
             return await ctx.send_line("😔    Sorry but I just can't do that.")
         if user and user.id == ctx.author.id:

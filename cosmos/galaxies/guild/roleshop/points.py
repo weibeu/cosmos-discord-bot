@@ -4,6 +4,13 @@ from .base import RoleShopBase
 
 
 class RoleShopPoints(RoleShopBase):
+    """Implements Guild Points function which are bound to each server. Members can earn points in different servers
+    by chatting normally in text channels where the bot can read their messages. They can also claim daily points.
+
+    These points can be redeemed to unlock various perks in the server set by the administrators like a role from
+    Role Shop.
+
+    """
 
     @RoleShopBase.listener()
     async def on_message(self, message):
@@ -15,6 +22,7 @@ class RoleShopPoints(RoleShopBase):
 
     @RoleShopBase.group(invoke_without_command=True)
     async def points(self, ctx, *, member: discord.Member = None):
+        """Displays Guild Points earned by you or specified member."""
         if member:
             adverb = f"{member.name} has"
         else:
@@ -28,6 +36,7 @@ class RoleShopPoints(RoleShopBase):
 
     @points.command(name="daily")
     async def daily_points(self, ctx, *, member: discord.Member = None):
+        """Lets you claim your daily Guild Points. Specify any member to let them have your daily Guild Points."""
         author_profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         target_name = "you"
         if (member and member.bot) or not member:
@@ -48,8 +57,9 @@ class RoleShopPoints(RoleShopBase):
 
     @points.command(name="credit", aliases=["transfer", "give"])
     async def transfer_points(self, ctx, points: int, *, member: discord.Member):
+        """Transfer your points to specified member."""
         if member.bot:
-            return await ctx.send_line("❌    You can't transfer points to robos.")
+            return await ctx.send_line("❌    You can't transfer points to robots.")
         if points < 0:
             return await ctx.send_line("❌    Sorry but I suck at calculations involving negative numbers.")
         author_profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)

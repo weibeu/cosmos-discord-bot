@@ -20,11 +20,13 @@ class ChannelConverter(commands.Converter):
 
 
 class Levels(GuildBaseCog):
+    """A plugin to implement text or voice levelling feature in server and related commands."""
 
     INESCAPABLE = False    # TODO: Fix. It still shows True at runtime.
 
     @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True, inescapable=False)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
+        """Displays current level and experience points."""
         member = member or ctx.author
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         embed = self.bot.theme.embeds.primary()
@@ -44,6 +46,10 @@ class Levels(GuildBaseCog):
 
     @levels.group(name="reward", aliases=["rewards"], invoke_without_command=True)
     async def rewards(self, ctx, channel: typing.Optional[ChannelConverter] = "text", level: int = None):
+        """Displays any rewards set for specified or all of the levels.
+        Optionally pass `text` to view Text Levels rewards and `voice` for Voice Levels rewards.
+
+        """
         rewards = ctx.guild_profile.levels.get_rewards(channel)
         if not rewards:
             return await ctx.send_line(f"❌    There are no {channel.title()} - Level Rewards set in this server yet.")
@@ -67,6 +73,10 @@ class Levels(GuildBaseCog):
     @commands.has_permissions(administrator=True)
     async def set_rewards(self, ctx, level: int, channel: typing.Optional[ChannelConverter] = "text",
                           points: typing.Optional[int] = 0, *, roles: converters.RoleConvertor()):
+        """Set rewards for specified Text or Voice Levels.
+        You can set one or multiple roles and optionally Guild Points as rewards.
+
+        """
         embed = self.bot.theme.embeds.primary()
         embed.set_author(name=f"Are you sure to set following rewards for "
                               f"{channel.title()} - Level {level}?", icon_url=ctx.guild.icon_url)
@@ -79,6 +89,7 @@ class Levels(GuildBaseCog):
     @rewards.command(name="remove", aliases=["delete"])
     @commands.has_permissions(administrator=True)
     async def remove_rewards(self, ctx, level: int, channel: ChannelConverter = "text"):
+        """Remove any Text or Voice Level rewards set for specified level."""
         if not ctx.guild_profile.levels.get_rewards(channel).get(level):
             return await ctx.send_line(f"❌    There are no rewards assigned for level {level}.")
         if not await ctx.confirm():

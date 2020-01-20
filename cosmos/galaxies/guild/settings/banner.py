@@ -6,6 +6,7 @@ from cosmos import exceptions
 
 
 class BannerSettings(Settings):
+    """A plugin to serve and manage various custom banners."""
 
     @Settings.listener()
     async def on_member_join(self, member):
@@ -18,10 +19,18 @@ class BannerSettings(Settings):
 
     @Settings.group(name="welcome", aliases=["join"])
     async def welcome(self, ctx):
+        """Manage welcome banner in server."""
         pass
 
     @welcome.group(name="banner", invoke_without_command=True)
     async def welcome_banner(self, ctx):
+        """Displays previously configured welcome banner.
+
+        Welcome Banner is PNG or GIF image file which is generated and sent when any member joins the server.
+        It can be customized by adding custom text. Moreover the border color can be customized by setting a new
+        theme color from Theme Settings.
+
+        """
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
         await ctx.guild_profile.send_welcome_banner(ctx.author.name, str(ctx.author.avatar_url), ctx.channel)
@@ -33,6 +42,12 @@ class BannerSettings(Settings):
 
     @welcome_banner.command(name="set")
     async def set_welcome_banner(self, ctx, banner_url, channel: typing.Optional[discord.TextChannel] = None, *, text):
+        """Configure and set server welcome banner.
+        You should specify direct URL of the banner template which can be either JPEG or PNG. Prime servers can use
+        GIF banner templates. It uses current channel to send welcome banners or any other if specified with custom
+        required text.
+
+        """
         channel = channel or ctx.channel
         banner_format = banner_url.split(".")[-1]
         if banner_format not in self.plugin.data.settings.banner_formats:
@@ -50,6 +65,7 @@ class BannerSettings(Settings):
 
     @welcome_banner.command(name="enable")
     async def enable_welcome_banner(self, ctx):
+        """Enable sending welcome banners in channel."""
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
         if ctx.guild_profile.welcome_banner_enabled:
@@ -59,6 +75,7 @@ class BannerSettings(Settings):
 
     @welcome_banner.command(name="disable")
     async def disable_welcome_banner(self, ctx):
+        """Disable sending welcome banner in channel."""
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
         if not ctx.guild_profile.welcome_banner_enabled:

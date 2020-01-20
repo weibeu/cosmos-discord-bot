@@ -16,6 +16,19 @@ class NameConvertor(commands.Converter):
 
 
 class Logger(LoggerEvents):
+    """Logger plugin provides option to log various discord and moderation events in desired channel.
+
+    Available Logger Events:
+        - on_message_delete -- Logs content and other attributes of message which was just deleted.
+        - on_bulk_message_delete -- Logs channel from which messages was deleted in bulk.
+        - on_message_edit -- Logs old and new content along wth other attributes of message which was just edited.
+        - on_guild_channel_pins_update -- Logs several attributes when a message is pinned in channel.
+        - on_member_join -- Logs useful attributes of member who just joined the server.
+        - on_member_remove -- Logs attributes of member who just left the server.
+        - on_moderation -- Logs several attributes of member, type of moderation, moderator and reason if it was
+        provided when moderator or auto-moderator performs any moderation action on this member.
+
+    """
 
     @staticmethod
     async def __logger_entry_parser(_, entry, __):
@@ -24,6 +37,7 @@ class Logger(LoggerEvents):
     @LoggerEvents.group(name="logger", aliases=["log", "logging", "loggers"], invoke_without_command=True)
     @commands.has_permissions(administrator=True)
     async def logger(self, ctx):
+        """Displays list of loggers enabled in different channels."""
         guild_profile = await ctx.fetch_guild_profile()
         if not guild_profile.loggers:
             return await ctx.send_line(f"❌    {ctx.guild.name} doesn't has any loggers enabled.")
@@ -39,6 +53,7 @@ class Logger(LoggerEvents):
 
     @logger.command(name="enable", aliases=["create"])
     async def enable_logger(self, ctx, channel: typing.Optional[discord.TextChannel], *, name: NameConvertor = None):
+        """Enables logger in specified channel. Logger name should always start with `on_`."""
         channel = channel or ctx.channel
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [name for name in self.loggers if not guild_profile.get_logger(name)]
@@ -54,6 +69,7 @@ class Logger(LoggerEvents):
 
     @logger.command(name="disable", aliases=["remove"])
     async def disable_logger(self, ctx, *, name: NameConvertor = None):
+        """Disables specified logger. Logger name should always start with `on_`."""
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [logger.name for logger in guild_profile.loggers]
         name = name or await self.__get_logger_name_from_menu(ctx, loggers)

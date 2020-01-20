@@ -4,6 +4,7 @@ from .base import Settings
 
 
 class PrefixSettings(Settings):
+    """Configure custom bot prefixes in server."""
 
     async def __check_prefix(self, ctx, prefix):
         if prefix not in self.bot.configs.cosmos.prefixes:
@@ -13,6 +14,7 @@ class PrefixSettings(Settings):
     @Settings.group(name="prefix", aliases=["prefixes"], invoke_without_command=True)
     @has_permissions(manage_guild=True)
     async def prefix(self, ctx):
+        """Displays currently set custom prefixes."""
         prefixes = self.cache.prefixes.get(ctx.guild.id)
         if not prefixes:
             return await ctx.send_line(f"{ctx.guild.name} doesn't has any custom prefixes.", ctx.guild.icon_url)
@@ -21,6 +23,7 @@ class PrefixSettings(Settings):
 
     @prefix.command(name="set")
     async def set_prefix(self, ctx, prefix):
+        """Set a unique custom prefix for bot commands in server."""
         if not await self.__check_prefix(ctx, prefix):
             return
         self.cache.prefixes.set(ctx.guild.id, [prefix])
@@ -32,6 +35,7 @@ class PrefixSettings(Settings):
     @Settings.checks.prime_guild()
     @prefix.command(name="add")
     async def add_prefix(self, ctx, prefix):
+        """Add more custom prefixes for bot commands."""
         if not await self.__check_prefix(ctx, prefix):
             return
         prefixes = self.cache.prefixes.get(ctx.guild.id, list())
@@ -48,6 +52,7 @@ class PrefixSettings(Settings):
 
     @prefix.command(name="remove", aliases=["delete"])
     async def remove_prefix(self, ctx, prefix):
+        """Removes specified custom prefix."""
         prefixes = self.cache.prefixes.get(ctx.guild.id, list())
         # TODO: Probably add reaction based menu to remove prefixes.
         try:
@@ -62,7 +67,9 @@ class PrefixSettings(Settings):
 
     @prefix.command(name="clear", aliases=["clean"])
     async def clear_prefixes(self, ctx):
-        # TODO: Add confirm menu here.
+        """Removes all of the currently set custom prefixes."""
+        if not await ctx.confirm():
+            return
         try:
             self.cache.prefixes.pop(ctx.guild.id)
         except KeyError:

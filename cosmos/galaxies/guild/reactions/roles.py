@@ -8,6 +8,7 @@ from .reactions import Reactions
 
 
 class ReactionRoles(Reactions):
+    """Plugin to implement reaction based roles in server."""
 
     INESCAPABLE = False
 
@@ -45,10 +46,22 @@ class ReactionRoles(Reactions):
 
     @Reactions.reaction.group(name="role", aliases=["roles"])
     async def reaction_roles(self, ctx):
+        """Manage reaction based roles throughout different channels. Reactions are added to specified messages.
+        Members can react to automatically get the desired roles.
+
+        """
         pass
 
     @reaction_roles.command(name="add", aliases=["setup", "set"])
     async def add_roles(self, ctx, message: typing.Optional[discord.Message], *, roles: converters.RoleConvertor):
+        """Setup reaction roles over any custom message you wish or you may skip this parameter to let bot post
+        a embed displaying list of provided roles.
+
+        To use custom message, you can pass its shareable URL which can be obtained by right clicking over your custom
+        message and click `Copy Message Link` from the floating menu. If you're using this command in same channel your
+        message is present, you can simply pass its message ID.
+
+        """
         # Lookup by “{channel ID}-{message ID}” (retrieved by shift-clicking on “Copy ID”).
         # Lookup by message ID (the message must be in the context channel).
         # Lookup by message URL.
@@ -70,6 +83,13 @@ class ReactionRoles(Reactions):
 
     @reaction_roles.command(name="remove", aliases=["delete"])
     async def remove_roles(self, ctx, message: typing.Union[discord.Message, int]):
+        """Remove reaction roles from provided message.
+
+        To use custom message, you can pass its shareable URL which can be obtained by right clicking over your custom
+        message and click `Copy Message Link` from the floating menu. If you're using this command in same channel your
+        message is present, you can simply pass its message ID.
+
+        """
         if not ctx.guild_profile.reactions.roles:
             return await ctx.send_line(f"❌    {ctx.guild.name} has no reactions roles set.", ctx.guild.icon_url)
         message_id = message.id if isinstance(message, discord.Message) else message

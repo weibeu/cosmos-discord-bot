@@ -5,6 +5,7 @@ from .. import Cog
 
 
 class Marriage(Cog):
+    """A Fun plugin which brings members closer than before."""
 
     INESCAPABLE = False
 
@@ -15,13 +16,14 @@ class Marriage(Cog):
 
     @Cog.group(name="propose", aliases=["proposal", "proposals", "marry", "accept"], invoke_without_command=True)
     async def propose_user(self, ctx, *, user: discord.Member):
+        """Lets you propose them. Luckily, if they have already prosed you, it proceeds for marriage."""
         if user.bot or user.id == ctx.author.id:
             res = f"😶    You are really weird. But I understand your feelings {ctx.author.name}."
             return await ctx.send_line(res)
         target_profile = await self.cache.get_profile(user.id)
         author_profile = await self.cache.get_profile(ctx.author.id)
         if author_profile.spouse_id == user.id and target_profile.spouse_id == ctx.author.id:
-            res = f"🎉    Congratulations! You guys got married aagin."
+            res = f"🎉    Congratulations! You guys got married again."
             return await ctx.send_line(res)
         if target_profile.spouse:
             res = f"💔    ... sorry to inform you but uh {user.name} is already married."
@@ -77,6 +79,7 @@ class Marriage(Cog):
 
     @propose_user.command(name="decline", aliases=["reject"])
     async def decline_proposal(self, ctx):
+        """Declines proposal if you had any."""
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.proposer:
             res = f"{ctx.author.name}, you do not have any pending proposals."
@@ -93,6 +96,7 @@ class Marriage(Cog):
 
     @propose_user.command(name="cancel", aliases=["revoke", "pull"])
     async def cancel_proposal(self, ctx):
+        """Cancels your proposal you made to someone."""
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.proposed:
             res = f"{ctx.author.name}, you have not sent any proposals yet."
@@ -109,6 +113,7 @@ class Marriage(Cog):
 
     @Cog.command(name="divorce")
     async def divorce_user(self, ctx):
+        """Lets you divorce if you're already married to someone."""
         author_profile = await self.cache.get_profile(ctx.author.id)
         if not author_profile.spouse:
             res = "You are not married yet to divorce."

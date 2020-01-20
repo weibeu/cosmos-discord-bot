@@ -65,6 +65,7 @@ class _GuildMemberProfile(commands.Converter):
 
 
 class Moderation(Cog):
+    """Plugin for server moderation."""
 
     INESCAPABLE = False
 
@@ -108,6 +109,7 @@ class Moderation(Cog):
     @Cog.group(name="modlogs", invoke_without_command=True, inescapable=False)
     @check_mod(kick_members=True)
     async def moderation_logs(self, ctx, *, member: typing.Union[discord.Member, int]):
+        """Displays all of the moderation logs of specified member."""
         try:
             _id = member.id
         except AttributeError:
@@ -124,6 +126,7 @@ class Moderation(Cog):
     @moderation_logs.command(name="clean", aliases=["purge", "clear"])
     @check_mod(administrator=True)
     async def clean_moderation_logs(self, ctx, *, member: discord.Member):
+        """Removes and cleans all of the previous moderation logs of specified member."""
         if not await ctx.confirm(f"⚠    Are you sure to purge moderation logs of {member}?"):
             return
         profile = await ctx.fetch_member_profile(member.id)
@@ -133,6 +136,7 @@ class Moderation(Cog):
     @Cog.command(name="warn", inescapable=False)
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
+        """Issues a warning to specified member. Also notifies them automatically by direct message."""
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't warn {member}.")
         action = await self.__get_action(ctx, member, actions.Warned, reason)
@@ -146,6 +150,7 @@ class Moderation(Cog):
     @check_mod(kick_members=True)
     @commands.bot_has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
+        """Kicks specified member from the server. It also notifies them automatically along with the given reason."""
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't kick {member}.")
         action = await self.__get_action(ctx, member, actions.Kicked, reason)
@@ -159,6 +164,10 @@ class Moderation(Cog):
     @check_mod(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None):
+        """Bans specified member from the server. It also notifies them automatically along with the given reason.
+        If the user is not present in the server, their discord ID can be passed as member parameter.
+
+        """
         action = await self.__get_action(ctx, member, actions.Banned, reason)
         await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
         try:
@@ -178,6 +187,7 @@ class Moderation(Cog):
     @check_mod(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, user_id: int, *, reason=None):
+        """Un bans user from their discord ID."""
         action = await self.__get_action(ctx, user_id, actions.Unbanned, reason)
         try:
             await ctx.guild.unban(discord.Object(user_id), reason=reason)
@@ -189,6 +199,10 @@ class Moderation(Cog):
     @Cog.group(name="mute", invoke_without_command=True, inescapable=False)
     @check_voice_perms(mute_members=True)
     async def mute(self, ctx, member: discord.Member, *, reason=None):
+        """Mutes specified member from voice and also adds the muted role. It also notifies them automatically along
+        with the given reason.
+
+        """
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't mute {member}.")
         action = await self.__get_action(ctx, member, actions.Muted, reason)
@@ -210,6 +224,7 @@ class Moderation(Cog):
     @Cog.command(name="unmute")
     @check_voice_perms(mute_members=True)
     async def unmute(self, ctx, member: discord.Member):
+        """Un mutes specified member from voice and removes the muted role. It also notifies them automatically."""
         action = await self.__get_action(ctx, member, actions.Warned)
         guild_profile = await ctx.fetch_guild_profile()
         muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
@@ -229,6 +244,7 @@ class Moderation(Cog):
     @mute.command(name="role")
     @commands.has_permissions(administrator=True)
     async def muted_role(self, ctx, *, role: discord.Role = None):
+        """Sets muted role for server which will be used to enforce restrictions on members when they're muted."""
         if not await ctx.confirm():
             return
         guild_profile = await ctx.fetch_guild_profile()

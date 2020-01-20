@@ -4,6 +4,7 @@ from .._models import GuildBaseCog
 
 
 class Reactions(GuildBaseCog):
+    """This plugin provides reaction based utilities."""
 
     async def cog_check(self, ctx):
         await super().cog_check(ctx)
@@ -13,4 +14,5 @@ class Reactions(GuildBaseCog):
 
     @GuildBaseCog.group(name="reaction", aliases=["reactions"])
     async def reaction(self, ctx):
+        """It contains multiple reaction based sub-commands."""
         pass

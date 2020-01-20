@@ -6,6 +6,12 @@ from .._models import GuildBaseCog
 
 
 class Starboard(GuildBaseCog):
+    """A plugin which implements Starboard feature in server.
+
+    Reactions on messages when exceed specified number of stars, they are posted in a certain channel which has been
+    set previously.
+
+    """
 
     INESCAPABLE = False
 
@@ -43,10 +49,13 @@ class Starboard(GuildBaseCog):
 
     @GuildBaseCog.group(name="starboard")
     async def starboard(self, ctx):
+        """Configure Starboard in server."""
         pass
 
     @starboard.command(name="set", aliases=["setup", "create"])
     async def set_starboard(self, ctx, stars: int = None, *, channel: discord.TextChannel = None):
+        """Set starboard in server for specified number of stars in specified channel."""
+        stars = stars or self.plugin.data.settings.default_star_count
         channel = channel or ctx.channel
         if not await ctx.confirm():
             return
@@ -55,6 +64,7 @@ class Starboard(GuildBaseCog):
 
     @starboard.command(name="remove", aliases=["delete"])
     async def remove_starboard(self, ctx):
+        """Remove starboard from server."""
         if not await ctx.confirm():
             return
         await ctx.guild_profile.remove_starboard()

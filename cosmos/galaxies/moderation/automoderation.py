@@ -23,6 +23,26 @@ class TriggerConvertor(commands.Converter):
 
 
 class AutoModeration(Cog):
+    """An Auto Moderation plugin based on triggers and actions.
+    Server Administrators can create different triggers and specify various actions for it. The bot responds and
+    performs all of the actions which were specified for this trigger when a member violates its protocol. A single
+    trigger can have multiple actions set.
+
+    Available Triggers:
+        - spoilers -- Triggers when a member sends any kind of spoiler content.
+        - emoji_spam -- Triggers when there are lots of emotes in a single message.
+        - banned_words -- Triggers when a message contains any of the banned or blacklisted words.
+        - mass_mentions -- Triggers when there are lots of mentions in a single message.
+        - discord_invites -- Triggers when a message contains invites to different discord servers.
+
+    Available trigger Actions:
+        - delete -- Deletes the message which invoked the trigger.
+        - warn -- Warns the member who invoked the trigger.
+        - mute -- Mutes the member who invoked the trigger by adding the muted role.
+        - kick -- Kicks the member who invoked the trigger.
+        - ban -- Bans the member who invoked the trigger.
+
+    """
 
     def __init__(self, plugin):
         super().__init__()
@@ -77,6 +97,7 @@ class AutoModeration(Cog):
 
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
+        """Displays all of the active triggers along with their actions."""
         guild_profile = await ctx.fetch_guild_profile()
         embed = ctx.embed_line(f"Active auto moderation triggers or violations", ctx.guild.icon_url)
         if guild_profile.auto_moderation.triggers:
@@ -88,6 +109,7 @@ class AutoModeration(Cog):
 
     @triggers.command(name="create", aliases=["set", "add"])
     async def create_trigger(self, ctx, trigger: TriggerConvertor, *actions: ActionConvertor):
+        """Sets a new Auto Moderation trigger with specified actions."""
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.auto_moderation.create_trigger(trigger, actions)
         await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been created.")
@@ -99,6 +121,7 @@ class AutoModeration(Cog):
 
     @triggers.command(name="remove", aliases=["delete"])
     async def remove_trigger(self, ctx, trigger: TriggerConvertor):
+        """Removes specified Auto Moderation trigger."""
         guild_profile = await ctx.fetch_guild_profile()
         if trigger not in guild_profile.auto_moderation.triggers:
             return await ctx.send_line(f"❌    You haven't created that trigger yet.")
@@ -107,6 +130,7 @@ class AutoModeration(Cog):
 
     @Cog.group(name="banword", aliases=["bannedwords", "banwords"], invoke_without_command=True)
     async def ban_word(self, ctx, word=None):
+        """Blacklists or bans specified word. To make it work, first set `banned_words` Auto Moderation trigger."""
         guild_profile = await ctx.fetch_guild_profile()
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if not trigger:
@@ -126,6 +150,7 @@ class AutoModeration(Cog):
 
     @ban_word.command(name="clear", aliases=["clean", "purge"])
     async def clear_banned_words(self, ctx):
+        """Removes all of the currently blacklisted or banned words."""
         guild_profile = await ctx.fetch_guild_profile()
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if not trigger:

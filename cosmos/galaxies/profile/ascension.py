@@ -2,6 +2,7 @@ from .. import Cog
 
 
 class Levels(Cog):
+    """This plugin implements experience points and levelling features."""
 
     def __init__(self, plugin):
         super().__init__()

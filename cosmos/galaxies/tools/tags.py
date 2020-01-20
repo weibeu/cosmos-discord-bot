@@ -3,6 +3,7 @@ from discord.ext import commands
 
 
 class Tags(Cog):
+    """Tags to hold and save texts or images which can be retrieved anytime later across different servers."""
 
     INESCAPABLE = False
 
@@ -17,6 +18,7 @@ class Tags(Cog):
 
     @Cog.command(name="tags")
     async def tags(self, ctx):
+        """Displays list of custom tags created and owned by you."""
         profile = await ctx.fetch_cosmos_user_profile()
         if not profile.tags:
             return await ctx.send_line(f"❌    You haven't created any custom tags yet.")
@@ -26,6 +28,7 @@ class Tags(Cog):
 
     @Cog.group(name="tag", invoke_without_command=True)
     async def tag(self, ctx, *, name):
+        """Retrieves and displays specified tag and all of its contents."""
         profile = await ctx.fetch_cosmos_user_profile()
         if not profile.tags:
             return await ctx.send_line(f"❌    You haven't created any custom tags yet.")
@@ -48,6 +51,7 @@ class Tags(Cog):
     @tag.command(name="create")
     async def create_tag(
             self, ctx, name, *, content: commands.clean_content(use_nicknames=False, fix_channel_mentions=True)):
+        """Creates a new tag with specified name holding provided content."""
         profile = await ctx.fetch_cosmos_user_profile()
         if len(profile.tags) >= self.plugin.data.tags.max_tags and not profile.is_prime:
             raise UserNotPrime
@@ -59,6 +63,7 @@ class Tags(Cog):
 
     @tag.command(name="remove", aliases=["delete"])
     async def remove_tag(self, ctx, *, name=None):
+        """Permanently removes the specified tag."""
         profile = await ctx.fetch_cosmos_user_profile()
         if not name:
             menu = ctx.get_field_menu(profile.tags, self.__tags_parser, inline=False)

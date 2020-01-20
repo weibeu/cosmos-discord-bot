@@ -32,6 +32,7 @@ class GalaxyConverter(commands.Converter):
 
 
 class FunctionsPermissions(Settings):
+    """Manage permissions of various bot functions."""
 
     # TODO: Implement menu.
 
@@ -67,6 +68,10 @@ class FunctionsPermissions(Settings):
     @Settings.group(name="disable")
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                       *channels: discord.TextChannel):
+        """Disables provided function from one or multiple channels which are specified.
+        A function can be any of the commands, plugins or galaxies which are allowed to be disabled.
+
+        """
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.disable(function, channels)
         # noinspection PyUnresolvedReferences
@@ -75,6 +80,10 @@ class FunctionsPermissions(Settings):
     @Settings.group(name="enable")
     async def enable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                      *channels: discord.TextChannel):
+        """Enables provided function in all of the specified channels.
+        A function can be any of the commands, plugins or galaxies.
+
+        """
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.enable(function, channels)
         # noinspection PyUnresolvedReferences
