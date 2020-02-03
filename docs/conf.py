@@ -11,9 +11,14 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import re
 import sys
 
-from cosmos.core.utilities.utils import Utils
+
+def get_version():
+    with open('../cosmos/__init__.py') as f:
+        ver = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+    return ver
 
 
 sys.path.insert(0, os.path.abspath('..'))
@@ -25,7 +30,7 @@ sys.path.append('../cosmos/')
 project = 'Cosmos'
 copyright = '2020, □ | The Cosmos'
 author = '□ | The Cosmos'
-version = Utils.get_version()
+version = get_version()
 
 # -- General configuration ---------------------------------------------------
 

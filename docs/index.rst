@@ -27,6 +27,10 @@ Key Features
 Getting Started
 ---------------
 
+.. image:: ./images/invite-banner.png
+   :target: https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8
+
+
 
 Contributing
 ------------
