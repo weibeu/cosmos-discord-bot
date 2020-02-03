@@ -41,3 +41,9 @@ class Utils(HasteBin):
     @staticmethod
     def get_invites(string):
         return re.findall(r"(?:https?://)?discord(?:app\.com/invite|\.gg)/?[a-zA-Z0-9]+/?", string)
+
+    @staticmethod
+    def get_version():
+        with open('cosmos/__init__.py') as f:
+            ver = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+        return ver
