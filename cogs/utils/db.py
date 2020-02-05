@@ -1,12 +1,14 @@
+import os
 import motor.motor_asyncio
 import discord
 from json import load
 from cogs.utils import util
-def get_config():
-    with open("settings/config.json") as config_file:
-        config = load(config_file)
-        return config
-motor_client = motor.motor_asyncio.AsyncIOMotorClient(get_config()["MONGOHQ_URL"])
+
+
+MONGO_URI = os.environ.get("MONGO_URI")
+
+
+motor_client = motor.motor_asyncio.AsyncIOMotorClient()
 
 async def count_role(col):
     return await col.count_documents({'_id': 'role-shop'})
