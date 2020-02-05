@@ -11,11 +11,17 @@ import aiohttp
 from cogs.utils import db
 import traceback
 
+
+TOKEN = os.environ.get("TOKEN")
+SENTRY_DSN = os.environ.get("SENTRY_DSN")
+MONGO_URI = os.environ.get("MONGO_URI")
+
+
 with open("settings/config.json") as config_file:
     config = load(config_file)
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(*config["prefixes"]), description=config["description"])
-bot.sentry_client = sentry_Client(config["SENTRY_DSN"])
-bot.db_client = motor.motor_asyncio.AsyncIOMotorClient(config["MONGOHQ_URL"])
+bot.sentry_client = sentry_Client(SENTRY_DSN)
+bot.db_client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 bot.config = config
 bot.remove_command('help')
 bot.session = aiohttp.ClientSession(loop=asyncio.get_event_loop())
@@ -102,4 +108,4 @@ async def tad_general_check(ctx):
         return False
     return True
 
-bot.run(config["TOKEN"])
+bot.run(TOKEN)
