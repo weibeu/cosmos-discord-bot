@@ -87,5 +87,5 @@ class Evaluator(Admin):
                     embed.timestamp = datetime.now()
                     await ctx.send(embed=embed)
                 except discord.HTTPException:
-                    haste_url = await self.bot.utilities.haste(f"{value}\n\n>>> {ret}")
+                    haste_url = await self.bot.utilities.haste(f"{value}{ret}")
                     await ctx.send_line(f"🔗    {haste_url.py}")
