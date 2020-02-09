@@ -1,12 +1,13 @@
 from contextlib import redirect_stdout
 
 import io
+import time
 import discord
 import textwrap
 import traceback
 
 from ..base import Admin
-from pprint import pformat
+from datetime import datetime
 
 
 # noinspection PyBroadException
@@ -52,33 +53,39 @@ class Evaluator(Admin):
 
         async with ctx.loading():
             try:
+                start_eval_at = time.time()
                 exec(to_compile, env)
             except Exception as e:
-                return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+                embed = ctx.embed_line(f"❗    Error while compiling.")
+                embed.description = f'```py\n{e.__class__.__name__}: {e}\n```'
+                embed.timestamp = datetime.now()
+                return await ctx.send(embed=embed)
 
             func = env['func']
             try:
                 with redirect_stdout(stdout):
                     ret = await func()
+                    evaluated_in = time.time() - start_eval_at
             except Exception as _:
                 value = stdout.getvalue()
-                await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+                embed = ctx.embed_line(f"⚠    An unexpected exception occurred.")
+                embed.description = f'```py\n{value}{traceback.format_exc()}\n```'
+                embed.timestamp = datetime.now()
+                await ctx.send(embed=embed)
             else:
-                await ctx.message.add_reaction('\u2705')
-
                 value = stdout.getvalue()
 
-                if ret is None:
+                self._last_result = ret
+
+                try:
+                    embed = ctx.embed_line(f"✅    Evaluated in {round(evaluated_in, 3)} seconds.")
+                    embed.description = f"```py\n{body}\n```"
                     if value:
-                        try:
-                            await ctx.send(f'```py\n{value}\n```')
-                        except discord.HTTPException:
-                            haste_url = await self.bot.utilities.haste(value)
-                            await ctx.send(haste_url.py)
-                else:
-                    self._last_result = ret
-                    try:
-                        await ctx.send(f'```py\n{value}{ret}\n```')
-                    except discord.HTTPException:
-                        haste_url = await self.bot.utilities.haste(pformat(f"{value}{ret}", indent=4))
-                        await ctx.send(haste_url.py)
+                        embed.add_field(name="Standard Output", value=f'```py\n{value}\n```')
+                    if ret:
+                        embed.add_field(name="Returned", value=f'```py\n{ret}\n```')
+                    embed.timestamp = datetime.now()
+                    await ctx.send(embed=embed)
+                except discord.HTTPException:
+                    haste_url = await self.bot.utilities.haste(f"{value}\n\n>>> {ret}")
+                    await ctx.send_line(f"🔗    {haste_url.py}")
