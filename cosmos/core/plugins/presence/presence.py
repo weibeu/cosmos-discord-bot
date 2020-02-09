@@ -3,14 +3,13 @@ import random
 
 import discord
 
-from ...functions import Cog
+from ..admin.base import Admin
 
 
-class Presence(Cog):
+class Presence(Admin):
 
     def __init__(self, plugin):
-        super().__init__()
-        self.plugin = plugin
+        super().__init__(plugin)
         self.rotate = self.plugin.data.configs.rotate
         self.rotate_task = self.bot.loop.create_task(self.rotate_presence())
 
