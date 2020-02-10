@@ -23,6 +23,8 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         member = member or ctx.author
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         paginator = ctx.get_field_paginator(profile.roleshop.roles, entry_parser=self._paginator_parser)
+        paginator.embed.set_author(name="Purchased Roles - Role Shop", icon_url=ctx.author.avatar_url)
+        paginator.embed.description = "```css\nDisplaying roles you have purchased from Role Shop.```"
         await paginator.paginate()
 
     @RoleShopSettings.role_shop.command(name="buy", aliases=["purchase"], inescapable=False)
@@ -33,7 +35,10 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         """
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in ctx.guild_profile.roleshop.roles if role not in profile.roleshop.roles]
-        role = await self._get_role(ctx, role, roles)
+        # TODO: Maybe only include roles which can be purchased by that member because of less points.
+        description = "```css\nDisplaying Role Shop roles which you can purchase using your earned points. React " \
+                      "with the respective emote to purchase the same role.```"
+        role = await self._get_role(ctx, role, roles, "Buy Menu - Role Shop", description)
         _role = ctx.guild_profile.roleshop.roles.get(role.id)
         if _role in profile.roleshop.roles:
             return await ctx.send_line(f"❌    You have already purchased {role.name}.")
@@ -70,7 +75,9 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         """
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in profile.roleshop.roles if ctx.guild.get_role(role.id) not in ctx.author.roles]
-        role = await self._get_role(ctx, role, roles)
+        description = "```css\nDisplaying your purchased roles from Role Shop which aren't equipped. React with " \
+                      "the respective emote to equip that role.```"
+        role = await self._get_role(ctx, role, roles, "Equip Menu - Role Shop", description)
         _role = ctx.guild_profile.roleshop.roles.get(role.id)
         if _role not in profile.roleshop.roles:
             return await ctx.send_line(f"❌    You haven't purchased {role.name} yet.")
@@ -95,7 +102,9 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         """Un-equip specified Role Shop role which you have already equipped."""
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in profile.roleshop.roles if ctx.guild.get_role(role.id) in ctx.author.roles]
-        role = await self._get_role(ctx, role, roles)
+        description = "```css\nDisplaying your purchased roles from Role Shop which are equipped. React with " \
+                      "the respective emote to un-equip that role.```"
+        role = await self._get_role(ctx, role, roles, "Un Equip Menu - Role Shop", description)
         if role not in ctx.author.roles:
             return await ctx.send_line(f"❌    You've already un-equipped {role.name}.")
         await ctx.author.remove_roles(role)

@@ -119,6 +119,7 @@ class Moderation(Cog):
             return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
         paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
         paginator.embed.description = f"**User:** `{member}`\n**User ID:** `{_id}`"
+        paginator.embed.set_author(name="Moderation Logs", icon_url=member.avatar_url)
         await paginator.paginate()
         # TODO: Add moderation logs limits.
         # TODO: Use discord.User.

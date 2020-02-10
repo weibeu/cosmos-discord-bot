@@ -31,6 +31,7 @@ class AdministratorSettings(Cog):
         roles = [ctx.guild.get_role(_id).mention for _id in guild_profile.moderators if ctx.guild.get_role(_id)]
         members = [ctx.guild.get_member(_id).mention for _id in guild_profile.moderators if ctx.guild.get_member(_id)]
         embed = ctx.embeds.one_line.primary(f"{ctx.guild.name} Moderators", ctx.guild.icon_url)
+        embed.description = "```css\nDisplaying roles and members assigned as special moderators of the server.```"
         if roles:
             embed.add_field(name="Moderator Roles", value=" ".join(roles))
         if members:

@@ -29,7 +29,8 @@ class RoleShopSettings(RoleShopBase):
         It displays an interactive reaction based menu to choose your desired role if it's not specified.
 
         """
-        role = await self._get_role(ctx, role, ctx.guild_profile.roleshop.roles)
+        description = "```css\nDisplaying Role Shop roles. React with respective emote to remove that role.```"
+        role = await self._get_role(ctx, role, ctx.guild_profile.roleshop.roles, "Delete Menu - Role Shop", description)
 
         if await ctx.confirm(f"⚠    Are you sure to remove {role.name} from role shop?"):
             # await role.delete(reason=f"Role deleted from role shop. [{ctx.author}]")
@@ -49,7 +50,8 @@ class RoleShopSettings(RoleShopBase):
         It displays an interactive reaction based menu to choose your desired role if it's not specified.
 
         """
-        role = await self._get_role(ctx, role, ctx.guild_profile.roleshop.roles)
+        description = "```css\nDisplaying Role Shop roles. React with respective emote to modify that role.```"
+        role = await self._get_role(ctx, role, ctx.guild_profile.roleshop.roles, "Modify Menu - Role Shop", description)
 
         if await ctx.confirm(f"⚠    Are you sure to change points of {role.name} to {new_points}?"):
             await ctx.guild_profile.roleshop.set_points(role.id, new_points)

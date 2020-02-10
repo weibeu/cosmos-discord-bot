@@ -99,10 +99,12 @@ class AutoModeration(Cog):
     async def triggers(self, ctx):
         """Displays all of the active triggers along with their actions."""
         guild_profile = await ctx.fetch_guild_profile()
-        embed = ctx.embed_line(f"Active auto moderation triggers or violations", ctx.guild.icon_url)
+        embed = ctx.embed_line(f"Triggers or Violations - Auto Moderation", ctx.guild.icon_url)
+        embed.description = "```css\nDisplaying Triggers or Violations set in the server along with their actions " \
+                            "which are automatically taken by the bot.```"
         if guild_profile.auto_moderation.triggers:
             for trigger in guild_profile.auto_moderation.triggers.values():
-                embed.add_field(name=trigger.title, value=", ".join(trigger._actions))    # pylint: disable=w0212
+                embed.add_field(name=trigger.title, value="`ACTIONS:` " + ", ".join(trigger._actions))    # Ignore lint.
         else:
             embed.description = "❌    No auto moderation triggers or violations has been set yet."
         await ctx.send(embed=embed)
@@ -138,11 +140,14 @@ class AutoModeration(Cog):
         if len(trigger.words) >= self.plugin.data.auto_moderation.max_banned_words:
             return await ctx.send_line("❌    Sorry, but you can't ban anymore words.")
         if not word:
+            if not trigger.words:
+                return await ctx.send_line(f"❌    You haven't banned any words yet.")
             embed = ctx.embed_line(f"List of banned words in {ctx.guild.name}", ctx.guild.icon_url)
+            embed.description = "```css\nDisplaying banned or blacklisted words in the server.```\n"
             try:
-                embed.description = ", ".join(trigger.words)
+                embed.description += ", ".join(trigger.words)
             except AttributeError:
-                embed.description = "❌    No words banned yet."
+                embed.description = "❌    You haven't banned any words yet."
             # TODO: Provide, accept banned words file as well.
             return await ctx.send(embed=embed)
         await guild_profile.auto_moderation.ban_word(word)
@@ -152,6 +157,8 @@ class AutoModeration(Cog):
     async def clear_banned_words(self, ctx):
         """Removes all of the currently blacklisted or banned words."""
         guild_profile = await ctx.fetch_guild_profile()
+        if not await ctx.confirm():
+            return
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if not trigger:
             return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")

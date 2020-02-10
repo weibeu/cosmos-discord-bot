@@ -23,7 +23,8 @@ class Tags(Cog):
         if not profile.tags:
             return await ctx.send_line(f"❌    You haven't created any custom tags yet.")
         paginator = ctx.get_field_paginator(profile.tags, entry_parser=self.__tags_parser, inline=False)
-        paginator.embed.title = "Custom Tags"
+        paginator.embed.set_author(name=f"{ctx.author.display_name}'s Custom Tags", icon_url=ctx.author.avatar_url)
+        paginator.embed.description = "```css\nDisplaying custom tags created by you.```"
         await paginator.paginate()
 
     @Cog.group(name="tag", invoke_without_command=True)

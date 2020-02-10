@@ -27,8 +27,8 @@ class Profile(Cog):
     async def profile_description(self, ctx):
         """Displays currently set profile description."""
         profile = await self.cache.get_profile(ctx.author.id)
-        embed = self.bot.theme.embeds.primary(title="Profile Description:")
-        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed = self.bot.theme.embeds.primary()
+        embed.set_author(name=f"{ctx.author.name}'s Profile Description", icon_url=ctx.author.avatar_url)
         embed.description = profile.description
         await ctx.send(embed=embed)
 

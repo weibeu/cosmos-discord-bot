@@ -13,13 +13,15 @@ class NotRoleShopRoleError(CommandError):
 class RoleShopBase(GuildBaseCog):
     """Base cog for Role Shop plugin."""
 
-    async def _get_role(self, ctx, role, roles) -> discord.Role:
+    async def _get_role(self, ctx, role, roles, title, description: str = str()) -> discord.Role:
         # roles = roles or ctx.guild_profile.roleshop.roles
         if role:
             if not ctx.guild_profile.roleshop.has_role(role.id):
                 raise NotRoleShopRoleError(role)
             return role
         menu = ctx.get_field_menu(roles, self._paginator_parser)
+        menu.embed.description = description
+        menu.embed.set_author(name=title, icon_url=ctx.author.avatar_url)
         response = await menu.wait_for_response()
         return ctx.guild.get_role(response.entry.id)
 
@@ -37,6 +39,7 @@ class RoleShopBase(GuildBaseCog):
         paginator = ctx.get_field_paginator(ctx.guild_profile.roleshop.roles, entry_parser=self._paginator_parser)
         paginator.embed.description = "```css\nDisplaying Role Shop roles which can be purchased for specified points" \
                                       ".```"
+        paginator.embed.set_author(name="Role Shop", icon_url=ctx.author.avatar_url)
         await paginator.paginate()
 
     @role_shop.error
