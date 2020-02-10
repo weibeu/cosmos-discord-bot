@@ -14,9 +14,6 @@ class UserLevel(GuildMemberProfileBase, ABC):
             level += 1
         return level
 
-    def get_total_xp(self, level):
-        return sum(self.LEVELS_XP[: level])
-
     @property
     @abstractmethod
     def xp(self):
@@ -26,22 +23,6 @@ class UserLevel(GuildMemberProfileBase, ABC):
     @abstractmethod
     def voice_xp(self):
         raise NotImplementedError
-
-    @property
-    def delta_xp(self):
-        return self.get_total_xp(self.level + 1) - self.xp
-
-    @property
-    def delta_voice_xp(self):
-        return self.get_total_xp(self.voice_level + 1) - self.voice_xp
-
-    @property
-    def xp_progress(self):
-        return self.xp - self.get_total_xp(self.level), self.LEVELS_XP[self.level]
-
-    @property
-    def voice_xp_progress(self):
-        return self.voice_xp - self.get_total_xp(self.voice_level), self.LEVELS_XP[self.voice_level]
 
     # @property
     # def xp_level(self):

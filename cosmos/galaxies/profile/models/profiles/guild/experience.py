@@ -17,6 +17,9 @@ class UserExperience(UserLevel, ABC):
         self.is_speaking = False
         self.__voice_activity_time = None
 
+    def get_total_xp(self, level):
+        return sum(self.LEVELS_XP[: level])
+
     @property
     def xp(self):
         return self._xp
@@ -59,3 +62,19 @@ class UserExperience(UserLevel, ABC):
 
         self.is_speaking = False
         self.__voice_activity_time = None
+
+    @property
+    def delta_xp(self):
+        return self.get_total_xp(self.level + 1) - self.xp
+
+    @property
+    def delta_voice_xp(self):
+        return self.get_total_xp(self.voice_level + 1) - self.voice_xp
+
+    @property
+    def xp_progress(self):
+        return self.xp - self.get_total_xp(self.level), self.LEVELS_XP[self.level]
+
+    @property
+    def voice_xp_progress(self):
+        return self.voice_xp - self.get_total_xp(self.voice_level), self.LEVELS_XP[self.voice_level]
