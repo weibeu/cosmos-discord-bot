@@ -27,6 +27,9 @@ class ProfileCache(object):
     async def on_ready(self):
         self.update_database_task.start()
 
+    async def on_disconnect(self):
+        self.update_database_task.cancel()
+
     async def __get_redis_client(self):
         await self.bot.wait_until_ready()
         self._redis = self.bot.cache.redis
