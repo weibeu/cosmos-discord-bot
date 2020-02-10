@@ -29,7 +29,7 @@ class RoleShopPoints(RoleShopBase):
             member = ctx.author
             adverb = f"{member.name}, you have"
         if member.bot:
-            return await ctx.send_line("🤖    Robos don't earn points.")
+            return await ctx.send_line("🤖    Robots don't earn points.")
 
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         await ctx.send_line(f"💰    {adverb} {profile.points} guild points.")
