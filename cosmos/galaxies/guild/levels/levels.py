@@ -58,7 +58,7 @@ class Levels(GuildBaseCog):
         """
         rewards = ctx.guild_profile.levels.get_rewards(channel)
         if not rewards:
-            return await ctx.send_line(f"❌    There are no {channel.title()} - Level Rewards set in this server yet.")
+            return await ctx.send_line(f"❌    There are no {channel.title()} Level Rewards set in this server yet.")
         if not level:
             paginator = ctx.get_field_paginator(
                 sorted(
@@ -68,9 +68,9 @@ class Levels(GuildBaseCog):
             return await paginator.paginate()
         _reward = rewards.get(level)
         if not _reward:
-            return await ctx.send_line(f"❌    There are no {channel} - rewards assigned for level {level}.")
+            return await ctx.send_line(f"❌    There are no {channel.title()} rewards assigned for level {level}.")
         embed = self.bot.theme.embeds.primary()
-        embed.set_author(name=f"Rewards for {channel} - Level {level}", icon_url=ctx.guild.icon_url)
+        embed.set_author(name=f"Rewards for {channel.title()} Level {level}", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([f"<@&{role_id}>" for role_id in _reward.roles]))
         embed.add_field(name="Points", value=_reward.points)
         await ctx.send(embed=embed)
@@ -85,12 +85,12 @@ class Levels(GuildBaseCog):
         """
         embed = self.bot.theme.embeds.primary()
         embed.set_author(name=f"Are you sure to set following rewards for "
-                              f"{channel.title()} - Level {level}?", icon_url=ctx.guild.icon_url)
+                              f"{channel.title()} Level {level}?", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([role.mention for role in roles]))
         embed.add_field(name="Points", value=points)
         if await ctx.confirm(await ctx.send(embed=embed)):
             await ctx.guild_profile.levels.set_rewards(level, [role.id for role in roles], points, channel=channel)
-            await ctx.send_line(f"✅    Rewards for {channel.title()} - Level {level} has been set.")
+            await ctx.send_line(f"✅    Rewards for {channel.title()} Level {level} has been set.")
 
     @rewards.command(name="remove", aliases=["delete"])
     @commands.has_permissions(administrator=True)
