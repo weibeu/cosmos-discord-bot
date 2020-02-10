@@ -27,7 +27,7 @@ class RoleShopBase(GuildBaseCog):
     async def _paginator_parser(ctx, roleshop_role, _):
         role = ctx.guild.get_role(roleshop_role.id)
         points = roleshop_role.points
-        return role.name, f"{ctx.bot.emotes.misc.coins} {points}"
+        return role.name, f"`POINTS:` **{points}**"
 
     @GuildBaseCog.group(name="roleshop", invoke_without_command=True)
     async def role_shop(self, ctx):
@@ -35,6 +35,8 @@ class RoleShopBase(GuildBaseCog):
         if not ctx.guild_profile.roleshop:
             return await ctx.send_line("❌    This server has no roles created or assigned to role shop.")
         paginator = ctx.get_field_paginator(ctx.guild_profile.roleshop.roles, entry_parser=self._paginator_parser)
+        paginator.embed.description = "```css\nDisplaying Role Shop roles which can be purchased for specified points" \
+                                      ".```"
         await paginator.paginate()
 
     @role_shop.error
