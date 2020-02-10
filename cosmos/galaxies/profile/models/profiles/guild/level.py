@@ -14,6 +14,9 @@ class UserLevel(GuildMemberProfileBase, ABC):
             level += 1
         return level
 
+    def get_total_xp(self, level):
+        return sum(self.LEVELS_XP[: level])
+
     @property
     @abstractmethod
     def xp(self):
@@ -26,11 +29,11 @@ class UserLevel(GuildMemberProfileBase, ABC):
 
     @property
     def delta_xp(self):
-        return sum(self.LEVELS_XP[: self.level + 1]) - self.xp
+        return self.get_total_xp(self.level + 1) - self.xp
 
     @property
     def delta_voice_xp(self):
-        return sum(self.LEVELS_XP[: self.voice_level + 1]) - self.voice_xp
+        return self.get_total_xp(self.voice_level + 1) - self.voice_xp
 
     # @property
     # def xp_level(self):
