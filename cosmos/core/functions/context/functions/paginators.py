@@ -18,7 +18,7 @@ class BasePaginator(object):
     async def _default_entry_parser(ctx, entry, _):
         return entry
 
-    def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=True, inline=True, is_menu=False, **kwargs):
+    def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=False, inline=True, is_menu=False, **kwargs):
         self.ctx = ctx
         self.loop = self.ctx.bot.loop
         self.emotes = self.ctx.bot.emotes
