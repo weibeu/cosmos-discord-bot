@@ -115,7 +115,7 @@ class BasePaginator(object):
         para.append(str())
 
         self.embed.description = "\n".join(para)
-        self.message = await self.ctx.channel.send(embed=self.embed)
+        self.message = await self.ctx.send(embed=self.embed)
 
         await self.set_controllers(**kwargs)
 
@@ -246,6 +246,6 @@ class FieldPaginator(BasePaginator):
         if not first:
             return await self.message.edit(embed=self.embed)
 
-        self.message = await self.ctx.channel.send(embed=self.embed)
+        self.message = await self.ctx.send(embed=self.embed)
 
         await self.set_controllers(**kwargs)
