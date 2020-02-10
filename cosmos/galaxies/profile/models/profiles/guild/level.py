@@ -35,6 +35,14 @@ class UserLevel(GuildMemberProfileBase, ABC):
     def delta_voice_xp(self):
         return self.get_total_xp(self.voice_level + 1) - self.voice_xp
 
+    @property
+    def xp_progress(self):
+        return self.xp - self.get_total_xp(self.level), self.LEVELS_XP[self.level]
+
+    @property
+    def voice_xp_progress(self):
+        return self.voice_xp - self.get_total_xp(self.voice_level), self.LEVELS_XP[self.voice_level]
+
     # @property
     # def xp_level(self):
     #     return self._xp_level + math.log(self._level + math.e)*self.K
