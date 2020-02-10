@@ -19,9 +19,13 @@ class ProfileCache(object):
             seconds=self.plugin.data.profile.update_task_cooldown
         )(self.__update_database)
         # Start above background task.
-        self.update_database_task.start()
+        # self.update_database_task.start()    # Start the task on_ready.
         # self.bot.loop.create_task(self.__update_database())
         # self.bot.loop.create_task(self.__get_redis_client())
+        self.bot.add_listener(self.on_ready)
+
+    async def on_ready(self):
+        self.update_database_task.start()
 
     async def __get_redis_client(self):
         await self.bot.wait_until_ready()
