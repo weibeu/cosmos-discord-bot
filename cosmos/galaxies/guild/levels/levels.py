@@ -45,9 +45,10 @@ class Levels(GuildBaseCog):
 
     @staticmethod
     async def __rewards_parser(_, entry, __):    # reward, rewards
-        value = f"**Roles:** " + " ".join([f"<@&{_}>" for _ in entry.roles]) + "\n"
+        value = str()
         if entry.points:
-            value += f"**Points:** {entry.points}"
+            value += f"`Points:` **{entry.points}**\n"
+        value += f"`Roles:` " + " ".join([f"<@&{_}>" for _ in entry.roles])
         return f"Level {entry.level}", value
 
     @levels.group(name="reward", aliases=["rewards"], invoke_without_command=True)
@@ -59,17 +60,20 @@ class Levels(GuildBaseCog):
         rewards = ctx.guild_profile.levels.get_rewards(channel)
         if not rewards:
             return await ctx.send_line(f"❌    There are no {channel.title()} Level Rewards set in this server yet.")
+        description = "```css\nDisplaying Levels and its rewards which are awarded to members achieving this level.```"
         if not level:
             paginator = ctx.get_field_paginator(
                 sorted(
                     rewards.values(), key=lambda reward: reward.level
-                ), show_author=False, entry_parser=self.__rewards_parser, inline=False)
+                ), show_author=False, entry_parser=self.__rewards_parser)
+            paginator.embed.description = description
             paginator.embed.set_author(name=f"Level {channel} Rewards".title(), icon_url=ctx.guild.icon_url)
             return await paginator.paginate()
         _reward = rewards.get(level)
         if not _reward:
             return await ctx.send_line(f"❌    There are no {channel.title()} rewards assigned for level {level}.")
         embed = self.bot.theme.embeds.primary()
+        embed.description = description
         embed.set_author(name=f"Rewards for {channel.title()} Level {level}", icon_url=ctx.guild.icon_url)
         embed.add_field(name="Roles", value=" ".join([f"<@&{role_id}>" for role_id in _reward.roles]))
         embed.add_field(name="Points", value=_reward.points)
