@@ -51,7 +51,7 @@ class DatabaseConfig(Config):
         self.username = os.getenv("MONGODB_USERNAME") or self.username
         self.password = os.getenv("MONGODB_PASSWORD") or self.password
         self.uri = os.getenv("MONGODB_URI") or self.uri
-        if not self.requires_auth:
+        if not (self.requires_auth or self.uri):
             self.host = self.host or "127.0.0.1"
             self.port = self.port or "27017"
             self.uri = f"mongodb://{self.host}:{self.port}/"
