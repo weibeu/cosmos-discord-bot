@@ -76,8 +76,8 @@ class ProfileCache(object):
         assets = []
         profile = await self.get_profile(message.author.id)
         if not profile:
-            embed = self.bot.theme.embeds.one_line.primary(f"Welcome {message.author.name}. Creating your profile!")
-            await message.channel.send(embed=embed)
+            # embed = self.bot.theme.embeds.one_line.primary(f"Welcome {message.author.name}. Creating your profile!")
+            # await message.channel.send(embed=embed)
             profile = await self.create_profile(message.author.id)
 
         if not profile.in_boson_buffer:
