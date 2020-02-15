@@ -1,5 +1,5 @@
 [Unit]
-Description=Cosmos Dev
+Description=Cosmos
 After=multi-user.target
 
 [Service]
