@@ -8,7 +8,7 @@ from cogs.utils import util
 MONGO_URI = os.environ.get("MONGO_URI")
 
 
-motor_client = motor.motor_asyncio.AsyncIOMotorClient()
+motor_client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 
 async def count_role(col):
     return await col.count_documents({'_id': 'role-shop'})
