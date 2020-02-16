@@ -90,6 +90,7 @@ class GuildLogger(object):
 class LoggerSettings(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
+        super().__init__()
         raw_logger_settings = kwargs.get("loggers", list())
         self.loggers = self.__get_loggers(raw_logger_settings)
 
