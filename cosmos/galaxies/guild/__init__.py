@@ -2,6 +2,7 @@ from .levels import Levels
 from ._models import GuildCache
 from .roleshop import RoleShop
 from .reactor import Reactor
+from .welcome import Welcome
 from .starboard import Starboard
 from .reactions import ReactionRoles
 from .settings import GuildSettings
@@ -12,6 +13,7 @@ __all__ = [
     Levels,
     RoleShop,
     Reactor,
+    Welcome,
     Starboard,
     ReactionRoles,
     GuildSettings,

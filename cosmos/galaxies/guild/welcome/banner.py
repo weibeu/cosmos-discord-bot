@@ -1,14 +1,14 @@
 import discord
 import typing
 
-from .base import Settings
 from cosmos import exceptions
+from .base import WelcomeBase
 
 
-class BannerSettings(Settings):
+class WelcomeBanner(WelcomeBase):
     """A plugin to serve and manage various custom banners."""
 
-    @Settings.listener()
+    @WelcomeBase.listener()
     async def on_member_join(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
         if guild_profile.welcome_banner_enabled:
@@ -17,12 +17,7 @@ class BannerSettings(Settings):
             except exceptions.GuildNotPrime:
                 pass
 
-    @Settings.group(name="welcome", aliases=["join"])
-    async def welcome(self, ctx):
-        """Manage welcome banner in server."""
-        pass
-
-    @welcome.group(name="banner", invoke_without_command=True)
+    @WelcomeBase.welcome.group(name="banner", invoke_without_command=True)
     async def welcome_banner(self, ctx):
         """Displays previously configured welcome banner.
 
