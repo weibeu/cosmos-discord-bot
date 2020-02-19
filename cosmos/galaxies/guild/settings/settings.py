@@ -1,8 +1,8 @@
 from .theme import ThemeSettings
 from .prefix import PrefixSettings
-from .banner import BannerSettings
+from .welcome import WelcomeSettings
 
 
-class GuildSettings(ThemeSettings, PrefixSettings, BannerSettings):
+class GuildSettings(ThemeSettings, PrefixSettings, WelcomeSettings):
 
     pass
