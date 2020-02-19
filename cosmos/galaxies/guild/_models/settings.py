@@ -10,12 +10,11 @@ from ...moderation.models import automoderation
 class WelcomeBannerSettings(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
-        raw_welcome_settings = kwargs.get("welcome", dict())
-        raw_banner_settings = raw_welcome_settings.get("banner", dict())
-        self.welcome_banner_url = raw_banner_settings.get("url", str())
-        self.welcome_banner_text = raw_banner_settings.get("text", str())
-        self.__welcome_banner_channel_id = raw_banner_settings.get("channel", int())
-        self.welcome_banner_enabled = raw_banner_settings.get("enabled", False)
+        super().__init__()
+        self.welcome_banner_url = kwargs.get("url", str())
+        self.welcome_banner_text = kwargs.get("text", str())
+        self.__welcome_banner_channel_id = kwargs.get("channel", int())
+        self.welcome_banner_enabled = kwargs.get("enabled", False)
 
     @property
     def welcome_banner_channel(self):
@@ -42,6 +41,14 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
         await self.collection.update_one(self.document_filter, {"$set": {"settings.welcome.banner.enabled": enable}})
 
 # TODO: Don't pass whole document. Rather pass the embedded document of only that model to remove raw_..._settings.
+
+
+class WelcomeSettings(WelcomeBannerSettings, ABC):
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        raw_welcome_settings = kwargs.get("welcome", dict())
+        WelcomeBannerSettings.__init__(self, **raw_welcome_settings.get("banner"))
 
 
 class ThemeSettings(object):
@@ -277,11 +284,11 @@ class GuildStarboard(object):
         self.count = count
 
 
-class GuildSettings(WelcomeBannerSettings, LoggerSettings, GuildPermissions, ABC):
+class GuildSettings(WelcomeSettings, LoggerSettings, GuildPermissions, ABC):
 
     def __init__(self, **kwargs):
         raw_settings = kwargs.get("settings", dict())
-        WelcomeBannerSettings.__init__(self, **raw_settings)
+        WelcomeSettings.__init__(self, **raw_settings)
         LoggerSettings.__init__(self, **raw_settings)
         self.auto_moderation = AutoModerationSettings(self, **raw_settings)
         self.theme = ThemeSettings(self, **raw_settings)
