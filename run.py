@@ -1,7 +1,7 @@
-from cosmos import Cosmos
+from cosmos import get_bot
 
 if __name__ == "__main__":
-    bot = Cosmos()
+    bot = get_bot()
     try:
         bot.eh.sentry.init(**bot.configs.sentry.raw)  # Initialise sentry for deeper integration.
     except bot.eh.sentry.utils.BadDsn:

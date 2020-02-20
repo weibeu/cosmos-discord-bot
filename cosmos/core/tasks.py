@@ -20,7 +20,7 @@ class InitialTasks(commands.Bot):
                     raise AttributeError("Attribute self.guild_cache isn't overridden by guild galaxy.")
         return commands.when_mentioned_or(*prefixes)(bot, message)
 
-    def __init__(self):
+    def __init__(self, *, version=str(), release=str()):
         self.time = None
         self.configs = None
         self.eh = None
@@ -34,6 +34,8 @@ class InitialTasks(commands.Bot):
         self.image_processor = None
         self.profile_cache = None    # Intended to be overridden by profile galaxy.
         self.guild_cache = None    # Intended to be overridden by guild galaxy.
+        self.version = version
+        self.release = release
         self._init_time()
         self._init_utilities()
         self._init_configs()
