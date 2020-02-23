@@ -58,7 +58,7 @@ class WelcomeMessage(WelcomeBase):
         await ctx.send(embed=embed)
 
     @welcome_message.command(name="set")
-    async def set_welcome_message(self, ctx, channel: typing.Optional[discord.TextChannel] = None, *, message):
+    async def set_welcome_message(self, ctx, channel: typing.Optional[discord.TextChannel], *, message: Template):
         """Setup and enable Welcome Messages using provided template. The Welcome Messages are sent to the current or
         any specified channel whenever a new user joins the server.
 
@@ -85,7 +85,7 @@ class WelcomeMessage(WelcomeBase):
         await ctx.send(embed=embed)
 
     @direct_message.command(name="set")
-    async def set_direct_welcome_message(self, ctx, *, message):
+    async def set_direct_welcome_message(self, ctx, *, message: Template):
         """Setup and enable Direct Welcome Messages using provided template. The Welcome Messages are sent as direct
          message whenever a new user joins the server.
 
