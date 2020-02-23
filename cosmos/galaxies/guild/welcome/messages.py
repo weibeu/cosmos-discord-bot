@@ -66,6 +66,7 @@ class WelcomeMessage(WelcomeBase):
             return await ctx.send_line(f"❌    Direct Welcome Messages has not been set in the server.")
         embed = ctx.embed_line("Direct Welcome Message Template", ctx.guild.icon_url)
         embed.description = f"```css\n{ctx.guild_profile.direct_welcome_message}```"
+        await ctx.send(embed=embed)
 
     @direct_message.command(name="set")
     async def set_direct_welcome_message(self, ctx, *, message):
