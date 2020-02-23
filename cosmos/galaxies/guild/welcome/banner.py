@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import discord
 import typing
 
@@ -8,12 +10,25 @@ from .base import WelcomeBase
 class WelcomeBanner(WelcomeBase):
     """A plugin to serve and manage various custom banners."""
 
+    async def send_welcome_banner(self, guild, member, channel: discord.TextChannel = None):
+        banner_format = guild.welcome_banner_url.split(".")[-1]
+        if banner_format.lower() == "gif" and not guild.is_prime:
+            raise exceptions.GuildNotPrime
+        channel = channel or guild.welcome_banner_channel
+        options = dict()
+        if guild.theme.color:
+            options["border_color"] = options["font_color"] = options["avatar_border_color"] = str(guild.theme.color)
+        banner_bytes = await self.bot.image_processor.discord.get_welcome_banner(
+            guild.welcome_banner_url, str(member.avatar_url), member.name, guild.welcome_banner_text, **options)
+        file = discord.File(BytesIO(banner_bytes), filename=f"{guild.plugin.data.settings.banner_name}.{banner_format}")
+        await channel.send(file=file)
+
     @WelcomeBase.listener(name="on_member_join")
     async def on_member_join_banner(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
         if guild_profile.welcome_banner_enabled:
             try:
-                await guild_profile.send_welcome_banner(member)
+                await self.send_welcome_banner(guild_profile, member)
             except exceptions.GuildNotPrime:
                 pass
 
@@ -28,7 +43,7 @@ class WelcomeBanner(WelcomeBase):
         """
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
-        await ctx.guild_profile.send_welcome_banner(ctx.author, ctx.channel)
+        await self.send_welcome_banner(ctx.guild_profile, ctx.author, ctx.channel)
 
     @welcome_banner.error
     async def welcome_banner_error(self, ctx, error):
