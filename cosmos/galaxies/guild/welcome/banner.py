@@ -4,7 +4,7 @@ import discord
 import typing
 
 from cosmos import exceptions
-from .base import WelcomeBase
+from .base import WelcomeBase, MessageTemplateMember
 
 
 class WelcomeBanner(WelcomeBase):
@@ -21,7 +21,10 @@ class WelcomeBanner(WelcomeBase):
         banner_bytes = await self.bot.image_processor.discord.get_welcome_banner(
             guild.welcome_banner_url, str(member.avatar_url), member.name, guild.welcome_banner_text, **options)
         file = discord.File(BytesIO(banner_bytes), filename=f"{guild.plugin.data.settings.banner_name}.{banner_format}")
-        await channel.send(file=file)
+        if guild.welcome_message:
+            await channel.send(guild.welcome_message.format(**MessageTemplateMember(member).__dict__), file=file)
+        else:
+            await channel.send(file=file)
 
     @WelcomeBase.listener(name="on_member_join")
     async def on_member_join_banner(self, member):
