@@ -1,7 +1,23 @@
 from .base import WelcomeBase, MessageTemplateMember
 
+import re
 import typing
 import discord
+
+from discord.ext import commands
+
+
+class InvalidVariable(commands.BadArgument):
+
+    pass
+
+
+class Template(commands.Converter):
+
+    async def convert(self, ctx, argument):
+        if not set(re.findall(r"{([^}]+)\}", argument)) - set(MessageTemplateMember.__slots__):
+            raise InvalidVariable
+        return argument
 
 
 class WelcomeMessage(WelcomeBase):
