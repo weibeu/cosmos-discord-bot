@@ -7,7 +7,7 @@ from .base import WelcomeBase
 class WelcomeMessage(WelcomeBase):
     """A plugin to send customized welcome messages for newly joined members."""
 
-    @WelcomeBase.welcome.group(name="message", aliases=["msg"])
+    @WelcomeBase.welcome.group(name="message", aliases=["msg"], invoke_without_command=True)
     async def welcome_message(self, ctx):
         """Displays the template being used for Welcome Messages if it has been set already."""
         if not ctx.guild_profile.welcome_message:
@@ -33,7 +33,7 @@ class WelcomeMessage(WelcomeBase):
         await ctx.guild_profile.remove_welcome_message()
         await ctx.send_line(f"✅    Welcome messages has been disabled and removed.")
 
-    @WelcomeBase.welcome.group(name="directmessage", aliases=["dm", "directmsg"])
+    @WelcomeBase.welcome.group(name="directmessage", aliases=["dm", "directmsg"], invoke_without_command=True)
     async def direct_message(self, ctx):
         """Displays the template being using for Direct Welcome Messages if it has been set already."""
         if not ctx.guild_profile.direct_welcome_message:
