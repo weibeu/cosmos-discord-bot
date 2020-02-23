@@ -17,3 +17,6 @@ class MessageTemplateMember(object):
         self.name = author.name
         self.discriminator = author.discriminator
         self.mention = author.mention
+
+    def __missing__(self, key):
+        return f"{key}"
