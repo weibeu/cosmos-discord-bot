@@ -13,7 +13,7 @@ class WelcomeBanner(WelcomeBase):
         guild_profile = await self.cache.get_profile(member.guild.id)
         if guild_profile.welcome_banner_enabled:
             try:
-                await guild_profile.send_welcome_banner(member.name, str(member.avatar_url))
+                await guild_profile.send_welcome_banner(member)
             except exceptions.GuildNotPrime:
                 pass
 
@@ -28,7 +28,7 @@ class WelcomeBanner(WelcomeBase):
         """
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
-        await ctx.guild_profile.send_welcome_banner(ctx.author.name, str(ctx.author.avatar_url), ctx.channel)
+        await ctx.guild_profile.send_welcome_banner(ctx.author, ctx.channel)
 
     @welcome_banner.error
     async def welcome_banner_error(self, ctx, error):
