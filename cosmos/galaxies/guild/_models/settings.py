@@ -49,6 +49,33 @@ class WelcomeSettings(WelcomeBannerSettings, ABC):
         super().__init__()
         raw_welcome_settings = kwargs.get("welcome", dict())
         WelcomeBannerSettings.__init__(self, **raw_welcome_settings.get("banner"))
+        self.welcome_message = raw_welcome_settings.get("message", str())
+        self.welcome_message_channel = self.plugin.bot.get_channel(raw_welcome_settings.get("message_channel"))
+        self.direct_welcome_message = raw_welcome_settings.get("direct_message", str())
+
+    async def set_welcome_message(self, message, channel):
+        self.welcome_message = message
+        self.welcome_message_channel = channel
+
+        await self.collection.update_one(self.document_filter, {
+            "$set": {"settings.welcome.message": message, "settings.welcome.message_channel": channel.id}})
+
+    async def remove_welcome_message(self):
+        self.welcome_message = str()
+        self.welcome_message_channel = None
+
+        await self.collection.update_one(self.document_filter, {
+            "$unset": {"settings.welcome.message": "", "settings.welcome.message_channel": ""}})
+
+    async def set_direct_welcome_message(self, message):
+        self.direct_welcome_message = message
+
+        await self.collection.update_one(self.document_filter, {"$set": {"settings.welcome.direct_message": message}})
+
+    async def remove_remove_direct_welcome_message(self):
+        self.direct_welcome_message = str()
+
+        await self.collection.update_one(self.document_filter, {"$unset": {"settings.welcome.direct_message": ""}})
 
 
 class ThemeSettings(object):
