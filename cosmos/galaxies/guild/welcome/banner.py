@@ -8,7 +8,7 @@ from .base import WelcomeBase, MessageTemplateMember
 
 
 class WelcomeBanner(WelcomeBase):
-    """A plugin to serve and manage various custom banners."""
+    """A plugin to serve and manage customized static or animated GIF Welcome Banners."""
 
     async def send_welcome_banner(self, guild, member, channel: discord.TextChannel = None):
         banner_format = guild.welcome_banner_url.split(".")[-1]
