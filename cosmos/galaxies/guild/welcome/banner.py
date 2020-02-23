@@ -9,7 +9,7 @@ class WelcomeBanner(WelcomeBase):
     """A plugin to serve and manage various custom banners."""
 
     @WelcomeBase.listener(name="on_member_join")
-    async def _on_member_join(self, member):
+    async def on_member_join_banner(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
         if guild_profile.welcome_banner_enabled:
             try:
