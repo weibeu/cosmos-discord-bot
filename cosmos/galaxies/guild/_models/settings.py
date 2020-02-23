@@ -72,7 +72,7 @@ class WelcomeSettings(WelcomeBannerSettings, ABC):
 
         await self.collection.update_one(self.document_filter, {"$set": {"settings.welcome.direct_message": message}})
 
-    async def remove_remove_direct_welcome_message(self):
+    async def remove_direct_welcome_message(self):
         self.direct_welcome_message = str()
 
         await self.collection.update_one(self.document_filter, {"$unset": {"settings.welcome.direct_message": ""}})
