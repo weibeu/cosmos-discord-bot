@@ -1,8 +1,3 @@
-import discord
-
-from io import BytesIO
-from cosmos import exceptions
-
 from .levels import Levels
 from .settings import GuildSettings
 from .roleshop import GuildRoleShop
