@@ -15,7 +15,7 @@ class InvalidVariable(commands.BadArgument):
 class Template(commands.Converter):
 
     async def convert(self, ctx, argument):
-        if not set(re.findall(r"{([^}]+)\}", argument)) - set(MessageTemplateMember.__slots__):
+        if set(re.findall(r"{([^}]+)\}", argument)) - set(MessageTemplateMember.__slots__):
             raise InvalidVariable
         return argument
 
