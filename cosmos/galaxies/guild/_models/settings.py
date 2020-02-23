@@ -1,10 +1,10 @@
+from ...moderation.models import automoderation
+
 from abc import ABC
 from discord import Color, Embed
 
 from .base import CosmosGuildBase
 from .permissions import GuildPermissions
-
-from ...moderation.models import automoderation
 
 
 class WelcomeBannerSettings(CosmosGuildBase, ABC):
