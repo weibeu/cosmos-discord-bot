@@ -10,8 +10,8 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
     """Implements Role Shop functionality in server.
 
     Members can redeem or purchase roles which has been put on Role Shop by server administrators using their
-    Guild Points. Once the role is redeemed it stays in their inventory. They can easily equip or un-equip any of the
-    roles they have redeemed previously.
+    Guild Points. Once the role is redeemed it stays in their inventory. They can also easily equip or un-equip
+    any of the roles they have redeemed previously.
 
     """
 
