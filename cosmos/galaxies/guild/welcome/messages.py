@@ -21,9 +21,9 @@ class Template(commands.Converter):
 
 
 class WelcomeMessage(WelcomeBase):
-    """A plugin to send customized welcome messages for newly joined members. Lets you set fully customized
-    template to use for Welcome Messages using different variables. Use `{variable}` in your template to use the
-    variables.
+    """A plugin to send customized welcome messages for newly joined members.
+    Lets you set fully customized template to use for Welcome Messages using different variables. Use `{variable}` in
+    your template to use the variables.
     If Welcome Banner is enabled, the Welcome Messages are included along with the welcome banners.
 
     Valid Variables:
