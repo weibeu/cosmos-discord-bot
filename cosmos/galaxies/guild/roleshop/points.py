@@ -4,7 +4,7 @@ from .base import RoleShopBase
 
 
 class RoleShopPoints(RoleShopBase):
-    """Implements Guild Points function which are bound to each server
+    """Implements Guild Points function which are bound to each server.
     Members can earn points in different servers by chatting normally in text channels where the bot can read their
     messages. They can also claim their daily points.
 
