@@ -21,7 +21,7 @@ class RoleShopPoints(RoleShopBase):
         if profile and not profile.in_points_buffer:
             self.bot.loop.create_task(profile.give_default_points())
 
-    @RoleShopBase.group(invoke_without_command=True)
+    @RoleShopBase.group(name="points", invoke_without_command=True)
     async def points(self, ctx, *, member: discord.Member = None):
         """Displays Guild Points earned by you or specified member."""
         if member:
