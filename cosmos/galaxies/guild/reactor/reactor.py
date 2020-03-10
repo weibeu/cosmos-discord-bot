@@ -37,7 +37,7 @@ class Reactor(GuildBaseCog):
         embed.description = "**Emotes:** " + " ".join([str(emote) for emote in reactor.emotes])
         await ctx.send(embed=embed)
 
-    @_reactor.command(name="setup", aliases=["set"])
+    @_reactor.command(name="set", aliases=["setup"])
     async def set_reactor(
             self, ctx, channel: typing.Optional[discord.TextChannel] = None, *emotes: typing.Union[discord.Emoji, str]):
         """Setup reactor in current or specified channel using provided emotes. You can only use the emotes which
