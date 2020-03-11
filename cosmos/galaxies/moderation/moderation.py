@@ -245,7 +245,10 @@ class Moderation(Cog):
     @mute.command(name="role")
     @commands.has_permissions(administrator=True)
     async def muted_role(self, ctx, *, role: discord.Role = None):
-        """Sets muted role for server which will be used to enforce restrictions on members when they're muted."""
+        """Sets muted role for server which will be used to enforce restrictions on members when they're muted.
+        It creates a new role to use denying sending messages to all of the text channels if not provided.
+
+        """
         if not await ctx.confirm():
             return
         guild_profile = await ctx.fetch_guild_profile()
