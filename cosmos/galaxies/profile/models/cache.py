@@ -23,6 +23,7 @@ class ProfileCache(object):
         # self.bot.loop.create_task(self.__update_database())
         # self.bot.loop.create_task(self.__get_redis_client())
         self.bot.add_listener(self.on_ready)
+        self.bot.add_listener(self.on_disconnect)
 
     async def on_ready(self):
         self.update_database_task.start()
