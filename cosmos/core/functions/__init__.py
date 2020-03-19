@@ -9,6 +9,7 @@ from .plugins.handler import PluginHandler
 from .theme.theme import CosmosTheme
 
 from .plugins.models import Cog
+from .commands import CosmosHelp
 
 __all__ = [
     "CacheHandler",
@@ -22,4 +23,5 @@ __all__ = [
     "CosmosTheme",
 
     "Cog",
+    "CosmosHelp",
 ]

@@ -40,7 +40,7 @@ class InitialTasks(commands.Bot):
         self._init_utilities()
         self._init_configs()
         super().__init__(
-            command_prefix=self.__get_prefix, case_insensitive=True
+            command_prefix=self.__get_prefix, case_insensitive=True, help_command=CosmosHelp()
         )
         self._init_logger()
         self._init_exception_handler()
