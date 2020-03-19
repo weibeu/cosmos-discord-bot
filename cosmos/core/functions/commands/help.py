@@ -14,7 +14,7 @@ class CosmosHelp(HelpCommand):
         embed.set_thumbnail(url=self.BRAND_ICON)
         embed.set_author(name="Cosmos Discord Bot", icon_url=self.context.bot.user.avatar_url)
         embed.set_footer(text="| The Cosmos", icon_url=self.BRAND_LOGO)
-        embed.description = f"Check the [documentation]({self.BASE_URL}) for full reference of all" \
+        embed.description = f"Check the [documentation]({self.BASE_URL}) for full reference of all " \
                             f"plugins and commands. Feel free to [join our community](" \
                             f"{self.COMMUNITY_INVITE}) for help with anything."
         arrow = self.context.bot.emotes.misc.next
