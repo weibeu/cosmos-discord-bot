@@ -1,7 +1,7 @@
-from discord.ext.commands import HelpCommand
+from discord.ext.commands import DefaultHelpCommand
 
 
-class CosmosHelp(HelpCommand):
+class CosmosHelp(DefaultHelpCommand):
 
     COMMUNITY_INVITE = "https://discord.gg/UYAJX3W"
 
