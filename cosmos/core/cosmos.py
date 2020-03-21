@@ -20,6 +20,6 @@ class Cosmos(InitialTasks):
         return self.plugins.get(display_name=name)
 
     async def on_ready(self):
-        self.log.info(f"{self.user.name}#{self.user.discriminator} Ready! [{self.time.round_time()} seconds.]")
+        self.log.info(f"{self.user} Ready! [{self.time.round_time()} seconds.]")
         self.log.info(f"User Id: {self.user.id}")
         self.log.info("------------------------")
