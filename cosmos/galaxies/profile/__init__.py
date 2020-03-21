@@ -1,13 +1,13 @@
 from .profile import Profile
 from .economy import Economy
-from .ascension import Levels
+from .ascension import _Levels
 from .marriage import Marriage
 
 from .models import ProfileCache
 
 __all__ = [
     Profile,
-    Levels,
+    _Levels,
     Economy,
     Marriage
 ]
