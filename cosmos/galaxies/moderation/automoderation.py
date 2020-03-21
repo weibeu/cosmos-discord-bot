@@ -142,10 +142,12 @@ class AutoModeration(Cog):
         if not word:
             if not trigger.words:
                 return await ctx.send_line(f"❌    You haven't banned any words yet.")
-            embed = ctx.embed_line(f"List of banned words in {ctx.guild.name}", ctx.guild.icon_url)
+            embed = ctx.embeds.primary()
+            embed.title = "List of banned words"
+            embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
             embed.description = "```css\nDisplaying banned or blacklisted words in the server.```\n"
             try:
-                embed.description += ", ".join(trigger.words)
+                embed.description += f"{self.bot.emotes.misc.next} " + ", ".join(trigger.words) + "\n​\n"
             except AttributeError:
                 embed.description = "❌    You haven't banned any words yet."
             # TODO: Provide, accept banned words file as well.
