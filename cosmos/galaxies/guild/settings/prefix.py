@@ -18,9 +18,11 @@ class PrefixSettings(Settings):
         prefixes = self.cache.prefixes.get(ctx.guild.id)
         if not prefixes:
             return await ctx.send_line(f"{ctx.guild.name} doesn't has any custom prefixes.", ctx.guild.icon_url)
-        embed = ctx.embed_line(f"{ctx.guild.name} custom prefixes", ctx.guild.icon_url)
-        embed.description = "```css\nDisplaying list of custom prefix for bot commands in this server.```"
-        embed.description += "\n".join(prefixes)
+        embed = ctx.embeds.primary()
+        embed.title = "Custom Prefixes"
+        embed.description = "```css\nDisplaying list of custom prefix for bot commands in this server.```\n"
+        embed.description += f"{self.bot.emotes.misc.next} " + "\n".join(prefixes) + "\n​\n"
+        embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=embed)
 
     @prefix.command(name="set")
