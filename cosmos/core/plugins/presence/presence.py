@@ -12,6 +12,10 @@ class Presence(Admin):
         super().__init__(plugin)
         self.rotate = self.plugin.data.configs.rotate
         self.rotate_task = self.bot.loop.create_task(self.rotate_presence())
+        # Inject version and release.
+        release_meta = f"{self.bot.release} - {self.bot.version}"
+        self.plugin.data.messages.playing.append(release_meta)
+        self.plugin.data.messages.streaming.append(release_meta)
 
     def cog_unload(self):
         self.bot.log.info("Stopping presence rotation.")
