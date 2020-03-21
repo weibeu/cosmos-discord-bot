@@ -3,7 +3,7 @@ from discord.ext.commands import DefaultHelpCommand
 
 class CosmosHelp(DefaultHelpCommand):
 
-    COMMUNITY_INVITE = "https://discord.gg/UYAJX3W"
+    COMMUNITY_INVITE = "https://discord.gg/7ChSGn4"
 
     BASE_URL = "https://cosmos.thecosmos.space/"
     BRAND_ICON = "https://i.imgur.com/0TjctCy.jpg"
