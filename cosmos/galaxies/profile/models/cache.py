@@ -86,7 +86,7 @@ class ProfileCache(object):
 
         guild_profile = await profile.get_guild_profile(message.guild.id)
         if not guild_profile.in_xp_buffer:
-            assets.append((guild_profile.give_xp()))
+            assets.append((guild_profile.give_xp(message.channel)))
 
         for asset in assets:
             self.bot.loop.create_task(asset)
