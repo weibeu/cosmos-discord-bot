@@ -3,6 +3,7 @@ import traceback
 
 from ...functions import Cog
 from cosmos import exceptions
+from discord.ext import commands
 
 
 class CommandErrorHandler(Cog):
@@ -24,3 +25,9 @@ class CommandErrorHandler(Cog):
             embed.set_author(name=f"🔒    Click here to get prime and unlock all features including this."
                                   f"", url="https://www.patreon.com/__thecosmos")
             await ctx.send(embed=embed)
+
+        if isinstance(error, (commands.MissingPermissions, commands.CheckFailure)):
+            await ctx.message.add_reaction(self.bot.emotes.misc.denied)
+
+        if isinstance(error, commands.BadArgument):
+            await ctx.message.add_reaction(self.bot.emotes.misc.error)
