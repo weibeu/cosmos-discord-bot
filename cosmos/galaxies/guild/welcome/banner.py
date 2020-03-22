@@ -35,6 +35,7 @@ class WelcomeBanner(WelcomeBase):
             except exceptions.GuildNotPrime:
                 pass
 
+    @WelcomeBase.cooldown(1, 5, WelcomeBase.bucket_type.guild)
     @WelcomeBase.welcome.group(name="banner", invoke_without_command=True)
     async def welcome_banner(self, ctx):
         """Displays previously configured welcome banner.
@@ -53,6 +54,7 @@ class WelcomeBanner(WelcomeBase):
         if isinstance(error, exceptions.GuildNotPrime):
             return await ctx.send_line(f"❌    Get prime to use GIF banners or set static banner.")
 
+    @WelcomeBase.cooldown(1, 3, WelcomeBase.bucket_type.guild)
     @welcome_banner.command(name="set")
     async def set_welcome_banner(self, ctx, banner_url, channel: typing.Optional[discord.TextChannel] = None, *, text):
         """Configure and set server welcome banner.

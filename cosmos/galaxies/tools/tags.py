@@ -27,6 +27,7 @@ class Tags(Cog):
         paginator.embed.description = "```css\nDisplaying custom tags created by you.```"
         await paginator.paginate()
 
+    @Cog.cooldown(1, 3, Cog.bucket_type.user)
     @Cog.group(name="tag", invoke_without_command=True)
     async def tag(self, ctx, *, name):
         """Retrieves and displays specified tag and all of its contents."""
