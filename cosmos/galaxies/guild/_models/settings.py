@@ -48,7 +48,7 @@ class WelcomeSettings(WelcomeBannerSettings, ABC):
     def __init__(self, **kwargs):
         super().__init__()
         raw_welcome_settings = kwargs.get("welcome", dict())
-        WelcomeBannerSettings.__init__(self, **raw_welcome_settings.get("banner"))
+        WelcomeBannerSettings.__init__(self, **raw_welcome_settings.get("banner", dict()))
         self.welcome_message = raw_welcome_settings.get("message", str())
         self.welcome_message_channel = self.plugin.bot.get_channel(raw_welcome_settings.get("message_channel"))
         self.direct_welcome_message = raw_welcome_settings.get("direct_message", str())
