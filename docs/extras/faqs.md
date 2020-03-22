@@ -1,5 +1,9 @@
 # FAQs
 
+## Ask Questions.
+
+We are happy to help you. Visit our [discord community](https://discord.gg/7ChSGn4).
+
 ## ~~Can I become who I want to be?~~
 
 ~~That's a tough question but thankfully, our team is on it. Please bear with us while we're investigating.~~
