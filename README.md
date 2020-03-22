@@ -1,1 +1,1 @@
-# !! This was the very first release of Cosmos Bot.
+# !! Very first privately released Cosmos Bot.
