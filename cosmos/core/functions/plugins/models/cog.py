@@ -13,6 +13,7 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
     command = cosmos_command
     group = cosmos_group_command
     checks = CosmosChecks
+    cooldown = commands.cooldown
 
     FUNCTION = "plugins"
     INESCAPABLE = True    # Determines if cog can be disabled by guild admins.
