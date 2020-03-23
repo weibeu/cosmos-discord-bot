@@ -9,7 +9,10 @@ class CosmosContext(commands.Context):
         return await self.bot.profile_cache.get_profile(self.author.id)
 
     async def fetch_guild_profile(self):
-        return await self.bot.guild_cache.get_profile(self.guild.id)
+        try:
+            return await self.bot.guild_cache.get_profile(self.guild.id)
+        except AttributeError:
+            return
 
     async def fetch_member_profile(self, _id):
         return await self.bot.profile_cache.get_guild_profile(_id, self.guild.id)
