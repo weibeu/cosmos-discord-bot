@@ -19,20 +19,20 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [AdministratorSettings](settings/administrator-settings.md)
 * [AutoModeration](moderation/auto-moderation.md)
 * [Economy](profile/economy.md)
-* [FunctionsPermissions](functions-permissions.md)
-* [GuildSettings](guild-settings/)
+* [FunctionsPermissions](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/functions-permissions.md)
+* [GuildSettings](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/guild-settings/README.md)
 * [HasteBin](tools/haste-bin.md)
-* [Levels](levels.md)
+* [Levels](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/levels.md)
 * [Logger](moderation/logger.md)
 * [Marriage](profile/marriage.md)
 * [Moderation](moderation/moderation.md)
 * [Profile](profile/profile.md)
-* [ReactionRoles](reaction-roles.md)
-* [Reactor](reactor.md)
-* [RoleShop](role-shop/)
-* [Starboard](starboard.md)
+* [ReactionRoles](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/reaction-roles.md)
+* [Reactor](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/reactor.md)
+* [RoleShop](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/role-shop/README.md)
+* [Starboard](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/starboard.md)
 * [Tags](tools/tags.md)
-* [Welcome](welcome/)
+* [Welcome](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/welcome/README.md)
 
 ### **Primary** Commands
 
@@ -41,7 +41,7 @@ The following table displays entire list of primary commands and their basic syn
 #### Understanding the syntax
 
 All of the usages provided for each commands and sub-commands follow a certain syntax, very much similar to the way these commands will be actually used.  
-Every command begins with a pre-defined [prefix](guild-settings/prefix.md) which can be the default prefix, `;` or any of the custom prefixes you have set. Following with the Primary Command, optional sub-command and arguments.
+Every command begins with a pre-defined [prefix](https://github.com/thec0sm0s/cosmos-discord-bot/tree/ac27a25c2fb255249fa8b0aaeecbed882d692027/docs/guild-settings/prefix.md) which can be the default prefix, `;` or any of the custom prefixes you have set. Following with the Primary Command, optional sub-command and arguments.
 
 **Syntax:** `<prefix><primary command> [sub-command] [argument1] ...`
 
@@ -57,7 +57,7 @@ Every command begins with a pre-defined [prefix](guild-settings/prefix.md) which
 | [divorce](https://cosmos.thecosmos.space/profile/marriage#divorce) | Lets you divorce if you're already married to someone. | `;divorce` |
 | [enable](https://cosmos.thecosmos.space/functions-permissions#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |
 | [fermions](https://cosmos.thecosmos.space/profile/economy#fermions) | Displays number of Fermions you have. | `;fermions` |
-| [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to https://hastebin.com/ and displays a shareable link. | `;hastebin <content>` |
+| [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to [https://hastebin.com/](https://hastebin.com/) and displays a shareable link. | `;hastebin <content>` |
 | [kick](https://cosmos.thecosmos.space/moderation/moderation#kick) | Kicks specified member from the server. | `;kick <member> [reason]` |
 | [level](https://cosmos.thecosmos.space/levels#level) | Displays current level and experience points. | `;level [member]` |
 | [logger](https://cosmos.thecosmos.space/moderation/logger#logger) | Displays list of loggers enabled in different channels. | `;logger` |
@@ -82,6 +82,4 @@ Every command begins with a pre-defined [prefix](guild-settings/prefix.md) which
 | [unmute](https://cosmos.thecosmos.space/moderation/moderation#unmute) | Un mutes specified member from voice and removes the muted role. | `;unmute <member>` |
 | [warn](https://cosmos.thecosmos.space/moderation/moderation#warn) | Issues a warning to specified member. | `;warn <member> <reason>` |
 | [welcome](https://cosmos.thecosmos.space/welcome#welcome) | Manage different welcome settings of your server. | `;welcome` |
-
-
 
