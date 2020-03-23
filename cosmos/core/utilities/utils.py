@@ -1,7 +1,10 @@
+from .api.hastebin import HasteBin
+
 import os
 import re
 
-from .api.hastebin import HasteBin
+import random
+import string as strings
 
 
 class Utils(HasteBin):
@@ -41,3 +44,7 @@ class Utils(HasteBin):
     @staticmethod
     def get_invites(string):
         return re.findall(r"(?:https?://)?discord(?:app\.com/invite|\.gg)/?[a-zA-Z0-9]+/?", string)
+
+    @staticmethod
+    def get_random_strings(length):
+        return str().join(random.choices(strings.ascii_letters + strings.digits, k=length))
