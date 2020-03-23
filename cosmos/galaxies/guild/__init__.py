@@ -6,6 +6,7 @@ from .welcome import Welcome
 from .starboard import Starboard
 from .reactions import ReactionRoles
 from .settings import GuildSettings
+from .confessions import SecretConfessions
 from .permissions import FunctionsPermissions
 
 
@@ -17,6 +18,7 @@ __all__ = [
     Starboard,
     ReactionRoles,
     GuildSettings,
+    SecretConfessions,
     FunctionsPermissions,
 ]
 

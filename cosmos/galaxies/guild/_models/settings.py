@@ -327,6 +327,17 @@ class GuildSettings(WelcomeSettings, LoggerSettings, GuildPermissions, ABC):
         self.starboard = None
         if raw_starboard := raw_settings.get("starboard", dict()):
             self.__set_starboard(self.plugin.bot.get_channel(raw_starboard["channel_id"]), raw_starboard.get("count"))
+        self.confessions_channel = self.plugin.bot.get_channel(raw_settings.get("confessions_channel"))
+
+    async def set_confessions_channel(self, channel):
+        self.confessions_channel = channel
+
+        self.collection.update_one(self.document_filter, {"$set": {"settings.confessions_channel": channel.id}})
+
+    async def remove_confessions_channel(self):
+        self.confessions_channel = None
+
+        self.collection.update_one(self.document_filter, {"$unset": {"settings.confessions_channel": ""}})
 
     async def make_prime(self, make=True):
         self.is_prime = make
