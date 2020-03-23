@@ -31,7 +31,10 @@ class Evaluator(Admin):
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
 
-        guild_profile = await self.bot.guild_cache.get_profile(ctx.guild.id)
+        try:
+            guild_profile = await self.bot.guild_cache.get_profile(ctx.guild.id)
+        except AttributeError:
+            guild_profile = None
 
         env = {
             'bot': self.bot,
