@@ -19,9 +19,9 @@ class CosmosContext(commands.Context):
 
     async def send(self, *args, **kwargs):
         if kwargs.get("embed"):
-            guild_profile = await self.fetch_guild_profile()
-            if guild_profile.theme.color:
-                kwargs["embed"].color = guild_profile.theme.color
+            if guild_profile := await self.fetch_guild_profile():
+                if guild_profile.theme.color:
+                    kwargs["embed"].color = guild_profile.theme.color
         return await super().send(*args, **kwargs)
 
     @property
