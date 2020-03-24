@@ -57,7 +57,10 @@ class SecretConfessions(Cog):
     @confessions.command(name="set", aliases=["setup", "enable"])
     @commands.has_permissions(manage_guild=True)
     async def set_confessions(self, ctx, channel: discord.TextChannel = None):
-        """Set secret confessions to current or specified channel."""
+        """Set secret confessions to current or specified channel. Use `on_confession` Logger event to moderate
+        confessions and keep track of their real identity.
+
+        """
         channel = channel or ctx.channel
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.set_confessions_channel(channel)
