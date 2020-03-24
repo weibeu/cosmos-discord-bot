@@ -76,7 +76,9 @@ class ReactionRoles(Reactions):
             message = message or "Reaction Roles"
             embed = ctx.embeds.primary()
             embed.set_author(name=message)
-            embed.description = "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes])
+            embed.description = "```css\nReact to the emote corresponding to the role you wish to have.```\n"
+            embed.description += "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes]) + "\n​"
+            embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
             message = await ctx.send(embed=embed)
         for _, emote in roles_emotes:
             await message.add_reaction(emote)
