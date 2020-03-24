@@ -68,6 +68,8 @@ class ReactionRoles(Reactions):
         # noinspection PyTypeChecker
         if len(roles) >= self.plugin.data.reactions.max_roles:
             return await ctx.send_line(f"❌    You can't include anymore roles.")
+        if len(ctx.guild_profile.reactions.roles) >= self.plugin.data.max_messages:
+            return await ctx.send_line(f"❌    You cannot create anymore reaction roles.")
         if not await ctx.confirm():
             return
         # noinspection PyTypeChecker
