@@ -9,10 +9,11 @@ from discord.ext import commands
 
 class ConfessionMeta(object):
 
-    def __init__(self, identity, user, confession):
+    def __init__(self, identity, user, confession, message):
         self.identity = identity
         self.user = user
         self.confession = confession
+        self.message = message
 
 
 class SecretConfessions(Cog):
@@ -49,9 +50,9 @@ class SecretConfessions(Cog):
         identity = f"{random.choice(self.FACE_EMOTES)}    {Utility.get_random_strings(27)}#{random.randint(0000, 9999)}"
         embed = ctx.embed_line(identity)
         embed.description = confession
-        meta = ConfessionMeta(identity, ctx.author, confession)
+        message = await guild_profile.confessions_channel.send(embed=embed)
+        meta = ConfessionMeta(identity, ctx.author, confession, message)
         await self.bot.dispatch("on_confession", meta)
-        await guild_profile.confessions_channel.send(embed=embed)
         await ctx.send_line(f"✅    Your confession has been posted in {guild_profile.guild.name}.")
 
     @confessions.command(name="set", aliases=["setup", "enable"])
