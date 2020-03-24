@@ -124,3 +124,12 @@ class LoggerEvents(Cog):
         embed.add_field(name="Reason", value=action.reason)
         embed.add_field(name="Moderator", value=action.moderator.mention)
         return embed
+
+    @logger_event()
+    async def on_confession(self, embed, meta):
+        embed.set_author(name=meta.identity, url=meta.message.jump_url)
+        embed.description = meta.confession
+        embed.set_thumbnail(url=meta.user.avatar_url)
+        embed.add_field(name="Author", value=f"{meta.user} | {meta.user.mention}")
+        embed.set_footer(text=f"ID: {meta.user.id}")
+        return embed
