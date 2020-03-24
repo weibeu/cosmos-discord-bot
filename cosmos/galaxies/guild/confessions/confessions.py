@@ -9,7 +9,8 @@ from discord.ext import commands
 
 class ConfessionMeta(object):
 
-    def __init__(self, identity, user, confession, message):
+    def __init__(self, guild_profile, identity, user, confession, message):
+        self.guild_profile = guild_profile
         self.identity = identity
         self.user = user
         self.confession = confession
@@ -21,6 +22,10 @@ class SecretConfessions(Cog):
     certain channel.
 
     """
+
+    def __init__(self, plugin):
+        super().__init__()
+        self.plugin = plugin
 
     FACE_EMOTES = [
         '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '☺️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍',
@@ -51,8 +56,8 @@ class SecretConfessions(Cog):
         embed = ctx.embed_line(identity)
         embed.description = confession
         message = await guild_profile.confessions_channel.send(embed=embed)
-        meta = ConfessionMeta(identity, ctx.author, confession, message)
-        await self.bot.dispatch("on_confession", meta)
+        meta = ConfessionMeta(guild_profile, identity, ctx.author, confession, message)
+        self.bot.dispatch("confession", meta)
         await ctx.send_line(f"✅    Your confession has been posted in {guild_profile.guild.name}.")
 
     @confessions.command(name="set", aliases=["setup", "enable"])
