@@ -65,10 +65,12 @@ class ReactionRoles(Reactions):
         # Lookup by “{channel ID}-{message ID}” (retrieved by shift-clicking on “Copy ID”).
         # Lookup by message ID (the message must be in the context channel).
         # Lookup by message URL.
+        # noinspection PyTypeChecker
         if len(roles) >= self.plugin.data.reactions.max_roles:
             return await ctx.send_line(f"❌    You can't include anymore roles.")
         if not await ctx.confirm():
             return
+        # noinspection PyTypeChecker
         roles_emotes = list(zip(roles, self.emotes))
         if not isinstance(message, discord.Message):
             message = message or "Reaction Roles"
