@@ -21,6 +21,7 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
     # TODO: Handle cog listeners.
 
     def __init__(self, *args, **kwargs):
+        # TODO: Improve this.
         self.name = self.__class__.__name__
         self.display_name = None
         self.__get_display_name()
