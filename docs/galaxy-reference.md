@@ -30,6 +30,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [ReactionRoles](guild/reaction-roles.md)
 * [Reactor](guild/reactor.md)
 * [RoleShop](guild/role-shop/)
+* Secret Confessions
 * [Starboard](guild/starboard.md)
 * [Tags](tools/tags.md)
 * [Welcome](guild/welcome/)
@@ -53,6 +54,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [ban](https://cosmos.thecosmos.space/moderation/moderation#ban) | Bans specified member from the server. | `;ban <member> [reason]` |
 | [banword](https://cosmos.thecosmos.space/moderation/auto-moderation#banword) | Blacklists or bans specified word. | `;banword [word]` |
 | [bosons](https://cosmos.thecosmos.space/profile/economy#bosons) | Displays Bosons earned by you or specified member. | `;bosons [user]` |
+| [confessions](guild/secret-confessions.md#confessions) | Lets you confess anonymously in specified server. | `;confess <server_id> <confession>` |
 | [disable](https://cosmos.thecosmos.space/functions-permissions#disable) | Disables provided function from one or multiple channels which are specified. | `;disable <function> [channels...]` |
 | [divorce](https://cosmos.thecosmos.space/profile/marriage#divorce) | Lets you divorce if you're already married to someone. | `;divorce` |
 | [enable](https://cosmos.thecosmos.space/functions-permissions#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |

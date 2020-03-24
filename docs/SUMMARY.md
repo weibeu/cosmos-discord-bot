@@ -16,6 +16,7 @@
 * [Reaction Roles](guild/reaction-roles.md)
 * [Reactor](guild/reactor.md)
 * [Starboard](guild/starboard.md)
+* [Secret Confessions](guild/secret-confessions.md)
 * [Guild Settings](guild/guild-settings/README.md)
   * [Theme](guild/guild-settings/theme.md)
   * [Prefix](guild/guild-settings/prefix.md)
