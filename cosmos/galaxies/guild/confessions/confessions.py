@@ -7,6 +7,14 @@ from ... import Cog
 from discord.ext import commands
 
 
+class ConfessionMeta(object):
+
+    def __init__(self, identity, user, confession):
+        self.identity = identity
+        self.user = user
+        self.confession = confession
+
+
 class SecretConfessions(Cog):
     """A plugin to spice up your community with secret confessions. It lets the members to confess anonymously in
     certain channel.
@@ -38,9 +46,11 @@ class SecretConfessions(Cog):
             return await ctx.send_line(f"❌    You can't make confession in server you're not in.")
         if not guild_profile.confessions_channel:
             return await ctx.send_line(f"❌    Secret confessions isn't enabled in {guild_profile.guild.name}.")
-        embed = ctx.embed_line(f"{random.choice(self.FACE_EMOTES)}    {Utility.get_random_strings(27)}"
-                               f"#{random.randint(0000, 9999)}")
+        identity = f"{random.choice(self.FACE_EMOTES)}    {Utility.get_random_strings(27)}#{random.randint(0000, 9999)}"
+        embed = ctx.embed_line(identity)
         embed.description = confession
+        meta = ConfessionMeta(identity, ctx.author, confession)
+        await self.bot.dispatch("on_confession", meta)
         await guild_profile.confessions_channel.send(embed=embed)
         await ctx.send_line(f"✅    Your confession has been posted in {guild_profile.guild.name}.")
 
