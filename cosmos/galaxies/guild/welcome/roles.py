@@ -12,7 +12,7 @@ class WelcomeRoles(WelcomeBase):
         if guild_profile.welcome_roles:
             await member.add_roles(*guild_profile.welcome_roles, reason="Welcome Roles")
 
-    @WelcomeBase.welcome.group(name="roles", aliases=["role"])
+    @WelcomeBase.welcome.group(name="roles", aliases=["role"], invoke_without_command=True)
     async def welcome_roles(self, ctx):
         """Displays the list of roles being assigned to every new members joining the server."""
         if not ctx.guild_profile.welcome_roles:
