@@ -24,7 +24,7 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
         self.welcome_banner_url = banner_url
         self.welcome_banner_text = text
         self.__welcome_banner_channel_id = channel_id
-        self.welcome_banner_enabled = False
+        self.welcome_banner_enabled = True
 
         await self.collection.update_one(
             self.document_filter, {"$set": {
