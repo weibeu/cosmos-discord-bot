@@ -52,6 +52,19 @@ class WelcomeSettings(WelcomeBannerSettings, ABC):
         self.welcome_message = raw_welcome_settings.get("message", str())
         self.welcome_message_channel = self.plugin.bot.get_channel(raw_welcome_settings.get("message_channel"))
         self.direct_welcome_message = raw_welcome_settings.get("direct_message", str())
+        self.welcome_roles = [self.guild.get_role(_id) for _id in raw_welcome_settings.get("roles", list())]
+
+    async def set_welcome_roles(self, roles):
+        self.welcome_roles = roles
+
+        await self.collection.update_one(self.document_filter, {
+            "$set": {"settings.welcome.roles": [role.id for role in roles]}
+        })
+
+    async def remove_welcome_roles(self):
+        self.welcome_roles = []
+
+        await self.collection.update_one(self.document_filter, {"$unset": {"settings.welcome.roles": ""}})
 
     async def set_welcome_message(self, message, channel):
         self.welcome_message = message

@@ -1,8 +1,9 @@
+from .roles import WelcomeRoles
 from .banner import WelcomeBanner
 from .messages import WelcomeMessage
 
 
-class Welcome(WelcomeBanner, WelcomeMessage):
+class Welcome(WelcomeBanner, WelcomeMessage, WelcomeRoles):
     """A plugin to greet newly joined members using Welcome Messages and Banners.
 
     Welcome Message:
@@ -20,5 +21,8 @@ class Welcome(WelcomeBanner, WelcomeMessage):
 
     Welcome Banner:
         A plugin to serve and manage customized static or animated GIF Welcome Banners.
+
+    Welcome Roles:
+        Assign roles to new members right after they join your server.
 
     """
