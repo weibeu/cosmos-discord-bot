@@ -16,3 +16,11 @@ Usage:
 ;welcome
 ```
 
+## Sub-Plugins
+
+{% page-ref page="banner.md" %}
+
+{% page-ref page="message.md" %}
+
+{% page-ref page="roles.md" %}
+

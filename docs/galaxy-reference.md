@@ -30,7 +30,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [ReactionRoles](guild/reaction-roles.md)
 * [Reactor](guild/reactor.md)
 * [RoleShop](guild/role-shop/)
-* Secret Confessions
+* [Secret Confessions](guild/secret-confessions.md)
 * [Starboard](guild/starboard.md)
 * [Tags](tools/tags.md)
 * [Welcome](guild/welcome/)

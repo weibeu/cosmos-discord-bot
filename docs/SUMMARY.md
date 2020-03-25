@@ -10,6 +10,7 @@
 * [Welcome](guild/welcome/README.md)
   * [Banner](guild/welcome/banner.md)
   * [Message](guild/welcome/message.md)
+  * [Roles](guild/welcome/roles.md)
 * [Role Shop](guild/role-shop/README.md)
   * [Points](guild/role-shop/points.md)
   * [Settings](guild/role-shop/settings.md)
