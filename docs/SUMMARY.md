@@ -28,6 +28,7 @@
 * [Logger](moderation/logger.md)
 * [Moderation](moderation/moderation.md)
 * [Auto Moderation](moderation/auto-moderation.md)
+* [User Verification](moderation/user-verification.md)
 
 ## PROFILE
 
