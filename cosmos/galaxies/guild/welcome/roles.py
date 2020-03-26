@@ -6,11 +6,16 @@ import discord
 class WelcomeRoles(WelcomeBase):
     """Assign roles to new members right after they join your server."""
 
+    @staticmethod
+    async def give_roles(guild_profile, member):
+        if guild_profile.welcome_roles:
+            await member.add_roles(*guild_profile.welcome_roles, reason="Welcome Roles")
+
     @WelcomeBase.listener()
     async def on_member_join(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
-        if guild_profile.welcome_roles:
-            await member.add_roles(*guild_profile.welcome_roles, reason="Welcome Roles")
+        if not guild_profile.verification.role:
+            await self.give_roles(guild_profile, member)
 
     @WelcomeBase.welcome.group(name="roles", aliases=["role"], invoke_without_command=True)
     async def welcome_roles(self, ctx):

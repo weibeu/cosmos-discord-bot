@@ -324,6 +324,38 @@ class GuildStarboard(object):
         self.count = count
 
 
+class VerificationSettings(object):
+
+    def __init__(self, guild_profile, **document):
+        self.__profile = guild_profile
+        self.role = self.__profile.guild.get_role(document.get("role"))
+        self.reaction_message_id = document.get("reaction_message")
+
+    async def set_role(self, role):
+        self.role = role
+
+        await self.__profile.collection.update_one(self.__profile.document_filter, {"$set": {
+            "settings.verification.role": role.id}})
+
+    async def remove_role(self):
+        self.role = None
+
+        await self.__profile.collection.update_one(self.__profile.document_filter, {"$unset": {
+            "settings.verification.role": ""}})
+
+    async def set_reaction_verification(self, message_id):
+        self.reaction_message_id = message_id
+
+        await self.__profile.collection.update_one(self.__profile.document_filter, {"$set": {
+            "settings.verification.reaction_message": message_id}})
+
+    async def remove_reaction_verification(self):
+        self.reaction_message_id = None
+
+        await self.__profile.collection.update_one(self.__profile.document_filter, {"$unset": {
+            "settings.verification.reaction_message": ""}})
+
+
 class GuildSettings(WelcomeSettings, LoggerSettings, GuildPermissions, ABC):
 
     def __init__(self, **kwargs):
@@ -341,6 +373,7 @@ class GuildSettings(WelcomeSettings, LoggerSettings, GuildPermissions, ABC):
         if raw_starboard := raw_settings.get("starboard", dict()):
             self.__set_starboard(self.plugin.bot.get_channel(raw_starboard["channel_id"]), raw_starboard.get("count"))
         self.confessions_channel = self.plugin.bot.get_channel(raw_settings.get("confessions_channel"))
+        self.verification = VerificationSettings(self, **raw_settings.get("verification", dict()))
 
     async def set_confessions_channel(self, channel):
         self.confessions_channel = channel
