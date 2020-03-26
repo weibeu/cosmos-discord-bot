@@ -33,6 +33,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [Secret Confessions](guild/secret-confessions.md)
 * [Starboard](guild/starboard.md)
 * [Tags](tools/tags.md)
+* [UserVerification](moderation/user-verification.md)
 * [Welcome](guild/welcome/)
 
 ### **Primary** Commands
@@ -82,6 +83,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [triggers](https://cosmos.thecosmos.space/moderation/auto-moderation#triggers) | Displays all of the active triggers along with their actions. | `;triggers` |
 | [unban](https://cosmos.thecosmos.space/moderation/moderation#unban) | Un bans user from their discord ID. | `;unban <user_id> [reason]` |
 | [unmute](https://cosmos.thecosmos.space/moderation/moderation#unmute) | Un mutes specified member from voice and removes the muted role. | `;unmute <member>` |
+| [verification](moderation/user-verification.md#verification) | Primary command to setup several verification methods. | `;verification` |
 | [warn](https://cosmos.thecosmos.space/moderation/moderation#warn) | Issues a warning to specified member. | `;warn <member> <reason>` |
 | [welcome](https://cosmos.thecosmos.space/welcome#welcome) | Manage different welcome settings of your server. | `;welcome` |
 
