@@ -33,7 +33,7 @@ class Logger(LoggerEvents):
 
     @staticmethod
     async def __logger_entry_parser(_, entry, __):
-        return entry.replace("_", " ").title()
+        return entry
 
     @LoggerEvents.group(name="logger", aliases=["log", "logging", "loggers"], invoke_without_command=True)
     @commands.has_permissions(administrator=True)
