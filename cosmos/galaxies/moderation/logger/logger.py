@@ -50,6 +50,9 @@ class Logger(LoggerEvents):
 
     async def __get_logger_name_from_menu(self, ctx, loggers):
         menu = ctx.get_menu(loggers, entry_parser=self.__logger_entry_parser)
+        menu.embed.set_author(name="Available Logger Events", icon_url=ctx.author.avatar_url)
+        menu.embed.description = "```css\nReact with any emote corresponding to the Logger Event you want to enable.```"
+        menu.embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
         response = await menu.wait_for_response()
         return response.entry
 
