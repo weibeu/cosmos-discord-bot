@@ -4,7 +4,10 @@ import discord
 
 
 class WelcomeRoles(WelcomeBase):
-    """Assign roles to new members right after they join your server."""
+    """Assign roles to new members right after they join your server.
+    If User Verification is enabled in the server, the welcome roles are added only after they are verified.
+
+    """
 
     @staticmethod
     async def give_roles(guild_profile, member):
