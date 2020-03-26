@@ -44,7 +44,7 @@ class UserVerification(Cog):
 
     @verification.group(name="role", invoke_without_command=True)
     async def verification_role(self, ctx, *, role: discord.Role):
-        """Assign the role which will be assigned to unverified members to keep them locked away from accessing normal
+        """Set the role which will be assigned to unverified members to keep them locked away from accessing normal
         channels and let them go through the verification process.
 
         """
