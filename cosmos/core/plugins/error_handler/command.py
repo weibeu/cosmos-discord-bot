@@ -1,3 +1,5 @@
+from ...functions.context.functions.paginators import NoEntriesError
+
 import sys
 import traceback
 
@@ -31,3 +33,6 @@ class CommandErrorHandler(Cog):
 
         if isinstance(error, commands.BadArgument):
             await ctx.message.add_reaction(self.bot.emotes.misc.error)
+
+        if isinstance(error, NoEntriesError):
+            await ctx.message.add_reaction(self.bot.emotes.misc.nill)
