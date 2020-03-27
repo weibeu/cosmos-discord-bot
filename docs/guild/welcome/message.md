@@ -4,8 +4,7 @@ description: A plugin to send customized welcome messages for newly joined membe
 
 # Message
 
-Lets you set fully customized template to use for Welcome Messages using different variables. Use `{variable}` in your template to use the variables.  
-If Welcome Banner is enabled, the Welcome Messages are included along with the welcome banners.  
+Lets you set fully customized template to use for Welcome Messages using different variables. Use `{variable}` in your template to use the variables.
 
 #### Valid Variables:
 
@@ -18,6 +17,14 @@ If Welcome Banner is enabled, the Welcome Messages are included along with the w
 ### message
 
 Displays the template being used for Welcome Messages if it has been set already.
+
+{% hint style="success" %}
+If [User Verification](../../moderation/user-verification.md) is enabled, welcome message is sent only after the member is verified.
+{% endhint %}
+
+{% hint style="success" %}
+If [Welcome Banner](banner.md) is enabled, the Welcome Messages are included along with the welcome banners.
+{% endhint %}
 
 ```yaml
 Aliases:
@@ -51,6 +58,10 @@ Usage:
 ### directmessage
 
 Displays the template being using for Direct Welcome Messages if it has been set already.
+
+{% hint style="success" %}
+Direct welcome messages are sent just after user joins the server irrespective of [User Verification](../../moderation/user-verification.md).
+{% endhint %}
 
 ```yaml
 Aliases:
