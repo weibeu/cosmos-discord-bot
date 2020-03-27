@@ -33,6 +33,9 @@ class CommandErrorHandler(Cog):
         elif isinstance(error, NoEntriesError):
             await ctx.message.add_reaction(self.bot.emotes.misc.nill)
 
+        elif isinstance(error, commands.CommandOnCooldown):
+            await ctx.message.add_reaction(self.bot.emotes.misc.clock)
+
         else:
             self.bot.eh.sentry.capture_exception(error)
             self.bot.log.error(f"Ignoring exception in command {ctx.command}")
