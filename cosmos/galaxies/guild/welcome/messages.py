@@ -24,7 +24,6 @@ class WelcomeMessage(WelcomeBase):
     """A plugin to send customized welcome messages for newly joined members.
     Lets you set fully customized template to use for Welcome Messages using different variables. Use `{variable}` in
     your template to use the variables.
-    If Welcome Banner is enabled, the Welcome Messages are included along with the welcome banners.
 
     Valid Variables:
         - {id} -- Discord ID of the member.
@@ -64,7 +63,12 @@ class WelcomeMessage(WelcomeBase):
 
     @WelcomeBase.welcome.group(name="message", aliases=["msg"], invoke_without_command=True)
     async def welcome_message(self, ctx):
-        """Displays the template being used for Welcome Messages if it has been set already."""
+        """Displays the template being used for Welcome Messages if it has been set already.
+
+        If Welcome Banner is enabled, the Welcome Messages are included along with the welcome banners.
+        If User Verification is enabled, welcome message is sent only after the member is verified.
+
+        """
         if not ctx.guild_profile.welcome_message:
             return await ctx.send_line(f"❌    Welcome Message has not been set in the server.")
         embed = ctx.embed_line("Welcome Message Template", ctx.guild.icon_url)
@@ -91,7 +95,11 @@ class WelcomeMessage(WelcomeBase):
 
     @WelcomeBase.welcome.group(name="directmessage", aliases=["dm", "directmsg"], invoke_without_command=True)
     async def direct_message(self, ctx):
-        """Displays the template being using for Direct Welcome Messages if it has been set already."""
+        """Displays the template being using for Direct Welcome Messages if it has been set already.
+
+        Direct welcome messages are sent just after user joins the server irrespective of User Verification.
+
+        """
         if not ctx.guild_profile.direct_welcome_message:
             return await ctx.send_line(f"❌    Direct Welcome Messages has not been set in the server.")
         embed = ctx.embed_line("Direct Welcome Message Template", ctx.guild.icon_url)

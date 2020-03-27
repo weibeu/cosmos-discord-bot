@@ -8,7 +8,15 @@ from .base import WelcomeBase, MessageTemplateMember
 
 
 class WelcomeBanner(WelcomeBase):
-    """A plugin to serve and manage customized static or animated GIF Welcome Banners."""
+    """A plugin to serve and manage customized static or animated GIF Welcome Banners.
+
+    Welcome Banner is PNG or GIF image file which is generated and sent when any member joins the server.
+    It can be customized by adding a custom text message which is written over it. Moreover the border color can
+    be customized by setting a new theme color from Theme Settings.
+
+    If User Verification is enabled, welcome banners are sent only after the member is verified.
+
+    """
 
     async def send_welcome_banner(self, guild, member, channel: discord.TextChannel = None):
         banner_format = guild.welcome_banner_url.split(".")[-1]
@@ -47,13 +55,7 @@ class WelcomeBanner(WelcomeBase):
     @WelcomeBase.cooldown(1, 5, WelcomeBase.bucket_type.guild)
     @WelcomeBase.welcome.group(name="banner", invoke_without_command=True)
     async def welcome_banner(self, ctx):
-        """Displays previously configured welcome banner.
-
-        Welcome Banner is PNG or GIF image file which is generated and sent when any member joins the server.
-        It can be customized by adding a custom text message which is written over it. Moreover the border color can
-        be customized by setting a new theme color from Theme Settings.
-
-        """
+        """Displays previously configured welcome banner."""
         if not ctx.guild_profile.welcome_banner_url:
             return await ctx.send_line("❌    Please configure welcome banner settings.")
         await self.send_welcome_banner(ctx.guild_profile, ctx.author, ctx.channel)
