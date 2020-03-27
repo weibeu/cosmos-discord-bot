@@ -52,8 +52,15 @@ class WelcomeMessage(WelcomeBase):
     @WelcomeBase.listener(name="on_member_join")
     async def on_member_join_message(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
-        await self.send_welcome_message(guild_profile, member)
+        # Always send direct message regardless of member is verified or not.
         await self.send_direct_welcome_message(guild_profile, member)
+        # Send welcome message only when User Verification is disabled.
+        if not guild_profile.verification.role:
+            await self.send_welcome_message(guild_profile, member)
+
+    @WelcomeBase.listener(name="on_member_verification")
+    async def on_member_verification_message(self, guild_profile, member):
+        await self.send_welcome_message(guild_profile, member)
 
     @WelcomeBase.welcome.group(name="message", aliases=["msg"], invoke_without_command=True)
     async def welcome_message(self, ctx):

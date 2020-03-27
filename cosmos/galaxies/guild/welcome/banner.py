@@ -29,6 +29,15 @@ class WelcomeBanner(WelcomeBase):
     @WelcomeBase.listener(name="on_member_join")
     async def on_member_join_banner(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
+        if not guild_profile.verification.role:
+            if guild_profile.welcome_banner_enabled:
+                try:
+                    await self.send_welcome_banner(guild_profile, member)
+                except exceptions.GuildNotPrime:
+                    pass
+
+    @WelcomeBase.listener(name="on_member_verification")
+    async def on_member_verification_banner(self, guild_profile, member):
         if guild_profile.welcome_banner_enabled:
             try:
                 await self.send_welcome_banner(guild_profile, member)

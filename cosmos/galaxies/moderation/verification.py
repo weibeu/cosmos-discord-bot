@@ -35,8 +35,8 @@ class UserVerification(Cog):
             return
         if guild_profile.verification.reaction_message_id == payload.message_id:
             await payload.member.remove_roles(guild_profile.verification.role)
-            welcome = self.bot.get_cog("Welcome")
-            await welcome.give_roles(guild_profile, payload.member)
+
+            self.bot.dispatch("member_verification", guild_profile, payload.member)
 
     @Cog.group(name="verification", aliases=["verify"], invoke_without_command=True)
     async def verification(self, ctx):

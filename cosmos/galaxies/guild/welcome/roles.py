@@ -20,6 +20,10 @@ class WelcomeRoles(WelcomeBase):
         if not guild_profile.verification.role:
             await self.give_roles(guild_profile, member)
 
+    @WelcomeBase.listener(name="on_member_verification")
+    async def on_member_verification_roles(self, guild_profile, member):
+        await self.give_roles(guild_profile, member)
+
     @WelcomeBase.welcome.group(name="roles", aliases=["role"], invoke_without_command=True)
     async def welcome_roles(self, ctx):
         """Displays the list of roles being assigned to every new members joining the server."""
