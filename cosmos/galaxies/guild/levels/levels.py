@@ -24,6 +24,7 @@ class Levels(GuildBaseCog):
 
     INESCAPABLE = False    # TODO: Fix. It still shows True at runtime.
 
+    @GuildBaseCog.cooldown(1, 4, GuildBaseCog.bucket_type.member)
     @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True, inescapable=False)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
         """Displays current level and experience points."""
