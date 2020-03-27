@@ -6,8 +6,12 @@ description: >-
 
 # Banner
 
-Welcome Banner is PNG or GIF image file which is generated and sent when any member joins the server.  
+Welcome Banner is PNG or **GIF** image file which is generated and sent when any member joins the server.  
 It can be customized by adding a custom text message which is written over it. Moreover the border color can be customized by setting a new theme color from Theme Settings.
+
+{% hint style="success" %}
+If [User Verification](../../moderation/user-verification.md) is enabled, welcome banners are sent only after the member is verified.
+{% endhint %}
 
 ### banner
 
