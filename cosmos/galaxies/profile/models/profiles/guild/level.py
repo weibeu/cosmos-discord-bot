@@ -50,7 +50,7 @@ class UserLevel(GuildMemberProfileBase, ABC):
         guild_profile = await self.fetch_guild_profile()
         await guild_profile.levels.give_rewards(self, channel="text")
         embed = self.plugin.bot.theme.embeds.one_line.primary(f"Congratulations {self.user.name}! "
-                                                              f"You advanced to level {self.level}.",
+                                                              f"You advanced to Level {self.level}.",
                                                               self.plugin.bot.theme.images.chevron)
         await channel.send(embed=embed)
         # TODO: Consider permissions and allow use of custom channel.
