@@ -35,18 +35,25 @@ class WelcomeMessage(WelcomeBase):
 
     """
 
-    @WelcomeBase.listener(name="on_member_join")
-    async def on_member_join_message(self, member):
-        guild_profile = await self.cache.get_profile(member.guild.id)
+    @staticmethod
+    async def send_welcome_message(guild_profile, member):
         if guild_profile.welcome_message and not guild_profile.welcome_banner_enabled:
             await guild_profile.welcome_message_channel.send(
                 guild_profile.welcome_message.format(**MessageTemplateMember(member).__dict__))
 
+    @staticmethod
+    async def send_direct_welcome_message(guild_profile, member):
         if guild_profile.direct_welcome_message:
             try:
                 await member.send(guild_profile.direct_welcome_message.format(**MessageTemplateMember(member).__dict__))
             except discord.Forbidden:
                 pass
+
+    @WelcomeBase.listener(name="on_member_join")
+    async def on_member_join_message(self, member):
+        guild_profile = await self.cache.get_profile(member.guild.id)
+        await self.send_welcome_message(guild_profile, member)
+        await self.send_direct_welcome_message(guild_profile, member)
 
     @WelcomeBase.welcome.group(name="message", aliases=["msg"], invoke_without_command=True)
     async def welcome_message(self, ctx):
