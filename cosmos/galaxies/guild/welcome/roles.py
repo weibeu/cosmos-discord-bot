@@ -14,8 +14,8 @@ class WelcomeRoles(WelcomeBase):
         if guild_profile.welcome_roles:
             await member.add_roles(*guild_profile.welcome_roles, reason="Welcome Roles")
 
-    @WelcomeBase.listener()
-    async def on_member_join(self, member):
+    @WelcomeBase.listener(name="on_member_join")
+    async def on_member_join_roles(self, member):
         guild_profile = await self.cache.get_profile(member.guild.id)
         if not guild_profile.verification.role:
             await self.give_roles(guild_profile, member)
