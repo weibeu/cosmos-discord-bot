@@ -3,7 +3,6 @@ from cosmos.core.utilities import converters
 import typing
 import discord
 
-from discord.ext import commands
 from .reactions import Reactions
 
 
@@ -20,12 +19,6 @@ class ReactionRoles(Reactions):
     async def on_ready(self):
         # Sort manually. Don't trust discord.
         self.emotes = sorted(self.bot.emotes.foods.emotes, key=lambda emote: emote.created_at)
-
-    async def cog_check(self, ctx):
-        await super().cog_check(ctx)
-        if not ctx.author.guild_permissions.manage_guild:
-            raise commands.MissingPermissions(["manage_guild"])
-        return True
 
     @Reactions.listener()
     async def on_raw_reaction_add(self, payload):

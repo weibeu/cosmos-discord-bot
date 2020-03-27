@@ -35,8 +35,13 @@ class Logger(LoggerEvents):
     async def __logger_entry_parser(_, entry, __):
         return entry
 
+    async def cog_check(self, ctx):
+        await super().cog_check(ctx)
+        if not ctx.author.guild_permissions.administrator:
+            raise commands.MissingPermissions(["administrator"])
+        return True
+
     @LoggerEvents.group(name="logger", aliases=["log", "logging", "loggers"], invoke_without_command=True)
-    @commands.has_permissions(administrator=True)
     async def logger(self, ctx):
         """Displays list of loggers enabled in different channels."""
         guild_profile = await ctx.fetch_guild_profile()

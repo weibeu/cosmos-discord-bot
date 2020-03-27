@@ -41,13 +41,12 @@ class SecretConfessions(Cog):
 
     @Cog.cooldown(1, 420, Cog.bucket_type.user)
     @Cog.group(name="confessions", aliases=["confession", "confess"], invoke_without_command=True)
+    @commands.dm_only()
     async def confessions(self, ctx, guild_profile: converters.CosmosGuildConverter, *, confession):
         """Lets you confess anonymously in specified server. Your identity might be visible to the server moderators.
         You can make only one confession every 7 minutes.
 
         """
-        if ctx.guild:
-            raise commands.CheckFailure
         if ctx.author not in guild_profile.guild.members:
             return await ctx.send_line(f"❌    You can't make confession in server you're not in.")
         if not guild_profile.confessions_channel:
@@ -61,7 +60,7 @@ class SecretConfessions(Cog):
         await ctx.send_line(f"✅    Your confession has been posted in {guild_profile.guild.name}.")
 
     @confessions.command(name="set", aliases=["setup", "enable"])
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(administrator=True)
     async def set_confessions(self, ctx, channel: discord.TextChannel = None):
         """Set secret confessions to current or specified channel. Use `on_confession` Logger event to moderate
         confessions and keep track of their real identity.
@@ -73,7 +72,7 @@ class SecretConfessions(Cog):
         await ctx.send_line(f"✅    Secret confessions has been set in {channel}.")
 
     @confessions.command(name="remove", aliases=["delete", "disable"])
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(administrator=True)
     async def remove_secret_confessions(self, ctx):
         """Remove secret confessions from the server."""
         guild_profile = await ctx.fetch_guild_profile()

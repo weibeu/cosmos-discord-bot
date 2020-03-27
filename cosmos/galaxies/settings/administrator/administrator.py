@@ -26,7 +26,6 @@ class AdministratorSettings(Cog):
         commands from Moderation plugin and more.
 
         """
-        # !! TODO: Check special moderators permissions.
         guild_profile = await ctx.fetch_guild_profile()
         roles = [ctx.guild.get_role(_id).mention for _id in guild_profile.moderators if ctx.guild.get_role(_id)]
         members = [ctx.guild.get_member(_id).mention for _id in guild_profile.moderators if ctx.guild.get_member(_id)]

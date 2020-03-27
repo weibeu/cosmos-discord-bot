@@ -1,11 +1,10 @@
+from ..settings.base import Settings
+
 import discord
 import itertools
 
-from discord.ext import commands
-from .._models import GuildBaseCog
 
-
-class Starboard(GuildBaseCog):
+class Starboard(Settings):
     """A plugin which implements Starboard feature in server.
 
     Reactions on messages when exceed specified number of stars, they are posted in a certain channel which has been
@@ -19,13 +18,7 @@ class Starboard(GuildBaseCog):
         "⭐", "🌟", "🤩",
     ]
 
-    async def cog_check(self, ctx):
-        await super().cog_check(ctx)
-        if not ctx.author.guild_permissions.administrator:
-            raise commands.MissingPermissions(["administrator"])
-        return True
-
-    @GuildBaseCog.listener()
+    @Settings.listener()
     async def on_raw_reaction_add(self, payload):
         if not payload.guild_id:
             return
@@ -47,7 +40,7 @@ class Starboard(GuildBaseCog):
                 embed.add_field(name="Original Message", value=f"[Jump!]({message.jump_url})")
                 await starboard.channel.send(embed=embed)
 
-    @GuildBaseCog.group(name="starboard")
+    @Settings.group(name="starboard")
     async def starboard(self, ctx):
         """Configure Starboard in server."""
         pass

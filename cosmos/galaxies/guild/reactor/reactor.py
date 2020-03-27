@@ -11,6 +11,12 @@ class Reactor(GuildBaseCog):
 
     INESCAPABLE = False
 
+    async def cog_check(self, ctx):
+        await super().cog_check(ctx)
+        if not ctx.author.guild_permissions.manage_guild:
+            raise commands.MissingPermissions(["manage_guild"])
+        return True
+
     @GuildBaseCog.listener()
     async def on_message(self, message):
         if not message.guild:
@@ -26,7 +32,6 @@ class Reactor(GuildBaseCog):
             await message.add_reaction(emote)
 
     @GuildBaseCog.group(name="reactor", aliases=["reactors"], invoke_without_command=True)
-    @commands.has_permissions(manage_guild=True)
     async def _reactor(self, ctx, channel: discord.TextChannel = None):
         """Displays reactor settings of current or specified channel."""
         channel = channel or ctx.channel
