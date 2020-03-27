@@ -16,10 +16,6 @@ class CommandErrorHandler(Cog):
 
     @Cog.listener()
     async def on_command_error(self, ctx, error):
-        # Do the basic logging first.
-        self.bot.eh.sentry.capture_exception(error)
-        self.bot.log.error(f"Ignoring exception in command {ctx.command}")
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
         if isinstance(error, exceptions.GuildNotPrime):
             # Tried to use prime function in non-prime guild.
@@ -28,11 +24,16 @@ class CommandErrorHandler(Cog):
                                   f"", url="https://www.patreon.com/__thecosmos")
             await ctx.send(embed=embed)
 
-        if isinstance(error, (commands.MissingPermissions, commands.CheckFailure)):
+        elif isinstance(error, (commands.MissingPermissions, commands.CheckFailure)):
             await ctx.message.add_reaction(self.bot.emotes.misc.denied)
 
-        if isinstance(error, commands.BadArgument):
+        elif isinstance(error, commands.BadArgument):
             await ctx.message.add_reaction(self.bot.emotes.misc.error)
 
-        if isinstance(error, NoEntriesError):
+        elif isinstance(error, NoEntriesError):
             await ctx.message.add_reaction(self.bot.emotes.misc.nill)
+
+        else:
+            self.bot.eh.sentry.capture_exception(error)
+            self.bot.log.error(f"Ignoring exception in command {ctx.command}")
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
