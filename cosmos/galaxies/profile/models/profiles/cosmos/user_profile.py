@@ -125,7 +125,7 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
         embed.add_field(name="Voice Level", value=guild_profile.voice_level)
         embed.add_field(name="Voice Experience Points", value=guild_profile.voice_xp)
         if self.birthday:
-            embed.add_field(name="Birthday", value=self.birthday.strftime("%e %B"))
+            embed.add_field(name=f"{emotes.birthday}    Birthday", value=self.birthday.strftime("%e %B"))
         if self.spouse_id:
             embed.add_field(name=f"{emotes.ring}    Married with",
                             value=f"{self.spouse}\nMarried {self.marriage_timestamp.humanize()}.")
