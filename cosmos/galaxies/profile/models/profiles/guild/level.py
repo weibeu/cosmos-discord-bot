@@ -46,13 +46,13 @@ class UserLevel(GuildMemberProfileBase, ABC):
     def voice_level(self):
         return self.get_level(self.voice_xp)
 
-    async def level_up_callback(self, channel):
+    async def level_up_callback(self, _):
         guild_profile = await self.fetch_guild_profile()
         await guild_profile.levels.give_rewards(self, channel="text")
-        embed = self.plugin.bot.theme.embeds.one_line.primary(f"Congratulations {self.user.name}! "
-                                                              f"You advanced to Level {self.level}.",
-                                                              self.plugin.bot.theme.images.chevron)
-        await channel.send(embed=embed)
+        # embed = self.plugin.bot.theme.embeds.one_line.primary(f"Congratulations {self.user.name}! "
+        #                                                       f"You advanced to Level {self.level}.",
+        #                                                       self.plugin.bot.theme.images.chevron)
+        # await channel.send(embed=embed)
         # TODO: Consider permissions and allow use of custom channel.
 
     async def voice_level_up_callback(self):
