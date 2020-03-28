@@ -76,6 +76,8 @@ class Moderation(Cog):
     async def __modlogs_parser(self, ctx, _id, _):
         log = await self.bot.discordDB.get(_id)
         moderator = ctx.guild.get_member(log.moderator_id)
+        if not moderator:
+            moderator = await self.bot.fetch_user(log.moderator_id)
         try:
             reason = log.reason
         except AttributeError:
