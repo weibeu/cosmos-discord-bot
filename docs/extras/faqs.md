@@ -2,7 +2,7 @@
 
 ## Ask Questions.
 
-We are happy to help you. Visit our [discord community](https://discord.gg/7ChSGn4).
+We are happy to help you. Visit our [discord community](https://discord.gg/7CrQEyP).
 
 ## ~~Can I become who I want to be?~~
 

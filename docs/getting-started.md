@@ -56,7 +56,7 @@ The final step is to do the important configuration in the different config file
 
 #### Core Configs
 
-Prepare and check all of the config files except as required. Cosmos bot uses several emotes for visual better visual appearance internally which were previously added in different servers. If you want to keep using the default emotes added on our emote servers, you will have to get your bot added to our emote servers by asking for it in [our community](https://discord.gg/7ChSGn4).  
+Prepare and check all of the config files except as required. Cosmos bot uses several emotes for visual better visual appearance internally which were previously added in different servers. If you want to keep using the default emotes added on our emote servers, you will have to get your bot added to our emote servers by asking for it in [our community](https://discord.gg/7CrQEyP).  
 The other option is to manually create your own emote servers and add all of the emotes which are used by Cosmos bot and put their IDs in the `emotes.yaml` file. All of the emotes internally used by Cosmos bot are given below.
 
 {% hint style="info" %}
