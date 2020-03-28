@@ -80,7 +80,8 @@ class Moderation(Cog):
             reason = log.reason
         except AttributeError:
             reason = "Reason not specified."
-        value = f"**Reason:** {reason}\n**Moderator:** {moderator}"
+        value = f"**Reason:** {reason}\n**Moderator:** {moderator.mention}\n" \
+                f"**Timestamp:** {log.created_at.strftime('%I:%M %p | %e %B, %Y')}"
         return log.action_type, value
 
     @staticmethod
