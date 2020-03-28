@@ -8,6 +8,10 @@ description: Plugin for server moderation.
 
 Displays all of the moderation logs of specified member.
 
+{% hint style="info" %}
+All of the Timestamps are displayed in UTC.
+{% endhint %}
+
 ```yaml
 Usage:
 ;modlogs <member>
