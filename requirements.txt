@@ -6,6 +6,5 @@ discord.py
 DiscordDB
 image-processor-client
 motor
-pymongo
 pyyaml
 sentry-sdk
