@@ -112,7 +112,11 @@ class Moderation(Cog):
     @Cog.group(name="modlogs", invoke_without_command=True, inescapable=False)
     @check_mod(kick_members=True)
     async def moderation_logs(self, ctx, *, member: typing.Union[discord.Member, int]):
-        """Displays all of the moderation logs of specified member."""
+        """Displays all of the moderation logs of specified member.
+
+        All of the Timestamps are displayed in UTC.
+
+        """
         try:
             _id = member.id
         except AttributeError:
