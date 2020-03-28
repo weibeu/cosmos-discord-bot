@@ -42,6 +42,7 @@ class Levels(GuildBaseCog):
                             f"{utilities.StaticProgressBar(profile.voice_xp_progress[0], profile.voice_xp_progress[1])}"
         embed.add_field(name="⌨    Text Level", value=text_level_value, inline=False)
         embed.add_field(name="🎤    Voice Level", value=voice_level_value, inline=False)
+        embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=embed)
 
     @staticmethod
