@@ -40,6 +40,13 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 
 The following table displays entire list of primary commands and their basic syntax to use. Click on the command to know more about it including their **sub-commands**.
 
+#### Default Command Prefix
+
+**;**
+
+You can also mention the bot and use the same as a prefix to invoke any of the commands.  
+**Example:** `@Cosmos#2406 <command> ...`
+
 #### Understanding the syntax
 
 All of the usages provided for each commands and sub-commands follow a certain syntax, very much similar to the way these commands will be actually used.  
