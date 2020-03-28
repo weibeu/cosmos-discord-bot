@@ -113,28 +113,25 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
     async def get_embed(self, guild_id):
         guild_profile = await self.get_guild_profile(guild_id)
         # placeholder = "**Guild:** {}\n**Global:** {}"    # TODO
-        embed = self.plugin.bot.theme.embeds.primary(title="Cosmos Profile")
+        emotes = self.plugin.bot.emotes.misc
+        embed = self.plugin.bot.theme.embeds.primary()
         embed.set_author(name=self.user, icon_url=self.user.avatar_url)
-        embed.add_field(name="Level", value=guild_profile.level)
-        embed.add_field(name="Experience points", value=guild_profile.xp)
-        embed.add_field(name="Delta Experience points", value=guild_profile.delta_xp)
-        embed.add_field(name="Reputation points", value=self.reps)
-        embed.add_field(name="Prime", value=self.is_prime)
-        embed.add_field(name="Bosons", value=self.bosons)
-        embed.add_field(name="Fermions", value=self.fermions)
-        embed.add_field(name="Rank", value=self.rank)
+        embed.description = self.description
+        embed.add_field(name=f"{emotes.favorite}    Reputation points", value=self.reps)
+        embed.add_field(name=f"{emotes.bank}    Bosons", value=self.bosons)
+        embed.add_field(name=f"{emotes.cash}    Fermions", value=self.fermions)
+        embed.add_field(name="Text Level", value=guild_profile.level)
+        embed.add_field(name="Text Experience points", value=guild_profile.xp)
         embed.add_field(name="Voice Level", value=guild_profile.voice_level)
         embed.add_field(name="Voice Experience Points", value=guild_profile.voice_xp)
-        embed.add_field(name="Delta Voice Experience Points", value=guild_profile.delta_voice_xp)
-        embed.add_field(name="💖  Proposed", value=self.proposed)
-        embed.add_field(name="🖤  Proposer", value=self.proposer)
-        if self.spouse_id:
-            embed.add_field(name="💍  Spouse", value=f"{self.spouse}\nMarried {self.marriage_timestamp.humanize()}.")
         if self.birthday:
             embed.add_field(name="Birthday", value=self.birthday.strftime("%e %B"))
-        embed.add_field(name="Parents", value=self.parents)
-        embed.add_field(name="Family", value=self.children)
-        embed.add_field(name="Profile description", value=self.description)
+        if self.spouse_id:
+            embed.add_field(name=f"{emotes.ring}    Married with",
+                            value=f"{self.spouse}\nMarried {self.marriage_timestamp.humanize()}.")
+        # embed.add_field(name="Parents", value=self.parents)
+        # embed.add_field(name="Family", value=self.children)
+        embed.set_footer(text="Cosmos Profile", icon_url=self.plugin.bot.user.avatar_url)
         return embed
 
     async def __fetch_guild_profiles(self):
