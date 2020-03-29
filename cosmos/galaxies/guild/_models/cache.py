@@ -28,13 +28,18 @@ class GuildCache(object):
         if not profile:
             profile_document = (await self.collection.find_one(
                 {"guild_id": guild_id}, projection=self.DEFAULT_PROJECTION))
-            if not profile_document:
-                profile_document = {"guild_id": guild_id}
-                await self.collection.insert_one(profile_document)
-            profile = CosmosGuild.from_document(self.plugin, profile_document)
-            # await self.redis.set_object(self.collection.name, guild_id, profile)
+            if profile_document:
+                profile = CosmosGuild.from_document(self.plugin, profile_document)
+            else:
+                profile = await self.create_profile(guild_id)
             self.lru.set(guild_id, profile)
+            # await self.redis.set_object(self.collection.name, guild_id, profile)
         return profile
+
+    async def create_profile(self, guild_id) -> CosmosGuild:
+        profile_document = {"guild_id": guild_id}
+        await self.collection.update_one({}, {"$set": profile_document}, upsert=True)
+        return CosmosGuild.from_document(self.plugin, profile_document)
 
     async def __precache_prefixes(self):
         async for document in self.collection.find({}, {"prefixes": True, "guild_id": True, "_id": False}):
