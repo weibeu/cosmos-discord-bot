@@ -68,9 +68,9 @@ class ProfileCache(object):
             return await profile.get_guild_profile(guild_id)
 
     async def create_profile(self, user_id: int) -> CosmosUserProfile:
+        document_filter = {"user_id": user_id}
         profile_document = self.plugin.data.profile.document_schema.copy()
-        profile_document.update({"user_id": user_id})
-        await self.collection.insert_one(profile_document)
+        await self.collection.update_one(document_filter, {"$set": profile_document}, upsert=True)
         return await self.get_profile(user_id)
 
     async def give_assets(self, message):
