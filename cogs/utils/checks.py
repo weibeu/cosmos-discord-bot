@@ -1,10 +1,7 @@
 import json
-import time
-import git
+
 import discord
-import os
 import aiohttp
-from cogs.utils.dataIO import dataIO
 from urllib.parse import quote as uriquote
 from discord.ext import commands
 try:
