@@ -1,5 +1,6 @@
 discord.py
 raven
+git
 pymongo
 humanize
 pymongo[gssapi,srv,tls]
