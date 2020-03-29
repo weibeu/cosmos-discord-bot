@@ -40,8 +40,7 @@ class GuildCache(object):
         document_filter = {"guild_id": guild_id}
         profile_document = self.plugin.data.guild.document_schema.copy()
         await self.collection.update_one(document_filter, {"$set": profile_document}, upsert=True)
-        profile_document.update(document_filter)
-        return CosmosGuild.from_document(self.plugin, profile_document)
+        return await self.get_profile(guild_id)    # Fetch the profile again from self.get_profile.
 
     async def __precache_prefixes(self):
         async for document in self.collection.find({}, {"prefixes": True, "guild_id": True, "_id": False}):
