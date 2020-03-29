@@ -29,7 +29,7 @@ class RoleShopBase(GuildBaseCog):
     async def _paginator_parser(ctx, roleshop_role, _):
         role = ctx.guild.get_role(roleshop_role.id)
         points = roleshop_role.points
-        return role.name, f"`POINTS:` **{points}**"
+        return role.name, f"`POINTS:` **{points}**\n`COLOR:` {role.mention}"
 
     @GuildBaseCog.group(name="roleshop", invoke_without_command=True)
     async def role_shop(self, ctx):
