@@ -4,8 +4,9 @@ After=multi-user.target
 
 [Service]
 Type=simple
-WorkingDirectory=~/cosmos-discord-bot
-ExecStart=python3.8 ~/cosmos-discord-bot/run.py
+Restart=always
+WorkingDirectory=/home/thecosmos/cosmos-discord-bot
+ExecStart=python3.8 /home/thecosmos/cosmos-discord-bot/run.py
 User=root
 
 [Install]
