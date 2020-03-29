@@ -34,7 +34,7 @@ class DatabaseBatch(object):
             except InvalidOperation:
                 self.bot.eh.sentry.capture_exception()
             else:
-                self.bot.log.info(f"- Done. [{self.collection.name}] {result.bulk_api_result}.")
+                self.bot.log.debug(f"- Done. [{self.collection.name}] {result.bulk_api_result}.")
                 self.batch = list()
         else:
             self.bot.log.debug(f"[{self.collection.name}] batch is empty.")
