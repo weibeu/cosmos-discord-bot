@@ -5,9 +5,6 @@ from abc import ABC, abstractmethod
 
 class CosmosGuildBase(ABC):
 
-    def __init__(self):
-        self.is_prime = False
-
     @property
     def name(self):
         return self.guild.name

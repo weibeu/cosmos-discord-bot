@@ -10,7 +10,6 @@ from .permissions import GuildPermissions
 class WelcomeBannerSettings(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
-        super().__init__()
         self.welcome_banner_url = kwargs.get("url", str())
         self.welcome_banner_text = kwargs.get("text", str())
         self.__welcome_banner_channel_id = kwargs.get("channel", int())
@@ -46,7 +45,6 @@ class WelcomeBannerSettings(CosmosGuildBase, ABC):
 class WelcomeSettings(WelcomeBannerSettings, ABC):
 
     def __init__(self, **kwargs):
-        super().__init__()
         raw_welcome_settings = kwargs.get("welcome", dict())
         WelcomeBannerSettings.__init__(self, **raw_welcome_settings.get("banner", dict()))
         self.welcome_message = raw_welcome_settings.get("message", str())
@@ -137,7 +135,6 @@ class GuildLogger(object):
 class LoggerSettings(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
-        super().__init__()
         raw_logger_settings = kwargs.get("loggers", list())
         self.loggers = self.__get_loggers(raw_logger_settings)
 

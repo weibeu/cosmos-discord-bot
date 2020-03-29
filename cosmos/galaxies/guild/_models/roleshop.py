@@ -110,5 +110,4 @@ class RoleShop(object):
 class GuildRoleShop(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
-        super().__init__()
         self.roleshop = RoleShop(self, **kwargs)
