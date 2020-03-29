@@ -101,30 +101,30 @@ class Utilities(commands.Cog):
         else:
             await ctx.send(self.bot.bot_prefix + 'No quote found.')
 
-    @commands.command(name="migrate")
-    async def migrate(self, ctx):
-
-        roleshop = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "role-shop"}, projection={"_id": False})
-        members = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "members"}, projection={"_id": False})
-
-        print("fetched roleshop", len(roleshop))
-        print("fetched members", len(members))
-
-        # Migrate roleshop.
-        data = [{int(role_id): int(points)} for role_id, points in roleshop.items()]
-        await self.bot.db_client.cosmos.guilds.insert_one({"guild_id": ctx.guild.id, "roleshop": data})
-
-        print("migrated roleshop")
-
-        # Migrate points.
-        for member_id in members:
-            points = members[member_id].get("points")
-            if points:
-                await self.bot.db_client.cosmos.profiles.insert_one({"user_id": int(member_id), "guilds": {f"{ctx.guild.id}": {"points": {"points": points}}}})
-
-        print("migrated points")
-
-        await ctx.send("Done.")
+    # @commands.command(name="migrate")
+    # async def migrate(self, ctx):
+    #
+    #     roleshop = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "role-shop"}, projection={"_id": False})
+    #     members = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "members"}, projection={"_id": False})
+    #
+    #     print("fetched roleshop", len(roleshop))
+    #     print("fetched members", len(members))
+    #
+    #     # Migrate roleshop.
+    #     data = [{int(role_id): int(points)} for role_id, points in roleshop.items()]
+    #     await self.bot.db_client.cosmos.guilds.insert_one({"guild_id": ctx.guild.id, "roleshop": data})
+    #
+    #     print("migrated roleshop")
+    #
+    #     # Migrate points.
+    #     for member_id in members:
+    #         points = members[member_id].get("points")
+    #         if points:
+    #             await self.bot.db_client.cosmos.profiles.insert_one({"user_id": int(member_id), "guilds": {f"{ctx.guild.id}": {"points": {"points": points}}}})
+    #
+    #     print("migrated points")
+    #
+    #     await ctx.send("Done.")
 
 def setup(bot):
     bot.add_cog(Utilities(bot))
