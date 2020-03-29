@@ -29,7 +29,7 @@ class DatabaseBatch(object):
     async def write(self, **kwargs):
         if self.batch:
             try:
-                self.bot.log.info(f"Writing [{self.collection.name}] batch updates.")
+                self.bot.log.debug(f"Writing [{self.collection.name}] batch updates.")
                 result = await self.collection.bulk_write(self.batch, **kwargs)
             except InvalidOperation:
                 self.bot.eh.sentry.capture_exception()
