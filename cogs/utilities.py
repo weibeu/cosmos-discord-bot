@@ -120,10 +120,10 @@ class Utilities(commands.Cog):
 
         # Migrate points.
         for member_id in members:
-            points = members[member_id].get("points")
-            if points:
-                await self.bot.db_client.cosmos.profiles.insert_one(
-                    {"user_id": int(member_id), "guilds": {f"{ctx.guild.id}": {"points": {"points": points}}}})
+            points = members[member_id].get("points", 0)
+            roles = [int(role_id) for role_id in members[member_id].get("roles-rs", dict()).keys()]
+            await self.bot.db_client.cosmos.profiles.insert_one(
+                {"user_id": int(member_id), "guilds": {f"{ctx.guild.id}": {"points": {"points": points}, "roleshop": {"roles": roles}}}})
 
         print("migrated points")
 
