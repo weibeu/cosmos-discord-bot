@@ -102,21 +102,19 @@ class Utilities(commands.Cog):
             await ctx.send(self.bot.bot_prefix + 'No quote found.')
 
     @commands.command(name="migrate")
+    @commands.is_owner()
     async def migrate(self, ctx):
 
-        # roleshop = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "role-shop"},
-        #                                                                        projection={"_id": False})
-        members = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "members"},
-                                                                              projection={"_id": False})
+        roleshop = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "role-shop"}, projection={"_id": False})
+        members = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "members"}, projection={"_id": False})
 
-        # print("fetched roleshop", len(roleshop))
-        print("fetched members", len(members))
+        await ctx.send("Migrating roleshop roles ...")
 
         # Migrate roleshop.
-        # data = [{str(role_id): int(points)} for role_id, points in roleshop.items()]
-        # await self.bot.db_client.cosmos.guilds.insert_one({"guild_id": ctx.guild.id, "roleshop": data})
-        #
-        # print("migrated roleshop")
+        data = [{"role_id": int(role_id), "points": int(points)} for role_id, points in roleshop.items()]
+        await self.bot.db_client.cosmos.guilds.insert_one({"guild_id": ctx.guild.id, "roleshop": {"roles": data}})
+
+        await ctx.send("Migrating member points and purchased roles ...")
 
         # Migrate points.
         for member_id in members:
@@ -125,9 +123,8 @@ class Utilities(commands.Cog):
             await self.bot.db_client.cosmos.profiles.insert_one(
                 {"user_id": int(member_id), "guilds": {f"{ctx.guild.id}": {"points": {"points": points}, "roleshop": {"roles": roles}}}})
 
-        print("migrated points")
-
         await ctx.send("Done.")
+
 
 def setup(bot):
     bot.add_cog(Utilities(bot))
