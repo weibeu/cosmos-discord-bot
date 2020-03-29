@@ -3,6 +3,6 @@ banner_formats:
     - jpeg
     - png
     - gif
-banner_max_size: 3       # Max size of template used for guild banners in Mega Bytes.
+banner_max_size: 4       # Max size of template used for guild banners in Mega Bytes.
 banner_name: welcome     # Default filename for all of banner files sent to channels.
 default_star_count: 5    # Default number of stars to post message to starboard.
