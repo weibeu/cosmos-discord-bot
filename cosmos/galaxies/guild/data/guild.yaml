@@ -1,2 +1,5 @@
 collection_name: guilds
 max_prefixes: 10
+
+document_schema:
+    is_prime: False
