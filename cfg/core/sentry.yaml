@@ -1,6 +1,6 @@
 # ! Sentry error monitoring configurations.
 
 dsn: ""    # ENV: SENTRY_DSN
-debug: True
-release: null
-environment: "Development"
+debug: False
+release: "0.0.1 alpha"
+environment: "Production"
