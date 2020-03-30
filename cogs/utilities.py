@@ -105,16 +105,16 @@ class Utilities(commands.Cog):
     @commands.is_owner()
     async def migrate(self, ctx):
 
-        roleshop = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "role-shop"}, projection={"_id": False})
+        # roleshop = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "role-shop"}, projection={"_id": False})
         members = await self.bot.db_client.guilds[str(ctx.guild.id)].find_one({"_id": "members"}, projection={"_id": False})
 
-        await ctx.send("Migrating roleshop roles ...")
+        # await ctx.send("Migrating roleshop roles ...")
 
-        # Migrate roleshop.
-        data = [{"role_id": int(role_id), "points": int(points)} for role_id, points in roleshop.items()]
-        await self.bot.db_client.cosmos.guilds.insert_one({"guild_id": ctx.guild.id, "roleshop": {"roles": data}})
-
-        await ctx.send("Migrating member points and purchased roles ...")
+        # # Migrate roleshop.
+        # data = [{"role_id": int(role_id), "points": int(points)} for role_id, points in roleshop.items()]
+        # await self.bot.db_client.cosmos.guilds.insert_one({"guild_id": ctx.guild.id, "roleshop": {"roles": data}})
+        #
+        # await ctx.send("Migrating member points and purchased roles ...")
 
         # Migrate points.
         for member_id in members:
