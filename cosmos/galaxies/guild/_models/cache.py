@@ -30,17 +30,16 @@ class GuildCache(object):
                 {"guild_id": guild_id}, projection=self.DEFAULT_PROJECTION))
             if profile_document:
                 profile = CosmosGuild.from_document(self.plugin, profile_document)
+                self.lru.set(guild_id, profile)
             else:
-                profile = await self.create_profile(guild_id)
-            self.lru.set(guild_id, profile)
-            # await self.redis.set_object(self.collection.name, guild_id, profile)
+                # Prepare the profile yourself.
+                profile = CosmosGuild.from_document(self.plugin, {"guild_id": guild_id})
+                self.lru.set(guild_id, profile)    # Before db API call to prevent it from firing many times.
+                await self.create_profile(guild_id)
         return profile
 
-    async def create_profile(self, guild_id) -> CosmosGuild:
-        document_filter = {"guild_id": guild_id}
-        profile_document = self.plugin.data.guild.document_schema.copy()
-        await self.collection.update_one(document_filter, {"$set": profile_document}, upsert=True)
-        return await self.get_profile(guild_id)    # Fetch the profile again from self.get_profile.
+    async def create_profile(self, guild_id):
+        await self.collection.insert_one({"guild_id": guild_id})
 
     async def __precache_prefixes(self):
         async for document in self.collection.find({}, {"prefixes": True, "guild_id": True, "_id": False}):
