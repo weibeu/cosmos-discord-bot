@@ -39,7 +39,10 @@ class GuildCache(object):
         return profile
 
     async def create_profile(self, guild_id):
-        await self.collection.insert_one({"guild_id": guild_id})
+        document_filter = {"guild_id": guild_id}
+        if not await self.collection.find_one(document_filter):
+            # To handle rare cases when this method still gets invoked multiple times.
+            await self.collection.insert_one(document_filter)
 
     async def __precache_prefixes(self):
         async for document in self.collection.find({}, {"prefixes": True, "guild_id": True, "_id": False}):
