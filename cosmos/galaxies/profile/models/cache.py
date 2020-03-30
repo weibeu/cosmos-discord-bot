@@ -70,8 +70,11 @@ class ProfileCache(object):
     async def create_profile(self, user_id: int) -> CosmosUserProfile:
         document_filter = {"user_id": user_id}
         profile_document = self.plugin.data.profile.document_schema.copy()
-        await self.collection.update_one(document_filter, {"$set": profile_document}, upsert=True)
-        return await self.get_profile(user_id)
+        profile_document.update(document_filter)
+        profile = CosmosUserProfile.from_document(self.plugin, profile_document)
+        self.lfu.set(user_id, profile)    # Before db API call to prevent it from firing many times.
+        await self.collection.insert_one(profile_document)
+        return profile
 
     async def give_assets(self, message):
         assets = []
