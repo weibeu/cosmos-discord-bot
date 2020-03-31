@@ -60,7 +60,7 @@ class Marriage(Cog):
                     return await ctx.send_line(res)
             await target_profile.marry(author_profile)
             content = f"{ctx.author.mention} {user.mention}"
-            res = f"🎉    Congratulations {ctx.author.name} and {user.name}! You're married now."
+            res = f"🎉    {ctx.author.name} and {user.name} have made themselves one in matrimony. Omedetou!"
             return await ctx.send(content, embed=ctx.embed_line(res))
 
         if target_profile.proposer:
