@@ -43,8 +43,7 @@ class Marriage(Cog):
 
         if target_profile.proposed and target_profile.proposed.id == ctx.author.id:
             content = f"{ctx.author.mention} {user.mention}"
-            res = f"💕    The perfect match! You should now kiss each other " \
-                f"under 60 seconds to finally get married till eternity."
+            res = f"💕    in honor of ur entrance into wedlock, you may now kiss!"
             await ctx.send(content, embed=ctx.embed_line(res))
             author_kiss = False
             target_kiss = False
