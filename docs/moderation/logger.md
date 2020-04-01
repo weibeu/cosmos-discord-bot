@@ -16,6 +16,8 @@ description: >-
 * `on_member_remove` -- Logs attributes of member who just left the server.
 * `on_confession` -- Logs information about each confessions made through secret confessions.
 * `on_moderation` -- Logs several attributes of member, type of moderation, moderator and reason if it was
+* `on_text_level_up` -- Logs and congratulates when a member advances to upper text level.
+* `on_voice_level_up` -- Logs and congratulates when a member advances to upper voice level.
 
   provided when moderator or auto-moderator performs any moderation action on this member.
 

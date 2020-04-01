@@ -133,3 +133,19 @@ class LoggerEvents(Cog):
         embed.add_field(name="Author", value=f"{meta.user} | {meta.user.mention}")
         embed.set_footer(text=f"ID: {meta.user.id}")
         return embed
+
+    def __get_level_up_embed(self, embed, profile):
+        embed.set_author(name=profile.user, icon_url=self.bot.theme.images.chevron)
+        embed.description = f"{self.bot.emotes.misc.confetti}    Congratulations {profile.user.name} for " \
+                            f"advancing to level {profile.level}."
+        embed.set_thumbnail(url=profile.user.avatar_url)
+        embed.set_footer(text=profile.guild.name, icon_url=profile.guild.icon_url)
+        return embed
+
+    @logger_event()
+    async def on_text_level_up(self, embed, profile, _):
+        return self.__get_level_up_embed(embed, profile)
+
+    @logger_event()
+    async def on_voice_level_up(self, embed, profile):
+        return self.__get_level_up_embed(embed, profile)
