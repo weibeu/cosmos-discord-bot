@@ -6,14 +6,15 @@ description: >-
 
 # Banner
 
-Welcome Banner is PNG or **GIF** image file which is generated and sent when any member joins the server.  
-It can be customized by adding a custom text message which is written over it. Moreover the border color can be customized by setting a new theme color from Theme Settings.
+Welcome Banner is PNG or **GIF** image file which is generated and sent when any member joins the server.
+
+It can be customized by adding a custom text message which is written over it. Moreover the border color can be customized by setting a new theme color from Theme Settings.
 
 {% hint style="success" %}
 If [User Verification](../../moderation/user-verification.md) is enabled, welcome banners are sent only after the member is verified.
 {% endhint %}
 
-### banner
+## banner
 
 Displays previously configured welcome banner.
 
@@ -22,26 +23,27 @@ Usage:
 ;welcome banner
 ```
 
-#### set
+### set
 
-Configure and set server welcome banner.  
-You should specify direct URL of the banner template which can be either JPEG or PNG. Prime servers can use GIF banner templates. It uses current channel to send welcome banners or any other if specified with custom required text.
+Configure and set server welcome banner.
+
+You should specify direct URL of the banner template which can be either JPEG or PNG. Prime servers can use GIF banner templates. It uses current channel to send welcome banners or any other if specified with custom required text.
 
 ```yaml
 Usage:
 ;welcome banner set <banner_url> [channel] <text>
 ```
 
-#### enable
+### enable
 
 Enable sending welcome banners in channel.
 
 ```yaml
 Usage:
-;welcome banner enable 
+;welcome banner enable
 ```
 
-#### disable
+### disable
 
 Disable sending welcome banner in channel.
 

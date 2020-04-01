@@ -20,7 +20,8 @@ Usage:
 
 ### reward
 
-Displays any rewards set for specified or all of the levels.  
+Displays any rewards set for specified or all of the levels.
+
 Optionally pass `text` to view Text Levels rewards and `voice` for Voice Levels rewards.
 
 ```yaml
@@ -33,7 +34,8 @@ Usage:
 
 #### set
 
-Set rewards for specified Text or Voice Levels.  
+Set rewards for specified Text or Voice Levels.
+
 You can set one or multiple roles and optionally Guild Points as rewards.
 
 ```yaml

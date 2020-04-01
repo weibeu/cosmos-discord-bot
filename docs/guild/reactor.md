@@ -20,7 +20,7 @@ Usage:
 
 ### set
 
-Setup reactor in current or specified channel using provided emotes. You can only use the emotes which     the bot can see. It enables reactors just after this setup is complete.
+Setup reactor in current or specified channel using provided emotes. You can only use the emotes which the bot can see. It enables reactors just after this setup is complete.
 
 ```yaml
 Aliases:

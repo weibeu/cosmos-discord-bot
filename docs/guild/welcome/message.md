@@ -4,9 +4,9 @@ description: A plugin to send customized welcome messages for newly joined membe
 
 # Message
 
-Lets you set fully customized template to use for Welcome Messages using different variables. Use `{variable}` in your template to use the variables.
+Lets you set fully customized template to use for Welcome Messages using different variables. Use `{variable}` in your template to use the variables.
 
-#### Valid Variables:
+### Valid Variables:
 
 * `{id}` -- Discord ID of the member.
 * `{mention}` -- Mentions the member.
@@ -14,7 +14,7 @@ Lets you set fully customized template to use for Welcome Messages using differe
 * `{username}` -- Discord name of the member including their Discord discriminator.
 * `{discriminator}` -- Discriminator of the member.
 
-### message
+## message
 
 Displays the template being used for Welcome Messages if it has been set already.
 
@@ -34,16 +34,16 @@ Usage:
 ;welcome message
 ```
 
-#### set
+### set
 
-Setup and enable Welcome Messages using provided template. The Welcome Messages are sent to the current or  any specified channel whenever a new user joins the server.
+Setup and enable Welcome Messages using provided template. The Welcome Messages are sent to the current or any specified channel whenever a new user joins the server.
 
 ```yaml
 Usage:
 ;welcome message set [channel] <message>
 ```
 
-#### remove
+### remove
 
 Remove and disable Welcome Messages from the server.
 
@@ -55,7 +55,7 @@ Usage:
 ;welcome message remove
 ```
 
-### directmessage
+## directmessage
 
 Displays the template being using for Direct Welcome Messages if it has been set already.
 
@@ -72,7 +72,7 @@ Usage:
 ;welcome directmessage
 ```
 
-#### set
+### set
 
 Setup and enable Direct Welcome Messages using provided template. The Welcome Messages are sent as direct message whenever a new user joins the server.
 
@@ -81,7 +81,7 @@ Usage:
 ;welcome directmessage set <message>
 ```
 
-#### remove
+### remove
 
 Remove and disable Direct Welcome Messages from the server.
 

@@ -6,7 +6,7 @@ description: An utility plugin for Hastebin.
 
 ## ;hastebin
 
-Posts the provided content to https://hastebin.com/ and displays a shareable link.
+Posts the provided content to [https://hastebin.com/](https://hastebin.com/) and displays a shareable link.
 
 ```yaml
 Aliases:

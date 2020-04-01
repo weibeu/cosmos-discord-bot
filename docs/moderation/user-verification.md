@@ -12,7 +12,7 @@ Primary command to setup several verification methods.
 
 ### role
 
-Set the role which will be assigned to unverified members to keep them locked away from accessing normal channels and let them go through the verification process.
+Set the role which will be assigned to unverified members to keep them locked away from accessing normal channels and let them go through the verification process.
 
 ```yaml
 Usage:
@@ -33,8 +33,9 @@ Primary command for reaction verification method.
 
 #### set
 
-Set react to verify method to authenticate users to your server.  
-You can specify the message ID or message URL if you want this reaction to be added over a custom message otherwise the default embed is used for the same. The emote you want to use for reacting, custom URLs for icon and image and description text or default values will be used.
+Set react to verify method to authenticate users to your server.
+
+You can specify the message ID or message URL if you want this reaction to be added over a custom message otherwise the default embed is used for the same. The emote you want to use for reacting, custom URLs for icon and image and description text or default values will be used.
 
 ```yaml
 Aliases:

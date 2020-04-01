@@ -14,7 +14,7 @@ If you're willing to run your own custom instance of Cosmos bot, you can easily 
 
 ### Installing Python
 
-Cosmos bot requires at least Python 3.8 or more to run. Depending on the operating system you're running, you can get it from their [official website](https://www.python.org/downloads/).   
+Cosmos bot requires at least Python 3.8 or more to run. Depending on the operating system you're running, you can get it from their [official website](https://www.python.org/downloads/).  
 If you're running Linux or any Debian based system, you can simply get it by running following commands:
 
 ```bash

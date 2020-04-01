@@ -6,7 +6,7 @@ description: Manage important configuration and settings of server.
 
 ## ;moderators
 
-Displays list of roles and members who has been assigned as special moderators who can use all of the commands from Moderation plugin and more.
+Displays list of roles and members who has been assigned as special moderators who can use all of the commands from Moderation plugin and more.
 
 ```yaml
 Aliases:
@@ -38,7 +38,7 @@ Usage:
 
 ## ;preset
 
-Sets preset for commands to display certain preset message including images or files every time these commands are used.
+Sets preset for commands to display certain preset message including images or files every time these commands are used.
 
 #### Commands supporting presets:
 

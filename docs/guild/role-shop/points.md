@@ -4,8 +4,9 @@ description: Implements Guild Points function which are bound to each server.
 
 # Points
 
-Members can earn points in different servers by chatting normally in text channels where the bot can read their messages. They can also claim their daily points.   
-These points can be redeemed to unlock various perks in the server set by the administrators like a role from Role Shop.
+Members can earn points in different servers by chatting normally in text channels where the bot can read their messages. They can also claim their daily points.
+
+These points can be redeemed to unlock various perks in the server set by the administrators like a role from Role Shop.
 
 ## ;points
 

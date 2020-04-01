@@ -4,7 +4,7 @@ description: Implements Role Shop functionality in server.
 
 # Role Shop
 
-Members can redeem or purchase roles which has been put on Role Shop by server administrators using their Guild Points. Once the role is redeemed it stays in their inventory. They can also easily equip or un-equip any of the roles they have redeemed previously.
+Members can redeem or purchase roles which has been put on Role Shop by server administrators using their Guild Points. Once the role is redeemed it stays in their inventory. They can also easily equip or un-equip any of the roles they have redeemed previously.
 
 ## ;roleshop
 
@@ -17,7 +17,8 @@ Usage:
 
 ### buy
 
-Redeem or purchase specified role from Role Shop using your earned Guild Points.  
+Redeem or purchase specified role from Role Shop using your earned Guild Points.
+
 It displays an interactive reaction based menu to choose your desired role if it's not specified.
 
 ```yaml
@@ -30,7 +31,8 @@ Usage:
 
 ### equip
 
-Equip specified role which you have purchased from the Role Shop.  
+Equip specified role which you have purchased from the Role Shop.
+
 It displays an interactive reaction based menu to choose your desired role if it's not specified.
 
 ```yaml

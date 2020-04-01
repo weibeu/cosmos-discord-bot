@@ -8,7 +8,8 @@ description: >-
 
 ## ;disable
 
-Disables provided [function ](../galaxy-reference.md#the-functions-hierarchy)from one or multiple channels which are specified.  
+Disables provided [function ](../galaxy-reference.md#the-functions-hierarchy)from one or multiple channels which are specified.
+
 A function can be any of the commands, plugins or galaxies which are allowed to be disabled.
 
 ```yaml
@@ -30,7 +31,8 @@ Usage:
 
 ## ;enable
 
-Enables provided [function ](../galaxy-reference.md#the-functions-hierarchy)in all of the specified channels.  
+Enables provided [function ](../galaxy-reference.md#the-functions-hierarchy)in all of the specified channels.
+
 A function can be any of the commands, plugins or galaxies.
 
 ```yaml
@@ -40,7 +42,7 @@ Usage:
 
 ### channels
 
-Enables back bot commands and its automatic messages in current or provided channels if it was disabled previously.
+Enables back bot commands and its automatic messages in current or provided channels if it was disabled previously.
 
 ```yaml
 Aliases:

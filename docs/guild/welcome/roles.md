@@ -8,7 +8,7 @@ description: Assign roles to new members right after they join your server.
 If [User Verification](../../moderation/user-verification.md) is enabled, welcome roles are added only after the member is verified.
 {% endhint %}
 
-### roles
+## roles
 
 Displays the list of roles being assigned to every new members joining the server.
 
@@ -20,7 +20,7 @@ Usage:
 ;welcome roles
 ```
 
-#### set
+### set
 
 Set roles which will be assigned to every new members joining your server.
 
@@ -33,7 +33,7 @@ Usage:
 ;welcome roles set <roles...>
 ```
 
-#### remove
+### remove
 
 Remove all of the roles from welcome roles if set any.
 

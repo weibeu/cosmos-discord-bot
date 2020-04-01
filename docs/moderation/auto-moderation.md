@@ -4,7 +4,7 @@ description: An Auto Moderation plugin based on triggers and actions.
 
 # Auto Moderation
 
-Server Administrators can create different triggers and specify various actions for it. The bot responds and performs all of the actions which were specified for this trigger when a member violates its protocol. A single trigger can have multiple actions set.
+Server Administrators can create different triggers and specify various actions for it. The bot responds and performs all of the actions which were specified for this trigger when a member violates its protocol. A single trigger can have multiple actions set.
 
 #### Available Triggers:
 

@@ -25,7 +25,7 @@ Usage:
 
 ### set
 
-Set secret confessions to current or specified channel. Use [`on_confession` Logger](../moderation/logger.md) event to moderate confessions and keep track of their real identity.
+Set secret confessions to current or specified channel. Use [`on_confession` Logger](../moderation/logger.md) event to moderate confessions and keep track of their real identity.
 
 ```yaml
 Aliases:

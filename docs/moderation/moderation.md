@@ -49,7 +49,8 @@ Kicks specified member from the server. It also notifies them automatically alon
 
 ## ;ban
 
-Bans specified member from the server. It also notifies them automatically along with the given reason.  
+Bans specified member from the server. It also notifies them automatically along with the given reason.
+
 If the user is not present in the server, their discord ID can be passed as member parameter.
 
 ```yaml
@@ -68,7 +69,7 @@ Usage:
 
 ## ;mute
 
-Mutes specified member from voice and also adds the muted role. It also notifies them automatically along with the given reason.
+Mutes specified member from voice and also adds the muted role. It also notifies them automatically along with the given reason.
 
 ```yaml
 Usage:
@@ -93,6 +94,4 @@ Un mutes specified member from voice and removes the muted role. It also notifie
 Usage:
 ;unmute <member>
 ```
-
-
 

@@ -1,12 +1,14 @@
 # Reference
 
+## Reference
+
 Cosmos bot uses modular approach for each of its functions and commands. Each of the Primary Commands are categorized into different sub-commands based on their usage. A Plugin bundles many of these commands revolving around any of the specific function. Multiple plugins forms a Galaxy.
 
-## The Functions Hierarchy
+### The Functions Hierarchy
 
 **Galaxy** &gt; **Plugin** &gt; **Command** &gt; **Sub-Command**
 
-### Galaxies
+#### Galaxies
 
 * GUILD
 * MODERATION
@@ -14,12 +16,12 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * SETTING
 * TOOLS
 
-### Plugins
+#### Plugins
 
 * [AdministratorSettings](settings/administrator-settings.md)
 * [AutoModeration](moderation/auto-moderation.md)
 * [Economy](profile/economy.md)
-* [CosmosPermissions](guild/functions-permissions.md)
+* [CosmosPermissions](guild/cosmos-permissions.md)
 * [GuildSettings](guild/guild-settings/)
 * [HasteBin](tools/haste-bin.md)
 * [Levels](guild/levels.md)
@@ -36,18 +38,22 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [UserVerification](moderation/user-verification.md)
 * [Welcome](guild/welcome/)
 
-### **Primary** Commands
+#### **Primary** Commands
 
 The following table displays entire list of primary commands and their basic syntax to use. Click on the command to know more about it including their **sub-commands**.
 
-#### Default Command Prefix
+**Default Command Prefix**
 
 **;**
 
 You can also mention the bot and use the same as a prefix to invoke any of the commands.  
-**Example:** `@Cosmos#2406 <command> ...`
+**Example:** \`@Cosmos
 
-#### Understanding the syntax
+## 2406
+
+ ...\`
+
+**Understanding the syntax**
 
 All of the usages provided for each commands and sub-commands follow a certain syntax, very much similar to the way these commands will be actually used.  
 Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md) which can be the default prefix, `;` or any of the custom prefixes you have set. Following with the Primary Command, optional sub-command and arguments.
@@ -63,11 +69,11 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [banword](https://cosmos.thecosmos.space/moderation/auto-moderation#banword) | Blacklists or bans specified word. | `;banword [word]` |
 | [bosons](https://cosmos.thecosmos.space/profile/economy#bosons) | Displays Bosons earned by you or specified member. | `;bosons [user]` |
 | [confessions](guild/secret-confessions.md#confessions) | Lets you confess anonymously in specified server. | `;confess <server_id> <confession>` |
-| [disable](guild/functions-permissions.md#disable) | Disables provided function from one or multiple channels which are specified. | `;disable <function> [channels...]` |
+| [disable](guild/cosmos-permissions.md#disable) | Disables provided function from one or multiple channels which are specified. | `;disable <function> [channels...]` |
 | [divorce](https://cosmos.thecosmos.space/profile/marriage#divorce) | Lets you divorce if you're already married to someone. | `;divorce` |
-| [enable](guild/functions-permissions.md#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |
+| [enable](guild/cosmos-permissions.md#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |
 | [fermions](https://cosmos.thecosmos.space/profile/economy#fermions) | Displays number of Fermions you have. | `;fermions` |
-| [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to https://hastebin.com/ and displays a shareable link. | `;hastebin <content>` |
+| [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to [https://hastebin.com/](https://hastebin.com/) and displays a shareable link. | `;hastebin <content>` |
 | [kick](https://cosmos.thecosmos.space/moderation/moderation#kick) | Kicks specified member from the server. | `;kick <member> [reason]` |
 | [level](https://cosmos.thecosmos.space/levels#level) | Displays current level and experience points. | `;level [member]` |
 | [logger](https://cosmos.thecosmos.space/moderation/logger#logger) | Displays list of loggers enabled in different channels. | `;logger` |
@@ -93,6 +99,4 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [verification](moderation/user-verification.md#verification) | Primary command to setup several verification methods. | `;verification` |
 | [warn](https://cosmos.thecosmos.space/moderation/moderation#warn) | Issues a warning to specified member. | `;warn <member> <reason>` |
 | [welcome](https://cosmos.thecosmos.space/welcome#welcome) | Manage different welcome settings of your server. | `;welcome` |
-
-
 

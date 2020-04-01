@@ -16,13 +16,13 @@ It is an open source project actively being developed updated frequently with ad
 * Auto Moderation system based on triggers and different actions.
 * Discord User, Member custom profiles and much more.
 
-#### Not Enough?
+### Not Enough?
 
 We continuously keep working on it to introduce new features and also improve the existing ones. The bot receives updates very frequently, almost every other day.
 
 ## Getting Started
 
-[![](.gitbook/assets/invite-banner.png)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8)
+[![](.gitbook/assets/invite-banner%20%283%29.png)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8)
 
 Go through the above link to invite Cosmos to your server which is hosted by us. The actual invite URL of Cosmos bot with default administrator permissions is:
 
