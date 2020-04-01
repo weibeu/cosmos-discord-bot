@@ -9,6 +9,16 @@ from discord.ext.commands import has_permissions
 class RoleShopSettings(RoleShopBase):
     """A plugin to manage and setup Role Shop in server."""
 
+    @RoleShopBase.command(name="givepoints", aliases=["givepoint"])
+    @has_permissions(administrator=True)
+    async def give_points(self, ctx, points: int, *, member: discord.Member):
+        """Generate and give points to specified member. You can also specify negative points to remove points."""
+        if member.bot:
+            return await ctx.send_line("❌    You can't give points to robots.")
+        profile = await ctx.fetch_member_profile(member.id)
+        profile.give_points(points)
+        await ctx.send_line(f"✅    Gave {points} points to {member.display_name}.")
+
     @RoleShopBase.role_shop.command(name="create")
     @has_permissions(manage_roles=True)
     async def create_role(self, ctx, points: int, *, role: typing.Union[discord.Role, str]):
