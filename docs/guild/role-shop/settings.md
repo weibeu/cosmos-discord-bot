@@ -50,3 +50,15 @@ Usage:
 ;roleshop modify points <new_points> [role]
 ```
 
+## ;givepoints
+
+Generate and give points to specified member. You can also specify negative points to remove points.
+
+```yaml
+Aliases:
+- givepoint
+
+Usage:
+;givepoints <points> <member>
+```
+
