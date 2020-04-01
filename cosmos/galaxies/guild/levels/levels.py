@@ -31,7 +31,7 @@ class Levels(GuildBaseCog):
         if channel in guild_profile.permissions.disabled_channels:
             return
         embed = self.bot.theme.embeds.one_line.primary(f"Congratulations {profile.user.name}! "
-                                                       f"You advanced to Level {profile.level}.",
+                                                       f"You advanced to level {profile.level}.",
                                                        self.bot.theme.images.chevron)
         await channel.send(profile.user.mention, embed=embed)
 
