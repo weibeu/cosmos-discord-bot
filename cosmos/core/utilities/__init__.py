@@ -6,5 +6,6 @@ from .ascii_progress_bar import StaticProgressBar
 
 __all__ = [
     "Utility",
-    "Time"
+    "Time",
+    "StaticProgressBar",
 ]

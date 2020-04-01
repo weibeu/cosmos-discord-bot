@@ -1,8 +1,9 @@
+from cosmos.core.utilities import StaticProgressBar, converters
+
 import typing
 import discord
 
 from discord.ext import commands
-from cosmos.core import utilities
 from .._models.base import GuildBaseCog
 
 
@@ -34,12 +35,13 @@ class Levels(GuildBaseCog):
         embed.set_author(name=member.display_name + "'s Level and XP statistics", icon_url=member.avatar_url)
         text_level_value = f"`LEVEL` **{profile.level}**" \
                            f"\n`XP` **{profile.xp_progress[0]} / {profile.xp_progress[1]}**" \
-                           f"\n`TOTAL XP` **{profile.xp}**" \
-                           f"\n{utilities.StaticProgressBar(profile.xp_progress[0], profile.xp_progress[1])}"
+                           f"\n`TOTAL XP` **{profile.xp}**\n" \
+                           f"```fix\n{StaticProgressBar(profile.xp_progress[0], profile.xp_progress[1])}```"
         voice_level_value = f"`LEVEL` **{profile.voice_level}**" \
                             f"\n`XP` **{profile.voice_xp_progress[0]} / {profile.voice_xp_progress[1]}**" \
                             f"\n`TOTAL XP` **{profile.voice_xp}**\n" \
-                            f"{utilities.StaticProgressBar(profile.voice_xp_progress[0], profile.voice_xp_progress[1])}"
+                            f"```fix\n{StaticProgressBar(profile.voice_xp_progress[0], profile.voice_xp_progress[1])}" \
+                            f"```"
         embed.add_field(name="⌨    Text Level", value=text_level_value, inline=False)
         embed.add_field(name="🎤    Voice Level", value=voice_level_value, inline=False)
         embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
@@ -84,7 +86,7 @@ class Levels(GuildBaseCog):
     @rewards.command(name="set")
     @commands.has_permissions(administrator=True)
     async def set_rewards(self, ctx, level: int, channel: typing.Optional[ChannelConverter] = "text",
-                          points: typing.Optional[int] = 0, *, roles: utilities.converters.RoleConvertor()):
+                          points: typing.Optional[int] = 0, *, roles: converters.RoleConvertor()):
         """Set rewards for specified Text or Voice Levels.
         You can set one or multiple roles and optionally Guild Points as rewards.
 
