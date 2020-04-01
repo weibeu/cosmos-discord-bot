@@ -137,7 +137,7 @@ class LoggerEvents(Cog):
     def __get_level_up_embed(self, embed, profile):
         embed.set_author(name=profile.user, icon_url=self.bot.theme.images.chevron)
         embed.description = f"{self.bot.emotes.misc.confetti}    Congratulations {profile.user.name} for " \
-                            f"advancing to level {profile.level}."
+                            f"advancing to **level {profile.level}**."
         embed.set_thumbnail(url=profile.user.avatar_url)
         embed.set_footer(text=profile.guild.name, icon_url=profile.guild.icon_url)
         return embed
