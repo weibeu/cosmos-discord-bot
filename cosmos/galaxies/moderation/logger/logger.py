@@ -75,7 +75,7 @@ class Logger(LoggerEvents):
             return await ctx.send_line(f"❌    Logs for event '{logger.name}' is already enabled in #{logger.channel}")
 
         await guild_profile.enable_logger(name, channel)
-        await ctx.send_line(f"✅    Logs for event '{name}' has been enabled in #{channel.name} channel.")
+        await ctx.send_line(f"✅    Logs for event '{name}' has been enabled in #{channel.name}.")
 
     @logger.command(name="disable", aliases=["remove"])
     async def disable_logger(self, ctx, *, name: NameConvertor = None):
