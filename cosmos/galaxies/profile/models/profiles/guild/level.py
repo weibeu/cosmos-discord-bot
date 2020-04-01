@@ -56,4 +56,4 @@ class UserLevel(GuildMemberProfileBase, ABC):
         guild_profile = await self.fetch_guild_profile()
         await guild_profile.levels.give_rewards(self, channel="voice")
 
-        # TODO: Level up announcements, notifications.
+        self.plugin.bot.dispatch("voice_level_up", self)
