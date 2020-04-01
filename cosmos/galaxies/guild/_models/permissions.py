@@ -48,6 +48,8 @@ class GuildPermissions(object):
         # Generalisation of above three attributes are represented using '_disabled'.
         disabled_document = document.get("disabled", dict())
         self.disabled = DisabledFunctions(self.profile.plugin.bot, disabled_document.get("functions", dict()))
+        # Channels in which bot can't respond to commands or send any kind of message.
+        self.disabled_channels = {self.profile.plugin.bot.get_channel(_) for _ in disabled_document.get("channels", [])}
 
     async def disable_function(self, _, channels):
         _.disabled_channels.update(channels)
@@ -66,3 +68,15 @@ class GuildPermissions(object):
                 f"settings.permissions.disabled.functions.{_.FUNCTION}.{_.name}": {"$in": [__.id for __ in channels]}
             }
         })
+
+    async def disable_channels(self, channels):
+        self.disabled_channels.update(channels)
+
+        await self.profile.collection.update_one(self.profile.document_filter, {"$addToSet": {
+            "settings.permissions.disabled.channels": {"$each": [_.id for _ in channels]}}})
+
+    async def enable_channels(self, channels):
+        self.disabled_channels.difference_update(channels)
+
+        await self.profile.collection.update_one(self.profile.document_filter, {"$pull": {
+            "settings.permissions.disabled.channels": {"$in": [_.id for _ in channels]}}})

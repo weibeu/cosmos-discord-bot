@@ -41,6 +41,7 @@ class CosmosPermissions(Settings):
         # Register following checks for permissions.
         self.bot.add_check(self.__commands_check)
         self.bot.add_check(self.__galaxies_check)
+        self.bot.add_check(self.__channels_check)
 
     @staticmethod
     async def __commands_check(ctx):
@@ -65,7 +66,14 @@ class CosmosPermissions(Settings):
                     raise exceptions.DisabledFunctionError
         return True
 
-    @Settings.group(name="disable")
+    async def __channels_check(self, ctx):
+        guild_profile = await self.bot.guild_cache.get_profile(ctx.guild.id)
+        disabled_channels = guild_profile.permissions.disabled_channels
+        if disabled_channels and ctx.channel in disabled_channels:
+            raise exceptions.DisabledFunctionError
+        return True
+
+    @Settings.group(name="disable", invoke_without_command=True)
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                       *channels: discord.TextChannel):
         """Disables provided function from one or multiple channels which are specified.
@@ -77,7 +85,7 @@ class CosmosPermissions(Settings):
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been disabled in specified channels.")
 
-    @Settings.group(name="enable")
+    @Settings.group(name="enable", invoke_without_command=True)
     async def enable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                      *channels: discord.TextChannel):
         """Enables provided function in all of the specified channels.
@@ -88,6 +96,23 @@ class CosmosPermissions(Settings):
         await ctx.guild_profile.permissions.enable_function(function, channels)
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been enabled back in specified channels.")
+
+    @disable.command(name="channels", aliases=["channel"])
+    async def disable_channel(self, ctx, *channels: discord.TextChannel):
+        """Disables bot commands and most of its automatic messages in current or provided channels."""
+        channels = channels or (ctx.channel, )
+        await ctx.guild_profile.permissions.disable_channels(channels)
+        await ctx.send_line(f"✅    Bot commands and messages has been disabled in specified channels.")
+
+    @enable.command(name="channels", aliases=["channel"])
+    async def enable_channel(self, ctx, *channels: discord.TextChannel):
+        """Enables back bot commands and its automatic messages in current or provided channels if it was
+        disabled previously.
+
+        """
+        channels = channels or (ctx.channel, )
+        await ctx.guild_profile.permissions.enable_channels(channels)
+        await ctx.send_line(f"✅    Bot commands and messages has been enabled in specified channels.")
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error.original, AttributeError):
