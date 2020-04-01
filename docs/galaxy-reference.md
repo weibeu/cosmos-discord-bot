@@ -19,7 +19,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [AdministratorSettings](settings/administrator-settings.md)
 * [AutoModeration](moderation/auto-moderation.md)
 * [Economy](profile/economy.md)
-* [FunctionsPermissions](guild/functions-permissions.md)
+* [CosmosPermissions](guild/functions-permissions.md)
 * [GuildSettings](guild/guild-settings/)
 * [HasteBin](tools/haste-bin.md)
 * [Levels](guild/levels.md)
@@ -63,9 +63,9 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [banword](https://cosmos.thecosmos.space/moderation/auto-moderation#banword) | Blacklists or bans specified word. | `;banword [word]` |
 | [bosons](https://cosmos.thecosmos.space/profile/economy#bosons) | Displays Bosons earned by you or specified member. | `;bosons [user]` |
 | [confessions](guild/secret-confessions.md#confessions) | Lets you confess anonymously in specified server. | `;confess <server_id> <confession>` |
-| [disable](https://cosmos.thecosmos.space/functions-permissions#disable) | Disables provided function from one or multiple channels which are specified. | `;disable <function> [channels...]` |
+| [disable](guild/functions-permissions.md#disable) | Disables provided function from one or multiple channels which are specified. | `;disable <function> [channels...]` |
 | [divorce](https://cosmos.thecosmos.space/profile/marriage#divorce) | Lets you divorce if you're already married to someone. | `;divorce` |
-| [enable](https://cosmos.thecosmos.space/functions-permissions#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |
+| [enable](guild/functions-permissions.md#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |
 | [fermions](https://cosmos.thecosmos.space/profile/economy#fermions) | Displays number of Fermions you have. | `;fermions` |
 | [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to https://hastebin.com/ and displays a shareable link. | `;hastebin <content>` |
 | [kick](https://cosmos.thecosmos.space/moderation/moderation#kick) | Kicks specified member from the server. | `;kick <member> [reason]` |
