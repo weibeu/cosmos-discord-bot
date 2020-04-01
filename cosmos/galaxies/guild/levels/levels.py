@@ -25,6 +25,16 @@ class Levels(GuildBaseCog):
 
     INESCAPABLE = False    # TODO: Fix. It still shows True at runtime.
 
+    @GuildBaseCog.listener()
+    async def on_text_level_up(self, profile, channel):
+        guild_profile = await self.bot.guild_cache.get_profile(profile.guild.id)
+        if channel in guild_profile.permissions.disabled_channels:
+            return
+        embed = self.bot.theme.embeds.one_line.primary(f"Congratulations {profile.user.name}! "
+                                                       f"You advanced to Level {profile.level}.",
+                                                       self.bot.theme.images.chevron)
+        await channel.send(profile.user.mention, embed=embed)
+
     @GuildBaseCog.cooldown(1, 5, GuildBaseCog.bucket_type.member)
     @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True, inescapable=False)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
