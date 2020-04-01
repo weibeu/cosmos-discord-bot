@@ -73,6 +73,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [divorce](https://cosmos.thecosmos.space/profile/marriage#divorce) | Lets you divorce if you're already married to someone. | `;divorce` |
 | [enable](guild/cosmos-permissions.md#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |
 | [fermions](https://cosmos.thecosmos.space/profile/economy#fermions) | Displays number of Fermions you have. | `;fermions` |
+| [givepoints](guild/role-shop/settings.md#givepoints) | Generate and give points to specified member. | `;givepoints <points> <member>` |
 | [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to [https://hastebin.com/](https://hastebin.com/) and displays a shareable link. | `;hastebin <content>` |
 | [kick](https://cosmos.thecosmos.space/moderation/moderation#kick) | Kicks specified member from the server. | `;kick <member> [reason]` |
 | [level](https://cosmos.thecosmos.space/levels#level) | Displays current level and experience points. | `;level [member]` |
