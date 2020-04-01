@@ -8,7 +8,7 @@ description: >-
 
 ## ;disable
 
-Disables provided [function ](../galaxy-reference.md#the-functions-hierarchy)from one or multiple channels which are specified.
+Disables provided [function ](../reference.md#the-functions-hierarchy)from one or multiple channels which are specified.
 
 A function can be any of the commands, plugins or galaxies which are allowed to be disabled.
 
@@ -31,7 +31,7 @@ Usage:
 
 ## ;enable
 
-Enables provided [function ](../galaxy-reference.md#the-functions-hierarchy)in all of the specified channels.
+Enables provided [function ](../reference.md#the-functions-hierarchy)in all of the specified channels.
 
 A function can be any of the commands, plugins or galaxies.
 

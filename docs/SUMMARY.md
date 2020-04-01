@@ -2,7 +2,7 @@
 
 * [Cosmos - Discord Bot](README.md)
 * [Getting Started](getting-started.md)
-* [Reference](galaxy-reference.md)
+* [Reference](reference.md)
 
 ## GUILD
 
