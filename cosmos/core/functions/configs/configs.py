@@ -23,7 +23,7 @@ class CosmosConfig(Config):
 
     def __init__(self):
         super().__init__()
-        self.prefixes = [os.getenv("COSMOS_PREFIX")] or self.prefixes
+        self.prefixes = [os.getenv("COSMOS_PREFIX", *self.prefixes)]
 
 
 class PluginsConfig(Config):
