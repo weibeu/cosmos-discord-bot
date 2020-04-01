@@ -24,9 +24,11 @@ class CommandErrorHandler(Cog):
                                   f"", url="https://www.patreon.com/__thecosmos")
             await ctx.send(embed=embed)
 
-        elif isinstance(error, (
-                commands.MissingPermissions, commands.CheckFailure, exceptions.DisabledFunctionError)):
+        elif isinstance(error, (commands.MissingPermissions, commands.CheckFailure)):
             await ctx.message.add_reaction(self.bot.emotes.misc.denied)
+
+        elif isinstance(error, exceptions.DisabledFunctionError):
+            await ctx.message.add_reaction(self.bot.emotes.misc.unavailable)
 
         elif isinstance(error, commands.BadArgument):
             await ctx.message.add_reaction(self.bot.emotes.misc.error)
