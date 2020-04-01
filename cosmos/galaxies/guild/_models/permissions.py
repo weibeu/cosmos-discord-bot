@@ -46,18 +46,23 @@ class GuildPermissions(object):
         # self.disabled_plugins = []     # function = "plugins"
         # self.disabled_galaxies = []    # function = "galaxies"
         # Generalisation of above three attributes are represented using '_disabled'.
-        self.disabled = DisabledFunctions(self.profile.plugin.bot, document.get("disabled", dict()))
+        disabled_document = document.get("disabled", dict())
+        self.disabled = DisabledFunctions(self.profile.plugin.bot, disabled_document.get("functions", dict()))
 
-    async def disable(self, _, channels):
+    async def disable_function(self, _, channels):
         _.disabled_channels.update(channels)
 
         await self.profile.collection.update_one(self.profile.document_filter, {
-            "$addToSet": {f"settings.permissions.disabled.{_.FUNCTION}.{_.name}": {"$each": [__.id for __ in channels]}}
+            "$addToSet": {
+                f"settings.permissions.disabled.functions.{_.FUNCTION}.{_.name}": {"$each": [__.id for __ in channels]}
+            }
         })
 
-    async def enable(self, _, channels):
+    async def enable_function(self, _, channels):
         _.disabled_channels.difference_update(channels)
 
         await self.profile.collection.update_one(self.profile.document_filter, {
-            "$pull": {f"settings.permissions.disabled.{_.FUNCTION}.{_.name}": {"$in": [__.id for __ in channels]}}
+            "$pull": {
+                f"settings.permissions.disabled.functions.{_.FUNCTION}.{_.name}": {"$in": [__.id for __ in channels]}
+            }
         })

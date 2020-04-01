@@ -73,7 +73,7 @@ class FunctionsPermissions(Settings):
 
         """
         channels = channels or (ctx.channel, )
-        await ctx.guild_profile.permissions.disable(function, channels)
+        await ctx.guild_profile.permissions.disable_function(function, channels)
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been disabled in specified channels.")
 
@@ -85,7 +85,7 @@ class FunctionsPermissions(Settings):
 
         """
         channels = channels or (ctx.channel, )
-        await ctx.guild_profile.permissions.enable(function, channels)
+        await ctx.guild_profile.permissions.enable_function(function, channels)
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been enabled back in specified channels.")
 
