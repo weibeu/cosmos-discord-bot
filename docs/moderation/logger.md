@@ -17,7 +17,7 @@ description: >-
 * `on_confession` -- Logs information about each confessions made through secret confessions.
 * `on_moderation` -- Logs several attributes of member, type of moderation, moderator and reason if it was
 
-   provided when moderator or auto-moderator performs any moderation action on this member.
+  provided when moderator or auto-moderator performs any moderation action on this member.
 
 ## ;logger
 

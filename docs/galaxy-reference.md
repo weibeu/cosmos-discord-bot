@@ -51,7 +51,7 @@ You can also mention the bot and use the same as a prefix to invoke any of the c
 
 ## 2406
 
- ...\`
+...\`
 
 **Understanding the syntax**
 
