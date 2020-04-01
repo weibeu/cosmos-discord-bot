@@ -21,6 +21,10 @@ class CosmosConfig(Config):
     NAME = "cosmos"
     PATH = "cfg/core/cosmos.yaml"
 
+    def __init__(self):
+        super().__init__()
+        self.prefixes = [os.getenv("COSMOS_PREFIX")] or self.prefixes
+
 
 class PluginsConfig(Config):
 
