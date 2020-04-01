@@ -31,8 +31,8 @@ class GalaxyConverter(commands.Converter):
         return galaxy
 
 
-class FunctionsPermissions(Settings):
-    """Manage permissions of various bot functions."""
+class CosmosPermissions(Settings):
+    """Manage permissions of bot in different channels as well as of its various functions."""
 
     # TODO: Implement menu.
 

@@ -1,1 +1,1 @@
-from .functions import FunctionsPermissions
+from .functions import CosmosPermissions

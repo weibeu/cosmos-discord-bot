@@ -7,7 +7,7 @@ from .starboard import Starboard
 from .reactions import ReactionRoles
 from .settings import GuildSettings
 from .confessions import SecretConfessions
-from .permissions import FunctionsPermissions
+from .permissions import CosmosPermissions
 
 
 __all__ = [
@@ -19,7 +19,7 @@ __all__ = [
     ReactionRoles,
     GuildSettings,
     SecretConfessions,
-    FunctionsPermissions,
+    CosmosPermissions,
 ]
 
 
