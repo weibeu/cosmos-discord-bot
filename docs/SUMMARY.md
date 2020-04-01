@@ -21,7 +21,7 @@
 * [Guild Settings](guild/guild-settings/README.md)
   * [Theme](guild/guild-settings/theme.md)
   * [Prefix](guild/guild-settings/prefix.md)
-* [Functions Permissions](guild/functions-permissions.md)
+* [Cosmos Permissions](guild/functions-permissions.md)
 
 ## MODERATION
 
