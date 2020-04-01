@@ -1,8 +1,10 @@
 ---
-description: Manage permissions of various bot functions.
+description: >-
+  Manage permissions of bot in different channels as well as of its various
+  functions.
 ---
 
-# Functions Permissions
+# Cosmos Permissions
 
 ## ;disable
 
