@@ -42,7 +42,7 @@ class Levels(GuildBaseCog):
         member = member or ctx.author
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         embed = self.bot.theme.embeds.primary()
-        embed.set_author(name=member.display_name + "'s Level and XP statistics", icon_url=member.avatar_url)
+        embed.set_author(name=member.display_name + "'s Level and XP", icon_url=member.avatar_url)
         text_level_value = f"`LEVEL` **{profile.level}**" \
                            f"\n`XP` **{profile.xp_progress[0]} / {profile.xp_progress[1]}**" \
                            f"\n`TOTAL XP` **{profile.xp}**\n" \
