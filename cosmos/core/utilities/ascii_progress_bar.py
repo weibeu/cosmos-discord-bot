@@ -3,8 +3,6 @@ from collections import UserString
 
 class StaticProgressBar(UserString):
 
-    PREFIX = "`|"
-    SUFFIX = "|`"
     BASE = "▢"
     FILL = "▣"
 
@@ -15,5 +13,5 @@ class StaticProgressBar(UserString):
             raise ValueError
         progress = self.FILL * round((value/max_value)*width)
         base = self.BASE * (width - len(progress))
-        progress_bar = self.PREFIX + progress + base + self.SUFFIX
+        progress_bar = progress + base
         super().__init__(progress_bar)
