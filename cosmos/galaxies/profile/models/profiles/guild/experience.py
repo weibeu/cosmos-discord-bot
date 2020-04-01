@@ -16,6 +16,7 @@ class UserExperience(UserLevel, ABC):
         self.in_xp_buffer = False
         self.is_speaking = False
         self.__voice_activity_time = None
+        self.__voice_level = None
 
     def get_total_xp(self, level):
         return sum(self.LEVELS_XP[: level])
@@ -51,13 +52,12 @@ class UserExperience(UserLevel, ABC):
         self.is_speaking = True
         self.__voice_activity_time = time.time()
         # TODO: Also record voice activity of members who are already in voice channel on_ready.
+        self.__voice_level = self.voice_level    # Save current voice level.
 
     def close_voice_activity(self):
-        _level = self.voice_level
-
         self._voice_xp += round(time.time() - self.__voice_activity_time)
 
-        if self.voice_level > _level:
+        if self.voice_level > self.__voice_level:
             self.plugin.bot.loop.create_task(self.voice_level_up_callback())
 
         self.is_speaking = False
