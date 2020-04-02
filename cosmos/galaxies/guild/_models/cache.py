@@ -1,4 +1,5 @@
 from .guild_profile import CosmosGuild
+from pymongo.errors import DuplicateKeyError
 
 
 class GuildCache(object):
@@ -26,23 +27,27 @@ class GuildCache(object):
         # profile = await self.redis.get_object(self.collection.name, guild_id)
         profile = self.lru.get(guild_id)
         if not profile:
-            profile_document = (await self.collection.find_one(
-                {"guild_id": guild_id}, projection=self.DEFAULT_PROJECTION))
+            profile_filter = {"guild_id": guild_id}
+            profile_document = (await self.collection.find_one(profile_filter, projection=self.DEFAULT_PROJECTION))
             if profile_document:
                 profile = CosmosGuild.from_document(self.plugin, profile_document)
                 self.lru.set(guild_id, profile)
             else:
-                # Prepare the profile yourself.
-                profile = CosmosGuild.from_document(self.plugin, {"guild_id": guild_id})
-                self.lru.set(guild_id, profile)    # Before db API call to prevent it from firing many times.
-                await self.create_profile(guild_id)
+                profile = CosmosGuild.from_document(self.plugin, profile_filter)
+                self.lru.set(guild_id, profile)
+                await self.create_profile(profile_filter)
         return profile
 
-    async def create_profile(self, guild_id):
-        document_filter = {"guild_id": guild_id}
-        if not await self.collection.find_one(document_filter):
+    # TODO: Find a way to call create_profile. It gets invoked several times at the same instant under get_profile.
+
+    async def create_profile(self, profile_filter):
+        if not await self.collection.find_one(profile_filter):
             # To handle rare cases when this method still gets invoked multiple times.
-            await self.collection.insert_one(document_filter)
+            # !! TODO: It still gets invoked so many times. Temp fix: create primary index for guild_id in guilds.
+            try:
+                await self.collection.insert_one(profile_filter)
+            except DuplicateKeyError:
+                pass
 
     async def __precache_prefixes(self):
         async for document in self.collection.find({}, {"prefixes": True, "guild_id": True, "_id": False}):
