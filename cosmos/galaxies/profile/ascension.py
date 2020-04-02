@@ -51,6 +51,8 @@ class _Levels(Cog):
                         continue
                     if vs.self_mute or vs.mute:
                         continue
-                    profile = await self.cache.get_guild_profile(user_id, g.id)
-                    # TODO: Create Cosmos profile of new user.
-                    profile.record_voice_activity()
+                    profile = await self.cache.get_profile(user_id)
+                    if not profile:
+                        profile = await self.cache.create_profile(user_id)
+                    guild_profile = await profile.get_guild_profile(g.id)
+                    guild_profile.record_voice_activity()
