@@ -22,7 +22,7 @@ We continuously keep working on it to introduce new features and also improve th
 
 ## Getting Started
 
-[![](https://github.com/thec0sm0s/cosmos-discord-bot/tree/f30148831a9b22a4255e9c7e92d68e034ca9e7dc/docs/.gitbook/assets/invite-banner%20%283%29.png)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8)
+[![](.gitbook/assets/invite-banner.png)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8)
 
 Go through the above link to invite Cosmos to your server which is hosted by us. The actual invite URL of Cosmos bot with default administrator permissions is:
 
