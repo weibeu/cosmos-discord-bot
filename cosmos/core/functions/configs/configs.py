@@ -52,6 +52,7 @@ class DatabaseConfig(Config):
         self.uri = None
         self.raw = None
         super().__init__()
+        self.database = os.getenv("MONGODB_DATABASE") or self.database
         self.username = os.getenv("MONGODB_USERNAME") or self.username
         self.password = os.getenv("MONGODB_PASSWORD") or self.password
         self.uri = os.getenv("MONGODB_URI") or self.uri

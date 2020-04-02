@@ -2,11 +2,11 @@
 
 host: 127.0.0.1
 port: 27017
-database: "cosmos"
+database: "cosmos"    # ENV: MONGODB_DATABASE
 requires_auth: Yes
-username: null    # ENV: MONGODB_USERNAME
-password: null    # ENV: MONGODB_PASSWORD
-uri: ""           # ENV: MONGODB_URI
+username: null        # ENV: MONGODB_USERNAME
+password: null        # ENV: MONGODB_PASSWORD
+uri: ""               # ENV: MONGODB_URI
 
 
 # ! DiscordDB configs.
