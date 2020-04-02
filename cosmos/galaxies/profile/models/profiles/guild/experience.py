@@ -15,7 +15,7 @@ class UserExperience(UserLevel, ABC):
         self._voice_xp = raw_xp.get("voice", 0)
         self.in_xp_buffer = False
         self.__voice_activity_time = None
-        self.__voice_level = None
+        self.__voice_level = self.level
 
     def get_total_xp(self, level):
         return sum(self.LEVELS_XP[: level])
