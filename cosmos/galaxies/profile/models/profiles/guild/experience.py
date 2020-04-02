@@ -44,8 +44,7 @@ class UserExperience(UserLevel, ABC):
 
     @property
     def voice_xp(self):
-        if self.is_speaking:
-            return self._voice_xp + round(time.time() - self.__voice_activity_time)
+        self.cache_voice_xp()
         return self._voice_xp
 
     def record_voice_activity(self):
@@ -53,8 +52,11 @@ class UserExperience(UserLevel, ABC):
         self.__voice_activity_time = time.time()
         self.__voice_level = self.voice_level    # Save current voice level.
 
+    def cache_voice_xp(self):
+        self._voice_xp += round(time.time() - (self.__voice_activity_time or time.time()))
+
     def close_voice_activity(self):
-        self._voice_xp += round(time.time() - self.__voice_activity_time)
+        self.cache_voice_xp()
 
         if self.voice_level > self.__voice_level:
             self.plugin.bot.loop.create_task(self.voice_level_up_callback())
