@@ -53,11 +53,13 @@ class UserExperience(UserLevel, ABC):
     def cache_voice_xp(self):
         self._voice_xp += round(time.time() - (self.__voice_activity_time or time.time()))
 
-    def close_voice_activity(self):
+    def check_voice_level_up(self):
         self.cache_voice_xp()
-
         if self.voice_level > self.__voice_level:
             self.plugin.bot.loop.create_task(self.voice_level_up_callback())
+
+    def close_voice_activity(self):
+        self.check_voice_level_up()
 
         self.__voice_level = self.voice_level    # Update the counter.
         self.__voice_activity_time = None
