@@ -40,3 +40,16 @@ class _Levels(Cog):
                 or (before.channel and not after.channel and not (before.mute or before.self_mute))):
             profile = await self.cache.get_guild_profile(member.id, member.guild.id)
             profile.close_voice_activity()
+
+    @Cog.listener()
+    async def on_ready(self):
+        for g in self.bot.guilds:
+            for vc in g.voice_channels:
+                for user_id, vs in vc.voice_states.items():
+                    user = self.bot.get_user(user_id)
+                    if user.bot:
+                        continue
+                    if vs.self_mute or vs.mute:
+                        continue
+                    profile = await self.cache.get_guild_profile(user_id, g.id)
+                    profile.record_voice_activity()
