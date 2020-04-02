@@ -5,10 +5,6 @@ cache_all: No    # Cache ^ members profile on ready.
 
 guild_profiles_cache_max_size: 10
 
-document_schema:
-    level: 0
-    xp: 0
-
 rep_cooldown: 20    # Cooldown for awarding reputation points in hours.
 
 max_description_length: 250

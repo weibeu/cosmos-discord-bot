@@ -69,13 +69,11 @@ class ProfileCache(object):
 
     async def create_profile(self, user_id: int) -> CosmosUserProfile:
         document_filter = {"user_id": user_id}
-        profile_document = self.plugin.data.profile.document_schema.copy()
-        profile_document.update(document_filter)
-        profile = CosmosUserProfile.from_document(self.plugin, profile_document)
+        profile = CosmosUserProfile.from_document(self.plugin, document_filter)
         self.lfu.set(user_id, profile)    # Before db API call to prevent it from firing many times.
         if not await self.collection.find_one(document_filter):
             # To handle rare cases when this method still gets invoked multiple times.
-            await self.collection.insert_one(profile_document)
+            await self.collection.insert_one(document_filter)
         return profile
 
     async def give_assets(self, message):
