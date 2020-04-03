@@ -2,8 +2,8 @@ from .core import Cosmos
 from .core.functions import exceptions
 
 
-__release__ = "alpha"
-__version__ = "0.0.2"
+__release__ = "Babu"
+__version__ = "0.0.3"
 
 
 def get_bot():
