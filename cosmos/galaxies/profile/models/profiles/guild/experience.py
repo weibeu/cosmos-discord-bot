@@ -55,7 +55,7 @@ class UserExperience(UserLevel, ABC):
             raw_xp = self._voice_xp + round(time.time() - (self.__voice_activity_time or time.time()))
         else:
             raw_xp = self._voice_xp
-        return round(raw_xp / 27)
+        return round(raw_xp / 17)
 
     def record_voice_activity(self):
         self.__voice_activity_time = time.time()
