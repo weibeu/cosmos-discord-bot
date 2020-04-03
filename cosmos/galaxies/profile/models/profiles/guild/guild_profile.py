@@ -29,7 +29,6 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         self.moderation_logs = kwargs.get("logs", dict()).get("moderation", list())
 
     def to_update_document(self):
-        self.check_voice_level_up()
         return {
             f"{self.guild_filter}.stats.xp.chat": self.xp,
             f"{self.guild_filter}.stats.xp.voice": self.voice_xp,
