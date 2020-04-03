@@ -6,6 +6,7 @@ import traceback
 from ...functions import Cog
 from cosmos import exceptions
 from discord.ext import commands
+from sentry_sdk import configure_scope
 
 
 class CommandErrorHandler(Cog):
@@ -43,6 +44,8 @@ class CommandErrorHandler(Cog):
             pass
 
         else:
+            with configure_scope() as scope:
+                scope.user = {"name": str(ctx.author), "user_id": ctx.author.id}
             self.bot.eh.sentry.capture_exception(error)
             self.bot.log.error(f"Ignoring exception in command {ctx.command}")
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
