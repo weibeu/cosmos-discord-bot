@@ -16,7 +16,7 @@ class UserExperience(UserLevel, ABC):
         self.in_xp_buffer = False
         self.is_speaking = False
         self.__voice_activity_time = None
-        self.__voice_level = None
+        self.__voice_level = self.level
 
     def get_total_xp(self, level):
         return sum(self.LEVELS_XP[: level])
@@ -42,26 +42,29 @@ class UserExperience(UserLevel, ABC):
         await asyncio.sleep(self.plugin.data.xp.buffer_cooldown)
         self.in_xp_buffer = False
 
+    def cache_voice_xp(self):
+        self._voice_xp += round(time.time() - (self.__voice_activity_time or time.time()))
+        self.__voice_activity_time = time.time() if self.is_speaking else None
+        if self.voice_level > self.__voice_level:
+            self.__voice_level = self.voice_level    # Update the counter.
+            self.plugin.bot.loop.create_task(self.voice_level_up_callback())
+
     @property
     def voice_xp(self):
         if self.is_speaking:
-            return self._voice_xp + round(time.time() - self.__voice_activity_time)
-        return self._voice_xp
+            raw_xp = self._voice_xp + round(time.time() - (self.__voice_activity_time or time.time()))
+        else:
+            raw_xp = self._voice_xp
+        return round(raw_xp / 60)
 
     def record_voice_activity(self):
-        self.is_speaking = True
         self.__voice_activity_time = time.time()
+        self.is_speaking = True
         self.__voice_level = self.voice_level    # Save current voice level.
 
     def close_voice_activity(self):
-        self._voice_xp += round(time.time() - self.__voice_activity_time)
-
-        if self.voice_level > self.__voice_level:
-            self.plugin.bot.loop.create_task(self.voice_level_up_callback())
-            self.__voice_level = self.voice_level    # Update the counter.
-
         self.is_speaking = False
-        self.__voice_activity_time = None
+        self.cache_voice_xp()
 
     @property
     def delta_xp(self):
