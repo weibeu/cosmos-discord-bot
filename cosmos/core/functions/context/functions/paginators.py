@@ -151,7 +151,10 @@ class BasePaginator(object):
         icon_url = icon_url or self.ctx.bot.theme.images.cancel
         self.embed.set_footer(text=message, icon_url=icon_url)
         await self.message.edit(embed=self.embed)
-        await self.message.clear_reactions()
+        try:
+            await self.message.clear_reactions()
+        except discord.Forbidden:
+            pass
 
     def check_reaction(self, reaction, user):
         if user is None or user.id != self.ctx.author.id:
