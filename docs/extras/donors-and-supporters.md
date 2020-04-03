@@ -4,18 +4,18 @@ We are really thankful to all of our supporters and caretakers. Without them, Co
 
 ## Patreon Strings
 
-![String](../.gitbook/assets/string.png)
+![](../.gitbook/assets/string.png)
 
 - **EminaKoju**
 
 
 ## Patreon Quarks
 
-![Quark](../.gitbook/assets/quark.png)
+![](../.gitbook/assets/quark.png)
 
 - **Катюша Каблашников**
 
 
 ## Patreon Neutrinos
 
-![Neutrino](../.gitbook/assets/neutrino.png)
+![](../.gitbook/assets/neutrino.png)
