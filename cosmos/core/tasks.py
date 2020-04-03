@@ -66,6 +66,7 @@ class InitialTasks(commands.Bot):
     def _init_configs(self):
         print("Initialising configs.")
         self.configs = ConfigHandler()
+        self.configs.sentry.release = self.release
 
     @Time.calc_time
     def _init_logger(self):

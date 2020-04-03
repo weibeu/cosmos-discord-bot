@@ -2,5 +2,5 @@
 
 dsn: ""    # ENV: SENTRY_DSN
 debug: False
-release: "0.0.2 alpha"
+release: "0.0.2 Babu"
 environment: "Production"
