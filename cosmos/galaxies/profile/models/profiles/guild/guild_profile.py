@@ -68,7 +68,7 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         pipeline = [
             {"$match": {
                 self.guild_filter: {"$exists": True},
-                f"{self.guild_filter}.stats.xp.voice": {"$gt": self.voice_xp}
+                f"{self.guild_filter}.stats.xp.voice": {"$gt": self._voice_xp}
             }},
             {"$count": "surpassed"}
         ]
