@@ -135,7 +135,7 @@ class ConfirmMenu(object):
     async def __clean(self):
         for emote in self.emotes:
             await self.message.remove_reaction(emote, self.ctx.me)
-            await self.message.add_reaction(self.ctx.bot.emotes.misc.timer)
+        await self.message.add_reaction(self.ctx.bot.emotes.misc.timer)
 
     async def wait_for_confirmation(self):
         if isinstance(self.message, str):
