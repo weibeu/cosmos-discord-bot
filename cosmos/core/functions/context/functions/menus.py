@@ -133,8 +133,11 @@ class ConfirmMenu(object):
         return False
 
     async def __clean(self):
-        for emote in self.emotes:
-            await self.message.remove_reaction(emote, self.ctx.me)
+        try:
+            for emote in self.emotes:
+                await self.message.remove_reaction(emote, self.ctx.me)
+        except discord.Forbidden:
+            pass
         await self.message.add_reaction(self.ctx.bot.emotes.misc.timer)
 
     async def wait_for_confirmation(self):
@@ -158,12 +161,15 @@ class ConfirmMenu(object):
                 if response.content in self.TRUE_STRINGS:
                     self.confirmed = True
             finally:
-                for emote in self.emotes:
-                    await self.message.remove_reaction(emote, self.ctx.author)
-                if self.confirmed:
-                    await self.message.remove_reaction(self.ctx.bot.emotes.misc.close, self.ctx.me)
-                else:
-                    await self.message.remove_reaction(self.ctx.bot.emotes.misc.check, self.ctx.me)
+                try:
+                    for emote in self.emotes:
+                        await self.message.remove_reaction(emote, self.ctx.author)
+                    if self.confirmed:
+                        await self.message.remove_reaction(self.ctx.bot.emotes.misc.close, self.ctx.me)
+                    else:
+                        await self.message.remove_reaction(self.ctx.bot.emotes.misc.check, self.ctx.me)
+                except discord.Forbidden:
+                    pass
 
         except asyncio.TimeoutError:
             await self.__clean()
