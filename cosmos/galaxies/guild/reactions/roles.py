@@ -46,7 +46,8 @@ class ReactionRoles(Reactions):
         pass
 
     @reaction_roles.command(name="add", aliases=["setup", "set"])
-    async def add_roles(self, ctx, message: typing.Optional[discord.Message], *, roles: converters.RoleConvertor):
+    async def add_roles(self, ctx,
+                        message: typing.Union[discord.Message, str] = None, *, roles: converters.RoleConvertor):
         """Setup reaction roles over any custom message you wish or you may skip this parameter to let bot post
         a embed displaying list of provided roles.
 
@@ -61,7 +62,7 @@ class ReactionRoles(Reactions):
         # noinspection PyTypeChecker
         if len(roles) >= self.plugin.data.reactions.max_roles:
             return await ctx.send_line(f"❌    You can't include anymore roles.")
-        if len(ctx.guild_profile.reactions.roles) >= self.plugin.data.max_messages:
+        if len(ctx.guild_profile.reactions.roles) >= self.plugin.data.reactions.max_messages:
             return await ctx.send_line(f"❌    You cannot create anymore reaction roles.")
         if not await ctx.confirm():
             return
