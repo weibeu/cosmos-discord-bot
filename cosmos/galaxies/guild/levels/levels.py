@@ -27,15 +27,16 @@ class Levels(GuildBaseCog):
 
     @GuildBaseCog.listener()
     async def on_text_level_up(self, profile, channel):
-        guild_profile = await self.bot.guild_cache.get_profile(profile.guild.id)
-        if channel in guild_profile.permissions.disabled_channels:
-            return
-        if guild_profile.get_logger("on_text_level_up"):
-            return
-        embed = self.bot.theme.embeds.one_line.primary(f"Congratulations {profile.user.name}! "
-                                                       f"You advanced to level {profile.level}.",
-                                                       self.bot.theme.images.chevron)
-        await channel.send(profile.user.mention, embed=embed)
+        # guild_profile = await self.bot.guild_cache.get_profile(profile.guild.id)
+        # if channel in guild_profile.permissions.disabled_channels:
+        #     return
+        # if guild_profile.get_logger("on_text_level_up"):
+        #     return
+        # embed = self.bot.theme.embeds.one_line.primary(f"Congratulations {profile.user.name}! "
+        #                                                f"You advanced to level {profile.level}.",
+        #                                                self.bot.theme.images.chevron)
+        # await channel.send(profile.user.mention, embed=embed)
+        pass
 
     @GuildBaseCog.cooldown(1, 5, GuildBaseCog.bucket_type.member)
     @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True, inescapable=False)
