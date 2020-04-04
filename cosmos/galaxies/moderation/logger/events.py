@@ -15,7 +15,10 @@ def logger_event(*args, **kwargs):
                     return
                 guild_profile = await cog.bot.guild_cache.get_profile(_args[0].guild.id)
             except AttributeError:
-                guild_profile = _args[0].guild_profile    # Event triggered from ModerationAction.
+                try:
+                    guild_profile = _args[0].guild_profile    # Event triggered from ModerationAction.
+                except AttributeError:
+                    return
             logger = guild_profile.get_logger(function.__name__)
             if not logger:
                 return
