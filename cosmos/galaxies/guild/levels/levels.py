@@ -46,13 +46,15 @@ class Levels(GuildBaseCog):
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         embed = self.bot.theme.embeds.primary()
         embed.set_author(name=member.display_name + "'s Level and XP", icon_url=member.avatar_url)
-        text_level_value = f"`LEVEL` **{profile.level}**" \
-                           f"\n`XP` **{profile.xp_progress[0]} / {profile.xp_progress[1]}**" \
-                           f"\n`TOTAL XP` **{profile.xp}**\n" \
+        text_level_value = f"`RANK:`  # **{await profile.get_text_rank()}**" \
+                           f"\n`LEVEL:` **{profile.level}**" \
+                           f"\n`XP:` **{profile.xp_progress[0]} / {profile.xp_progress[1]}**" \
+                           f"\n`TOTAL XP:` **{profile.xp}**\n" \
                            f"```fix\n{StaticProgressBar(profile.xp_progress[0], profile.xp_progress[1])}```"
-        voice_level_value = f"`LEVEL` **{profile.voice_level}**" \
-                            f"\n`XP` **{profile.voice_xp_progress[0]} / {profile.voice_xp_progress[1]}**" \
-                            f"\n`TOTAL XP` **{profile.voice_xp}**\n" \
+        voice_level_value = f"`RANK:`  # **{await profile.get_voice_rank()}**" \
+                            f"\n`LEVEL:` **{profile.voice_level}**" \
+                            f"\n`XP:` **{profile.voice_xp_progress[0]} / {profile.voice_xp_progress[1]}**" \
+                            f"\n`TOTAL XP:` **{profile.voice_xp}**\n" \
                             f"```fix\n{StaticProgressBar(profile.voice_xp_progress[0], profile.voice_xp_progress[1])}" \
                             f"```"
         embed.add_field(name="⌨    Text Level", value=text_level_value, inline=False)

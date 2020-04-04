@@ -49,3 +49,31 @@ class GuildMemberProfile(GuildPoints, UserExperience):
         await self.collection.update_one(self.document_filter, {
             "$unset": {f"{self.guild_filter}.logs.moderation": ""}
         })
+
+    async def get_text_rank(self):
+        pipeline = [
+            {"$match": {
+                self.guild_filter: {"$exists": True},
+                f"{self.guild_filter}.stats.xp.chat": {"$gt": self.xp}
+            }},
+            {"$count": "surpassed"}
+        ]
+        document = await self.collection.aggregate(pipeline).to_list(None)
+        try:
+            return document[0]["surpassed"] + 1
+        except IndexError:
+            return 1
+
+    async def get_voice_rank(self):
+        pipeline = [
+            {"$match": {
+                self.guild_filter: {"$exists": True},
+                f"{self.guild_filter}.stats.xp.voice": {"$gt": self.voice_xp}
+            }},
+            {"$count": "surpassed"}
+        ]
+        document = await self.collection.aggregate(pipeline).to_list(None)
+        try:
+            return document[0]["surpassed"] + 1
+        except IndexError:
+            return 1
