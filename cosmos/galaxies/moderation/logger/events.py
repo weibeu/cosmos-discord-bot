@@ -21,11 +21,15 @@ def logger_event(*args, **kwargs):
                 return
             embed = cog.embed(title=function.__name__.lstrip("on_").replace("_", " ").title())
             embed.timestamp = datetime.datetime.now()
-            embed = await function(cog, embed, *_args)
+            response = await function(cog, embed, *_args)
             # TODO: Add auto moderation details on logs.
-            if not embed:
+            if not response:
                 return
-            await logger.channel.send(embed=embed)
+            try:
+                await logger.channel.send(embed=response)
+            except AttributeError:
+                embed, content = response
+                await logger.channel.send(content, embed=embed)
         return wrapper
 
     return decorator
@@ -145,11 +149,11 @@ class LoggerEvents(Cog):
         embed = self.__get_level_up_embed(embed, profile)
         embed.description = f"{self.bot.emotes.misc.confetti}    Congratulations {profile.user.name} for " \
                             f"advancing to text **level {profile.level}**."
-        return embed
+        return embed, profile.user.mention
 
     @logger_event()
     async def on_voice_level_up(self, embed, profile):
         embed = self.__get_level_up_embed(embed, profile)
         embed.description = f"{self.bot.emotes.misc.confetti}    Congratulations {profile.user.name} for " \
                             f"advancing to voice **level {profile.voice_level}**."
-        return embed
+        return embed, profile.user.mention
