@@ -115,7 +115,8 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
         # placeholder = "**Guild:** {}\n**Global:** {}"    # TODO
         emotes = self.plugin.bot.emotes.misc
         embed = self.plugin.bot.theme.embeds.primary()
-        embed.set_author(name=self.user, icon_url=self.user.avatar_url)
+        name = f"    👑    {self.user}" if self.is_prime else self.user
+        embed.set_author(name=name, icon_url=self.user.avatar_url)
         embed.description = self.description
         embed.add_field(name=f"{emotes.favorite}    Reputation points", value=self.reps)
         embed.add_field(name=f"{emotes.bank}    Bosons", value=self.bosons)
