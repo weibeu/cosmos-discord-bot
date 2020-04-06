@@ -30,7 +30,7 @@ class Starboard(Settings):
             message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
             count = len({member for member in itertools.chain.from_iterable([
                 await reaction.users().flatten() for reaction in message.reactions])})
-            if count >= starboard.count:
+            if count == starboard.count:
                 embed = guild_profile.theme.get_embed()
                 embed.set_author(name=message.author.name, icon_url=message.author.avatar_url)
                 embed.description = message.content
