@@ -29,17 +29,20 @@ class _Levels(Cog):
         if member.bot or after.afk:
             return
 
+        profile = await self.cache.get_profile(member.id)
+        if not profile:
+            profile = await self.cache.create_profile(member.id)
+        guild_profile = await profile.get_guild_profile(member.guild.id)
+
         if ((before.mute and not after.mute)
                 or (before.self_mute and not after.self_mute)
                 or (not before.channel and after.channel and not (after.mute or after.self_mute))):
-            profile = await self.cache.get_guild_profile(member.id, member.guild.id)
-            profile.record_voice_activity()
+            guild_profile.record_voice_activity()
 
         if ((not before.mute and after.mute)
                 or (not before.self_mute and after.self_mute)
                 or (before.channel and not after.channel and not (before.mute or before.self_mute))):
-            profile = await self.cache.get_guild_profile(member.id, member.guild.id)
-            profile.close_voice_activity()
+            guild_profile.close_voice_activity()
 
     @Cog.listener()
     async def on_ready(self):
