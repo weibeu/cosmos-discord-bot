@@ -12,3 +12,12 @@ class CosmosChecks(object):
                 raise GuildNotPrime
             return True
         return commands.check(predicate)
+
+    @classmethod
+    def check_user(cls, user_id):
+        async def predicate(ctx):
+            if ctx.author.id == user_id:
+                return True
+            return False
+
+        return commands.check(predicate)
