@@ -49,10 +49,11 @@ class Logger(LoggerEvents):
         guild_profile = await ctx.fetch_guild_profile()
         if not guild_profile.loggers:
             return await ctx.send_line(f"❌    {ctx.guild.name} doesn't has any loggers enabled.")
-        embed = ctx.embeds.one_line.primary(f"{ctx.guild.name} - Loggers", ctx.guild.icon_url)
+        embed = ctx.embeds.one_line.primary(f"Loggers", ctx.guild.icon_url)
         embed.description = "```css\nDisplaying all active Loggers and channel its enabled in.```"
         for logger in guild_profile.loggers:
             embed.add_field(name=logger.name, value=f"`CHANNEL:` **{logger.channel.mention}**")
+        embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=embed)
 
     async def __get_logger_name_from_menu(self, ctx, loggers):
