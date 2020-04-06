@@ -26,7 +26,10 @@ class _Levels(Cog):
 
     @staticmethod
     def get_vc_members(voice_channel):
-        return [m for m in voice_channel.members if not m.bot]
+        try:
+            return [m for m in voice_channel.members if not m.bot]
+        except AttributeError:
+            return []
 
     async def get_guild_profile(self, member_id, guild_id):
         profile = await self.cache.get_profile(member_id)
@@ -85,6 +88,8 @@ class _Levels(Cog):
                     if user.bot:
                         continue
                     if vs.self_mute or vs.mute:
+                        continue
+                    if len(self.get_vc_members(vs.channel)):
                         continue
                     guild_profile = await self.get_guild_profile(user_id, g.id)
                     guild_profile.record_voice_activity()
