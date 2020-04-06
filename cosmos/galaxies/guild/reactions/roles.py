@@ -37,13 +37,27 @@ class ReactionRoles(Reactions):
             except discord.Forbidden:
                 pass
 
-    @Reactions.reaction.group(name="role", aliases=["roles"])
+    @Reactions.listener()
+    async def on_raw_message_delete(self, payload):
+        guild_profile = await self.cache.get_profile(payload.guild_id)
+        if payload.message_id in guild_profile.reactions.roles:
+            await guild_profile.reactions.remove_roles(payload.message_id)
+
+    @Reactions.reaction.group(name="role", aliases=["roles"], invoke_without_command=True)
     async def reaction_roles(self, ctx):
         """Manage reaction based roles throughout different channels. Reactions are added to specified messages.
         Members can react to automatically get the desired roles.
 
         """
-        pass
+        if not ctx.guild_profile.reactions.roles:
+            return await ctx.send_line(f"❌    You haven't set any reaction roles yet.")
+        embed = ctx.embeds.one_line.primary(f"Reaction Roles", ctx.guild.icon_url)
+        embed.description = "```css\nDisplaying all reaction roles attached to messages set in the server with IDs.```"
+        for message_id, roles in ctx.guild_profile.reactions.roles.items():
+            value = "`ROLES:` " + " ".join([role if not role else role.mention for role in roles])
+            embed.add_field(name=f"{ctx.emotes.misc.next}    {message_id}", value=value)
+        embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        await ctx.send(embed=embed)
 
     @reaction_roles.command(name="add", aliases=["setup", "set"])
     async def add_roles(self, ctx,
