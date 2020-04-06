@@ -24,25 +24,57 @@ class _Levels(Cog):
 
         await self.cache.give_assets(message)
 
+    @staticmethod
+    def get_vc_members(voice_channel):
+        return [m for m in voice_channel.members if not m.bot]
+
+    async def get_guild_profile(self, member_id, guild_id):
+        profile = await self.cache.get_profile(member_id)
+        if not profile:
+            profile = await self.cache.create_profile(member_id)
+        return await profile.get_guild_profile(guild_id)
+
     @Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if member.bot or after.afk:
             return
 
-        profile = await self.cache.get_profile(member.id)
-        if not profile:
-            profile = await self.cache.create_profile(member.id)
-        guild_profile = await profile.get_guild_profile(member.guild.id)
+        guild_profile = await self.get_guild_profile(member.id, member.guild.id)
 
         if ((before.mute and not after.mute)
                 or (before.self_mute and not after.self_mute)
                 or (not before.channel and after.channel and not (after.mute or after.self_mute))):
+
+            if len(self.get_vc_members(after.channel)) <= 1:
+                return    # Wait for someone to join vc.
+
             guild_profile.record_voice_activity()
 
         if ((not before.mute and after.mute)
                 or (not before.self_mute and after.self_mute)
                 or (before.channel and not after.channel and not (before.mute or before.self_mute))):
             guild_profile.close_voice_activity()
+
+        if after.channel and not before.channel:
+            members = self.get_vc_members(before.channel)
+            if not len(members) == 1:
+                return
+            # Someone joined vc. Check and record voice activity for member who is waiting.
+            waiting_member = members[0]
+            waiting_member_vs = waiting_member.voice
+            if waiting_member_vs.self_mute or waiting_member_vs.mute:
+                return
+            waiting_profile = await self.get_guild_profile(waiting_member.id, waiting_member.guild.id)
+            waiting_profile.record_voice_activity()
+
+        if before.channel and not after.channel:
+            members = self.get_vc_members(before.channel)
+            if not len(members) == 1:
+                return
+            # Someone left vc and left one member alone. Stop his voice activity.
+            waiting_member = members[0]
+            waiting_profile = await self.get_guild_profile(waiting_member.id, waiting_member.guild.id)
+            waiting_profile.close_voice_activity()
 
     @Cog.listener()
     async def on_ready(self):
