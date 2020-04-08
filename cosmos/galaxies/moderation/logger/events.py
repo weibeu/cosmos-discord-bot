@@ -94,10 +94,9 @@ class LoggerEvents(Cog):
 
     @logger_event()
     async def on_member_join(self, embed, member):
-        embed.add_field(name="Member", value=member.mention)
-        embed.add_field(name="Member Name", value=member)
+        embed.add_field(name="Member", value=f"{member.mention}\n{member}")
         embed.add_field(name="Member ID", value=f"`{member.id}`")
-        embed.add_field(name="Account Created", value=f"on {member.created_at.strftime('%d %B %Y')}")
+        embed.add_field(name="Account Created", value=member.created_at.strftime('%d %B %Y'))
         embed.set_thumbnail(url=member.avatar_url)
         return embed
 
