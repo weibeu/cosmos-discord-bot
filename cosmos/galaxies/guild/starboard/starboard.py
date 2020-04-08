@@ -37,13 +37,15 @@ class Starboard(Settings):
             if count == starboard.count:
                 embed = guild_profile.theme.get_embed()
                 embed.set_author(name=message.author, icon_url=message.author.avatar_url)
-                embed.description = f"{self.bot.emotes.misc.next}    {message.content}"
+                if message.content:
+                    embed.description = f"{self.bot.emotes.misc.next}    {message.content}"
                 if message.attachments:
                     embed.set_image(url=message.attachments[0].url)
                 embed.timestamp = message.created_at
                 embed.add_field(name="Original Message", value=f"[Jump!]({message.jump_url})")
                 embed.add_field(name="Channel", value=message.channel.mention)
                 embed.add_field(name="Stars Meta", value=f"⭐ **{count}**")
+                embed.set_footer(text=message.id, icon_url=guild_profile.guild.icon_url)
                 await starboard.channel.send(embed=embed)
                 # Set flag to mark that message has been posted to starboard channel.
                 await message.add_reaction(self.bot.emotes.misc.christmasstar)
