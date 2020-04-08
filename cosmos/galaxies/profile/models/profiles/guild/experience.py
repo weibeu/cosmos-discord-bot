@@ -4,7 +4,7 @@ import random
 
 from abc import ABC
 
-from .level import UserLevel
+from .level import UserLevel, MemberLevel
 
 
 class UserExperience(UserLevel, ABC):
@@ -81,3 +81,8 @@ class UserExperience(UserLevel, ABC):
     @property
     def voice_xp_progress(self):
         return self.voice_xp - self.get_total_xp(self.voice_level), self.LEVELS_XP[self.voice_level]
+
+
+class MemberExperience(MemberLevel, UserExperience, ABC):
+
+    pass
