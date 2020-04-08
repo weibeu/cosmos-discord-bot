@@ -60,7 +60,7 @@ class UserLevel(ABC):
         pass
 
 
-class GuildUserLevel(GuildMemberProfileBase, UserLevel, ABC):
+class MemberLevel(GuildMemberProfileBase, UserLevel, ABC):
 
     async def level_up_callback(self, _):
         guild_profile = await self.fetch_guild_profile()
