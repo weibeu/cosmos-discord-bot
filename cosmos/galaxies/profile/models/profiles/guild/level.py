@@ -51,11 +51,9 @@ class UserLevel(ABC):
     def voice_level(self):
         return self.get_level(self.voice_xp)
 
-    @abstractmethod
     async def level_up_callback(self, channel):
         pass
 
-    @abstractmethod
     async def voice_level_up_callback(self):
         pass
 
