@@ -87,6 +87,9 @@ class ProfileCache(object):
         if not profile.in_boson_buffer:
             assets.append(profile.give_default_bosons())
 
+        if not profile.in_xp_buffer:
+            assets.append(profile.give_xp(message.channel))
+
         guild_profile = await profile.get_guild_profile(message.guild.id)
         if not guild_profile.in_xp_buffer:
             assets.append((guild_profile.give_xp(message.channel)))

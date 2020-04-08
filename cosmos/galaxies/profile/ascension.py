@@ -52,11 +52,13 @@ class _Levels(Cog):
             #     return    # Wait for someone to join vc.
 
             guild_profile.record_voice_activity()
+            guild_profile.profile.record_voice_activity()
 
         if ((not before.mute and after.mute)
                 or (not before.self_mute and after.self_mute)
                 or (before.channel and not after.channel and not (before.mute or before.self_mute))):
             guild_profile.close_voice_activity()
+            guild_profile.profile.close_voice_activity()
 
         # if after.channel and not before.channel:
         #     members = self.get_vc_members(before.channel)
