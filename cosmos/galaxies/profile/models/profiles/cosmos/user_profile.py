@@ -1,13 +1,15 @@
+from abc import ABC
+
 import arrow
 
 from .tags import UserTags
 from .family import Relationship
 from .currency import Boson, Fermion
 
-from ..guild import GuildMemberProfile
+from ..guild import GuildMemberProfile, UserExperience
 
 
-class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
+class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, ABC):
 
     @property
     def plugin(self):
@@ -40,6 +42,7 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
     def __init__(self, plugin, **kwargs):
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
+        UserExperience.__init__(self, **kwargs)
         Relationship.__init__(self, **kwargs)
         UserTags.__init__(self, kwargs.get("tags", dict()))
         self.__plugin = plugin
@@ -103,6 +106,8 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
     def to_update_document(self) -> tuple:
         updates = {
             "currency.bosons": self.bosons,
+            "stats.xp.chat": self.xp,
+            "stats.xp.voice": self._voice_xp,
         }
 
         for profile in self.guild_profiles.values():
@@ -110,8 +115,7 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
 
         return self.document_filter, {"$set": updates}
 
-    async def get_embed(self, guild_id):
-        guild_profile = await self.get_guild_profile(guild_id)
+    async def get_embed(self):
         # placeholder = "**Guild:** {}\n**Global:** {}"    # TODO
         emotes = self.plugin.bot.emotes.misc
         embed = self.plugin.bot.theme.embeds.primary()
@@ -121,10 +125,10 @@ class CosmosUserProfile(Boson, Fermion, Relationship, UserTags):
         embed.add_field(name=f"{emotes.favorite}    Reputation points", value=self.reps)
         embed.add_field(name=f"{emotes.bank}    Bosons", value=self.bosons)
         embed.add_field(name=f"{emotes.cash}    Fermions", value=self.fermions)
-        embed.add_field(name="Text Level", value=guild_profile.level)
-        embed.add_field(name="Text Experience points", value=guild_profile.xp)
-        embed.add_field(name="Voice Level", value=guild_profile.voice_level)
-        embed.add_field(name="Voice Experience Points", value=guild_profile.voice_xp)
+        embed.add_field(name="Text Level", value=self.level)
+        embed.add_field(name="Text Experience points", value=self.xp)
+        embed.add_field(name="Voice Level", value=self.voice_level)
+        embed.add_field(name="Voice Experience Points", value=self.voice_xp)
         if self.birthday:
             embed.add_field(name=f"{emotes.birthday}    Birthday", value=self.birthday.strftime("%e %B"))
         if self.proposed:
