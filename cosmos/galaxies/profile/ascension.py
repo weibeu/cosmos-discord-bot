@@ -95,3 +95,4 @@ class _Levels(Cog):
                     #     continue
                     guild_profile = await self.get_guild_profile(user_id, g.id)
                     guild_profile.record_voice_activity()
+                    guild_profile.profile.record_voice_activity()
