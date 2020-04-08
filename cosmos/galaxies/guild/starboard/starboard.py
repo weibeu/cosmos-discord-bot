@@ -43,7 +43,7 @@ class Starboard(Settings):
                 embed.timestamp = message.created_at
                 embed.add_field(name="Original Message", value=f"[Jump!]({message.jump_url})")
                 embed.add_field(name="Channel", value=message.channel.mention)
-                embed.add_field(name="Meta", value=f"**{count}** ⭐")
+                embed.add_field(name="Stars Meta", value=f"⭐ **{count}**")
                 await starboard.channel.send(embed=embed)
                 # Set flag to mark that message has been posted to starboard channel.
                 await message.add_reaction(self.bot.emotes.misc.christmasstar)
