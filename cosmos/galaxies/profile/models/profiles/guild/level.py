@@ -2,7 +2,7 @@ from .base import GuildMemberProfileBase
 from abc import ABC, abstractmethod
 
 
-class UserLevel(GuildMemberProfileBase, ABC):
+class UserLevel(ABC):
 
     # K = 5777
     LEVELS_XP = [5 * (i ** 2) + 50 * i + 100 for i in range(200)]
@@ -45,6 +45,9 @@ class UserLevel(GuildMemberProfileBase, ABC):
     @property
     def voice_level(self):
         return self.get_level(self.voice_xp)
+
+
+class GuildUserLevel(GuildMemberProfileBase, UserLevel, ABC):
 
     async def level_up_callback(self, _):
         guild_profile = await self.fetch_guild_profile()
