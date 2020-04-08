@@ -25,9 +25,13 @@ class Starboard(Settings):
         if payload.emoji.name not in self.STARS:
             return
 
+        message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+
+        if [r for r in message.reactions if r.emoji == self.bot.emotes.misc.christmasstar]:
+            return  # Ignore when message is already sent to starboard channel. # TODO: Update stars count if possible.
+
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
         if starboard := guild_profile.starboard:
-            message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
             count = len({member for member in itertools.chain.from_iterable([
                 await reaction.users().flatten() for reaction in message.reactions])})
             if count == starboard.count:
@@ -39,6 +43,8 @@ class Starboard(Settings):
                 embed.timestamp = message.created_at
                 embed.add_field(name="Original Message", value=f"[Jump!]({message.jump_url})")
                 await starboard.channel.send(embed=embed)
+                # Set flag to mark that message has been posted to starboard channel.
+                await message.add_reaction(self.bot.emotes.misc.christmasstar)
 
     @Settings.group(name="starboard")
     async def starboard(self, ctx):
