@@ -25,15 +25,32 @@ class Starboard(Settings):
         if payload.emoji.name not in self.STARS:
             return
 
-        message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
-
-        if [r for r in message.reactions if r.emoji == self.bot.emotes.misc.christmasstar]:
-            return  # Ignore when message is already sent to starboard channel. # TODO: Update stars count if possible.
-
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
         if starboard := guild_profile.starboard:
+            message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+
             count = len({member for member in itertools.chain.from_iterable([
                 await reaction.users().flatten() for reaction in message.reactions])})
+
+            if [r for r in message.reactions if r.emoji == self.bot.emotes.misc.christmasstar]:
+                # Message is already sent to starboard channel. # TODO: Implement caching.
+                # Find the starboard message of this message.
+                async for m in starboard.channel.history():
+                    try:
+                        e = m.embeds[0]
+                    except IndexError:
+                        continue
+                    try:
+                        _id = int(e.footer.text)
+                    except (ValueError, TypeError):
+                        continue
+                    if not _id == message.id:
+                        continue
+                    # Attempt to update Stars Meta.
+                    e.remove_field(-1)
+                    e.add_field(name="Stars Meta", value=f"⭐ **{count - 1}**")    # Update the stars count.
+                    return await m.edit(embed=e)
+
             if count == starboard.count:
                 embed = guild_profile.theme.get_embed()
                 embed.set_author(name=message.author, icon_url=message.author.avatar_url)
