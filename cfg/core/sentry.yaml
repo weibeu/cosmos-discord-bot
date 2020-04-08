@@ -2,5 +2,5 @@
 
 dsn: ""    # ENV: SENTRY_DSN
 debug: False
-release: "0.0.2 Babu"
+# release: "0.0.3 Babu"    # Dynamically set it using __release__ attribute of __init__.
 environment: "Production"
