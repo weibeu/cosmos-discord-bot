@@ -4,6 +4,11 @@ from abc import ABC, abstractmethod
 
 class UserLevel(ABC):
 
+    @property
+    @abstractmethod
+    def plugin(self):
+        raise NotImplementedError
+
     # K = 5777
     LEVELS_XP = [5 * (i ** 2) + 50 * i + 100 for i in range(200)]
 
