@@ -70,6 +70,10 @@ class Levels(GuildBaseCog):
         value += f"`Roles:` " + " ".join([f"<@&{_}>" for _ in entry.roles])
         return f"Level {entry.level}", value
 
+    @levels.command(name="reset")
+    async def reset_user_levels(self, ctx):
+        pass    # TODO: Add option to reset everyone's guild xp.
+
     @levels.group(name="reward", aliases=["rewards"], invoke_without_command=True)
     async def rewards(self, ctx, channel: typing.Optional[ChannelConverter] = "text", level: int = None):
         """Displays any rewards set for specified or all of the levels.
