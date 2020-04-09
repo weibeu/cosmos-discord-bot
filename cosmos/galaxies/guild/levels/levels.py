@@ -73,7 +73,7 @@ class Levels(GuildBaseCog):
         rank_card_bytes = await self.bot.image_processor.discord.get_profile_rank_card(**payload)
         return discord.File(io.BytesIO(rank_card_bytes), filename="rank.png")
 
-    @GuildBaseCog.cooldown(1, 5, GuildBaseCog.bucket_type.member)
+    @GuildBaseCog.cooldown(1, 10, GuildBaseCog.bucket_type.member)
     @GuildBaseCog.group(name="level", aliases=["levels", "rank"], invoke_without_command=True, inescapable=False)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
         """Displays current level and experience points."""
