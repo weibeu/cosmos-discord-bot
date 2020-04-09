@@ -30,7 +30,7 @@ class Starboard(Settings):
             message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
 
             count = len({member for member in itertools.chain.from_iterable([
-                await reaction.users().flatten() for reaction in message.reactions])})
+                await reaction.users().flatten() for reaction in message.reactions if reaction.emoji in self.STARS])})
 
             if [r for r in message.reactions if r.emoji == self.bot.emotes.misc.christmasstar]:
                 # Message is already sent to starboard channel. # TODO: Implement caching.
@@ -48,7 +48,7 @@ class Starboard(Settings):
                         continue
                     # Attempt to update Stars Meta.
                     e.remove_field(-1)
-                    e.add_field(name="Stars Meta", value=f"⭐ **{count - 1}**")    # Update the stars count.
+                    e.add_field(name="Stars Meta", value=f"⭐ **{count}**")    # Update the stars count.
                     return await m.edit(embed=e)
 
             if count == starboard.count:
