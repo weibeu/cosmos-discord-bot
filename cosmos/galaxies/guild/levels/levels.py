@@ -1,10 +1,12 @@
 from cosmos.core.utilities import StaticProgressBar, converters
 
+import io
 import typing
 import discord
 
 from discord.ext import commands
 from .._models.base import GuildBaseCog
+from image_processor_client import exceptions
 
 
 class ChannelConverter(commands.Converter):
@@ -38,14 +40,9 @@ class Levels(GuildBaseCog):
         # await channel.send(profile.user.mention, embed=embed)
         pass
 
-    @GuildBaseCog.cooldown(1, 5, GuildBaseCog.bucket_type.member)
-    @GuildBaseCog.group(name="level", aliases=["levels"], invoke_without_command=True, inescapable=False)
-    async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
-        """Displays current level and experience points."""
-        member = member or ctx.author
-        profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
+    async def get_level_embed(self, profile):
         embed = self.bot.theme.embeds.primary()
-        embed.set_author(name=member.display_name + "'s Level and XP", icon_url=member.avatar_url)
+        embed.set_author(name=profile.member.display_name + "'s Level and XP", icon_url=profile.member.avatar_url)
         text_level_value = f"`RANK:`  # **{await profile.get_text_rank()}**" \
                            f"\n`LEVEL:` **{profile.level}**" \
                            f"\n`XP:` **{profile.xp_progress[0]} / {profile.xp_progress[1]}**" \
@@ -59,8 +56,35 @@ class Levels(GuildBaseCog):
                             f"```"
         embed.add_field(name="⌨    Text Level", value=text_level_value, inline=False)
         embed.add_field(name="🎤    Voice Level", value=voice_level_value, inline=False)
-        embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
-        await ctx.send(embed=embed)
+        embed.set_footer(text=profile.guild.name, icon_url=profile.guild.icon_url)
+        return embed
+
+    async def get_rank_card(self, profile):
+        member = profile.member
+        payload = {
+            "name": member.name, "discriminator": f"#{member.discriminator}", "avatar_url": str(member.avatar_url),
+            "text_rank": await profile.get_text_rank(),
+            "text_xp": profile.xp_progress[0], "text_target_xp": profile.xp_progress[1], "text_total_xp": profile.xp,
+            "text_level": profile.level,
+            "voice_rank": await profile.get_voice_rank(),
+            "voice_xp": profile.voice_xp_progress[0], "voice_target_xp": profile.voice_xp_progress[1],
+            "voice_total_xp": profile.voice_xp, "voice_level": profile.voice_level,
+        }
+        rank_card_bytes = await self.bot.image_processor.discord.get_profile_rank_card(**payload)
+        return discord.File(io.BytesIO(rank_card_bytes), filename="rank.png")
+
+    @GuildBaseCog.cooldown(1, 5, GuildBaseCog.bucket_type.member)
+    @GuildBaseCog.group(name="level", aliases=["levels", "rank"], invoke_without_command=True, inescapable=False)
+    async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
+        """Displays current level and experience points."""
+        member = member or ctx.author
+        profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
+        try:
+            file = await self.get_rank_card(profile)
+            await ctx.send(file=file)
+        except exceptions.InternalServerError:
+            embed = await self.get_level_embed(profile)
+            await ctx.send(embed=embed)
 
     @staticmethod
     async def __rewards_parser(_, entry, __):    # reward, rewards
