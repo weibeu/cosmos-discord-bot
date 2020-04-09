@@ -18,6 +18,8 @@ class Starboard(Settings):
         "⭐", "🌟", "🤩",
     ]
 
+    # TODO: Remove the post from starboard if count < starboard.count.
+
     @Settings.listener()
     async def on_raw_reaction_add(self, payload):
         if not payload.guild_id:
