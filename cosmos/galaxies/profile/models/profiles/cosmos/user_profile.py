@@ -112,7 +112,10 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         }
 
         for profile in self.guild_profiles.values():
-            updates.update(profile.to_update_document())
+            try:
+                updates.update(profile.to_update_document())
+            except AttributeError:
+                pass
 
         return self.document_filter, {"$set": updates}
 

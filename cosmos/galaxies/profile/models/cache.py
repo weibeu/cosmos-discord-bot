@@ -99,5 +99,8 @@ class ProfileCache(object):
 
     async def __update_database(self):
         for profile in self.lfu.values():
-            self.plugin.batch.queue_update(*profile.to_update_document())
+            try:
+                self.plugin.batch.queue_update(*profile.to_update_document())
+            except AttributeError:
+                pass
         await self.plugin.batch.write(ordered=False)
