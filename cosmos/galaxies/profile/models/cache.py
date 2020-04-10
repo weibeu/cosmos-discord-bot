@@ -101,6 +101,6 @@ class ProfileCache(object):
         for profile in self.lfu.values():
             try:
                 self.plugin.batch.queue_update(*profile.to_update_document())
-            except AttributeError:
-                pass
+            except Exception as error:
+                self.bot.eh.sentry.capture_exception(error)
         await self.plugin.batch.write(ordered=False)
