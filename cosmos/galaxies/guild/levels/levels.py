@@ -80,7 +80,8 @@ class Levels(GuildBaseCog):
         member = member or ctx.author
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         try:
-            file = await self.get_rank_card(profile)
+            async with ctx.loading():
+                file = await self.get_rank_card(profile)
             await ctx.send(file=file)
         except exceptions.InternalServerError:
             embed = await self.get_level_embed(profile)
