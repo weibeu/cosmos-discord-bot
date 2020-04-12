@@ -82,7 +82,7 @@ class Levels(GuildBaseCog):
         try:
             async with ctx.loading():
                 file = await self.get_rank_card(profile)
-            await ctx.send(file=file)
+                await ctx.send(file=file)
         except exceptions.InternalServerError:
             embed = await self.get_level_embed(profile)
             await ctx.send(embed=embed)
