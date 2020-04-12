@@ -17,7 +17,7 @@ class ProfileCache(object):
         self.collection = self.plugin.collection
         self.update_database_task = tasks.loop(
             seconds=self.plugin.data.profile.update_task_cooldown
-        )(self.__update_database)
+        )(self.update_database)
         # Start above background task.
         # self.update_database_task.start()    # Start the task on_ready.
         # self.bot.loop.create_task(self.__update_database())
@@ -97,7 +97,7 @@ class ProfileCache(object):
         for asset in assets:
             self.bot.loop.create_task(asset)
 
-    async def __update_database(self):
+    async def update_database(self):
         for profile in self.lfu.values():
             try:
                 self.plugin.batch.queue_update(*profile.to_update_document())
