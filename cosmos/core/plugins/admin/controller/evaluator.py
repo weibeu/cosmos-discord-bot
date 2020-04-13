@@ -87,6 +87,7 @@ class Evaluator(Admin):
                         embed.add_field(name="Standard Output", value=f'```py\n{value}\n```')
                     if ret is not None:
                         embed.add_field(name="Returned", value=f'```py\n{ret}\n```')
+                    embed.set_footer(icon_url=ctx.author.avatar_url)
                     embed.timestamp = datetime.now()
                     await ctx.send(embed=embed)
                 except discord.HTTPException:
