@@ -1,7 +1,7 @@
 # ! Logger configs.
 
 name: "Cosmos"
-level: INFO    # Can be one from [CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET]
+level: DEBUG    # Can be one from [CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET]
 
 format: "[ {levelname:^8s} | {asctime:s} | {name:<8.7s} ] {message:s}"
 date_format: "%Y.%m.%d %H:%M:%S"

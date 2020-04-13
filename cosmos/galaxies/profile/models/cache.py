@@ -18,6 +18,7 @@ class ProfileCache(object):
         self.update_database_task = tasks.loop(
             seconds=self.plugin.data.profile.update_task_cooldown
         )(self.update_database)
+        self.update_database_task.after_loop(self.on_update_database_exception)
         # Start above background task.
         # self.update_database_task.start()    # Start the task on_ready.
         # self.bot.loop.create_task(self.__update_database())
@@ -99,8 +100,9 @@ class ProfileCache(object):
 
     async def update_database(self):
         for profile in self.lfu.values():
-            try:
-                self.plugin.batch.queue_update(*profile.to_update_document())
-            except Exception as error:
-                self.bot.eh.sentry.capture_exception(error)
+            self.plugin.batch.queue_update(*profile.to_update_document())
         await self.plugin.batch.write(ordered=False)
+
+    async def on_update_database_exception(self):
+        if self.update_database_task.failed():
+            self.bot.eh.sentry.capture_exception()
