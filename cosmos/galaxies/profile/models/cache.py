@@ -5,6 +5,8 @@ from .profiles import CosmosUserProfile, GuildMemberProfile
 
 class ProfileCache(object):
 
+    UPDATE_TASK_COOLDOWN = 1
+
     DEFAULT_PROJECTION = {
         "guilds": False,
     }
@@ -15,22 +17,15 @@ class ProfileCache(object):
         self._redis = None
         self.lfu = self.bot.cache.lfu(self.plugin.data.profile.cache_max_size)
         self.collection = self.plugin.collection
-        self.update_database_task = tasks.loop(
-            seconds=self.plugin.data.profile.update_task_cooldown
-        )(self.update_database)
-        self.update_database_task.after_loop(self.on_update_database_exception)
+        self.update_database.start()
+        # self.update_database_task = tasks.loop(
+        #     seconds=self.plugin.data.profile.update_task_cooldown
+        # )(self.update_database)
+        # self.update_database_task.after_loop(self.on_update_database_exception)
         # Start above background task.
         # self.update_database_task.start()    # Start the task on_ready.
         # self.bot.loop.create_task(self.__update_database())
         # self.bot.loop.create_task(self.__get_redis_client())
-        self.bot.add_listener(self.on_ready)
-        self.bot.add_listener(self.on_disconnect)
-
-    async def on_ready(self):
-        self.update_database_task.start()
-
-    async def on_disconnect(self):
-        self.update_database_task.cancel()
 
     async def __get_redis_client(self):
         await self.bot.wait_until_ready()
@@ -98,11 +93,18 @@ class ProfileCache(object):
         for asset in assets:
             self.bot.loop.create_task(asset)
 
+    @tasks.loop(seconds=UPDATE_TASK_COOLDOWN)
     async def update_database(self):
         for profile in self.lfu.values():
             self.plugin.batch.queue_update(*profile.to_update_document())
         await self.plugin.batch.write(ordered=False)
 
-    async def on_update_database_exception(self):
-        if self.update_database_task.failed():
-            self.bot.eh.sentry.capture_exception()
+    @update_database.before_loop
+    async def before_update_task(self):
+        await self.bot.wait_until_ready()
+
+    @update_database.after_loop
+    async def on_update_task_cancel(self):
+        if self.update_database.is_being_cancelled():
+            if self.update_database.failed():
+                self.bot.eh.sentry.capture_exception()
