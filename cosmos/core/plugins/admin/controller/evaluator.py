@@ -83,9 +83,9 @@ class Evaluator(Admin):
                 try:
                     embed = ctx.embed_line(f"✅    Evaluated in {round(evaluated_in, 3)} seconds.")
                     embed.description = f"```py\n{body}\n```"
-                    if value is not None:
+                    if value:
                         embed.add_field(name="Standard Output", value=f'```py\n{value}\n```')
-                    if ret is not None:
+                    if ret:
                         embed.add_field(name="Returned", value=f'```py\n{ret}\n```')
                     embed.timestamp = datetime.now()
                     await ctx.send(embed=embed)
