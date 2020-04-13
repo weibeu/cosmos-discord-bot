@@ -5,7 +5,7 @@ from .profiles import CosmosUserProfile, GuildMemberProfile
 
 class ProfileCache(object):
 
-    UPDATE_TASK_COOLDOWN = 1
+    UPDATE_TASK_COOLDOWN = 60
 
     DEFAULT_PROJECTION = {
         "guilds": False,
