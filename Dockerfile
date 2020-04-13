@@ -1,6 +1,6 @@
-FROM ubuntu:latest
+FROM alpine
 
-WORKDIR /cosmos
+WORKDIR /cosmos-discord-bot
 
 COPY . .
 
