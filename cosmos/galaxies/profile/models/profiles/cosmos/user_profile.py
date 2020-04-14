@@ -116,6 +116,26 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
 
         return self.document_filter, {"$set": updates}
 
+    async def get_text_rank(self):
+        pipeline = [
+            {"$match": {f"stats.xp.chat": {"$gt": self.xp}}}, {"$count": "surpassed"}
+        ]
+        document = await self.collection.aggregate(pipeline).to_list(None)
+        try:
+            return document[0]["surpassed"] + 1
+        except IndexError:
+            return 1
+
+    async def get_voice_rank(self):
+        pipeline = [
+            {"$match": {f"stats.xp.voice": {"$gt": self._voice_xp}}}, {"$count": "surpassed"}
+        ]
+        document = await self.collection.aggregate(pipeline).to_list(None)
+        try:
+            return document[0]["surpassed"] + 1
+        except IndexError:
+            return 1
+
     async def get_embed(self):
         # placeholder = "**Guild:** {}\n**Global:** {}"    # TODO
         emotes = self.plugin.bot.emotes.misc
@@ -126,8 +146,11 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         embed.add_field(name=f"{emotes.favorite}    Reputation points", value=self.reps)
         embed.add_field(name=f"{emotes.bank}    Bosons", value=self.bosons)
         embed.add_field(name=f"{emotes.cash}    Fermions", value=self.fermions)
+        embed.add_field(name=f"**{emotes.leaderboard} Global Text Rank**", value=f"# **{await self.get_text_rank()}**")
         embed.add_field(name="Text Level", value=self.level)
         embed.add_field(name="Text Experience points", value=self.xp)
+        embed.add_field(
+            name=f"**{emotes.leaderboard} Global Voice Rank**", value=f"# **{await self.get_voice_rank()}**")
         embed.add_field(name="Voice Level", value=self.voice_level)
         embed.add_field(name="Voice Experience Points", value=self.voice_xp)
         if self.birthday:
