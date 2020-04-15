@@ -1,4 +1,6 @@
 # Cosmos - Discord Bot
+[![Discord](https://img.shields.io/discord/690878977920729177?label=Discord%20Community&logo=Discord&style=for-the-badge)](https://discord.gg/7CrQEyP)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/thec0sm0s/cosmos-discord-bot?color=40e0d0&style=for-the-badge)
 
 > The only discord bot you probably need to power up your community.
 
@@ -33,6 +35,9 @@ Another option would be to self host Cosmos bot on your own server which lets yo
 ## The Community
 
 For any kind of help and support regarding Cosmos or anything else, you're welcome to [join our discord server](https://discord.gg/7CrQEyP).
+
+[![Discord Widget](https://discordapp.com/api/guilds/690878977920729177/widget.png?style=banner2)](https://discord.gg/7CrQEyP)
+
 
 ## Contributing
 
