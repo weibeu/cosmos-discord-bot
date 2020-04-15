@@ -5,6 +5,7 @@ import typing
 import discord
 
 from discord.ext import commands
+from aiohttp import client_exceptions
 from .._models.base import GuildBaseCog
 from image_processor_client import exceptions
 
@@ -41,8 +42,12 @@ class Levels(GuildBaseCog):
         pass
 
     async def get_level_embed(self, profile):
+        try:
+            member = profile.member
+        except AttributeError:
+            member = profile.user
         embed = self.bot.theme.embeds.primary()
-        embed.set_author(name=profile.member.display_name + "'s Level and XP", icon_url=profile.member.avatar_url)
+        embed.set_author(name=member.display_name + "'s Level and XP", icon_url=member.avatar_url)
         text_level_value = f"`RANK:`  # **{await profile.get_text_rank()}**" \
                            f"\n`LEVEL:` **{profile.level}**" \
                            f"\n`XP:` **{profile.xp_progress[0]} / {profile.xp_progress[1]}**" \
@@ -56,7 +61,10 @@ class Levels(GuildBaseCog):
                             f"```"
         embed.add_field(name="⌨    Text Level", value=text_level_value, inline=False)
         embed.add_field(name="🎤    Voice Level", value=voice_level_value, inline=False)
-        embed.set_footer(text=profile.guild.name, icon_url=profile.guild.icon_url)
+        try:
+            embed.set_footer(text=profile.guild.name, icon_url=profile.guild.icon_url)
+        except AttributeError:
+            embed.set_footer(text="Cosmos Levels", icon_url=self.bot.user.avatar_url)
         return embed
 
     async def get_rank_card(self, profile):
@@ -79,14 +87,28 @@ class Levels(GuildBaseCog):
     @GuildBaseCog.cooldown(1, 10, GuildBaseCog.bucket_type.member)
     @GuildBaseCog.group(name="level", aliases=["levels", "rank"], invoke_without_command=True, inescapable=False)
     async def levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
-        """Displays current level and experience points."""
+        """Displays current rank, level and experience points gained in current server."""
         member = member or ctx.author
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         try:
             async with ctx.loading():
                 file = await self.get_rank_card(profile)
                 await ctx.send(file=file)
-        except exceptions.InternalServerError:
+        except (exceptions.InternalServerError, client_exceptions.ClientConnectorError):
+            embed = await self.get_level_embed(profile)
+            await ctx.send(embed=embed)
+
+    @GuildBaseCog.cooldown(1, 10, GuildBaseCog.bucket_type.user)
+    @levels.command(name="global", aliases=["cosmos", "globals"])
+    async def global_levels(self, ctx, *, member: discord.ext.commands.MemberConverter = None):
+        """Displays current rank, level and experience points gained globally across all mutual servers."""
+        member = member or ctx.author
+        profile = await self.bot.profile_cache.get_profile(member.id)
+        try:
+            async with ctx.loading():
+                file = await self.get_rank_card(profile)
+                await ctx.send(file=file)
+        except (exceptions.InternalServerError, client_exceptions.ClientConnectorError):
             embed = await self.get_level_embed(profile)
             await ctx.send(embed=embed)
 
