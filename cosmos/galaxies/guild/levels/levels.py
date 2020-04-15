@@ -60,7 +60,10 @@ class Levels(GuildBaseCog):
         return embed
 
     async def get_rank_card(self, profile):
-        member = profile.member
+        try:
+            member = profile.member
+        except AttributeError:
+            member = profile.user
         payload = {
             "name": member.name, "discriminator": f"#{member.discriminator}", "avatar_url": str(member.avatar_url),
             "text_rank": await profile.get_text_rank(),
