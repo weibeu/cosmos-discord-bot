@@ -5,17 +5,17 @@ from .functions import *
 
 class CosmosContext(commands.Context):
 
-    async def fetch_cosmos_user_profile(self):
-        return await self.bot.profile_cache.get_profile(self.author.id)
+    async def fetch_cosmos_user_profile(self, _id=None):
+        return await self.bot.profile_cache.get_profile(_id or self.author.id)
 
-    async def fetch_guild_profile(self):
+    async def fetch_guild_profile(self, guild_id=None):
         try:
-            return await self.bot.guild_cache.get_profile(self.guild.id)
+            return await self.bot.guild_cache.get_profile(guild_id or self.guild.id)
         except AttributeError:
             return
 
-    async def fetch_member_profile(self, _id):
-        return await self.bot.profile_cache.get_guild_profile(_id, self.guild.id)
+    async def fetch_member_profile(self, _id=None, guild_id=None):
+        return await self.bot.profile_cache.get_guild_profile(_id or self.author.id, guild_id or self.guild.id)
 
     async def send(self, *args, **kwargs):
         if kwargs.get("embed"):
