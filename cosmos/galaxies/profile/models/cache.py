@@ -1,3 +1,5 @@
+import discord
+
 from discord.ext import tasks
 
 from .profiles import CosmosUserProfile, GuildMemberProfile
@@ -66,7 +68,10 @@ class ProfileCache(object):
             return await profile.get_guild_profile(guild_id)
 
     async def create_profile(self, user_id: int):
-        user = await self.bot.fetch_user(user_id)
+        try:
+            user = await self.bot.fetch_user(user_id)
+        except discord.NotFound:
+            return 
         if user.bot:
             return
         document_filter = {"user_id": user_id}
