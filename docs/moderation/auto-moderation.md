@@ -36,7 +36,7 @@ Usage:
 ;triggers
 ```
 
-### create
+### ;triggers create
 
 Sets a new Auto Moderation trigger with specified actions.
 
@@ -49,7 +49,7 @@ Usage:
 ;triggers create <trigger> [actions...]
 ```
 
-### remove
+### ;triggers remove
 
 Removes specified Auto Moderation trigger.
 
@@ -58,7 +58,7 @@ Aliases:
 - delete
 
 Usage:
-;trigger remove <trigger>
+;triggers remove <trigger>
 ```
 
 ## ;banword
@@ -74,7 +74,7 @@ Usage:
 ;banword [word]
 ```
 
-### clear
+### ;banword clear
 
 Removes all of the currently blacklisted or banned words.
 

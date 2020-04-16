@@ -17,7 +17,7 @@ Usage:
 ;bosons [user]
 ```
 
-### credit
+### ;bosons credit
 
 Transfer your Bosons to specified member.
 
@@ -30,7 +30,7 @@ Usage:
 ;bosons credit <bosons> <user>
 ```
 
-### daily
+## ;daily
 
 Lets you claim your daily Bosons. Specify any member to let them have your daily Bosons.
 

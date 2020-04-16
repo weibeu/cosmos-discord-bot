@@ -11,6 +11,8 @@ class WelcomeBase(Settings):
 
 class MessageTemplateMember(object):
 
+    __slots__ = ("id", "username", "name", "discriminator", "mention")
+
     def __init__(self, author):
         self.id = author.id
         self.username = str(author)

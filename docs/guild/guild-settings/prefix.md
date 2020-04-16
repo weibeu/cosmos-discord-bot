@@ -16,7 +16,7 @@ Usage:
 ;prefix
 ```
 
-### set
+### ;prefix set
 
 Set a unique custom prefix for bot commands in server.
 
@@ -25,7 +25,7 @@ Usage:
 ;prefix set <prefix>
 ```
 
-#### add
+### ;prefix add
 
 Add more custom prefixes for bot commands.
 
@@ -34,7 +34,7 @@ Usage:
 ;prefix add <prefix>
 ```
 
-#### remove
+### ;prefix remove
 
 Removes specified custom prefix.
 
@@ -46,7 +46,7 @@ Usage:
 ;prefix remove <prefix>
 ```
 
-#### clear
+### ;prefix clear
 
 Removes all of the currently set custom prefixes.
 

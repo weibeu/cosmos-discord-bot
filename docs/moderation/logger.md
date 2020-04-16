@@ -35,7 +35,7 @@ Usage:
 ;logger
 ```
 
-### enable
+### ;logger enable
 
 Enables logger in specified channel. Logger name should always start with `on_`.
 
@@ -47,7 +47,7 @@ Usage:
 ;logger enable [channel] [name]
 ```
 
-### disable
+### ;logger disable
 
 Disables specified logger. Logger name should always start with `on_`.
 

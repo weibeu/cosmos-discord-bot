@@ -15,7 +15,7 @@ Usage:
 ;roleshop
 ```
 
-### buy
+### ;roleshop buy
 
 Redeem or purchase specified role from Role Shop using your earned Guild Points.
 
@@ -29,7 +29,7 @@ Usage:
 ;roleshop buy [role]
 ```
 
-### equip
+### ;roleshop equip
 
 Equip specified role which you have purchased from the Role Shop.
 
@@ -40,7 +40,7 @@ Usage:
 ;roleshop equip [role]
 ```
 
-#### **all**
+#### **;roleshop equip all**
 
 Equip all of the roles you have purchased from Role Shop.
 
@@ -49,7 +49,7 @@ Usage:
 ;roleshop equip all
 ```
 
-### unequip
+### ;roleshop unequip
 
 Un-equip specified Role Shop role which you have already equipped.
 
@@ -58,7 +58,7 @@ Usage:
 ;roleshop unequip [role]
 ```
 
-#### all
+#### ;roleshop unequip all
 
 Un-equip all of the roles belonging to Role Shop which you have equipped.
 
@@ -67,7 +67,7 @@ Usage:
 ;roleshop unequip all
 ```
 
-### purchased
+### ;roleshop purchased
 
 Displays your all of the roles purchased from Role Shop or of specified member.
 

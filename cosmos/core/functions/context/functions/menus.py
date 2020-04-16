@@ -6,7 +6,7 @@ from .paginators import BasePaginator, FieldPaginator
 
 class MenuEntry(object):
 
-    async def _default_parser(self, *_, **__):
+    async def _default_parser(self, ctx, *_, **__):
         return str(self.entry)
 
     def __init__(self, ctx, entry, entries, emote, page, entry_parser=None):

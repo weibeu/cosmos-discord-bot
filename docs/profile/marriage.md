@@ -19,7 +19,7 @@ Usage:
 ;propose <user>
 ```
 
-### decline
+### ;propose decline
 
 Declines proposal if you had any.
 
@@ -31,7 +31,7 @@ Usage:
 ;propose decline
 ```
 
-### cancel
+### ;propose cancel
 
 Cancels your proposal you made to someone.
 

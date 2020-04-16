@@ -1,6 +1,8 @@
-from discord.ext import commands
+from .generic_responses import GenericResponse
 
 from .functions import *
+
+from discord.ext import commands
 
 
 class CosmosContext(commands.Context):
@@ -23,6 +25,13 @@ class CosmosContext(commands.Context):
                 if guild_profile.theme.color:
                     kwargs["embed"].color = guild_profile.theme.color
         return await super().send(*args, **kwargs)
+
+    @property
+    def responses(self):
+        return GenericResponse
+
+    async def send_response(self, emote, content):
+        return await self.send(embed=self.responses.generic(emote, content))
 
     @property
     def emotes(self):
