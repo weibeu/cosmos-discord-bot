@@ -8,20 +8,34 @@ description: >-
 
 ## ;level
 
-Displays current level and experience points.
+Displays current rank, level and experience points gained in current server.
 
 ```yaml
 Aliases:
 - levels
+- rank
 
 Usage:
 ;level [member]
 ```
 
+### global
+
+Displays current rank, level and experience points gained globally across all mutual servers.
+
+```yaml
+Aliases:
+- cosmos
+- globals
+
+Usage:
+;level global [member]
+```
+
 ### reward
 
 Displays any rewards set for specified or all of the levels.
-
+  
 Optionally pass `text` to view Text Levels rewards and `voice` for Voice Levels rewards.
 
 ```yaml
@@ -35,7 +49,7 @@ Usage:
 #### set
 
 Set rewards for specified Text or Voice Levels.
-
+  
 You can set one or multiple roles and optionally Guild Points as rewards.
 
 ```yaml

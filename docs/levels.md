@@ -13,6 +13,7 @@ Displays current rank, level and experience points gained in current server.
 ```yaml
 Aliases:
 - levels
+- rank
 
 Usage:
 ;level [member]
