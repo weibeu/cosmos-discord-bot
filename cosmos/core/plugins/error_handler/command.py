@@ -1,6 +1,7 @@
 from ...functions.context.functions.paginators import NoEntriesError
 
 import sys
+import discord
 import traceback
 
 from ...functions import Cog
@@ -15,8 +16,14 @@ class CommandErrorHandler(Cog):
         super().__init__()
         self.plugin = plugin
 
+    @staticmethod
+    async def __send_response(ctx, emote_url, content):
+        return await ctx.send_line(content, emote_url, color=discord.Color(0xFF1744))
+
     @Cog.listener()
     async def on_command_error(self, ctx, error):
+
+        images = self.bot.theme.images
 
         if isinstance(error, exceptions.GuildNotPrime):
             # Tried to use prime function in non-prime guild.
@@ -25,14 +32,14 @@ class CommandErrorHandler(Cog):
                                   f"", url="https://www.patreon.com/__thecosmos")
             await ctx.send(embed=embed)
 
-        elif isinstance(error, (commands.MissingPermissions, commands.CheckFailure)):
-            await ctx.message.add_reaction(self.bot.emotes.misc.denied)
-
         elif isinstance(error, exceptions.DisabledFunctionError):
-            await ctx.message.add_reaction(self.bot.emotes.misc.unavailable)
+            await self.__send_response(ctx, images.unavailable, "That function has been disabled in this channel.")
 
-        elif isinstance(error, commands.BadArgument):
-            await ctx.message.add_reaction(self.bot.emotes.misc.error)
+        elif isinstance(error, (commands.MissingPermissions, commands.CheckFailure)):
+            await self.__send_response(ctx, images.denied, "Missing permissions to run that command.")
+
+        elif isinstance(error, (commands.BadArgument, commands.MissingRequiredArgument)):
+            await self.__send_response(ctx, images.error, "Wrong command syntax. Check docs for correct usage.")
 
         elif isinstance(error, NoEntriesError):
             await ctx.message.add_reaction(self.bot.emotes.misc.nill)
