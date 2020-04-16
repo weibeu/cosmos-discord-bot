@@ -18,7 +18,7 @@ Usage:
 ;moderators
 ```
 
-### add
+### ;moderators add
 
 Adds any role or member as special moderators who can use commands from Moderation plugin and more.
 
@@ -27,7 +27,7 @@ Usage:
 ;moderators add <moderator>
 ```
 
-### remove
+### ;moderators remove
 
 Removes any role or member from special moderators.
 
@@ -53,7 +53,7 @@ Usage:
 ;preset <command_name> <image_url> [text]
 ```
 
-### remove
+### ;preset remove
 
 Removes any preset if it was set for specified command.
 

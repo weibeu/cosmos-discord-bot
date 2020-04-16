@@ -10,7 +10,7 @@ description: >-
 
 Primary command to setup several verification methods.
 
-### role
+### ;verification role
 
 Set the role which will be assigned to unverified members to keep them locked away from accessing normal channels and let them go through the verification process.
 
@@ -19,7 +19,7 @@ Usage:
 ;verification role <role>
 ```
 
-#### remove
+#### ;verification role remove
 
 Removes the verification role hence disabling all of the verification methods from the server.
 
@@ -27,11 +27,11 @@ Removes the verification role hence disabling all of the verification methods fr
 ;verification role remove
 ```
 
-### reaction
+### ;verification reaction
 
 Primary command for reaction verification method.
 
-#### set
+#### ;verification reaction set
 
 Set react to verify method to authenticate users to your server.
 
@@ -45,7 +45,7 @@ Usage:
 ;verification reaction set [message] [channel] [emote] [icon_url] [image_url] [description]
 ```
 
-#### remove
+#### ;verification reaction remove
 
 Removes the reaction verification method from the server.
 

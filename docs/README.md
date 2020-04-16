@@ -1,6 +1,6 @@
 # Cosmos - Discord Bot
-[![Discord](https://img.shields.io/discord/690878977920729177?label=Discord%20Community&logo=Discord&style=for-the-badge)](https://discord.gg/7CrQEyP)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/thec0sm0s/cosmos-discord-bot?color=40e0d0&style=for-the-badge)
+
+[![Discord](https://img.shields.io/discord/690878977920729177?label=Discord%20Community&logo=Discord&style=for-the-badge)](https://discord.gg/7CrQEyP) ![GitHub release \(latest by date\)](https://img.shields.io/github/v/release/thec0sm0s/cosmos-discord-bot?color=40e0d0&style=for-the-badge)
 
 > The only discord bot you probably need to power up your community.
 
@@ -18,13 +18,13 @@ It is an open source project actively being developed updated frequently with ad
 * Auto Moderation system based on triggers and different actions.
 * Discord User, Member custom profiles and much more.
 
-#### Not Enough?
+### Not Enough?
 
 We continuously keep working on it to introduce new features and also improve the existing ones. The bot receives updates very frequently, almost every other day.
 
 ## Getting Started
 
-[![](.gitbook/assets/invite-banner.png)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8)
+[![](.gitbook/assets/invite-banner%20%283%29.png)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8)
 
 Go through the above link to invite Cosmos to your server which is hosted by us. The actual invite URL of Cosmos bot with default administrator permissions is:
 
@@ -37,7 +37,6 @@ Another option would be to self host Cosmos bot on your own server which lets yo
 For any kind of help and support regarding Cosmos or anything else, you're welcome to [join our discord server](https://discord.gg/7CrQEyP).
 
 [![Discord Widget](https://discordapp.com/api/guilds/690878977920729177/widget.png?style=banner2)](https://discord.gg/7CrQEyP)
-
 
 ## Contributing
 
