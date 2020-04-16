@@ -56,6 +56,8 @@ class ProfileCache(object):
                 profile = CosmosUserProfile.from_document(self.plugin, profile_document)
                 # await self._redis.set_object(self.__collection_name, user_id, profile)
                 self.lfu.set(user_id, profile)
+            else:
+                return await self.create_profile(user_id)
         return profile
 
     async def get_guild_profile(self, user_id: int, guild_id: int) -> GuildMemberProfile:
@@ -63,7 +65,10 @@ class ProfileCache(object):
         if profile:
             return await profile.get_guild_profile(guild_id)
 
-    async def create_profile(self, user_id: int) -> CosmosUserProfile:
+    async def create_profile(self, user_id: int):
+        user = await self.bot.fetch_user(user_id)
+        if user.bot:
+            return
         document_filter = {"user_id": user_id}
         profile = CosmosUserProfile.from_document(self.plugin, document_filter)
         self.lfu.set(user_id, profile)    # Before db API call to prevent it from firing many times.
