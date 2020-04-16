@@ -19,3 +19,10 @@ class MessageTemplateMember(object):
         self.name = author.name
         self.discriminator = author.discriminator
         self.mention = author.mention
+
+    @property
+    def __dict__(self):
+        return {
+            "id": self.id, "username": self.username, "name": self.name,
+            "discriminator": self.discriminator, "mention": self.mention,
+        }
