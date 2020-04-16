@@ -18,7 +18,7 @@ Usage:
 ;reactor [channel]
 ```
 
-### set
+### ;reactor set
 
 Setup reactor in current or specified channel using provided emotes. You can only use the emotes which the bot can see. It enables reactors just after this setup is complete.
 
@@ -30,7 +30,7 @@ Usage:
 ;reactor set [channel] [emotes...]
 ```
 
-### remove
+### ;reactor remove
 
 Removes any reactor set in current or specified channel.
 
@@ -42,7 +42,7 @@ Usage:
 ;reactor remove [channel]
 ```
 
-### enable
+### ;reactor enable
 
 Enable reactor if it was set of current or specified channel.
 
@@ -54,7 +54,7 @@ Usage:
 ;reactor enable [channel]
 ```
 
-### disable
+### ;reactor disable
 
 Disable reactor from current or specified channel.
 

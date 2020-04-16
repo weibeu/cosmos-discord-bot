@@ -8,7 +8,7 @@ description: A plugin to uniquely customize server's theme.
 
 Configure theme settings.
 
-### color
+### ;theme color
 
 Displays current theme color of the server.
 
@@ -20,7 +20,7 @@ Usage:
 ;theme color
 ```
 
-#### set
+#### ;theme color set
 
 Set a new theme color for server.
 
@@ -29,7 +29,7 @@ Usage:
 ;theme color set <color>
 ```
 
-#### remove
+#### ;theme color remove
 
 Removes the theme color of server which was set previously.
 

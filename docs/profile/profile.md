@@ -13,7 +13,7 @@ Usage:
 ;profile [user]
 ```
 
-### description
+### ;profile description
 
 Displays currently set profile description.
 
@@ -25,7 +25,7 @@ Usage:
 ;profile description
 ```
 
-#### set
+#### ;profile description set
 
 Add description to your profile. The profile description can't exceed char length of 250.
 
@@ -39,7 +39,7 @@ Usage:
 ;profile description set <description>
 ```
 
-### birthday
+### ;profile birthday
 
 Displays your birthday if it has been set already.
 
@@ -52,7 +52,7 @@ Usage:
 ;profile birthday
 ```
 
-#### set
+#### ;profile birthday set
 
 Set your birthday to show up on the Cosmos Profile.
 

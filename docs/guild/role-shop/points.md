@@ -17,7 +17,7 @@ Usage:
 ;points [member]
 ```
 
-### daily
+### ;points daily
 
 Lets you claim your daily Guild Points. Specify any member to let them have your daily Guild Points.
 
@@ -26,7 +26,7 @@ Usage:
 ;points daily [member]
 ```
 
-### credit
+### ;points credit
 
 Transfer your points to specified member.
 

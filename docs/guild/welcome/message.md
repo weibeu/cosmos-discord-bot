@@ -14,7 +14,7 @@ Lets you set fully customized template to use for Welcome Messages using differe
 * `{username}` -- Discord name of the member including their Discord discriminator.
 * `{discriminator}` -- Discriminator of the member.
 
-## message
+## ;welcome message
 
 Displays the template being used for Welcome Messages if it has been set already.
 
@@ -34,7 +34,7 @@ Usage:
 ;welcome message
 ```
 
-### set
+### ;welcome message set
 
 Setup and enable Welcome Messages using provided template. The Welcome Messages are sent to the current or any specified channel whenever a new user joins the server.
 
@@ -43,7 +43,7 @@ Usage:
 ;welcome message set [channel] <message>
 ```
 
-### remove
+### ;welcome message remove
 
 Remove and disable Welcome Messages from the server.
 
@@ -55,7 +55,7 @@ Usage:
 ;welcome message remove
 ```
 
-## directmessage
+## ;welcome directmessage
 
 Displays the template being using for Direct Welcome Messages if it has been set already.
 
@@ -72,7 +72,7 @@ Usage:
 ;welcome directmessage
 ```
 
-### set
+### ;welcome directmessage set
 
 Setup and enable Direct Welcome Messages using provided template. The Welcome Messages are sent as direct message whenever a new user joins the server.
 
@@ -81,7 +81,7 @@ Usage:
 ;welcome directmessage set <message>
 ```
 
-### remove
+### ;welcome directmessage remove
 
 Remove and disable Direct Welcome Messages from the server.
 

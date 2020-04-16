@@ -6,16 +6,15 @@ We are really thankful to all of our supporters and caretakers. Without them, Co
 
 ![](../.gitbook/assets/string.png)
 
-- **EminaKoju**
-
+* **EminaKoju**
 
 ## Patreon Quarks
 
 ![](../.gitbook/assets/quark.png)
 
-- **Катюша Каблашников**
-
+* **Катюша Каблашников**
 
 ## Patreon Neutrinos
 
 ![](../.gitbook/assets/neutrino.png)
+

@@ -19,7 +19,7 @@ Usage:
 ;level [member]
 ```
 
-### global
+### ;level global
 
 Displays current rank, level and experience points gained globally across all mutual servers.
 
@@ -32,10 +32,10 @@ Usage:
 ;level global [member]
 ```
 
-### reward
+### ;level reward
 
 Displays any rewards set for specified or all of the levels.
-  
+
 Optionally pass `text` to view Text Levels rewards and `voice` for Voice Levels rewards.
 
 ```yaml
@@ -46,10 +46,10 @@ Usage:
 ;level reward [channel=text] [level]
 ```
 
-#### set
+#### ;level reward set
 
 Set rewards for specified Text or Voice Levels.
-  
+
 You can set one or multiple roles and optionally Guild Points as rewards.
 
 ```yaml
@@ -57,7 +57,7 @@ Usage:
 ;level reward set <level> [channel=text] [points=0] <roles...>
 ```
 
-#### remove
+#### ;level reward remove
 
 Remove any Text or Voice Level rewards set for specified level.
 
@@ -66,6 +66,6 @@ Aliases:
 - delete
 
 Usage:
-;level reward [remove] <level> [channel=text]
+;level reward remove <level> [channel=text]
 ```
 

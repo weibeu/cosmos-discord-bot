@@ -24,7 +24,7 @@ Usage:
 ;tag <name>
 ```
 
-### create
+### ;tag create
 
 Creates a new tag with specified name holding provided content.
 
@@ -33,7 +33,7 @@ Usage:
 ;tag create <name> <content>
 ```
 
-### remove
+### ;tag remove
 
 Permanently removes the specified tag.
 

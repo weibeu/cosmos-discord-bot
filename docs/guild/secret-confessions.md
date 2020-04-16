@@ -23,7 +23,7 @@ Usage:
 ;confess <server_id> <confession>
 ```
 
-### set
+### ;confessions set
 
 Set secret confessions to current or specified channel. Use [`on_confession` Logger](../moderation/logger.md) event to moderate confessions and keep track of their real identity.
 
@@ -36,7 +36,7 @@ Usage:
 ;confessions set [channel]
 ```
 
-### remove
+### ;confessions remove
 
 Remove secret confessions from the server.
 

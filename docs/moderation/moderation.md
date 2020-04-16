@@ -17,7 +17,7 @@ Usage:
 ;modlogs <member>
 ```
 
-### clean
+### ;modlogs clean
 
 Removes and cleans all of the previous moderation logs of specified member.
 
@@ -76,7 +76,7 @@ Usage:
 ;mute <member> [reason]
 ```
 
-### role
+### ;mute role
 
 Sets muted role for server which will be used to enforce restrictions on members when they're muted.  
 It creates a new role to use denying sending messages to all of the text channels if not provided.

@@ -14,7 +14,7 @@ It can be customized by adding a custom text message which is written over it. M
 If [User Verification](../../moderation/user-verification.md) is enabled, welcome banners are sent only after the member is verified.
 {% endhint %}
 
-## banner
+## ;welcome banner
 
 Displays previously configured welcome banner.
 
@@ -23,7 +23,7 @@ Usage:
 ;welcome banner
 ```
 
-### set
+### ;welcome banner set
 
 Configure and set server welcome banner.
 
@@ -34,7 +34,7 @@ Usage:
 ;welcome banner set <banner_url> [channel] <text>
 ```
 
-### enable
+### ;welcome banner enable
 
 Enable sending welcome banners in channel.
 
@@ -43,7 +43,7 @@ Usage:
 ;welcome banner enable
 ```
 
-### disable
+### ;welcome banner disable
 
 Disable sending welcome banner in channel.
 

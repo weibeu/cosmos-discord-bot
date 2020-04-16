@@ -4,7 +4,7 @@ description: A plugin to manage and setup Role Shop in server.
 
 # Settings
 
-## create
+### ;roleshop create
 
 Create a new or use specified role for the Role Shop.
 
@@ -13,7 +13,7 @@ Usage:
 ;roleshop create <points> <role>
 ```
 
-## remove
+### ;roleshop remove
 
 Remove specified role from the Role Shop.
 
@@ -27,7 +27,7 @@ Usage:
 ;roleshop remove [role]
 ```
 
-## modify
+### ;roleshop modify
 
 Make changes to existing Role Shop role.
 
@@ -36,7 +36,7 @@ Aliases:
 - edit
 ```
 
-### points
+#### ;roleshop modify points
 
 Modify points required to redeem or purchase role.
 

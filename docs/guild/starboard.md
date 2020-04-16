@@ -16,7 +16,7 @@ Reactions on messages when exceed specified number of stars, they are posted in 
 
 Configure Starboard in server.
 
-### set
+### ;starboard set
 
 Set starboard in server for specified number of stars in specified channel.
 
@@ -29,7 +29,7 @@ Usage:
 ;starboard set [stars] [channel]
 ```
 
-### remove
+### ;starboard remove
 
 Remove starboard from server.
 

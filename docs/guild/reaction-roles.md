@@ -16,7 +16,7 @@ Usage:
 ;reaction
 ```
 
-### role
+### ;reaction role
 
 Manage reaction based roles throughout different channels. Reactions are added to specified messages. Members can react to automatically get the desired roles.
 
@@ -28,7 +28,7 @@ Usage:
 ;reaction role
 ```
 
-#### add
+#### ;reaction role add
 
 Setup reaction roles over any custom message you wish or you may skip this parameter to let bot post a embed displaying list of provided roles.
 
@@ -43,7 +43,7 @@ Usage:
 'reaction role add [message] <roles...>
 ```
 
-#### remove
+#### ;reaction role remove
 
 Remove reaction roles from provided message.
 

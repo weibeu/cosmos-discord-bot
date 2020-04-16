@@ -17,7 +17,7 @@ Usage:
 ;disable <function> [channels...]
 ```
 
-### channels
+### ;disable channels
 
 Disables bot commands and most of its automatic messages in current or provided channels.
 
@@ -37,10 +37,10 @@ A function can be any of the commands, plugins or galaxies.
 
 ```yaml
 Usage:
-;disable <function> [channels...]
+;enable<function> [channels...]
 ```
 
-### channels
+### ;enable channels
 
 Enables back bot commands and its automatic messages in current or provided channels if it was disabled previously.
 
