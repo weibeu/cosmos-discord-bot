@@ -1,8 +1,9 @@
+from .profiles import CosmosUserProfile, GuildMemberProfile
+
 import discord
 
+from pymongo import errors
 from discord.ext import tasks
-
-from .profiles import CosmosUserProfile, GuildMemberProfile
 
 
 class ProfileCache(object):
@@ -79,7 +80,10 @@ class ProfileCache(object):
         self.lfu.set(user_id, profile)    # Before db API call to prevent it from firing many times.
         if not await self.collection.find_one(document_filter):
             # To handle rare cases when this method still gets invoked multiple times.
-            await self.collection.insert_one(document_filter)
+            try:
+                await self.collection.insert_one(document_filter)
+            except errors.DuplicateKeyError:
+                pass
         return profile
 
     async def give_assets(self, message):
