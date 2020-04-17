@@ -67,6 +67,7 @@ class Leaderboards(Cog):
 
     @leaderboards.command(name="global", aliases=["cosmos", "globals"])
     async def global_leaderboards(self, ctx):
+        """Displays top users with maximum chat experience earned globally across all servers."""
         _filter = "stats.xp.chat"
         paginator = ctx.get_field_paginator(
             await self.fetch_top(_filter), entry_parser=self.__global_xp_entry_parser, inline=False, per_page=10)
