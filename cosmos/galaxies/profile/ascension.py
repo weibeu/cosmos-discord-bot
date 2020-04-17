@@ -33,8 +33,6 @@ class _Levels(Cog):
 
     async def get_guild_profile(self, member_id, guild_id):
         profile = await self.cache.get_profile(member_id)
-        if not profile:
-            profile = await self.cache.create_profile(member_id)
         return await profile.get_guild_profile(guild_id)
 
     @Cog.listener()
