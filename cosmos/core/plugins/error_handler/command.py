@@ -35,8 +35,18 @@ class CommandErrorHandler(Cog):
         elif isinstance(error, exceptions.DisabledFunctionError):
             await self.__send_response(ctx, images.unavailable, "That function has been disabled in this channel.")
 
-        elif isinstance(error, (commands.MissingPermissions, commands.CheckFailure)):
-            await self.__send_response(ctx, images.denied, "Missing permissions to run that command.")
+        elif isinstance(error, commands.BotMissingPermissions):
+            await self.__send_response(
+                ctx, images.mandenied,
+                f"Bot is missing {error.missing_perms[0].replace('_', ' ').title()} permissions to run that command.")
+
+        elif isinstance(error, commands.MissingPermissions):
+            await self.__send_response(
+                ctx, images.denied,
+                f"You're missing {error.missing_perms[0].replace('_', ' ').title()} permissions to run that command.")
+
+        elif isinstance(error, commands.CheckFailure):
+            await self.__send_response(ctx, images.denied, "You're not allowed to use that command.")
 
         elif isinstance(error, (commands.BadArgument, commands.MissingRequiredArgument)):
             await self.__send_response(ctx, images.error, "Wrong command syntax. Check docs for correct usage.")
