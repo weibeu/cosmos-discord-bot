@@ -48,7 +48,7 @@ class CommandErrorHandler(Cog):
         elif isinstance(error, commands.CheckFailure):
             await self.__send_response(ctx, images.denied, "You're not allowed to use that command.")
 
-        elif isinstance(error, (commands.BadArgument, commands.MissingRequiredArgument)):
+        elif isinstance(error, commands.UserInputError):
             await self.__send_response(ctx, images.error, "Wrong command syntax. Check docs for correct usage.")
 
         elif isinstance(error, NoEntriesError):
