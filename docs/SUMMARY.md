@@ -36,6 +36,7 @@
 * [\_Levels](profile/levels.md)
 * [Economy](profile/economy.md)
 * [Marriage](profile/marriage.md)
+* [Leaderboards](profile/leaderboards.md)
 
 ## SETTINGS
 

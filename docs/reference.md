@@ -24,6 +24,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [CosmosPermissions](guild/cosmos-permissions.md)
 * [GuildSettings](guild/guild-settings/)
 * [HasteBin](tools/haste-bin.md)
+* [Leaderboards](profile/leaderboards.md)
 * [Levels](guild/levels.md)
 * [Logger](moderation/logger.md)
 * [Marriage](profile/marriage.md)
@@ -72,6 +73,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [givepoints](guild/role-shop/settings.md#givepoints) | Generate and give points to specified member. | `;givepoints <points> <member>` |
 | [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to [https://hastebin.com/](https://hastebin.com/) and displays a shareable link. | `;hastebin <content>` |
 | [kick](https://cosmos.thecosmos.space/moderation/moderation#kick) | Kicks specified member from the server. | `;kick <member> [reason]` |
+| [leaderboards](profile/leaderboards.md#leaderboards) | Displays top members with maximum chat experience points. | `;leaderboards` |
 | [level](https://cosmos.thecosmos.space/levels#level) | Displays current level and experience points. | `;level [member]` |
 | [logger](https://cosmos.thecosmos.space/moderation/logger#logger) | Displays list of loggers enabled in different channels. | `;logger` |
 | [moderators](https://cosmos.thecosmos.space/settings/administrator-settings#moderators) | Displays list of roles and members who has been assigned as special moderators. | `;moderators` |
