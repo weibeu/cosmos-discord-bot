@@ -91,7 +91,7 @@ class BasePaginator(object):
                 para.append(f"{bullet} {string}")
         else:
             for index, entry in enumerate(entries, 1 + (page - 1) * self.per_page):
-                text = await self.entry_parser(self.ctx, entry, entries)
+                text = await self.entry_parser(self.ctx, entry, self.entries)
                 if self.show_entry_count:
                     prefix = f"{index}. {text}"
                 else:
@@ -233,7 +233,7 @@ class FieldPaginator(BasePaginator):
                 self.embed.add_field(name=key, value=value, inline=self.inline)
         else:
             for entry in entries:
-                key, value = await self.entry_parser(self.ctx, entry, entries)
+                key, value = await self.entry_parser(self.ctx, entry, self.entries)
                 self.embed.add_field(name=key, value=value, inline=self.inline)
 
         if self.max_pages > 1:
