@@ -67,6 +67,9 @@ class CosmosPermissions(Settings):
         return True
 
     async def __channels_check(self, ctx):
+        if not ctx.guild:
+            return True
+
         guild_profile = await self.bot.guild_cache.get_profile(ctx.guild.id)
         disabled_channels = guild_profile.permissions.disabled_channels
         if disabled_channels and ctx.channel in disabled_channels:
