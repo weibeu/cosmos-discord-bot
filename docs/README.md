@@ -1,6 +1,6 @@
 # Cosmos - Discord Bot
 
-[![Invite](https://img.shields.io/badge/Invite-Cosmos%20Bot-40e0d0?style=for-the-badge)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8) [![Discord](https://img.shields.io/discord/690878977920729177?label=Discord%20Community&logo=Discord&style=for-the-badge)](https://discord.gg/7CrQEyP) ![GitHub release \(latest by date\)](https://img.shields.io/github/v/release/thec0sm0s/cosmos-discord-bot?color=40e0d0&style=for-the-badge)
+[![Invite](https://img.shields.io/badge/Invite-Cosmos%20Bot-40e0d0?style=for-the-badge)](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8) [![Discord](https://img.shields.io/discord/690878977920729177?label=Discord%20Community&logo=Discord&style=for-the-badge)](https://discord.gg/7CrQEyP) ![GitHub release \(latest by date\)](https://img.shields.io/github/v/release/thec0sm0s/cosmos-discord-bot?color=424242&style=for-the-badge)
 
 > The only discord bot you probably need to power up your community.
 
