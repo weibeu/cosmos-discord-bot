@@ -37,7 +37,7 @@ class GuildMemberProfile(GuildPoints, MemberExperience):
                 f"{self.guild_filter}.points.points": self.points,
             }
         except AttributeError:
-            pass
+            raise PermissionError
 
     async def log_moderation(self, _id):
         self.moderation_logs.append(_id)
