@@ -26,5 +26,6 @@ class BotErrorHandler(Cog):
                 self.bot.guild_cache.lru.pop(_value.guild_id, None)
 
         else:
+            self.bot.eh.sentry.capture_exception(_value)
             self.bot.log.debug(f"Ignoring exception in {event}.")
             traceback.print_exception(type(_value), _value, _value.__traceback__, file=sys.stderr)
