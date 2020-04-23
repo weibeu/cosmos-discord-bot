@@ -50,7 +50,10 @@ class ProfileCache(object):
         profile_count = self.lfu.currsize
         self.bot.log.info(f"Loaded {profile_count} profiles to cache.")
 
-    async def get_profile(self, user_id: int) -> CosmosUserProfile:
+    async def get_profile(self, user_id: int):
+        user = await self.bot.fetch_user(user_id)
+        if user.bot:
+            return
         # profile = await self._redis.get_object(self.__collection_name, user_id)
         profile = self.lfu.get(user_id)
         if not profile:
