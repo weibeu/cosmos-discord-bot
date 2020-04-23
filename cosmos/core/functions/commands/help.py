@@ -19,11 +19,13 @@ class CosmosHelp(DefaultHelpCommand):
                             f"{self.COMMUNITY_INVITE}) for help with anything."
         arrow = self.context.bot.emotes.misc.next
         embed.add_field(name="Support Us", value=f"{arrow} [Patreon](https://www.patreon.com/__thecosmos)\n"
-                                                 f"{arrow} [PayPal](https://paypal.me/thecosmoss/)\n")
+                                                 f"{arrow} [PayPal](https://paypal.me/thecosmoss/)\n"
+                                                 f"{arrow} [Vote](https://top.gg/bot/390176338729893889)\n")
         embed.add_field(name="Links", value=f"{arrow} [Invite](https://discordapp.com/oauth2/authorize?"
                                             "client_id=390176338729893889&scope=bot&permissions=8)\n"
                                             # f"- [Home Page]({self.BASE_URL})\n"
                                             f"{arrow} [GitHub](https://github.com/thec0sm0s/cosmos-discord-bot)\n"
+                                            f"{arrow} [Reference](https://cosmos.thecosmos.space/reference)\n"
                                             # f"- [Community]({self.COMMUNITY_INVITE})\n"
                                             # f"- [Documentation]({self.BASE_URL}galaxy-reference/)\n")
                         )
