@@ -20,7 +20,7 @@ class CosmosHelp(DefaultHelpCommand):
         arrow = self.context.bot.emotes.misc.next
         embed.add_field(name="Support Us", value=f"{arrow} [Patreon](https://www.patreon.com/__thecosmos)\n"
                                                  f"{arrow} [PayPal](https://paypal.me/thecosmoss/)\n"
-                                                 f"{arrow} [Vote](https://top.gg/bot/390176338729893889)\n")
+                                                 f"{arrow} [Vote](https://top.gg/bot/390176338729893889/vote)\n")
         embed.add_field(name="Links", value=f"{arrow} [Invite](https://discordapp.com/oauth2/authorize?"
                                             "client_id=390176338729893889&scope=bot&permissions=8)\n"
                                             # f"- [Home Page]({self.BASE_URL})\n"
