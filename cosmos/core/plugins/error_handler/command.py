@@ -25,7 +25,10 @@ class CommandErrorHandler(Cog):
 
         images = self.bot.theme.images
 
-        if isinstance(error, exceptions.GuildNotPrime):
+        if isinstance(error, discord.Forbidden):
+            pass
+
+        elif isinstance(error, exceptions.GuildNotPrime):
             # Tried to use prime function in non-prime guild.
             embed = ctx.embeds.primary()
             embed.set_author(name=f"🔒    Click here to get prime and unlock all features including this."
