@@ -15,7 +15,7 @@ class BotErrorHandler(Cog):
     async def on_event_error(self, event, info):
         _type, _value, _traceback = info
         if isinstance(_value, exceptions.UserIsBotError):
-            pass
+            pass    # TODO: Find all on_message's and return if bot if they using get_profile method. Don't flood here.
 
         else:
             self.bot.log.debug(f"Ignoring exception in {event}.")
