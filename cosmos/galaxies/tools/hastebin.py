@@ -8,6 +8,7 @@ class HasteBin(Cog):
         super().__init__()
         self.plugin = plugin
 
+    @Cog.cooldown(1, 4, Cog.bucket_type.guild)
     @Cog.command(name="hastebin", aliases=["haste"])
     async def haste(self, ctx, *, content):
         """Posts the provided content to https://hastebin.com/ and displays a shareable link."""
