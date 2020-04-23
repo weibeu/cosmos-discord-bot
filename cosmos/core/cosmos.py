@@ -27,4 +27,4 @@ class Cosmos(InitialTasks):
         self.log.info("------------------------")
 
     async def on_error(self, event_method, *args, **kwargs):
-        self.dispatch("event_error", sys.exc_info())
+        self.dispatch("event_error", event_method, sys.exc_info())
