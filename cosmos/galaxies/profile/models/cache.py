@@ -3,6 +3,7 @@ from .profiles import CosmosUserProfile, GuildMemberProfile
 import discord
 
 from pymongo import errors
+from cosmos import exceptions
 from discord.ext import tasks
 
 
@@ -53,7 +54,7 @@ class ProfileCache(object):
     async def get_profile(self, user_id: int):
         user = await self.bot.fetch_user(user_id)
         if user.bot:
-            return
+            raise exceptions.UserIsBotError
         # profile = await self._redis.get_object(self.__collection_name, user_id)
         profile = self.lfu.get(user_id)
         if not profile:
