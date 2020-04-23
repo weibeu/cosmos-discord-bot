@@ -1,5 +1,7 @@
 from discord import LoginFailure
 
+import sys
+
 from .tasks import InitialTasks
 from .functions import CosmosContext
 
@@ -23,3 +25,6 @@ class Cosmos(InitialTasks):
         self.log.info(f"{self.user} Ready! [{self.time.round_time()} seconds.]")
         self.log.info(f"User Id: {self.user.id}")
         self.log.info("------------------------")
+
+    async def on_error(self, event_method, *args, **kwargs):
+        self.dispatch("event_error", sys.exc_info())
