@@ -82,6 +82,7 @@ class SentryConfig(Config):
         super().__init__()
         self.dsn = os.getenv("SENTRY_DSN") or self.dsn
         self.environment = os.getenv("ENVIRONMENT") or self.environment
+        self.raw.update({"environment": self.environment})
         if hasattr(self, "release"):
             if self.release is None or "":
                 self.__delattr__("release")
