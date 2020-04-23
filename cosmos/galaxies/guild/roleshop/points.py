@@ -15,6 +15,8 @@ class RoleShopPoints(RoleShopBase):
 
     @RoleShopBase.listener()
     async def on_message(self, message):
+        if message.author.bot:
+            return
         if not message.guild:
             return
         profile = await self.bot.profile_cache.get_guild_profile(message.author.id, message.guild.id)
