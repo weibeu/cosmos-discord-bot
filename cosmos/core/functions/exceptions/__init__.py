@@ -10,5 +10,6 @@ __all__ = [
 
     "GuildNotPrime",
     "UserNotPrime",
+    "GuildNotFoundError",
     "DisabledFunctionError",
 ]

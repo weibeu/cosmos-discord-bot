@@ -1,5 +1,6 @@
 from ... import Cog
 
+from cosmos import exceptions
 from abc import ABC, abstractmethod
 
 
@@ -25,7 +26,9 @@ class CosmosGuildBase(ABC):
 
     @property
     def guild(self):
-        return self.plugin.bot.get_guild(self.id)
+        if not (_ := self.plugin.bot.get_guild(self.id)):
+            raise exceptions.GuildNotFoundError(self.id)
+        return _
 
     @property
     def document_filter(self):

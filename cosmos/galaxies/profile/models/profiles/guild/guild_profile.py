@@ -1,3 +1,5 @@
+from cosmos import exceptions
+
 from .roleshop import MemberRoleShop
 from .guild_points import GuildPoints
 from .experience import MemberExperience
@@ -11,7 +13,9 @@ class GuildMemberProfile(GuildPoints, MemberExperience):
 
     @property
     def guild(self):
-        return self.profile.plugin.bot.get_guild(self._guild_id)
+        if not (_ := self.profile.plugin.bot.get_guild(self._guild_id)):
+            raise exceptions.GuildNotFoundError(self._guild_id, self.id)
+        return _
 
     async def fetch_guild_profile(self):
         return await self.plugin.bot.guild_cache.get_profile(self.guild.id)
