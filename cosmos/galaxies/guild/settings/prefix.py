@@ -21,7 +21,7 @@ class PrefixSettings(Settings):
         embed = ctx.embeds.primary()
         embed.title = "Custom Prefixes"
         embed.description = "```css\nDisplaying list of custom prefix for bot commands in this server.```\n"
-        embed.description += f"{self.bot.emotes.misc.next} " + " ".join(prefixes) + "\n​\n"
+        embed.description += f"{self.bot.emotes.misc.next} " + ", ".join(prefixes) + "\n​\n"
         embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=embed)
 
