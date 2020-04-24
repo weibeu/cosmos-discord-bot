@@ -3,10 +3,10 @@ from ... import Cog
 
 class EminaKoju(Cog):
 
-    USER_ID = 394407882675978253
+    __USER_ID = 394407882675978253
 
     @Cog.group(name="summon")
-    @Cog.checks.check_user(USER_ID)
+    @Cog.checks.check_user(__USER_ID)
     async def summon(self, ctx):
         pass
 
