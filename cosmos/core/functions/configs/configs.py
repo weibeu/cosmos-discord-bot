@@ -120,3 +120,9 @@ class ImageProcessorClientConfig(Config):
 
     NAME = "image_processor"
     PATH = "cfg/core/image_processor.yaml"
+
+
+class CosmosMetaInformation(Config):
+
+    NAME = "info"
+    PATH = "cfg/core/information.yaml"
