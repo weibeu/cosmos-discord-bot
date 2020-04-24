@@ -12,8 +12,10 @@ class DiscordConfig(Config):
     PATH = "cfg/core/discord.yaml"
 
     def __init__(self):
+        self.client_id = None
         super().__init__()
         self.token = os.getenv("DISCORD_TOKEN") or self.token   # Use token from environment if present.
+        self.invite_url = discord.utils.oauth_url(str(self.client_id), discord.Permissions(8))
 
 
 class CosmosConfig(Config):
