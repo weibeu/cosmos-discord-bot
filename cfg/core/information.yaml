@@ -1,6 +1,18 @@
 # ! Configs for additional bot's meta attributes and links.
 
 
+# Meta Links
+github: https://github.com/thec0sm0s/cosmos-discord-bot
+homepage: https://cosmos.thecosmos.space/
+community: https://discord.gg/7CrQEyP
+
+paypal: https://paypal.me/thecosmoss/
+patreon: https://www.patreon.com/__thecosmos
+
 # top.gg
 top_home_page: https://top.gg/bot/390176338729893889
 top_vote_page: https://top.gg/bot/390176338729893889/vote
+
+# Brand
+brand_icon: https://i.imgur.com/0TjctCy.jpg
+brand_logo: https://i.imgur.com/1LFEUdu.png

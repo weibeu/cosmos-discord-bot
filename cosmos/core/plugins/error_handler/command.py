@@ -30,10 +30,9 @@ class CommandErrorHandler(Cog):
 
         elif isinstance(error, exceptions.GuildNotPrime):
             # Tried to use prime function in non-prime guild.
-            embed = ctx.embeds.primary()
-            embed.set_author(name=f"🔒    Click here to get prime and unlock all features including this."
-                                  f"", url="https://www.patreon.com/__thecosmos")
-            await ctx.send(embed=embed)
+            await ctx.send_line(
+                "Click here to get prime and unlock all features including this.",
+                icon_url=images.privacy, author_url=self.bot.configs.info.patreon)
 
         elif isinstance(error, exceptions.DisabledFunctionError):
             await self.__send_response(ctx, images.unavailable, "That function has been disabled in this channel.")
