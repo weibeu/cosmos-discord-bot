@@ -14,7 +14,7 @@ class InitialTasks(commands.Bot):
         prefixes = bot.configs.cosmos.prefixes.copy()
         if message.guild:
             try:
-                prefixes += bot.guild_cache.prefixes.get(message.guild.id, list())
+                prefixes = bot.guild_cache.prefixes.get(message.guild.id, prefixes)
             except AttributeError:
                 if bot.guild_cache.prefixes is None:
                     raise AttributeError("Attribute self.guild_cache isn't overridden by guild galaxy.")
