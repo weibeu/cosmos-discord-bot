@@ -122,7 +122,7 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
                 # Remove the GuildMemberProfile of this user from the cache.
                 self.guild_profiles.pop(profile.id, None)
                 # Remove the CosmosGuild from the cache.
-                self.plugin.bot.guild_cache.lru.pop(profile.guild_id)
+                self.plugin.bot.guild_cache.lru.pop(profile.guild_id, None)
 
         return self.document_filter, {"$set": updates}
 
