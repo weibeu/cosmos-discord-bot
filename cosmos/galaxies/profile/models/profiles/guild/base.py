@@ -53,4 +53,4 @@ class GuildMemberProfileBase(ProfileModelsBase):
 
     @property
     def guild_filter(self):
-        return f"guilds.{self.guild.id}"
+        return f"guilds.{self.guild_id}"
