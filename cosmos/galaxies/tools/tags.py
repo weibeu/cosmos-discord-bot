@@ -37,7 +37,7 @@ class Tags(Cog):
         tag = profile.get_tag(name)
         if not tag:
             return await ctx.send_line(f"❌    Can't find any tag with provided name.")
-        embed = ctx.embeds.one_line.primary(name, ctx.author.avatar_url)
+        embed = ctx.embeds.one_line.primary(name, self.bot.theme.images.file)
         content = tag.content
         # Check if tag content contains any images and consider very first image url.
         try:
@@ -48,6 +48,7 @@ class Tags(Cog):
             embed.set_image(url=url)
             content = content.replace(url, str())
         embed.description = content
+        embed.set_footer(text=f"Tag | {ctx.author}", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     @tag.command(name="create")
