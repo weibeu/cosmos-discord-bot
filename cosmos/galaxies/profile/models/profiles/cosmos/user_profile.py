@@ -112,15 +112,17 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         }
 
         for profile in self.guild_profiles.values():
-            try:
-                updates.update(profile.to_update_document())
-            except PermissionError:
-                # Case when maybe bot has been removed from the guild. But GuildMemberProfiles still exists in cache.
-                # Remove the GuildMemberProfile of this user from the cache.
-                try:
-                    self.guild_profiles.pop(profile.id)
-                except KeyError:
-                    pass
+            updates.update(profile.to_update_document())
+
+            # try:
+            #     updates.update(profile.to_update_document())
+            # except PermissionError:
+            #     # Case when maybe bot has been removed from the guild. But GuildMemberProfiles still exists in cache.
+            #     # Remove the GuildMemberProfile of this user from the cache.
+            #     try:
+            #         self.guild_profiles.pop(profile.id)
+            #     except KeyError:
+            #         pass
 
         return self.document_filter, {"$set": updates}
 

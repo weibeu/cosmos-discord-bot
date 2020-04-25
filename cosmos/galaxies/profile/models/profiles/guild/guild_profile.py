@@ -30,14 +30,11 @@ class GuildMemberProfile(GuildPoints, MemberExperience):
 
     def to_update_document(self):
         self.cache_voice_xp()
-        try:
-            return {
-                f"{self.guild_filter}.stats.xp.chat": self.xp,
-                f"{self.guild_filter}.stats.xp.voice": self._voice_xp,
-                f"{self.guild_filter}.points.points": self.points,
-            }
-        except AttributeError:
-            raise PermissionError
+        return {
+            f"{self.guild_filter}.stats.xp.chat": self.xp,
+            f"{self.guild_filter}.stats.xp.voice": self._voice_xp,
+            f"{self.guild_filter}.points.points": self.points,
+        }
 
     async def log_moderation(self, _id):
         self.moderation_logs.append(_id)
