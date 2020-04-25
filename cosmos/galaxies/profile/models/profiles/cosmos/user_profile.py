@@ -1,3 +1,4 @@
+from cosmos import exceptions
 from abc import ABC
 
 import arrow
@@ -114,15 +115,14 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         for profile in self.guild_profiles.values():
             updates.update(profile.to_update_document())
 
-            # try:
-            #     updates.update(profile.to_update_document())
-            # except PermissionError:
-            #     # Case when maybe bot has been removed from the guild. But GuildMemberProfiles still exists in cache.
-            #     # Remove the GuildMemberProfile of this user from the cache.
-            #     try:
-            #         self.guild_profiles.pop(profile.id)
-            #     except KeyError:
-            #         pass
+            try:
+                _ = profile.guild
+            except exceptions.GuildNotFoundError:
+                # Case when maybe bot has been removed from the guild. But GuildMemberProfiles still exists in cache.
+                # Remove the GuildMemberProfile of this user from the cache.
+                self.guild_profiles.pop(profile.id, None)
+                # Remove the CosmosGuild from the cache.
+                self.plugin.bot.guild_cache.lru.pop(profile.guild_id)
 
         return self.document_filter, {"$set": updates}
 
