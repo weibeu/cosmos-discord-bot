@@ -1,6 +1,7 @@
-from abc import abstractmethod
-
 from ..base import ProfileModelsBase
+
+from cosmos import exceptions
+from abc import abstractmethod
 
 
 class GuildMemberProfileBase(ProfileModelsBase):
@@ -17,8 +18,14 @@ class GuildMemberProfileBase(ProfileModelsBase):
 
     @property
     @abstractmethod
-    def guild(self):
+    def guild_id(self):
         raise NotImplementedError
+
+    @property
+    def guild(self):
+        if not (_ := self.profile.plugin.bot.get_guild(self.guild_id)):
+            raise exceptions.GuildNotFoundError(self.guild_id, self.id)
+        return _
 
     @abstractmethod
     async def fetch_guild_profile(self):
