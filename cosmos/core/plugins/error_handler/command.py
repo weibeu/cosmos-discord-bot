@@ -30,9 +30,7 @@ class CommandErrorHandler(Cog):
 
         elif isinstance(error, exceptions.GuildNotPrime):
             # Tried to use prime function in non-prime guild.
-            await ctx.send_line(
-                "Click here to get prime and unlock all features including this.",
-                icon_url=images.privacy, author_url=self.bot.configs.info.patreon)
+            await ctx.send_line(error.message, icon_url=images.privacy, author_url=self.bot.configs.info.patreon)
 
         elif isinstance(error, exceptions.DisabledFunctionError):
             await self.__send_response(ctx, images.unavailable, "That function has been disabled in this channel.")

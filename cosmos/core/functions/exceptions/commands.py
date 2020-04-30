@@ -1,14 +1,22 @@
 from discord.ext import commands
 
 
-class GuildNotPrime(commands.CheckFailure):
+class NotPrime(commands.CheckFailure):
 
-    pass
+    message = "Click here to get prime and unlock all features including this."
+
+    def __init__(self, message=str()):
+        self.message = message or self.message
 
 
-class UserNotPrime(commands.CheckFailure):
+class GuildNotPrime(NotPrime):
 
-    pass
+    ...
+
+
+class UserNotPrime(NotPrime):
+
+    ...
 
 
 class DisabledFunctionError(commands.CheckFailure):
