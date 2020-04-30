@@ -38,6 +38,15 @@ class ReactionRoles(Reactions):
                 pass
 
     @Reactions.listener()
+    async def on_raw_bulk_message_delete(self, payload):
+        guild_profile = await self.cache.get_profile(payload.guild_id)
+        if not guild_profile.reactions.roles:
+            return
+        for message_id in payload.message_ids:
+            if message_id in guild_profile.reactions.roles:
+                await guild_profile.reactions.remove_roles(message_id)
+
+    @Reactions.listener()
     async def on_raw_message_delete(self, payload):
         guild_profile = await self.cache.get_profile(payload.guild_id)
         if payload.message_id in guild_profile.reactions.roles:
