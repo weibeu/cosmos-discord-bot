@@ -122,3 +122,13 @@ class ReactionRoles(Reactions):
             return
         await ctx.guild_profile.reactions.remove_roles(message_id)
         await ctx.send_line(f"✅    Reaction roles has been removed for provided message.")
+
+    @reaction_roles.command(name="clean", aliases=["clear"])
+    async def clean_roles(self, ctx):
+        """Removes all of the reaction roles which has been set in the server."""
+        if not ctx.guild_profile.reactions.roles:
+            return await ctx.send_line(f"❌    {ctx.guild.name} has no reactions roles set.", ctx.guild.icon_url)
+        if not await ctx.confirm():
+            return
+        await ctx.guild_profile.reactions.remove_all_reaction_roles()
+        await ctx.send_line(f"✅    All of the reaction roles has been cleared and removed.")

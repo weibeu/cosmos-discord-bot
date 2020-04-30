@@ -19,3 +19,9 @@ class GuildReactions(object):
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$unset": {
             f"reactions.roles.{message_id}": ""
         }})
+
+    async def remove_all_reaction_roles(self):
+        self.roles = dict()
+        await self.__profile.collection.update_one(self.__profile.document_filter, {"$unset": {
+            "reactions.roles": ""
+        }})
