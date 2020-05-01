@@ -60,11 +60,6 @@ class WelcomeBanner(WelcomeBase):
             return await ctx.send_line("❌    Please configure welcome banner settings.")
         await self.send_welcome_banner(ctx.guild_profile, ctx.author, ctx.channel)
 
-    @welcome_banner.error
-    async def welcome_banner_error(self, ctx, error):
-        if isinstance(error, exceptions.GuildNotPrime):
-            return await ctx.send_line(f"❌    Get prime to use GIF banners or set static banner.")
-
     @WelcomeBase.cooldown(1, 3, WelcomeBase.bucket_type.guild)
     @welcome_banner.command(name="set")
     async def set_welcome_banner(self, ctx, banner_url, channel: typing.Optional[discord.TextChannel] = None, *, text):
