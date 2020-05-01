@@ -74,7 +74,7 @@ class WelcomeBanner(WelcomeBase):
         if banner_format not in self.plugin.data.settings.banner_formats:
             return await ctx.send_line("❌    Please use supported image format.")
         if banner_format == "gif" and not ctx.guild_profile.is_prime:
-            return await ctx.send_line("❌    Sorry but only prime servers can use GIF banners.")
+            raise exceptions.GuildNotPrime("Click here to get prime to set GIF banners with all other features.")
         banner_size = round((await self.bot.image_processor.utils.fetch_size(banner_url)) / 1048576, 2)
         banner_max_size = self.plugin.data.settings.banner_max_size
         if banner_size > banner_max_size:
