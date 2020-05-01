@@ -28,7 +28,7 @@ class CommandErrorHandler(Cog):
         if isinstance(error, discord.Forbidden):
             pass
 
-        elif isinstance(error, exceptions.GuildNotPrime):
+        elif isinstance(error, (exceptions.GuildNotPrime, exceptions.UserNotPrime)):
             # Tried to use prime function in non-prime guild.
             await ctx.send_line(error.message, icon_url=images.privacy, author_url=self.bot.configs.info.patreon)
 
