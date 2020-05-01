@@ -29,7 +29,10 @@ class ReactionRoles(Reactions):
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
         if roles := guild_profile.reactions.roles.get(payload.message_id):
             emote = discord.utils.get(self.emotes, id=payload.emoji.id)
-            role = roles[self.emotes.index(emote)]
+            try:
+                role = roles[self.emotes.index(emote)]
+            except ValueError:
+                return
             member = await guild_profile.guild.fetch_member(payload.user_id)
             await member.add_roles(role, reason="Issued reaction role.")
             message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
