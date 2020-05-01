@@ -1,4 +1,5 @@
 from cosmos.core.utilities import converters
+from cosmos import exceptions
 
 import typing
 import discord
@@ -85,8 +86,9 @@ class ReactionRoles(Reactions):
         # noinspection PyTypeChecker
         if len(roles) >= self.plugin.data.reactions.max_roles:
             return await ctx.send_line(f"❌    You can't include anymore roles.")
-        if len(ctx.guild_profile.reactions.roles) >= self.plugin.data.reactions.max_messages:
-            return await ctx.send_line(f"❌    You cannot create anymore reaction roles.")
+        if len(ctx.guild_profile.reactions.roles
+               ) >= self.plugin.data.reactions.max_messages and not ctx.guild_profile.is_prime:
+            raise exceptions.GuildNotPrime("Click to get prime to create more reaction roles with all other features.")
         if not await ctx.confirm():
             return
         # noinspection PyTypeChecker

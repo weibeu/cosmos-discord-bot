@@ -59,7 +59,7 @@ class Tags(Cog):
             raise commands.UserInputError
         profile = await ctx.fetch_cosmos_user_profile()
         if len(profile.tags) >= self.plugin.data.tags.max_tags and not profile.is_prime:
-            raise UserNotPrime
+            raise UserNotPrime("Click to get prime to create infinite tags with all other features.")
         if profile.get_tag(name):
             if not await ctx.confirm(f"⚠    You already have existing tag with same name. Replace with new content?"):
                 return
