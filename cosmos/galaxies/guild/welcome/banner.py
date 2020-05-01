@@ -21,7 +21,7 @@ class WelcomeBanner(WelcomeBase):
     async def send_welcome_banner(self, guild, member, channel: discord.TextChannel = None):
         banner_format = guild.welcome_banner_url.split(".")[-1]
         if banner_format.lower() == "gif" and not guild.is_prime:
-            raise exceptions.GuildNotPrime
+            raise exceptions.GuildNotPrime("Click here to get prime to continue using GIF banners.")
         channel = channel or guild.welcome_banner_channel
         options = dict()
         if guild.theme.color:
