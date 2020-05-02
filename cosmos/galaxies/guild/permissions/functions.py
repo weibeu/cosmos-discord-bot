@@ -1,9 +1,10 @@
+from .._models.exceptions import FunctionIsInescapable
+
 import typing
 import discord
 
 from discord.ext import commands
 from ..settings.base import Settings
-
 from ....core.functions import exceptions
 
 
@@ -118,5 +119,5 @@ class CosmosPermissions(Settings):
         await ctx.send_line(f"✅    Bot commands and messages has been enabled in specified channels.")
 
     async def cog_command_error(self, ctx, error):
-        if isinstance(error.original, AttributeError):
-            await ctx.send_line(f"❌    You cannot disable that function.")
+        if isinstance(error, FunctionIsInescapable):
+            await ctx.send_line(f"❌    You cannot disable inescapable functions.")

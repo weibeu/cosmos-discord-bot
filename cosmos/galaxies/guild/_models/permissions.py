@@ -1,3 +1,6 @@
+from .exceptions import FunctionIsInescapable
+
+
 class DisabledFunctions(object):
 
     def __init__(self, bot, document):
@@ -52,7 +55,10 @@ class GuildPermissions(object):
         self.disabled_channels = {self.profile.plugin.bot.get_channel(_) for _ in disabled_document.get("channels", [])}
 
     async def disable_function(self, _, channels):
-        _.disabled_channels.update(channels)
+        try:
+            _.disabled_channels.update(channels)
+        except AttributeError:
+            raise FunctionIsInescapable
 
         await self.profile.collection.update_one(self.profile.document_filter, {
             "$addToSet": {
@@ -61,7 +67,10 @@ class GuildPermissions(object):
         })
 
     async def enable_function(self, _, channels):
-        _.disabled_channels.difference_update(channels)
+        try:
+            _.disabled_channels.difference_update(channels)
+        except AttributeError:
+            raise FunctionIsInescapable
 
         await self.profile.collection.update_one(self.profile.document_filter, {
             "$pull": {

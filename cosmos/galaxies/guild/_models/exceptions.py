@@ -17,3 +17,8 @@ class NotEnoughPointsError(GuildExceptions):
 class RoleNotFoundError(GuildExceptions):
 
     pass
+
+
+class FunctionIsInescapable(GuildExceptions):
+
+    ...
