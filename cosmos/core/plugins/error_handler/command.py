@@ -67,6 +67,9 @@ class CommandErrorHandler(Cog):
         elif isinstance(error, asyncio.TimeoutError):
             pass
 
+        elif getattr(error, "handled", False):
+            pass    # Silently pass internally handled exceptions.
+
         else:
             with configure_scope() as scope:
                 scope.user = {
