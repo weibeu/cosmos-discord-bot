@@ -78,11 +78,12 @@ class CommandErrorHandler(Cog):
 
         else:
             with configure_scope() as scope:
-                scope.user = {
-                    "username": str(ctx.author), "id": ctx.author.id,
-                    "guild": ctx.guild.name, "guild_id": ctx.guild.id,
-                    "command": ctx.command.name, "args": ctx.args, "kwargs": ctx.kwargs,
-                }
+                scope._user = {"username": str(ctx.author), "id": ctx.author.id}
+                extras = dict()
+                if ctx.guild:
+                    extras = {"guild": ctx.guild.name, "guild_id": ctx.guild.id}
+                extras.update({"command": ctx.command.name, "args": ctx.args, "kwargs": ctx.kwargs})
+                scope._extras = extras
             self.bot.eh.sentry.capture_exception(error)
             self.bot.log.debug(f"Ignoring exception in command {ctx.command}")
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
