@@ -6,6 +6,8 @@ from .._models import GuildBaseCog
 
 class NotRoleShopRoleError(CommandError):
 
+    handled = True
+
     def __init__(self, role):
         self.role = role
 
