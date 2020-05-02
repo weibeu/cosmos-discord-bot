@@ -25,7 +25,7 @@ class GuildCache(object):
         await self.bot.wait_until_ready()
         self.redis = self.bot.cache.redis
 
-    async def get_profile(self, guild_id):
+    async def get_profile(self, guild_id) -> CosmosGuild:
         if not self.bot.get_guild(guild_id):
             raise exceptions.GuildNotFoundError(guild_id)
         # profile = await self.redis.get_object(self.collection.name, guild_id)
