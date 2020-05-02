@@ -178,15 +178,12 @@ class Moderation(Cog):
         """
         action = await self.__get_action(ctx, member, actions.Banned, reason)
         await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
-        try:
-            if isinstance(member, discord.Member):
-                if not check_hierarchy(ctx.author, member):
-                    return await ctx.send_line(f"❌    You can't ban {member}.")
-                await member.ban(reason=reason)
-            else:
-                await ctx.guild.ban(discord.Object(member), reason=reason)
-        except discord.HTTPException:
-            return await ctx.send_line(f"❌    Failed to ban {member}.")
+        if isinstance(member, discord.Member):
+            if not check_hierarchy(ctx.author, member):
+                return await ctx.send_line(f"❌    You can't ban {member}.")
+            await member.ban(reason=reason)
+        else:
+            await ctx.guild.ban(discord.Object(member), reason=reason)
         embed = ctx.embed_line(f"✅    {member} has been banned from the server.")
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
