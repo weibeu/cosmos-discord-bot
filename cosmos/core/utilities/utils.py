@@ -4,6 +4,7 @@ import os
 import re
 
 import random
+import humanize
 import string as strings
 
 
@@ -48,3 +49,9 @@ class Utils(HasteBin):
     @staticmethod
     def get_random_strings(length):
         return str().join(random.choices(strings.ascii_letters + strings.digits, k=length))
+
+    @staticmethod
+    def humanize_stats(value, start=1000):
+        if value >= start:
+            return humanize.naturalsize(value, gnu=True)
+        return value
