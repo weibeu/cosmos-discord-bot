@@ -266,3 +266,12 @@ class Moderation(Cog):
         await guild_profile.set_role("muted", role.id)
         await ctx.send_line(f"✅    {role.name} has been assigned to be used as muted role.")
         # TODO: Set overrides if new channel has been created.
+
+    async def cog_command_error(self, ctx, error):
+        try:
+            if isinstance(error.original, discord.Forbidden):
+                return await ctx.send_line(
+                    f"Cosmos is forbidden to {ctx.command.name} them. Maybe check roles hierarchy?",
+                    self.bot.theme.images.no_entry)
+        except AttributeError:
+            pass
