@@ -1,3 +1,5 @@
+from cosmos import exceptions
+
 from .guild_profile import CosmosGuild
 from pymongo.errors import DuplicateKeyError
 
@@ -25,7 +27,7 @@ class GuildCache(object):
 
     async def get_profile(self, guild_id):
         if not self.bot.get_guild(guild_id):
-            return
+            raise exceptions.GuildNotFoundError(guild_id)
         # profile = await self.redis.get_object(self.collection.name, guild_id)
         profile = self.lru.get(guild_id)
         if not profile:
