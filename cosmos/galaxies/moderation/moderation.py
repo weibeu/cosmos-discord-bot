@@ -11,6 +11,9 @@ class FakeGuildMember(discord.Object):
 
     bot = False
 
+    def __str__(self):
+        return str(self.id)
+
 
 async def _has_permissions(ctx, perms):
     ch = ctx.channel
