@@ -18,7 +18,10 @@ class CommandErrorHandler(Cog):
 
     @staticmethod
     async def __send_response(ctx, emote_url, content):
-        return await ctx.send_line(content, emote_url, color=discord.Color(0xFF1744))
+        try:
+            return await ctx.send_line(content, emote_url, color=discord.Color(0xFF1744))
+        except discord.Forbidden:
+            pass
 
     @Cog.listener()
     async def on_command_error(self, ctx, error):
