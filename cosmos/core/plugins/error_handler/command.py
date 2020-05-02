@@ -1,6 +1,7 @@
 from ...functions.context.functions.paginators import NoEntriesError
 
 import sys
+import asyncio
 import discord
 import traceback
 
@@ -61,6 +62,9 @@ class CommandErrorHandler(Cog):
             await ctx.message.add_reaction(self.bot.emotes.misc.clock)
 
         elif isinstance(error, commands.CommandNotFound):
+            pass
+
+        elif isinstance(error, asyncio.TimeoutError):
             pass
 
         else:
