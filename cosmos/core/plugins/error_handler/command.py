@@ -29,6 +29,12 @@ class CommandErrorHandler(Cog):
 
         images = self.bot.theme.images
 
+        try:
+            if isinstance(error.original, discord.Forbidden):
+                return
+        except AttributeError:
+            pass
+
         if isinstance(error, discord.Forbidden):
             pass
 
