@@ -1,5 +1,7 @@
 from discord.ext.commands import DefaultHelpCommand
 
+import discord
+
 
 class CosmosHelp(DefaultHelpCommand):
 
@@ -28,4 +30,12 @@ class CosmosHelp(DefaultHelpCommand):
                         )
 
         destination = self.get_destination()
-        await destination.send(embed=embed)
+        try:
+            await destination.send(embed=embed)
+        except discord.Forbidden:
+            try:
+                await self.context.author.send(embed=embed)
+                await self.context.author.send(embed=self.context.embed_line(
+                    f"I am forbidden from sending messages in #{destination}.", self.context.bot.theme.images.error))
+            except discord.Forbidden:
+                pass
