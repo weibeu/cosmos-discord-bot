@@ -193,11 +193,13 @@ class Moderation(Cog):
     @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, user_id: int, *, reason=None):
         """Un bans user from their discord ID."""
-        action = await self.__get_action(ctx, user_id, actions.Unbanned, reason)
+        user = discord.Object(user_id)
+        user.bot = False
+        action = await self.__get_action(ctx, user, actions.Unbanned, reason)
         try:
-            await ctx.guild.unban(discord.Object(user_id), reason=reason)
+            await ctx.guild.unban(user, reason=reason)
         except discord.HTTPException:
-            return await ctx.send_line(f"❌    Failed to unban {user_id}.")
+            return await ctx.send_line(f"Failed to unban user {user_id}.", self.bot.theme.images.error)
         await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
 
