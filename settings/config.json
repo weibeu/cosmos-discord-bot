@@ -7,9 +7,9 @@
     "SENTRY_DSN": "",
     "MONGOHQ_URL": "",
     "custom_search_engine": "004004154518333828490:gtukjoqi4gg",
-    "google_api_key": "AIzaSyDC6K5sbA4GyAFDj7bpcen4brrR3E6dW3U",
-    "giphy_api_key": "mcmwX204gcTtGkRumGiGdvx4iILPmtRY",
-    "GENIUS_CLIENT_ACCESS_TOKEN": "JOHcP5e2mgPvL18thdztBPUxnS8uot5hfWN7wMYAZY0FXi2KdzfXilPiFASMRvCT",
+    "google_api_key": "",
+    "giphy_api_key": "",
+    "GENIUS_CLIENT_ACCESS_TOKEN": "",
     "show_search_term": "True",
     "ascii_font": "big",
     "stdout_stderr_channel": "432077087378243594"
