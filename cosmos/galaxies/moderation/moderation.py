@@ -7,6 +7,11 @@ import typing
 from .. import Cog
 
 
+class FakeGuildMember(discord.Object):
+
+    bot = False
+
+
 async def _has_permissions(ctx, perms):
     ch = ctx.channel
     permissions = ch.permissions_for(ctx.author)
@@ -176,14 +181,15 @@ class Moderation(Cog):
         If the user is not present in the server, their discord ID can be passed as member parameter.
 
         """
-        action = await self.__get_action(ctx, member, actions.Banned, reason)
         if isinstance(member, discord.Member):
             if not check_hierarchy(ctx.author, member):
                 return await ctx.send_line(f"❌    You can't ban {member}.")
             await member.ban(reason=reason)
-            await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
         else:
-            await ctx.guild.ban(discord.Object(member), reason=reason)
+            member = FakeGuildMember(member)
+            await ctx.guild.ban(member, reason=reason)
+        action = await self.__get_action(ctx, member, actions.Banned, reason)
+        await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
         embed = ctx.embed_line(f"✅    {member} has been banned from the server.")
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
@@ -193,8 +199,7 @@ class Moderation(Cog):
     @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, user_id: int, *, reason=None):
         """Un bans user from their discord ID."""
-        user = discord.Object(user_id)
-        user.bot = False
+        user = FakeGuildMember(user_id)
         action = await self.__get_action(ctx, user, actions.Unbanned, reason)
         try:
             await ctx.guild.unban(user, reason=reason)
