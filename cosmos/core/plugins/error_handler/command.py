@@ -30,10 +30,14 @@ class CommandErrorHandler(Cog):
         images = self.bot.theme.images
 
         try:
-            if isinstance(error.original, discord.Forbidden):
-                return
+            original = error.original
         except AttributeError:
             pass
+        else:
+            if isinstance(original, discord.Forbidden):
+                return
+            elif isinstance(original, exceptions.UserIsBotError):
+                return await ctx.send_line("Cosmos doesn't deals with unconscious broken robots.", images.robot)
 
         if isinstance(error, discord.Forbidden):
             pass
