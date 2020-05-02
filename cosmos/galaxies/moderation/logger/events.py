@@ -57,7 +57,8 @@ class LoggerEvents(Cog):
     async def on_message_delete(self, embed, message):
         if message.author.bot:
             return
-        embed.add_field(name="Deleted Message", value=message.clean_content, inline=False)
+        if message.clean_content:
+            embed.add_field(name="Deleted Message", value=message.clean_content, inline=False)
         embed.add_field(name="Author", value=message.author.mention)
         embed.add_field(name="Author Name", value=message.author)
         embed.add_field(name="Author ID", value=message.author.id)
