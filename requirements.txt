@@ -10,4 +10,3 @@ image-processor-client
 motor
 pyyaml
 sentry-sdk
-humanize
