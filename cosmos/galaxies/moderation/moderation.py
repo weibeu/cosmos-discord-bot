@@ -162,8 +162,8 @@ class Moderation(Cog):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't kick {member}.")
         action = await self.__get_action(ctx, member, actions.Kicked, reason)
-        await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         await member.kick(reason=reason)
+        await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         embed = ctx.embed_line(f"✅    {member} has been kicked from the server.")
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
@@ -177,11 +177,11 @@ class Moderation(Cog):
 
         """
         action = await self.__get_action(ctx, member, actions.Banned, reason)
-        await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
         if isinstance(member, discord.Member):
             if not check_hierarchy(ctx.author, member):
                 return await ctx.send_line(f"❌    You can't ban {member}.")
             await member.ban(reason=reason)
+            await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
         else:
             await ctx.guild.ban(discord.Object(member), reason=reason)
         embed = ctx.embed_line(f"✅    {member} has been banned from the server.")
