@@ -181,6 +181,8 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         pass
 
     async def get_guild_profile(self, guild_id: int) -> GuildMemberProfile:
+        if not self.plugin.bot.get_guild(guild_id):
+            raise exceptions.GuildNotFoundError(guild_id, self.id)
         profile = self.guild_profiles.get(guild_id)
         if not profile:
             document = await self.collection.find_one(
