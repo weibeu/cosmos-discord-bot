@@ -32,6 +32,8 @@ Usage:
 
 Setup reaction roles over any custom message you wish or you may skip this parameter to let bot post a embed displaying list of provided roles.
 
+The stack parameter determines if these roles can be stacked over member or not. Defaults to True or Yes, meaning members can have more than one of these roles. Pass 'no' to restrict and let them have only one of these roles.
+
 To use custom message, you can pass its shareable URL which can be obtained by right clicking over your custom message and click \`Copy Message Link\` from the floating menu. If you're using this command in same channel your message is present, you can simply pass its message ID.
 
 ```yaml
@@ -40,7 +42,10 @@ Aliases:
 - set
 
 Usage:
-'reaction role add [message] <roles...>
+;reaction role add [message] <roles...>
+
+# For unstacked roles. [Members can have only one of these roles.]
+;reaction role add [message] no <roles...>
 ```
 
 #### ;reaction role remove
