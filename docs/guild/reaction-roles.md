@@ -42,10 +42,14 @@ Aliases:
 - set
 
 Usage:
-;reaction role add [message] <roles...>
+;reaction role add [message] [stack=yes] <roles...>
+
+Examples:
+# For stacked roles. [Members can have more than one or all of these roles.]
+;reaction role add 706571261114843146 @role1 @role2 @role3
 
 # For unstacked roles. [Members can have only one of these roles.]
-;reaction role add [message] no <roles...>
+;reaction role add 706571261114843146 no @role1 @role2 @role3
 ```
 
 #### ;reaction role remove
