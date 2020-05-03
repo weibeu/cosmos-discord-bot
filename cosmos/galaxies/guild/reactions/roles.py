@@ -27,17 +27,25 @@ class ReactionRoles(Reactions):
             return
 
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
-        if roles := guild_profile.reactions.roles.get(payload.message_id):
-            emote = discord.utils.get(self.emotes, id=payload.emoji.id)
-            try:
-                role = roles[self.emotes.index(emote)]
-            except ValueError:
+        if rr := guild_profile.reactions.roles.get(payload.message_id):
+            role = None
+            message = await (await self.bot.fetch_channel(payload.channel_id)).fetch_message(payload.message_id)
+            for _, reaction in zip(rr.roles, message.reactions):
+                if payload.emoji == reaction.emoji:
+                    role = _
+                if isinstance(reaction.emoji, str):
+                    if payload.emoji.name == reaction.emoji:
+                        role = _
+            if not role:
                 return
             member = await guild_profile.guild.fetch_member(payload.user_id)
+            if not rr.stack:
+                # Check if member already has any of this reaction roles when stack = False.
+                if set(member.roles) & set(rr.roles):
+                    return
             await member.add_roles(role, reason="Issued reaction role.")
-            message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
             try:
-                await message.remove_reaction(emote, member)
+                await message.remove_reaction(payload.emoji, member)
             except discord.Forbidden:
                 pass
 
@@ -66,15 +74,16 @@ class ReactionRoles(Reactions):
             return await ctx.send_line(f"❌    You haven't set any reaction roles yet.")
         embed = ctx.embeds.one_line.primary(f"Reaction Roles", ctx.guild.icon_url)
         embed.description = "```css\nDisplaying all reaction roles attached to messages set in the server with IDs.```"
-        for message_id, roles in ctx.guild_profile.reactions.roles.items():
-            value = "`ROLES:` " + " ".join([role if not role else role.mention for role in roles])
-            embed.add_field(name=f"{ctx.emotes.misc.next}    {message_id}", value=value)
+        for rr in ctx.guild_profile.reactions.roles.values():
+            value = " ".join([role if not role else role.mention for role in rr.roles])
+            embed.add_field(name=f"{ctx.emotes.misc.next}    {rr.message_id}", value=value, inline=False)
         embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=embed)
 
+    # noinspection PyTypeChecker
     @reaction_roles.command(name="add", aliases=["setup", "set"])
-    async def add_roles(self, ctx,
-                        message: typing.Union[discord.Message, str] = None, *, roles: converters.RoleConvertor):
+    async def add_roles(self, ctx, message: typing.Union[
+            discord.Message, str] = None, stack: typing.Optional[bool] = True, *, roles: converters.RoleConvertor):
         """Setup reaction roles over any custom message you wish or you may skip this parameter to let bot post
         a embed displaying list of provided roles.
 
@@ -86,7 +95,6 @@ class ReactionRoles(Reactions):
         # Lookup by “{channel ID}-{message ID}” (retrieved by shift-clicking on “Copy ID”).
         # Lookup by message ID (the message must be in the context channel).
         # Lookup by message URL.
-        # noinspection PyTypeChecker
         if len(roles) >= self.plugin.data.reactions.max_roles:
             return await ctx.send_line(f"❌    You can't include anymore roles.")
         if len(ctx.guild_profile.reactions.roles
@@ -94,7 +102,6 @@ class ReactionRoles(Reactions):
             raise exceptions.GuildNotPrime("Click to get prime to create more reaction roles with all other features.")
         if not await ctx.confirm():
             return
-        # noinspection PyTypeChecker
         roles_emotes = list(zip(roles, self.emotes))
         if not isinstance(message, discord.Message):
             message = message or "Reaction Roles"
@@ -104,9 +111,19 @@ class ReactionRoles(Reactions):
             embed.description += "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes]) + "\n​"
             embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
             message = await ctx.send(embed=embed)
-        for _, emote in roles_emotes:
-            await message.add_reaction(emote)
-        await ctx.guild_profile.reactions.add_roles(message.id, roles)
+        if len(message.reactions) < len(roles):
+            try:
+                await message.clear_reactions()
+            except discord.Forbidden:
+                return await ctx.send_line(
+                    f"❌    The reactions on messages is less than the number of roles you want to use.")
+            else:
+                for _, emote in roles_emotes:
+                    await message.add_reaction(emote)
+        else:
+            for _, reaction in zip(roles, message.reactions):
+                await message.add_reaction(reaction.emoji)
+        await ctx.guild_profile.reactions.add_roles(message.id, roles, stack)
         await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")
 
     @reaction_roles.command(name="remove", aliases=["delete"])
