@@ -89,10 +89,11 @@ class CosmosPermissions(Settings):
         A function can be any of the commands, plugins or galaxies which are allowed to be disabled.
 
         """
+        suffix = "specified channels" if channels else "this server"
         channels = channels or (Settings.FakeGlobalGuildChannel(ctx.guild.id), )
         await ctx.guild_profile.permissions.disable_function(function, channels)
         # noinspection PyUnresolvedReferences
-        await ctx.send_line(f"✅    {function.name} has been disabled in specified channels.")
+        await ctx.send_line(f"✅    {function.name} has been disabled in {suffix}.")
 
     @Settings.group(name="enable", invoke_without_command=True)
     async def enable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
@@ -101,10 +102,11 @@ class CosmosPermissions(Settings):
         A function can be any of the commands, plugins or galaxies.
 
         """
+        suffix = "specified channels" if channels else "this server"
         channels = channels or (Settings.FakeGlobalGuildChannel(ctx.guild.id), )
         await ctx.guild_profile.permissions.enable_function(function, channels)
         # noinspection PyUnresolvedReferences
-        await ctx.send_line(f"✅    {function.name} has been enabled back in specified channels.")
+        await ctx.send_line(f"✅    {function.name} has been enabled back in {suffix}.")
 
     @disable.command(name="channels", aliases=["channel"])
     async def disable_channel(self, ctx, *channels: discord.TextChannel):
