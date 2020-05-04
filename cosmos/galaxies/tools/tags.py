@@ -52,14 +52,13 @@ class Tags(Cog):
         await ctx.send(embed=embed)
 
     @tag.command(name="create")
-    async def create_tag(
-            self, ctx, name, *, content: commands.clean_content(use_nicknames=False, fix_channel_mentions=True) = ""):
+    async def create_tag(self, ctx, name, *, content=str()):
         """Creates a new tag with specified name holding provided content."""
         if not (content or ctx.message.attachments):
             raise commands.UserInputError
         profile = await ctx.fetch_cosmos_user_profile()
         if len(profile.tags) >= self.plugin.data.tags.max_tags and not profile.is_prime:
-            raise UserNotPrime
+            raise UserNotPrime("Click to get prime to create infinite tags with all other features.")
         if profile.get_tag(name):
             if not await ctx.confirm(f"⚠    You already have existing tag with same name. Replace with new content?"):
                 return

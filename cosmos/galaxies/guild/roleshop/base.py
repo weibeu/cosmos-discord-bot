@@ -6,6 +6,8 @@ from .._models import GuildBaseCog
 
 class NotRoleShopRoleError(CommandError):
 
+    handled = True
+
     def __init__(self, role):
         self.role = role
 
@@ -42,7 +44,7 @@ class RoleShopBase(GuildBaseCog):
         paginator.embed.set_author(name="Role Shop", icon_url=ctx.author.avatar_url)
         await paginator.paginate()
 
-    @role_shop.error
-    async def role_shop_error(self, ctx, error):    # TODO: Override Command with custom dispatch_error method.
+    async def cog_command_error(self, ctx, error):    # TODO: Override Command with custom dispatch_error method.
         if isinstance(error, NotRoleShopRoleError):
-            await ctx.send_line(f"❌    {error.role.name} is not a role shop role.")
+            await ctx.send_line(
+                f"You can't purchase {error.role.name}. It is not a roleshop role.", self.bot.theme.images.cancel)

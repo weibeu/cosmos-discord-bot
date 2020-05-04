@@ -21,7 +21,7 @@ class WelcomeBanner(WelcomeBase):
     async def send_welcome_banner(self, guild, member, channel: discord.TextChannel = None):
         banner_format = guild.welcome_banner_url.split(".")[-1]
         if banner_format.lower() == "gif" and not guild.is_prime:
-            raise exceptions.GuildNotPrime
+            raise exceptions.GuildNotPrime("Click here to get prime to continue using GIF banners.")
         channel = channel or guild.welcome_banner_channel
         options = dict()
         if guild.theme.color:
@@ -60,11 +60,6 @@ class WelcomeBanner(WelcomeBase):
             return await ctx.send_line("❌    Please configure welcome banner settings.")
         await self.send_welcome_banner(ctx.guild_profile, ctx.author, ctx.channel)
 
-    @welcome_banner.error
-    async def welcome_banner_error(self, ctx, error):
-        if isinstance(error, exceptions.GuildNotPrime):
-            return await ctx.send_line(f"❌    Get prime to use GIF banners or set static banner.")
-
     @WelcomeBase.cooldown(1, 3, WelcomeBase.bucket_type.guild)
     @welcome_banner.command(name="set")
     async def set_welcome_banner(self, ctx, banner_url, channel: typing.Optional[discord.TextChannel] = None, *, text):
@@ -79,7 +74,7 @@ class WelcomeBanner(WelcomeBase):
         if banner_format not in self.plugin.data.settings.banner_formats:
             return await ctx.send_line("❌    Please use supported image format.")
         if banner_format == "gif" and not ctx.guild_profile.is_prime:
-            return await ctx.send_line("❌    Sorry but only prime servers can use GIF banners.")
+            raise exceptions.GuildNotPrime("Click here to get prime to set GIF banners with all other features.")
         banner_size = round((await self.bot.image_processor.utils.fetch_size(banner_url)) / 1048576, 2)
         banner_max_size = self.plugin.data.settings.banner_max_size
         if banner_size > banner_max_size:

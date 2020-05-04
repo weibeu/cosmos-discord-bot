@@ -14,7 +14,9 @@ class Marriage(Cog):
         self.plugin = plugin
         self.cache = self.plugin.cache
 
-    @Cog.group(name="propose", aliases=["proposal", "proposals", "marry", "accept"], invoke_without_command=True)
+    @Cog.group(name="propose", aliases=[
+        "proposal", "proposals", "marry", "accept", "date"
+    ], invoke_without_command=True)
     async def propose_user(self, ctx, *, user: discord.Member):
         """Lets you propose them. Luckily, if they have already prosed you, it proceeds for marriage."""
         if user.bot or user.id == ctx.author.id:

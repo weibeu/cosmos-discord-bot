@@ -8,13 +8,20 @@ description: >-
 
 ## ;disable
 
-Disables provided [function ](../reference.md#the-functions-hierarchy)from one or multiple channels which are specified.
+Disables provided [function](../reference.md#the-functions-hierarchy) in the server or from one or multiple channels which are specified.
 
 A function can be any of the commands, plugins or galaxies which are allowed to be disabled.
 
 ```yaml
 Usage:
 ;disable <function> [channels...]
+
+Examples:
+# To disable the function in server.
+;disable DeadMemes
+
+# To disable the function in provided channels.
+;disable DeadMemes #general #work
 ```
 
 ### ;disable channels
@@ -31,13 +38,20 @@ Usage:
 
 ## ;enable
 
-Enables provided [function ](../reference.md#the-functions-hierarchy)in all of the specified channels.
+Enables provided [function](../reference.md#the-functions-hierarchy) in the server or all of the specified channels.
 
 A function can be any of the commands, plugins or galaxies.
 
 ```yaml
 Usage:
 ;enable<function> [channels...]
+
+Examples:
+# To enable back the function in server.
+;enable DeadMemes
+
+# To enable the function in channels they were disabled previously.
+;enable DeadMemes #bots #pets
 ```
 
 ### ;enable channels

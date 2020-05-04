@@ -19,7 +19,7 @@ class CacheHandler(object):
             conn = await aioredis.connection.create_connection("redis://localhost", loop=self.bot.loop)
             self.redis = cachers.RedisCache(conn)
         except OSError:
-            self.bot.log.debug("Unable to connect to redis server. Check if it's running.")
-            self.bot.log.debug("Using cachers.AsyncDictCache instead.")
-            self.bot.log.debug("Most of the functions of web client will not work.")
+            # self.bot.log.debug("Unable to connect to redis server. Check if it's running.")
+            # self.bot.log.debug("Using cachers.AsyncDictCache instead.")
+            # self.bot.log.debug("Most of the functions of web client will not work.")
             self.redis = cachers.AsyncDictCache()   # Temporarily use normal dictionary if can't reach redis servers.

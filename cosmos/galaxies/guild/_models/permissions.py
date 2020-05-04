@@ -1,13 +1,21 @@
+from ... import Cog
+
+from .exceptions import FunctionIsInescapable
+
+
 class DisabledFunctions(object):
 
-    def __init__(self, bot, document):
-        self.__bot = bot
+    def __init__(self, profile, document):
+        self.__profile = profile
+        self.__bot = self.__profile.plugin.bot
         self.__fetch_commands(document.get("commands", dict()))    # {command_name: [channel_ids], }
         self.__fetch_plugins(document.get("plugins", dict()))
         self.__fetch_galaxies(document.get("galaxies", dict()))
 
     def __get_channels(self, channel_ids):
-        return [self.__bot.get_channel(_) for _ in channel_ids]
+        if self.__profile.id in channel_ids:
+            return {Cog.FakeGlobalGuildChannel(self.__profile.id)}
+        return {self.__bot.get_channel(_) for _ in channel_ids}
 
     def __fetch_commands(self, _documents):
         for command_name, channel_ids in _documents.items():
@@ -47,12 +55,15 @@ class GuildPermissions(object):
         # self.disabled_galaxies = []    # function = "galaxies"
         # Generalisation of above three attributes are represented using '_disabled'.
         disabled_document = document.get("disabled", dict())
-        self.disabled = DisabledFunctions(self.profile.plugin.bot, disabled_document.get("functions", dict()))
+        self.disabled = DisabledFunctions(self.profile, disabled_document.get("functions", dict()))
         # Channels in which bot can't respond to commands or send any kind of message.
         self.disabled_channels = {self.profile.plugin.bot.get_channel(_) for _ in disabled_document.get("channels", [])}
 
     async def disable_function(self, _, channels):
-        _.disabled_channels.update(channels)
+        try:
+            _.disabled_channels.update(channels)
+        except AttributeError:
+            raise FunctionIsInescapable
 
         await self.profile.collection.update_one(self.profile.document_filter, {
             "$addToSet": {
@@ -61,7 +72,10 @@ class GuildPermissions(object):
         })
 
     async def enable_function(self, _, channels):
-        _.disabled_channels.difference_update(channels)
+        try:
+            _.disabled_channels.difference_update(channels)
+        except AttributeError:
+            raise FunctionIsInescapable
 
         await self.profile.collection.update_one(self.profile.document_filter, {
             "$pull": {

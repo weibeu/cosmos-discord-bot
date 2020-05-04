@@ -28,6 +28,7 @@ var/
 .vscode/
 
 # Environments
+env.py
 .env
 .venv
 env/

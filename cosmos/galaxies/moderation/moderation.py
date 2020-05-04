@@ -7,6 +7,14 @@ import typing
 from .. import Cog
 
 
+class FakeGuildMember(discord.Object):
+
+    bot = False
+
+    def __str__(self):
+        return str(self.id)
+
+
 async def _has_permissions(ctx, perms):
     ch = ctx.channel
     permissions = ch.permissions_for(ctx.author)
@@ -124,7 +132,8 @@ class Moderation(Cog):
         profile = await ctx.fetch_member_profile(_id)
         if not profile.moderation_logs:
             return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
-        paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
+        paginator = ctx.get_field_paginator(
+            profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False, per_page=7)
         paginator.embed.description = f"**User:** `{member}`\n**User ID:** `{_id}`"
         paginator.embed.set_author(name="Moderation Logs", icon_url=member.avatar_url)
         await paginator.paginate()
@@ -162,8 +171,8 @@ class Moderation(Cog):
         if not check_hierarchy(ctx.author, member):
             return await ctx.send_line(f"❌    You can't kick {member}.")
         action = await self.__get_action(ctx, member, actions.Kicked, reason)
-        await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         await member.kick(reason=reason)
+        await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         embed = ctx.embed_line(f"✅    {member} has been kicked from the server.")
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
@@ -176,17 +185,15 @@ class Moderation(Cog):
         If the user is not present in the server, their discord ID can be passed as member parameter.
 
         """
+        if isinstance(member, discord.Member):
+            if not check_hierarchy(ctx.author, member):
+                return await ctx.send_line(f"❌    You can't ban {member}.")
+            await member.ban(reason=reason)
+        else:
+            member = FakeGuildMember(member)
+            await ctx.guild.ban(member, reason=reason)
         action = await self.__get_action(ctx, member, actions.Banned, reason)
         await action.dispatch(f"‼    You were banned from {ctx.guild.name}.")
-        try:
-            if isinstance(member, discord.Member):
-                if not check_hierarchy(ctx.author, member):
-                    return await ctx.send_line(f"❌    You can't ban {member}.")
-                await member.ban(reason=reason)
-            else:
-                await ctx.guild.ban(discord.Object(member), reason=reason)
-        except discord.HTTPException:
-            return await ctx.send_line(f"❌    Failed to ban {member}.")
         embed = ctx.embed_line(f"✅    {member} has been banned from the server.")
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
@@ -196,11 +203,12 @@ class Moderation(Cog):
     @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, user_id: int, *, reason=None):
         """Un bans user from their discord ID."""
-        action = await self.__get_action(ctx, user_id, actions.Unbanned, reason)
+        user = FakeGuildMember(user_id)
+        action = await self.__get_action(ctx, user, actions.Unbanned, reason)
         try:
-            await ctx.guild.unban(discord.Object(user_id), reason=reason)
+            await ctx.guild.unban(user, reason=reason)
         except discord.HTTPException:
-            return await ctx.send_line(f"❌    Failed to unban {user_id}.")
+            return await ctx.send_line(f"Failed to unban user {user_id}.", self.bot.theme.images.error)
         await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
 
@@ -266,3 +274,12 @@ class Moderation(Cog):
         await guild_profile.set_role("muted", role.id)
         await ctx.send_line(f"✅    {role.name} has been assigned to be used as muted role.")
         # TODO: Set overrides if new channel has been created.
+
+    async def cog_command_error(self, ctx, error):
+        try:
+            if isinstance(error.original, discord.Forbidden):
+                return await ctx.send_line(
+                    f"Cosmos is forbidden to {ctx.command.name} them. Maybe check roles hierarchy?",
+                    self.bot.theme.images.no_entry)
+        except AttributeError:
+            pass
