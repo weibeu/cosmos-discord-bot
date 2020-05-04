@@ -52,8 +52,7 @@ class Tags(Cog):
         await ctx.send(embed=embed)
 
     @tag.command(name="create")
-    async def create_tag(
-            self, ctx, name, *, content: commands.clean_content(use_nicknames=False, fix_channel_mentions=True) = ""):
+    async def create_tag(self, ctx, name, *, content=str()):
         """Creates a new tag with specified name holding provided content."""
         if not (content or ctx.message.attachments):
             raise commands.UserInputError
