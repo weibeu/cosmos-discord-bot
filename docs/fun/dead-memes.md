@@ -14,7 +14,7 @@ Usage:
 
 Examples:
 # Any custom text.
-;spongebobmock "Frick mock this text please oof LOL oof."
+;spongebobmock Frick mock this text please oof LOL oof oof.
 
 # Any older discord message.
 ;spongebobmock https://discordapp.com/channels/336642139381301249/381963689470984203/706812508131819571
