@@ -106,7 +106,7 @@ class CosmosPermissions(Settings):
         """Disables bot commands and most of its automatic messages in current or provided channels."""
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.disable_channels(channels)
-        await ctx.send_line(f"✅    Bot commands and messages has been disabled in specified channels.")
+        await ctx.send_line(f"✅    Cosmos has been disabled in specified channels.")
 
     @enable.command(name="channels", aliases=["channel"])
     async def enable_channel(self, ctx, *channels: discord.TextChannel):
@@ -116,7 +116,7 @@ class CosmosPermissions(Settings):
         """
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.enable_channels(channels)
-        await ctx.send_line(f"✅    Bot commands and messages has been enabled in specified channels.")
+        await ctx.send_line(f"✅    Cosmos has been enabled in specified channels.")
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, FunctionIsInescapable):
