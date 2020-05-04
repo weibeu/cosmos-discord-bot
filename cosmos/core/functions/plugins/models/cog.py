@@ -1,8 +1,15 @@
+import discord
+
 from ... import exceptions
 from discord.ext import commands
 
 from .checks import CosmosChecks
 from .commands import cosmos_command, cosmos_group_command
+
+
+class FakeGlobalGuildChannel(discord.Object):
+
+    ...
 
 
 class Cog(commands.Cog, metaclass=commands.CogMeta):
@@ -19,6 +26,7 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
     FUNCTION = "plugins"
     INESCAPABLE = True    # Determines if cog can be disabled by guild admins.
     # TODO: Handle cog listeners.
+    FakeGlobalGuildChannel = FakeGlobalGuildChannel
 
     def __init__(self, *args, **kwargs):
         # TODO: Improve this.
@@ -32,6 +40,8 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
 
     async def cog_check(self, ctx):
         if not self.INESCAPABLE:
+            if FakeGlobalGuildChannel(ctx.guild.id) in self.disabled_channels:
+                raise exceptions.DisabledFunctionError(globally=True)
             if ctx.channel in self.disabled_channels:
                 raise exceptions.DisabledFunctionError
         return True

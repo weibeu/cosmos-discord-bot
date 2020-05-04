@@ -47,7 +47,11 @@ class CommandErrorHandler(Cog):
             await ctx.send_line(error.message, icon_url=images.privacy, author_url=self.bot.configs.info.patreon)
 
         elif isinstance(error, exceptions.DisabledFunctionError):
-            await self.__send_response(ctx, images.unavailable, "That function has been disabled in this channel.")
+            if error.globally:
+                res = "That function has been disabled in this server."
+            else:
+                res = "That function has been disabled in this channel."
+            await self.__send_response(ctx, images.unavailable, res)
 
         elif isinstance(error, exceptions.CosmosIsDisableError):
             pass

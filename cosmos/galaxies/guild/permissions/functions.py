@@ -44,10 +44,11 @@ class CosmosPermissions(Settings):
         self.bot.add_check(self.__galaxies_check)
         self.bot.add_check(self.__channels_check)
 
-    @staticmethod
-    async def __commands_check(ctx):
+    async def __commands_check(self, ctx):
         try:
             if not ctx.command.inescapable:
+                if self.FakeGlobalGuildChannel(ctx.guild.id) in ctx.command.disabled_channels:
+                    raise exceptions.DisabledFunctionError(globally=True)
                 if ctx.channel in ctx.command.disabled_channels:
                     raise exceptions.DisabledFunctionError
             return True
@@ -63,6 +64,8 @@ class CosmosPermissions(Settings):
             if ctx.command.cog.name == self.name:
                 return True    # Ignore this cog.
             if plugin and not plugin.INESCAPABLE:
+                if self.FakeGlobalGuildChannel(ctx.guild.id) in plugin.disabled_channels:
+                    raise exceptions.DisabledFunctionError(globally=True)
                 if ctx.channel in plugin.disabled_channels:
                     raise exceptions.DisabledFunctionError
         return True
@@ -77,6 +80,8 @@ class CosmosPermissions(Settings):
             raise exceptions.CosmosIsDisableError
         return True
 
+    # TODO: Update _.disabled_channels on channel delete.
+
     @Settings.group(name="disable", invoke_without_command=True)
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                       *channels: discord.TextChannel):
@@ -84,7 +89,7 @@ class CosmosPermissions(Settings):
         A function can be any of the commands, plugins or galaxies which are allowed to be disabled.
 
         """
-        channels = channels or (ctx.channel, )
+        channels = channels or (Settings.FakeGlobalGuildChannel(ctx.guild.id), )
         await ctx.guild_profile.permissions.disable_function(function, channels)
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been disabled in specified channels.")
@@ -96,7 +101,7 @@ class CosmosPermissions(Settings):
         A function can be any of the commands, plugins or galaxies.
 
         """
-        channels = channels or (ctx.channel, )
+        channels = channels or (Settings.FakeGlobalGuildChannel(ctx.guild.id), )
         await ctx.guild_profile.permissions.enable_function(function, channels)
         # noinspection PyUnresolvedReferences
         await ctx.send_line(f"✅    {function.name} has been enabled back in specified channels.")
@@ -120,4 +125,4 @@ class CosmosPermissions(Settings):
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, FunctionIsInescapable):
-            await ctx.send_line(f"❌    You cannot disable inescapable functions.")
+            await ctx.send_line(f"❌    You cannot disable an inescapable function.")

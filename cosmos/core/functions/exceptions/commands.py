@@ -21,7 +21,8 @@ class UserNotPrime(NotPrime):
 
 class DisabledFunctionError(commands.CheckFailure):
 
-    pass
+    def __init__(self, globally=False):
+        self.globally = globally
 
 
 class CosmosIsDisableError(commands.CheckFailure):
