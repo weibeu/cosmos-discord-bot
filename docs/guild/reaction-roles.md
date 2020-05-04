@@ -36,6 +36,8 @@ The stack parameter determines if these roles can be stacked over member or not.
 
 To use custom message, you can pass its shareable URL which can be obtained by right clicking over your custom message and click \`Copy Message Link\` from the floating menu. If you're using this command in same channel your message is present, you can simply pass its message ID.
 
+Moreover, if you want to use custom emotes, use a custom message and react with reactions you want to use over it. Cosmos will automatically consider them, but make sure you use the emotes which is from the server where Cosmos bot is present. 
+
 ```yaml
 Aliases:
 - setup
@@ -50,6 +52,9 @@ Examples:
 
 # For unstacked roles. [Members can have only one of these roles.]
 ;reaction role add 706571261114843146 no @role1 @role2 @role3
+
+# Use the default embed message.
+;reaction role add "Select your regional role" no @Asia @UK @NA
 ```
 
 #### ;reaction role remove
