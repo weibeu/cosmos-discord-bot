@@ -85,7 +85,7 @@ class CosmosPermissions(Settings):
     @Settings.group(name="disable", invoke_without_command=True)
     async def disable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                       *channels: discord.TextChannel):
-        """Disables provided function from one or multiple channels which are specified.
+        """Disables provided function in the server or from one or multiple channels which are specified.
         A function can be any of the commands, plugins or galaxies which are allowed to be disabled.
 
         """
@@ -98,7 +98,7 @@ class CosmosPermissions(Settings):
     @Settings.group(name="enable", invoke_without_command=True)
     async def enable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
                      *channels: discord.TextChannel):
-        """Enables provided function in all of the specified channels.
+        """Enables provided function in the server or all of the specified channels.
         A function can be any of the commands, plugins or galaxies.
 
         """
