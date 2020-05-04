@@ -1,7 +1,10 @@
+from discord.ext import commands
+
 import arrow
 import discord
 import random
 import typing
+
 from .. import Cog
 
 
@@ -32,10 +35,16 @@ class DeadMemes(Cog):
     async def sponge_bob_mock(self, ctx, *, message: typing.Union[discord.Message, str]):
         """Spongebob mocks provided message or text and sends it back."""
         embed = ctx.embeds.primary()
-        message = message if isinstance(message, discord.Message) else ctx.message
-        at = arrow.get(message.created_at)
-        embed.set_author(name=f"{message.author} {at.humanize()} ...", icon_url=message.author.avatar_url)
-        embed.description = self.mock(message.content)
-        embed.set_footer(text=f"#{message.channel} | {ctx.guild.name}", icon_url=ctx.guild.icon_url)
-        embed.timestamp = message.created_at
+        if isinstance(message, discord.Message):
+            target = message
+            content = message.content
+        else:
+            target = ctx.message
+            content = message
+        at = arrow.get(target.created_at)
+        name = target.author.nick or target.author.name
+        embed.set_author(name=f"{name} {at.humanize()} ...", icon_url=target.author.avatar_url)
+        embed.description = self.mock(await commands.clean_content().convert(ctx, content))
+        embed.set_footer(text=f"#{target.channel} | {ctx.guild.name}", icon_url=ctx.guild.icon_url)
+        embed.timestamp = target.created_at
         await ctx.send(embed=embed)
