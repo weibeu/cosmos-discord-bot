@@ -49,7 +49,7 @@
 
 ## FUN
 
-* [Dank Memes](fun/dead-memes.md)
+* [Dead Memes](fun/dead-memes.md)
 
 ## -- Extras --
 
