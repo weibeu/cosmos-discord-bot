@@ -15,6 +15,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * PROFILE
 * SETTING
 * TOOLS
+* FUN
 
 #### Plugins
 
@@ -22,6 +23,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [AutoModeration](moderation/auto-moderation.md)
 * [Economy](profile/economy.md)
 * [CosmosPermissions](guild/cosmos-permissions.md)
+* [DeadMemes](fun/dead-memes.md)
 * [GuildSettings](guild/guild-settings/)
 * [HasteBin](tools/haste-bin.md)
 * [Leaderboards](profile/leaderboards.md)
@@ -88,6 +90,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [reactor](https://cosmos.thecosmos.space/reactor#reactor) | Displays reactor settings of current or specified channel. | `;reactor [channel]` |
 | [rep](https://cosmos.thecosmos.space/profile/profile#rep) | Add a reputation point to specified member. | `;rep [user]` |
 | [roleshop](https://cosmos.thecosmos.space/role-shop#roleshop) | Displays all of the roles which can be purchased from role shop. | `;roleshop` |
+| [spongebobmock](https://cosmos.thecosmos.space/dead-memes#spongebobmock) | Spongebob mocks provided message or text and sends it back. | `;spongebobmock <message>` |
 | [starboard](https://cosmos.thecosmos.space/starboard#starboard) | Configure Starboard in server. | `;starboard <sub-command> ...` |
 | [tag](https://cosmos.thecosmos.space/tools/tags#tag) | Retrieves and displays specified tag and all of its contents. | `;tag <name>` |
 | [tags](https://cosmos.thecosmos.space/tools/tags#tags) | Displays list of custom tags created and owned by you. | `;tags` |

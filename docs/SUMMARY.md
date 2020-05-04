@@ -47,6 +47,10 @@
 * [Tags](tools/tags.md)
 * [Haste Bin](tools/haste-bin.md)
 
+## FUN
+
+* [Dank Memes](fun/dead-memes.md)
+
 ## -- Extras --
 
 * [FAQs](extras/faqs.md)
