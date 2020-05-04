@@ -74,7 +74,7 @@ class CosmosPermissions(Settings):
         guild_profile = await self.bot.guild_cache.get_profile(ctx.guild.id)
         disabled_channels = guild_profile.permissions.disabled_channels
         if disabled_channels and ctx.channel in disabled_channels:
-            raise exceptions.DisabledFunctionError
+            raise exceptions.CosmosIsDisableError
         return True
 
     @Settings.group(name="disable", invoke_without_command=True)

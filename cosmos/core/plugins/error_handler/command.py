@@ -49,6 +49,9 @@ class CommandErrorHandler(Cog):
         elif isinstance(error, exceptions.DisabledFunctionError):
             await self.__send_response(ctx, images.unavailable, "That function has been disabled in this channel.")
 
+        elif isinstance(error, exceptions.CosmosIsDisableError):
+            pass
+
         elif isinstance(error, commands.BotMissingPermissions):
             await self.__send_response(
                 ctx, images.mandenied,

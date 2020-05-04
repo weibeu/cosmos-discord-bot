@@ -22,3 +22,8 @@ class UserNotPrime(NotPrime):
 class DisabledFunctionError(commands.CheckFailure):
 
     pass
+
+
+class CosmosIsDisableError(commands.CheckFailure):
+
+    ...
