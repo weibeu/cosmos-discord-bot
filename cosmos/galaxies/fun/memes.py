@@ -38,13 +38,23 @@ class DeadMemes(Cog):
         if isinstance(message, discord.Message):
             target = message
             content = message.content
+            guild = message.guild
         else:
             target = ctx.message
             content = message
+            guild = ctx.guild
+        if not content:
+            try:
+                _embed = message.embeds[0]
+            except IndexError:
+                return
+            else:
+                if not (content := _embed.description):
+                    return
         at = arrow.get(target.created_at)
         name = target.author.nick or target.author.name
         embed.set_author(name=f"{name} {at.humanize()} ...", icon_url=target.author.avatar_url)
         embed.description = self.mock(await commands.clean_content().convert(ctx, content))
-        embed.set_footer(text=f"#{target.channel} | {ctx.guild.name}", icon_url=ctx.guild.icon_url)
+        embed.set_footer(text=f"#{target.channel} | {guild.name}", icon_url=guild.icon_url)
         embed.timestamp = target.created_at
         await ctx.send(embed=embed)
