@@ -45,6 +45,8 @@ class CosmosPermissions(Settings):
         self.bot.add_check(self.__channels_check)
 
     async def __commands_check(self, ctx):
+        if not ctx.guild:
+            return True
         try:
             if not ctx.command.inescapable:
                 if self.FakeGlobalGuildChannel(ctx.guild.id) in ctx.command.disabled_channels:
@@ -56,6 +58,8 @@ class CosmosPermissions(Settings):
             return True
 
     async def __galaxies_check(self, ctx):
+        if not ctx.guild:
+            return True
         try:
             plugin = ctx.command.cog.plugin
         except AttributeError:

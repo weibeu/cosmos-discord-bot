@@ -39,6 +39,8 @@ class Cog(commands.Cog, metaclass=commands.CogMeta):
             self.disabled_channels = set()
 
     async def cog_check(self, ctx):
+        if not ctx.guild:
+            return True
         if not self.INESCAPABLE:
             if FakeGlobalGuildChannel(ctx.guild.id) in self.disabled_channels:
                 raise exceptions.DisabledFunctionError(globally=True)
