@@ -47,6 +47,7 @@ class SecretConfessions(Cog):
         You can make only one confession every 7 minutes.
 
         """
+        # TODO: Disable this command when secret confessions or this function has been disabled.
         if ctx.author not in guild_profile.guild.members:
             return await ctx.send_line(f"❌    You can't make confession in server you're not in.")
         if not guild_profile.confessions_channel:
