@@ -6,6 +6,8 @@ from .. import Cog
 class Leaderboards(Cog):
     """Leaderboard commands over various properties of user profile."""
 
+    INESCAPABLE = False
+
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
@@ -51,7 +53,7 @@ class Leaderboards(Cog):
         key, value = await self.__entry_parser(*args, **kwargs)
         return key, f"`TOTAL GLOBAL XP:` {value}"
 
-    @Cog.group(name="leaderboards", aliases=["leaderboard", "lb"], invoke_without_command=True)
+    @Cog.group(name="leaderboards", aliases=["leaderboard", "lb"], invoke_without_command=True, inescapable=False)
     async def leaderboards(self, ctx):
         """Displays top members with maximum chat experience points."""
         profile = await ctx.fetch_member_profile()
