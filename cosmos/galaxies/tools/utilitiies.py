@@ -40,7 +40,8 @@ class Utilities(Cog):
 
         """
         if msg:
-            ptext = title = description = image = thumbnail = color = footer = author = None
+            ptext = None
+            title = description = image = thumbnail = color = footer = author = discord.Embed.Empty
             timestamp = discord.Embed.Empty
             embed_values = msg.split('|')
             for i in embed_values:
@@ -79,8 +80,7 @@ class Utilities(Cog):
 
             if ptext is title is description is image is \
                     thumbnail is color is footer is author is None and 'field=' not in msg:
-                await ctx.message.delete()
-                return await ctx.send(content=None, embed=discord.Embed(description=msg))
+                return await ctx.send(embed=discord.Embed(description=msg))
 
             if color:
                 em = discord.Embed(timestamp=timestamp, title=title, description=description, color=int(color, 16))
@@ -129,9 +129,8 @@ class Utilities(Cog):
                   'the <> stuff):\ntitle=<words>\ndescription=<words>\ncolor=<hex_value>\nimage=<url_to_image> '      \
                   '(must be https)\nthumbnail=<url_to_image>\nauthor=<words> **OR** author=name=<words> icon='        \
                   '<url_to_image>\nfooter=<words> **OR** footer=name=<words> icon=<url_to_image>\nfield=name=<'       \
-                  'words> value=<words> (you can add as many fields as you want)\nptext=<words>\n\nNOTE: After t'     \
-                  'he command is sent, the bot will delete your message and replace it with '                         \
-                  'the embed. Make sure you have it saved or else you\'ll have to type it all again if the embed'     \
+                  'words> value=<words> (you can add as many fields as you want)\nptext=<words>\n'                    \
+                  'Make sure you have it saved or else you\'ll have to type it all again if the embed'                \
                   ' isn\'t how you want it.\nPS: Hyperlink text like so: [text](https://www.whateverlink.com)\nPPS:'  \
                   ' Force a field to go to the next line with the added parameter inline=False```'
             await ctx.send(msg)
