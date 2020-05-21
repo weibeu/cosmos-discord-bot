@@ -27,6 +27,10 @@ class Starboard(Settings):
         if payload.emoji.name not in self.STARS:
             return
 
+        user = self.bot.get_user(payload.user_id)
+        if not user or user.bot:
+            return
+
         guild_profile = await self.bot.guild_cache.get_profile(payload.guild_id)
         if starboard := guild_profile.starboard:
             message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
