@@ -3,23 +3,26 @@ import random
 
 import discord
 
+from discord.ext import tasks
 from ..admin.base import Admin
 
 
 class Presence(Admin):
 
+    UPDATE_INTERVAL = 17
+
     def __init__(self, plugin):
         super().__init__(plugin)
         self.rotate = self.plugin.data.configs.rotate
-        self.rotate_task = self.bot.loop.create_task(self.rotate_presence())
         # Inject version and release.
         release_meta = f"{self.bot.release} - {self.bot.version}"
         self.plugin.data.messages.playing.append(release_meta)
         self.plugin.data.messages.streaming.append(release_meta)
+        self.update_presence.start()
 
     def cog_unload(self):
         self.bot.log.info("Stopping presence rotation.")
-        self.rotate_task.cancel()
+        self.update_presence.stop()
         self.bot.loop.create_task(self.set_presence())
 
     async def set_presence(self, activity_type=None, message=None, **kwargs):
@@ -59,9 +62,12 @@ class Presence(Admin):
                 activity_type = activity
                 return tuple([activity_type, message])
 
-    async def rotate_presence(self):
+    @tasks.loop(seconds=UPDATE_INTERVAL)
+    async def update_presence(self):
+        args = self._get_args()
+        await self.set_presence(*args)
+        await asyncio.sleep(self.plugin.data.configs.interval)
+
+    @update_presence.before_loop
+    async def before_update_presence(self):
         await self.bot.wait_until_ready()
-        while self.rotate:
-            args = self._get_args()
-            await self.set_presence(*args)
-            await asyncio.sleep(self.plugin.data.configs.interval)

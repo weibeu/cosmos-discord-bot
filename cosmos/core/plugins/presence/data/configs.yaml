@@ -3,7 +3,7 @@
 
 rotate: Yes    # Rotate presence or nah (default).
 
-interval: 17    # Rotate bot status after interval seconds. [RATE LIMIT: 5/60s]
+interval: 17    # Rotate bot status after interval seconds. [RATE LIMIT: 5/60s] // Moved to Presence class property.
 
 activity_type: random    # Can be any from messages.yaml.keys() or random.
 
