@@ -58,7 +58,7 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         self.rank = None
         # self.inventory = []
         # self.on_time: int = None
-        self.guild_profiles = self.plugin.bot.cache.lfu(self.plugin.data.profile.guild_profiles_cache_max_size)
+        self.guild_profiles = self.plugin.bot.cache.lru(self.plugin.data.profile.guild_profiles_cache_max_size)
         self.__collection = self.plugin.collection
         if self.plugin.data.profile.fetch_guild_profiles:
             self.plugin.bot.create_task(self.__fetch_guild_profiles())    # TODO: Fetch profiles of all guilds.

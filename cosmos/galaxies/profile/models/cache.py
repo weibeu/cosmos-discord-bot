@@ -19,7 +19,7 @@ class ProfileCache(object):
         self.plugin = plugin
         self.bot = self.plugin.bot
         self._redis = None
-        self.lfu = self.bot.cache.lfu(self.plugin.data.profile.cache_max_size)
+        self.lfu = self.bot.cache.lru(self.plugin.data.profile.cache_max_size)
         self.collection = self.plugin.collection
         self.update_database.start()
         # self.update_database_task = tasks.loop(
