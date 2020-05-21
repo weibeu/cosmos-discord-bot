@@ -39,6 +39,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [Starboard](guild/starboard.md)
 * [Tags](tools/tags.md)
 * [UserVerification](moderation/user-verification.md)
+* [Utilities](tools/utilities.md)
 * [Welcome](guild/welcome/)
 
 #### **Primary** Commands
@@ -70,6 +71,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [confessions](guild/secret-confessions.md#confessions) | Lets you confess anonymously in specified server. | `;confess <server_id> <confession>` |
 | [disable](guild/cosmos-permissions.md#disable) | Disables provided function from one or multiple channels which are specified. | `;disable <function> [channels...]` |
 | [divorce](https://cosmos.thecosmos.space/profile/marriage#divorce) | Lets you divorce if you're already married to someone. | `;divorce` |
+| [embed](tools/utilities.md#embed) | Make bot send a neat embed with all provided attributes. | `;embed [msg]` |
 | [enable](guild/cosmos-permissions.md#enable) | Enables provided function in all of the specified channels. | `;enable <function> [channels...]` |
 | [fermions](https://cosmos.thecosmos.space/profile/economy#fermions) | Displays number of Fermions you have. | `;fermions` |
 | [givepoints](guild/role-shop/settings.md#givepoints) | Generate and give points to specified member. | `;givepoints <points> <member>` |

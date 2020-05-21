@@ -46,6 +46,7 @@
 
 * [Tags](tools/tags.md)
 * [Haste Bin](tools/haste-bin.md)
+* [Utilities](tools/utilities.md)
 
 ## FUN
 
