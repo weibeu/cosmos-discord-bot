@@ -1,9 +1,9 @@
 collection_name: profiles
 
-cache_max_size: 1000
+cache_max_size: 10000
 cache_all: No    # Cache ^ members profile on ready.
 
-guild_profiles_cache_max_size: 10
+guild_profiles_cache_max_size: 20
 
 rep_cooldown: 20    # Cooldown for awarding reputation points in hours.
 
