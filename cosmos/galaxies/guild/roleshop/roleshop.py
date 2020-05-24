@@ -42,10 +42,10 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         _role = ctx.guild_profile.roleshop.roles.get(role.id)
         if _role in profile.roleshop.roles:
             return await ctx.send_line(f"❌    You have already purchased {role.name}.")
-        if await ctx.confirm(f"⚠    Are you sure to purchase {role.name}?"):
+        if await ctx.confirm(f"⚠    Are you sure to purchase {role.name}?", delete=True):
             await ctx.guild_profile.roleshop.buy_role(profile, role.id)
             await ctx.send_line(f"✅    {role.name} purchased. Now you're left with {profile.points} guild points.")
-            if await ctx.confirm(f"❓    Equip {role.name} right now?"):
+            if await ctx.confirm(f"❓    Equip {role.name} right now?", delete=True):
                 await ctx.author.add_roles(role, reason="Role purchased from role shop.")
 
     @buy_role.error
