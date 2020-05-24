@@ -102,9 +102,10 @@ class ConfirmMenu(object):
     TRUE_STRINGS = ["yes", "yep", "yeah", "yea", ]
     FALSE_STRINGS = ["no", "nope", "negative", ]
 
-    def __init__(self, ctx, message=None):
+    def __init__(self, ctx, message=None, delete=False):
         self.ctx = ctx
         self.message = message or self.ctx.message
+        self.delete = delete
         self.emotes = [
             self.ctx.bot.emotes.misc.check,
             self.ctx.bot.emotes.misc.close
@@ -161,6 +162,8 @@ class ConfirmMenu(object):
                 if response.content in self.TRUE_STRINGS:
                     self.confirmed = True
             finally:
+                if self.delete:
+                    return await self.message.delete()
                 try:
                     for emote in self.emotes:
                         await self.message.remove_reaction(emote, self.ctx.author)

@@ -67,7 +67,7 @@ class CosmosContext(commands.Context):
     def get_field_menu(self, *args, **kwargs):
         return FieldMenu(self, *args, **kwargs)
 
-    async def confirm(self, message=None):
-        menu = ConfirmMenu(self, message)
+    async def confirm(self, message=None, delete=False):
+        menu = ConfirmMenu(self, message, delete=delete)
         await menu.wait_for_confirmation()
         return menu.confirmed
