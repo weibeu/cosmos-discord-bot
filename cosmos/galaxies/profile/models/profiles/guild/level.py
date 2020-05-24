@@ -61,13 +61,7 @@ class UserLevel(ABC):
 class MemberLevel(GuildMemberProfileBase, UserLevel, ABC):
 
     async def level_up_callback(self, _):
-        guild_profile = await self.fetch_guild_profile()
-        await guild_profile.levels.give_rewards(self, channel="text")
-
         self.plugin.bot.dispatch("text_level_up", self, _)
 
     async def voice_level_up_callback(self):
-        guild_profile = await self.fetch_guild_profile()
-        await guild_profile.levels.give_rewards(self, channel="voice")
-
         self.plugin.bot.dispatch("voice_level_up", self)

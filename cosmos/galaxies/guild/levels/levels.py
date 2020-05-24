@@ -29,17 +29,14 @@ class Levels(GuildBaseCog):
     INESCAPABLE = False
 
     @GuildBaseCog.listener()
-    async def on_text_level_up(self, profile, channel):
-        # guild_profile = await self.bot.guild_cache.get_profile(profile.guild.id)
-        # if channel in guild_profile.permissions.disabled_channels:
-        #     return
-        # if guild_profile.get_logger("on_text_level_up"):
-        #     return
-        # embed = self.bot.theme.embeds.one_line.primary(f"Congratulations {profile.user.name}! "
-        #                                                f"You advanced to level {profile.level}.",
-        #                                                self.bot.theme.images.chevron)
-        # await channel.send(profile.user.mention, embed=embed)
-        pass
+    async def on_text_level_up(self, profile, _channel):
+        guild_profile = await profile.fetch_guild_profile()
+        await guild_profile.levels.give_rewards(profile, channel="text")
+
+    @GuildBaseCog.listener()
+    async def on_voice_level_up(self, profile):
+        guild_profile = await profile.fetch_guild_profile()
+        await guild_profile.levels.give_rewards(profile, channel="voice")
 
     async def get_level_embed(self, profile):
         try:
