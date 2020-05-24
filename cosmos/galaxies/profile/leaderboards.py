@@ -3,6 +3,16 @@ import discord
 from .. import Cog
 
 
+class NotFoundUser(discord.Object):
+
+    def __str__(self):
+        return str(self.id)
+
+    @property
+    def name(self):
+        return self.__str__()
+
+
 class Leaderboards(Cog):
     """Leaderboard commands over various properties of user profile."""
 
@@ -23,14 +33,27 @@ class Leaderboards(Cog):
         ]
         return await self.plugin.cache.collection.aggregate(pipeline).to_list(None)
 
-    async def __entry_parser(self, ctx, document, documents, show_discriminator=False):
+    @staticmethod
+    async def __filter(fetch_method, async_fetch_method, documents):
+        __documents = []
+        for d in documents:
+            user_id = d["_id"]
+            user = fetch_method(user_id)
+            if not user:
+                try:
+                    user = await async_fetch_method(user_id)
+                except discord.NotFound:
+                    user = NotFoundUser(user_id)
+            d["user"] = user
+            __documents.append(d)
+        return __documents
+
+    @staticmethod
+    async def __entry_parser(ctx, document, documents, show_discriminator=False):
         xp = f"**{document['attribute']}**"
         rank = documents.index(document) + 1
-        try:
-            user = await self.bot.fetch_user(document["_id"])
-            username = str(user) if show_discriminator else user.name
-        except discord.NotFound:
-            username = user = document["_id"]
+        user = document["user"]
+        username = str(user) if show_discriminator else user.name
         if rank == 1:
             entry = f"🥇    {username}", xp
         elif rank == 2:
@@ -58,8 +81,8 @@ class Leaderboards(Cog):
         """Displays top members with maximum chat experience points."""
         profile = await ctx.fetch_member_profile()
         _filter = f"{profile.guild_filter}.stats.xp.chat"
-        paginator = ctx.get_field_paginator(
-            await self.fetch_top(_filter), entry_parser=self.__xp_entry_parser, inline=False, per_page=10)
+        entries = await self.__filter(ctx.guild.get_member, ctx.guild.fetch_member, await self.fetch_top(_filter))
+        paginator = ctx.get_field_paginator(entries, entry_parser=self.__xp_entry_parser, inline=False, per_page=10)
         paginator.embed.set_author(
             name=f"{ctx.guild.name} Chat XP Leaderboards".upper(), icon_url=self.bot.theme.images.leaderboard)
         paginator.embed.set_thumbnail(url=ctx.guild.icon_url)
@@ -71,8 +94,9 @@ class Leaderboards(Cog):
     async def global_leaderboards(self, ctx):
         """Displays top users with maximum chat experience earned globally across all servers."""
         _filter = "stats.xp.chat"
+        entries = await self.__filter(self.bot.get_user, self.bot.fetch_user, await self.fetch_top(_filter))
         paginator = ctx.get_field_paginator(
-            await self.fetch_top(_filter), entry_parser=self.__global_xp_entry_parser, inline=False, per_page=10)
+            entries, entry_parser=self.__global_xp_entry_parser, inline=False, per_page=10)
         paginator.embed.set_author(
             name=f"Global Chat XP Leaderboards".upper(), icon_url=self.bot.theme.images.leaderboard)
         paginator.embed.set_thumbnail(url=self.bot.user.avatar_url)
