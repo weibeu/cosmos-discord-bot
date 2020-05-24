@@ -117,9 +117,27 @@ class Levels(GuildBaseCog):
         value += f"`Roles:` " + " ".join([f"<@&{_}>" for _ in entry.roles])
         return f"Level {entry.level}", value
 
-    @levels.command(name="reset")
-    async def reset_user_levels(self, ctx):
-        pass    # TODO: Add option to reset everyone's guild xp.
+    @levels.command(name="resetall", aliases=["reseteveryone"])
+    @commands.has_permissions(administrator=True)
+    async def reset_user_levels(self, ctx, channel: ChannelConverter = "both"):
+        """WARNING: This resets everyone's XP of specified channel, either text or voice. If no channel is specified
+        it resets both, everyone's Text and Voice XP.
+
+        """
+        if not await ctx.confirm():
+            return
+        if not await ctx.confirm(f"⚠    Are you really sure to reset EVERYONE's XP?"):
+            return
+        profile = await ctx.fetch_member_profile()
+        channel = "chat" if channel == "text" else channel
+        if channel == "both":
+            await profile.reset_everyone_xp("chat")
+            await profile.reset_everyone_xp("voice")
+        else:
+            await profile.reset_everyone_xp(channel)
+        for profile in self.bot.profile_cache.lfu.values():
+            profile.guild_profiles.pop(ctx.guild.id, None)
+        await ctx.send_line(f"✅    Everyone's XP has been reset. Let's start fresh!")
 
     @levels.group(name="reward", aliases=["rewards"], invoke_without_command=True)
     async def rewards(self, ctx, channel: typing.Optional[ChannelConverter] = "text", level: int = None):

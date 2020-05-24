@@ -77,3 +77,10 @@ class GuildMemberProfile(GuildPoints, MemberExperience):
             return document[0]["surpassed"] + 1
         except IndexError:
             return 1
+
+    async def reset_everyone_xp(self, channel):
+        if not self.member.guild_permissions.administrator:
+            raise NotImplementedError
+        await self.collection.update_many({}, {"$unset": {
+            f"{self.guild_filter}.stats.xp.{channel}": ""
+        }})

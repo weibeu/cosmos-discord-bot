@@ -69,3 +69,25 @@ Usage:
 ;level reward remove <level> [channel=text]
 ```
 
+
+### ;level resetall
+
+**WARNING:** This resets everyone's XP of specified channel, either text or voice. If no channel is specified it resets both, everyone's Text and Voice XP.
+
+```yaml
+Aliases:
+- reseteveryone
+
+Usage:
+;level resetall [channel=both]
+
+Examples:
+# To reset everyone's text XP.
+;level resetall text
+
+# To reset everyone's voice XP.
+;level resetall voice
+
+# To reset everyone's both text and voice XP.
+;level resetall 
+```
