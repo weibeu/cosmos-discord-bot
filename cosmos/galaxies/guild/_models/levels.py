@@ -63,7 +63,8 @@ class Levels(object):
 
     async def give_rewards(self, profile, channel="text"):
         rewards = self.get_rewards(channel)
-        reward = rewards.get(profile.level)
+        level = profile.voice_level if channel == "voice" else profile.level
+        reward = rewards.get(level)
         if not reward:
             return
 
@@ -71,4 +72,4 @@ class Levels(object):
 
         for role_id in reward.roles:
             role = self.__profile.guild.get_role(role_id)
-            await profile.member.add_roles(role, reason=f"{channel.title()} - Level {profile.level} reward.")
+            await profile.member.add_roles(role, reason=f"{channel.title()} - Level {level} reward.")
