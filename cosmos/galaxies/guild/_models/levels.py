@@ -1,3 +1,6 @@
+from itertools import chain
+
+
 class LevelReward(object):
 
     def __init__(self, **kwargs):
@@ -21,8 +24,11 @@ class Levels(object):
     def __init__(self, guild_profile, **kwargs):
         self.__profile = guild_profile
         raw_levels = kwargs.get("levels", dict())
-        self.text_rewards = self.__fetch_rewards(raw_levels.get("text_rewards", list()))
-        self.voice_rewards = self.__fetch_rewards(raw_levels.get("voice_rewards", list()))
+        raw_rewards = raw_levels.get("rewards", dict())
+        self.text_rewards = self.__fetch_rewards(raw_rewards.get("text", list()))
+        self.voice_rewards = self.__fetch_rewards(raw_rewards.get("voice", list()))
+        self.stack_text_roles = raw_rewards.get("stack_text_roles", True)
+        self.stack_voice_roles = raw_rewards.get("stack_voice_roles", True)
 
     @staticmethod
     def __fetch_rewards(raw_rewards):
@@ -34,21 +40,23 @@ class Levels(object):
             "roles": roles or list(),
             "points": points,
         })
-        channel_filter = f"{channel}_rewards"
-        rewards = self.__getattribute__(f"{channel}_rewards")
+        rewards = self.get_rewards(channel)
 
         rewards.update({reward.level: reward})
 
         await self.__profile.collection.update_one(
-            self.__profile.document_filter, {"$pull": {f"levels.{channel_filter}": {"level": reward.level}}}
+            self.__profile.document_filter, {"$pull": {f"levels.rewards.{channel}": {"level": reward.level}}}
         )
 
         await self.__profile.collection.update_one(self.__profile.document_filter, {"$addToSet": {
-            f"levels.{channel_filter}": reward.document
+            f"levels.rewards.{channel}": reward.document
         }})
 
     def get_rewards(self, channel):
         return self.__getattribute__(f"{channel}_rewards")
+
+    def get_stack_meta(self, channel):
+        return self.__getattribute__(f"stack_{channel}_roles")
 
     async def remove_rewards(self, level, channel="text"):
         rewards = self.get_rewards(channel)
@@ -57,7 +65,7 @@ class Levels(object):
 
         self.__profile.collection.update_one(
             self.__profile.document_filter, {"$pull": {
-                f"levels.{channel}_rewards": {"level": level}
+                f"levels.rewards.{channel}": {"level": level}
             }}
         )
 
@@ -70,6 +78,22 @@ class Levels(object):
 
         profile.give_points(reward.points)
 
-        for role_id in reward.roles:
-            role = self.__profile.guild.get_role(role_id)
-            await profile.member.add_roles(role, reason=f"{channel.title()} - Level {level} reward.")
+        stack = self.get_stack_meta(channel)
+        if not stack:
+            roles = [self.__profile.guild.get_role(_) for _ in chain.from_iterable([
+                __.roles for __ in rewards.values() if __.level < level])]
+            await profile.member.remove_roles(*roles, reason=f"Unstack levelling roles.")
+
+        roles = [self.__profile.guild.get_role(_) for _ in reward.roles] if not stack else [
+            self.__profile.guild.get_role(_) for _ in
+            chain.from_iterable([__.roles for __ in rewards.values() if __.level <= level])]
+        await profile.member.add_roles(*roles, reason=f"{channel.title()} - Level {level} reward.")
+
+    async def configure(self, channel, stack):
+        if channel == "voice":
+            self.stack_voice_roles = stack
+        if channel == "text":
+            self.stack_text_roles = stack
+
+        await self.__profile.collection.update_one(self.__profile.document_filter, {"$set": {
+            f"levels.rewards.stack_{channel}_roles": stack}})

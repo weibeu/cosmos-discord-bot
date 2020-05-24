@@ -34,9 +34,12 @@ Usage:
 
 ### ;level reward
 
-Displays any rewards set for specified or all of the levels.
+Displays any rewards set for specified or all of the levels. Optionally pass `text` to view Text Levels rewards and `voice` for Voice Levels rewards.
 
-Optionally pass `text` to view Text Levels rewards and `voice` for Voice Levels rewards.
+**Available Options**
+
+- `channel` -- The levelling channel to set rewards for. Can be either of `text` or `voice`. Defaults to `text`.
+- `points` -- Amount of guild points to awards. Which can be used and redeemed by members in role shop.
 
 ```yaml
 Aliases:
@@ -90,4 +93,34 @@ Examples:
 
 # To reset everyone's both text and voice XP.
 ;level resetall 
+```
+
+
+### ;level configure
+
+Configure many Levels settings in your server and customize it as you want it to be.
+
+**Available Configurations**
+
+- `stack` -- Determines if the roles given as level rewards should be stacked or not. Meaning if its
+set to `no`, the role rewards for earlier levels will be removed automatically on attaining the next level.
+
+```yaml
+Aliases:
+- config
+- configs
+- configuration
+
+Usage:
+;level configure [channel=text] [stack=yes]
+
+Examples:
+# Disable roles stack for text levelling.
+;level configure no
+
+# Disable roles stack for voice levelling.
+;level configure voice no
+
+# Enable back stacking of voice levelling.
+;level configure voice yes
 ```

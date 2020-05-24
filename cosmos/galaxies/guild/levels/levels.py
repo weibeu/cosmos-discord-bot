@@ -171,8 +171,12 @@ class Levels(GuildBaseCog):
     @commands.has_permissions(administrator=True)
     async def set_rewards(self, ctx, level: int, channel: typing.Optional[ChannelConverter] = "text",
                           points: typing.Optional[int] = 0, *, roles: converters.RoleConvertor()):
-        """Set rewards for specified Text or Voice Levels.
-        You can set one or multiple roles and optionally Guild Points as rewards.
+        """Set rewards for specified Text or Voice Levels. You can set one or multiple roles and optionally
+        Guild Points as rewards.
+
+        Available Options:
+        - channel -- The levelling channel to set rewards for. Can be either of `text` or `voice`. Defaults to `text`.
+        - points -- Amount of guild points to awards. Which can be used and redeemed by members in role shop.
 
         """
         embed = self.bot.theme.embeds.primary()
@@ -194,3 +198,16 @@ class Levels(GuildBaseCog):
             return
         await ctx.guild_profile.levels.remove_rewards(level, channel=channel)
         await ctx.send_line(f"✅    Rewards for Level {level} has been removed.")
+
+    @levels.command(name="configure", aliases=["config", "configs", "configuration"])
+    @commands.has_permissions(administrator=True)
+    async def configure_levels(self, ctx, channel: typing.Optional[ChannelConverter] = "text", stack: bool = True):
+        """Configure many Levels settings in your server and customize it as you want it to be.
+
+        Available Configurations:
+            - stack -- Determines if the roles given as level rewards should be stacked or not. Meaning if its
+            set to `no`, the role rewards for earlier levels will be removed automatically on attaining the next level.
+
+        """
+        await ctx.guild_profile.levels.configure(channel, stack)
+        await ctx.send_line(f"✅    Specified configurations has been set for {channel.title()} levelling.")
