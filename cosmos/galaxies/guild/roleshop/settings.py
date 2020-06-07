@@ -32,6 +32,12 @@ class RoleShopSettings(RoleShopBase):
         await ctx.guild_profile.roleshop.create_role(role.id, points)
         await ctx.send_line(f"✅    Added {role.name} to role shop with {points} points.")
 
+    @RoleShopBase.listener()
+    async def on_guild_role_delete(self, role):
+        guild_profile = await self.bot.guild_cache.get_profile(role.guild.id)
+        if roleshop_role := guild_profile.roleshop.roles.get(role.id):
+            await guild_profile.roleshop.remove_role(roleshop_role.id)
+
     @RoleShopBase.role_shop.command(name="remove", aliases=["delete"])
     @has_permissions(manage_roles=True)
     async def delete_role(self, ctx, *, role: typing.Union[discord.Role, int] = None):
