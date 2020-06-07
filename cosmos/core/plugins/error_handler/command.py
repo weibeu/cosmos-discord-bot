@@ -66,6 +66,9 @@ class CommandErrorHandler(Cog):
                 ctx, images.denied,
                 f"You're missing {error.missing_perms[0].replace('_', ' ').title()} permissions to run that command.")
 
+        elif isinstance(error, commands.PrivateMessageOnly):
+            await self.__send_response(ctx, images.feedback, "That command can only be used in my DMs.")
+
         elif isinstance(error, commands.CheckFailure):
             await self.__send_response(ctx, images.denied, "You're not allowed to use that command.")
 
