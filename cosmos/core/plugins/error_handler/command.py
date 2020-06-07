@@ -70,7 +70,8 @@ class CommandErrorHandler(Cog):
             await self.__send_response(ctx, images.denied, "You're not allowed to use that command.")
 
         elif isinstance(error, commands.UserInputError):
-            await self.__send_response(ctx, images.error, "Wrong command syntax. Check docs for correct usage.")
+            await self.__send_response(
+                ctx, images.error, "Unable to recognize the specified parameter or wrong command syntax.")
 
         elif isinstance(error, NoEntriesError):
             await ctx.message.add_reaction(self.bot.emotes.misc.nill)
