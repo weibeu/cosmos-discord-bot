@@ -1,3 +1,4 @@
+from .models.profiles import CosmosUserProfile
 from discord.ext import commands
 
 import discord
@@ -7,15 +8,29 @@ from .. import Cog
 
 class StatsConverter(commands.Converter):
 
-    STATS = [
-        "text", "chat", "voice",
-    ]
+    STATS = list()
 
     async def convert(self, ctx, argument):
         argument = argument.lower()
         if argument not in self.STATS:
-            raise commands.BadArgument
+            argument = f"{argument}s"
+            if argument not in self.STATS:
+                raise commands.BadArgument
         return argument
+
+
+class GuildStatsConverter(StatsConverter):
+
+    STATS = [
+        "text", "chat", "voice", "points"
+    ]
+
+
+class GlobalStatsConverter(StatsConverter):
+
+    STATS = [
+        "text", "chat", "voice", "bosons", "fermions", "reputations", "reps",
+    ]
 
 
 class NotFoundUser(discord.Object):
@@ -64,8 +79,10 @@ class Leaderboards(Cog):
         return __documents
 
     @staticmethod
-    async def __entry_parser(ctx, document, documents, show_discriminator=False):
-        xp = f"**{document['attribute']}**"
+    async def __entry_parser(ctx, document, documents, show_discriminator=False, voice=False):
+        _xp = document['attribute']
+        _xp = _xp / CosmosUserProfile.VOICE_XP_CONSTRAIN if voice else _xp / CosmosUserProfile.CHAT_XP_CONSTRAIN
+        xp = f"**{round(_xp)}**"
         rank = documents.index(document) + 1
         user = document["user"]
         username = str(user) if show_discriminator else user.name
@@ -83,13 +100,16 @@ class Leaderboards(Cog):
 
         return entry
 
-    async def __xp_entry_parser(self, ctx, document, documents):
-        key, value = await self.__entry_parser(ctx, document, documents, show_discriminator=True)
+    async def __xp_entry_parser(self, ctx, document, documents, *args, **kwargs):
+        key, value = await self.__entry_parser(ctx, document, documents, *args, show_discriminator=True, **kwargs)
         return key, f"`TOTAL XP:` {value}"
 
-    async def __global_xp_entry_parser(self, *args, **kwargs):
-        key, value = await self.__entry_parser(*args, **kwargs)
-        return key, f"`TOTAL GLOBAL XP:` {value}"
+    async def __voice_xp_entry_parser(self, *args, **kwargs):
+        return await self.__xp_entry_parser(*args, voice=True, **kwargs)
+
+    async def __points_parser(self, *args, **kwargs):
+        key, value = await self.__entry_parser(*args, show_discriminator=True, **kwargs)
+        return key, f"`POINTS:` {value}"
 
     async def __show_leaderboards(self, ctx, entries, name, parser, global_=False):
         paginator = ctx.get_field_paginator(entries, entry_parser=parser, inline=False, per_page=9)
@@ -98,26 +118,74 @@ class Leaderboards(Cog):
         await paginator.paginate()
 
     @Cog.group(name="leaderboards", aliases=["leaderboard", "lb"], invoke_without_command=True, inescapable=False)
-    async def leaderboards(self, ctx, stats: StatsConverter = "chat"):
+    async def leaderboards(self, ctx, stats: GuildStatsConverter = "chat"):
         """Displays top members with maximum chat experience points."""
         profile = await ctx.fetch_member_profile()
 
         if stats in ("chat", "text"):
-            filter_ = f"{profile.guild_filter}.stats.xp.chat"
-            name = f"{ctx.guild.name} Chat XP Leaderboards".upper()
+            filter_ = f"stats.xp.chat"
+            name = "Chat XP Leaderboards"
+            parser = self.__xp_entry_parser
+        elif stats == "voice":
+            filter_ = "stats.xp.voice"
+            name = "Voice XP Leaderboards"
+            parser = self.__voice_xp_entry_parser
+        elif stats == "points":
+            filter_ = "points.points"
+            name = "Points Leaderboards"
+            parser = self.__points_parser
         else:
             raise ValueError
+        filter_ = f"{profile.guild_filter}.{filter_}"
+        name = f"{ctx.guild.name} {name}".upper()
         entries = await self.__filter(ctx.guild.get_member, ctx.guild.fetch_member, await self.fetch_top(filter_))
-        await self.__show_leaderboards(ctx, entries, name, self.__xp_entry_parser)
+        await self.__show_leaderboards(ctx, entries, name, parser)
+
+    async def __global_xp_entry_parser(self, *args, **kwargs):
+        key, value = await self.__entry_parser(*args, **kwargs)
+        return key, f"`TOTAL GLOBAL XP:` {value}"
+
+    async def __global_voice_xp_entry_parser(self, *args, **kwargs):
+        return await self.__global_xp_entry_parser(*args, voice=True, **kwargs)
+
+    async def __bosons_parser(self, *args, **kwargs):
+        key, value = await self.__entry_parser(*args, **kwargs)
+        return key, f"`BOSONS:` {value}"
+
+    async def __reps_parser(self, *args, **kwargs):
+        key, value = await self.__entry_parser(*args, **kwargs)
+        return key, f"`REPUTATION POINTS:` {value}"
+
+    async def __fermions_parser(self, *args, **kwargs):
+        key, value = await self.__entry_parser(*args, **kwargs)
+        return key, f"`FERMIONS:` {value}"
 
     @leaderboards.command(name="global", aliases=["cosmos", "globals"])
-    async def global_leaderboards(self, ctx, stats: StatsConverter = "chat"):
+    async def global_leaderboards(self, ctx, stats: GlobalStatsConverter = "chat"):
         """Displays top users with maximum chat experience earned globally across all servers."""
 
         if stats in ("chat", "text"):
             filter_ = "stats.xp.chat"
-            name = f"Cosmos Universe Chat XP Leaderboards".upper()
+            name = "Chat XP Leaderboards"
+            parser = self.__global_xp_entry_parser
+        elif stats == "voice":
+            filter_ = "stats.xp.voice"
+            name = "Voice XP Leaderboards"
+            parser = self.__global_voice_xp_entry_parser
+        elif stats == "bosons":
+            filter_ = "currency.bosons"
+            name = "Bosons Leaderboards"
+            parser = self.__bosons_parser
+        elif stats in ("reps", "reputations"):
+            filter_ = "reputation.points"
+            name = "Reputation Leaderboards"
+            parser = self.__reps_parser
+        elif stats == "fermions":
+            filter_ = "currency.fermions"
+            name = "Fermions Leaderboards"
+            parser = self.__fermions_parser
         else:
             raise ValueError
         entries = await self.__filter(self.bot.get_user, self.bot.fetch_user, await self.fetch_top(filter_))
-        await self.__show_leaderboards(ctx, entries, name, self.__global_xp_entry_parser, True)
+        name = f"Cosmos Universe {name}".upper()
+        await self.__show_leaderboards(ctx, entries, name, parser, True)
