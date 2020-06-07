@@ -6,24 +6,56 @@ description: Leaderboard commands over various properties of user profile.
 
 ## ;leaderboards
 
-Displays top members with maximum chat experience points.
+Displays top members with maximum chat experience points or specified stats. You can also specify any fromm global stats to directly check the the global leaderboards.
 
 ```yaml
+Stats:
+- chat
+- voice
+- points
+
 Aliases:
 - leaderboard
 - lb
 
 Usage:
-;leaderboards
+;leaderboards [stats=chat]
+
+Examples:
+# Check points leaderboards.
+;lb points
+
+# Check global reputation points leaderboards.
+;lb reps
 ```
 
 ### ;leaderboards global
 
-Displays top users with maximum chat experience earned globally across all servers.
+Displays top users with maximum chat experience or specified stats earned globally across all servers.
 
 ```yaml
+Stats:
+- chat
+- voice
+- reps
+- bosons
+- fermions
+
 Aliases:
 - globals
 - cosmos
+
+Usage:
+;leaderboards global [stats=chat]
+
+Examples:
+# Check global chat leaderboards.
+;lb global
+
+# Check global voice leaderboards.
+;lb global voice
+
+# Check global bosons leaderboards.
+;lb global bosons
 ```
 
