@@ -10,11 +10,12 @@ class StatsConverter(commands.Converter):
 
     STATS = list()
 
-    async def convert(self, ctx, argument):
+    @classmethod
+    async def convert(cls, ctx, argument):
         argument = argument.lower()
-        if argument not in self.STATS:
+        if argument not in cls.STATS:
             argument = f"{argument}s"
-            if argument not in self.STATS:
+            if argument not in cls.STATS:
                 raise commands.BadArgument
         return argument
 
@@ -24,6 +25,12 @@ class GuildStatsConverter(StatsConverter):
     STATS = [
         "text", "chat", "voice", "points"
     ]
+
+    async def convert(self, ctx, argument):
+        try:
+            return await super().convert(ctx, argument)
+        except commands.BadArgument:
+            return await GlobalStatsConverter.convert(ctx, argument)
 
 
 class GlobalStatsConverter(StatsConverter):
@@ -135,7 +142,8 @@ class Leaderboards(Cog):
             name = "Points Leaderboards"
             parser = self.__points_parser
         else:
-            raise ValueError
+            # noinspection PyTypeChecker
+            return await self.global_leaderboards(ctx, stats)
         filter_ = f"{profile.guild_filter}.{filter_}"
         name = f"{ctx.guild.name} {name}".upper()
         entries = await self.__filter(ctx.guild.get_member, ctx.guild.fetch_member, await self.fetch_top(filter_))
