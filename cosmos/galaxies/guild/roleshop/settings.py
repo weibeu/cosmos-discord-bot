@@ -1,8 +1,8 @@
 import discord
 import typing
 
-from .base import RoleShopBase
-
+from discord.ext import commands
+from .base import RoleShopBase, DeletedRole
 from discord.ext.commands import has_permissions
 
 
@@ -34,13 +34,21 @@ class RoleShopSettings(RoleShopBase):
 
     @RoleShopBase.role_shop.command(name="remove", aliases=["delete"])
     @has_permissions(manage_roles=True)
-    async def delete_role(self, ctx, *, role: discord.Role = None):
+    async def delete_role(self, ctx, *, role: typing.Union[discord.Role, int] = None):
         """Remove specified role from the Role Shop.
         It displays an interactive reaction based menu to choose your desired role if it's not specified.
 
         """
         description = "```css\nDisplaying Role Shop roles. React with respective emote to remove that role.```"
-        role = await self._get_role(ctx, role, ctx.guild_profile.roleshop.roles, "Delete Menu - Role Shop", description)
+
+        if not role:
+            role = await self._get_role(
+                ctx, role, ctx.guild_profile.roleshop.roles, "Delete Menu - Role Shop", description)
+
+        if isinstance(role, int):
+            if not ctx.guild_profile.roleshop.roles.get(role):
+                raise commands.BadArgument
+            role = DeletedRole(role)
 
         if await ctx.confirm(f"⚠    Are you sure to remove {role.name} from role shop?"):
             # await role.delete(reason=f"Role deleted from role shop. [{ctx.author}]")

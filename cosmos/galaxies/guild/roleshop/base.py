@@ -12,6 +12,16 @@ class NotRoleShopRoleError(CommandError):
         self.role = role
 
 
+class DeletedRole(discord.Object):
+
+    def __str__(self):
+        return "@deleted-role"
+
+    @property
+    def name(self):
+        return self.__str__()
+
+
 class RoleShopBase(GuildBaseCog):
     """Base cog for Role Shop plugin."""
 
@@ -25,7 +35,7 @@ class RoleShopBase(GuildBaseCog):
         menu.embed.description = description
         menu.embed.set_author(name=title, icon_url=ctx.author.avatar_url)
         response = await menu.wait_for_response()
-        return ctx.guild.get_role(response.entry.id)
+        return ctx.guild.get_role(response.entry.id) or DeletedRole(response.entry.id)
 
     @staticmethod
     async def _paginator_parser(ctx, roleshop_role, _):
