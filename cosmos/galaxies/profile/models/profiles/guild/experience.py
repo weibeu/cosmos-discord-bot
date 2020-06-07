@@ -26,7 +26,7 @@ class UserExperience(UserLevel, ABC):
 
     @property
     def xp(self):
-        return self._xp / self.CHAT_XP_CONSTRAIN
+        return round(self._xp / self.CHAT_XP_CONSTRAIN)
 
     @xp.setter
     def xp(self, xp: int):
