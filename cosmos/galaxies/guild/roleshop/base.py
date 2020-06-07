@@ -34,7 +34,7 @@ class RoleShopBase(GuildBaseCog):
         try:
             return role.name, f"`POINTS:` **{points}**\n`COLOR:` {role.mention}"
         except AttributeError:
-            return str(roleshop_role.id), f"`POINTS:` **{points}**\n`COLOR:` @deleted-role"
+            return "@deleted-role", f"`POINTS:` **{points}**\n`ID:` {roleshop_role.id}"
 
     @GuildBaseCog.group(name="roleshop", invoke_without_command=True)
     async def role_shop(self, ctx):
