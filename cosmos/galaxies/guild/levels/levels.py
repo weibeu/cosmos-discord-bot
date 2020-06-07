@@ -18,7 +18,8 @@ class ChannelConverter(commands.Converter):
     ]
 
     async def convert(self, ctx, argument):
-        if argument.lower() not in self.CHANNELS:
+        argument = argument.lower()
+        if argument not in self.CHANNELS:
             raise commands.BadArgument
         return argument
 
