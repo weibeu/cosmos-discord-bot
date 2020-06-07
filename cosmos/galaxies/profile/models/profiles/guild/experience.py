@@ -9,6 +9,9 @@ from .level import UserLevel, MemberLevel
 
 class UserExperience(UserLevel, ABC):
 
+    CHAT_XP_CONSTRAIN = 1
+    VOICE_XP_CONSTRAIN = 17
+
     def __init__(self, **kwargs):
         raw_xp = kwargs.get("stats", dict()).get("xp", dict())
         self._xp = raw_xp.get("chat", 0)
@@ -23,7 +26,7 @@ class UserExperience(UserLevel, ABC):
 
     @property
     def xp(self):
-        return self._xp
+        return self._xp / self.CHAT_XP_CONSTRAIN
 
     @xp.setter
     def xp(self, xp: int):
@@ -55,7 +58,7 @@ class UserExperience(UserLevel, ABC):
             raw_xp = self._voice_xp + round(time.time() - (self.__voice_activity_time or time.time()))
         else:
             raw_xp = self._voice_xp
-        return round(raw_xp / 17)
+        return round(raw_xp / self.VOICE_XP_CONSTRAIN)
 
     def record_voice_activity(self):
         self.__voice_activity_time = time.time()
