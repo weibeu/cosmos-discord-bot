@@ -12,4 +12,4 @@ class MemberRoleShop(object):
 
     async def __fetch_roles(self, raw_roles):
         roles = (await self.profile.fetch_guild_profile()).roleshop.roles
-        self.roles = [role for role in roles if role.id in raw_roles]
+        self.roles.extend([role for role in roles if role.id in raw_roles])
