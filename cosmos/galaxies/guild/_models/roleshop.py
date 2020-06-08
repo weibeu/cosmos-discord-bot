@@ -36,6 +36,7 @@ class RoleShop(object):
         raw_roleshop = kwargs.get("roleshop", dict())
         self.roles = Roles()
         self.__fetch_roles(raw_roleshop)
+        self.__profile_galaxy = self.__profile.plugin.bot.get_galaxy("PROFILE")
 
     def __bool__(self):
         return bool(self.roles)
@@ -43,7 +44,6 @@ class RoleShop(object):
     def __fetch_roles(self, raw_roleshop):
         for role_document in raw_roleshop.get("roles", list()):
             self.roles.append(RoleShopRole(**role_document))
-            # TODO: Remove role IDs from database if role gets deleted.
 
     async def create_role(self, role_id, points):
         role = RoleShopRole(role_id=role_id, points=points)
@@ -67,7 +67,16 @@ class RoleShop(object):
                 "roleshop.roles": {"role_id": role_id}
             }}
         )
-        # TODO: Remove ^ role data from all users documents who have it.
+
+        await self.__profile_galaxy.collection.update_many({}, {
+            "$pull": {f"guilds.{self.__profile.id}.roleshop.roles": role_id}
+        })
+        for p in self.__profile_galaxy.cache.lfu.values():
+            if profile := p.guild_profiles.get(self.__profile.id):
+                try:
+                    profile.roleshop.roles.remove(role_id)
+                except ValueError:
+                    pass
 
     async def set_points(self, role_id, points):
         role = self.roles.get(role_id)
