@@ -268,7 +268,8 @@ class ReactorSettings(object):
             self.__profile.guild.get_channel(_["channel_id"]), [
                 self.__profile.plugin.bot.get_emoji(__) or __ for __ in _["emotes"]
             ], _["enabled"]
-        ) for _ in reactors]
+        ) for _ in reactors if self.__profile.guild.get_channel(_["channel_id"])]
+        # TODO: Ignore deleted channels for now. Automatically remove settings, IDs from DB when they're deleted.
 
     def __bool__(self):
         return bool(self.reactors)
