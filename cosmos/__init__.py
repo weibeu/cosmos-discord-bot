@@ -3,7 +3,7 @@ from .core.functions import exceptions
 
 
 __release__ = "Babu"
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 
 def get_bot():
