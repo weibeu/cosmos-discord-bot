@@ -212,6 +212,23 @@ class Moderation(Cog):
         await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
         await ctx.send_line(f"✅    {user_id} has been unbanned.")
 
+    @Cog.command(name="clean", inescapable=False)
+    @check_mod(kick_members=True)
+    async def clean(self, ctx):
+        """Cleans and deleted last few messages sent by the bot."""
+        count = 0
+        delete_max = 5
+        try:
+            await ctx.message.delete()
+        except discord.Forbidden:
+            pass
+        async for message in ctx.channel.history(limit=30):
+            if message.author.id == self.bot.user.id:
+                if count > delete_max:
+                    return
+                await message.delete()
+                count += 1
+
     @Cog.group(name="mute", invoke_without_command=True, inescapable=False)
     @check_voice_perms(mute_members=True)
     async def mute(self, ctx, member: discord.Member, *, reason=None):

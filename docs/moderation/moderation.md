@@ -67,6 +67,15 @@ Usage:
 ;unban <user_id> [reason]
 ```
 
+## ;clean
+
+Cleans and deleted last few messages sent by the bot.
+
+```yaml
+Usage:
+;clean
+```
+
 ## ;mute
 
 Mutes specified member from voice and also adds the muted role. It also notifies them automatically along with the given reason.
