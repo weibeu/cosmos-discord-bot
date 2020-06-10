@@ -30,6 +30,7 @@ class Logger(LoggerEvents):
         provided when moderator or auto-moderator performs any moderation action on this member.
         - on_text_level_up -- Logs and congratulates when a member advances to upper text level.
         - on_voice_level_up -- Logs and congratulates when a member advances to upper voice level.
+        - on_server_boost -- Sends pretty embed message when a member boosts the server.
 
     """
 

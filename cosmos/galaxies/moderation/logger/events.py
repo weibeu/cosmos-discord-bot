@@ -1,10 +1,11 @@
+import discord
 import datetime
 import functools
 
 from ... import Cog
 
 
-def logger_event(*args, **kwargs):
+def logger_event(*args, set_title=True, **kwargs):
 
     def decorator(function):
         @Cog.listener(*args, **kwargs)
@@ -18,13 +19,17 @@ def logger_event(*args, **kwargs):
                 try:
                     guild_profile = _args[0].guild_profile    # Event triggered from ModerationAction.
                 except AttributeError:
-                    return
+                    if not isinstance(_args[0], discord.Guild):
+                        return
+                    guild_profile = await cog.bot.guild_cache.get_profile(_args[0].id)
             if not guild_profile:
                 return
             logger = guild_profile.get_logger(function.__name__)
             if not logger:
                 return
-            embed = cog.embed(title=function.__name__.lstrip("on_").replace("_", " ").title())
+            embed = cog.embed()
+            if set_title:
+                embed.title = function.__name__.lstrip("on_").replace("_", " ").title()
             embed.timestamp = datetime.datetime.now()
             response = await function(cog, embed, *_args)
             # TODO: Add auto moderation details on logs.
@@ -42,12 +47,16 @@ def logger_event(*args, **kwargs):
 
 class LoggerEvents(Cog):
 
+    IGNORED_EVENTS = [
+        "on_guild_update",
+    ]
+
     # TODO: Add reactions based actions.
 
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
-        self.loggers = [name for name, _ in self.get_listeners()]
+        self.loggers = [name for name, _ in self.get_listeners() if name not in self.IGNORED_EVENTS]
 
     @property
     def embed(self):
@@ -162,3 +171,21 @@ class LoggerEvents(Cog):
         embed.description = f"{self.bot.emotes.misc.confetti}    Congratulations {profile.user.name} for " \
                             f"advancing to voice **level {profile.voice_level}**."
         return embed, profile.user.mention
+
+    @Cog.listener()
+    async def on_guild_update(self, before, after):
+        try:
+            sub = tuple(set(after.premium_subscribers) - set(before.premium_subscribers))[0]
+        except IndexError:
+            return
+        else:
+            self.bot.dispatch("server_boost", sub)
+
+    @logger_event(set_title=False)
+    async def on_server_boost(self, embed, sub):
+        embed.set_author(name=f"{sub} just boosted the server!", icon_url=self.bot.theme.images.nitro_boost)
+        embed.set_thumbnail(url=sub.avatar_url)
+        guild_profile = await self.bot.guild_cache.get_profile(sub.guild.id)
+        embed.description = guild_profile.presets.get("serverboost", dict()).get("message", str())
+        embed.set_footer(text=sub.guild.name, icon_url=sub.guild.icon_url)
+        return embed

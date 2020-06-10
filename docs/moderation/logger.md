@@ -15,11 +15,10 @@ description: >-
 * `on_member_join` -- Logs useful attributes of member who just joined the server.
 * `on_member_remove` -- Logs attributes of member who just left the server.
 * `on_confession` -- Logs information about each confessions made through secret confessions.
-* `on_moderation` -- Logs several attributes of member, type of moderation, moderator and reason if it was
+* `on_moderation` -- Logs several attributes of member, type of moderation, moderator and reason if it was provided when moderator or auto-moderator performs any moderation action on this member.
 * `on_text_level_up` -- Logs and congratulates when a member advances to upper text level.
 * `on_voice_level_up` -- Logs and congratulates when a member advances to upper voice level.
-
-  provided when moderator or auto-moderator performs any moderation action on this member.
+* `on_server_boost` -- Sends pretty embed message when a member boosts the server. Use [serverboost preset](../settings/administrator-settings.md#preset-serverboost) to set custom thanks meessage.
 
 ## ;logger
 
