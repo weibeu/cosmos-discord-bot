@@ -7,6 +7,7 @@ import random
 import string as strings
 
 
+SPOILER_RE = re.compile(r"(\|\|.+?\|\|)", re.DOTALL)
 INVITE_RE = re.compile(
     r"(?:discord(?:[\.,]|dot)gg|"                     # Could be discord.gg/
     r"discord(?:[\.,]|dot)com(?:\/|slash)invite|"     # or discord.com/invite/
@@ -59,6 +60,10 @@ class Utils(HasteBin):
     @staticmethod
     def get_random_strings(length):
         return str().join(random.choices(strings.ascii_letters + strings.digits, k=length))
+
+    @staticmethod
+    def is_spoiler(string):
+        return bool(SPOILER_RE.search(string))
 
     # @staticmethod
     # def humanize_stats(value, start=1000):
