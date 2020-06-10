@@ -70,8 +70,7 @@ class Leaderboards(Cog):
         ]
         return await self.plugin.cache.collection.aggregate(pipeline).to_list(None)
 
-    @staticmethod
-    async def __filter(fetch_method, async_fetch_method, documents):
+    async def __filter(self, fetch_method, async_fetch_method, documents):
         __documents = []
         for d in documents:
             user_id = d["_id"]
@@ -79,6 +78,12 @@ class Leaderboards(Cog):
             if not user:
                 try:
                     user = await async_fetch_method(user_id)
+                    if isinstance(user, discord.User):
+                        # noinspection PyProtectedMember
+                        self.bot._connection._users[user.id] = user
+                    elif isinstance(user, discord.Member):
+                        # noinspection PyProtectedMember
+                        user.guild._add_member(user)
                 except discord.NotFound:
                     user = NotFoundUser(user_id)
             d["user"] = user
