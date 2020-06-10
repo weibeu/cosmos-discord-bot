@@ -7,6 +7,17 @@ import random
 import string as strings
 
 
+INVITE_RE = re.compile(
+    r"(?:discord(?:[\.,]|dot)gg|"                     # Could be discord.gg/
+    r"discord(?:[\.,]|dot)com(?:\/|slash)invite|"     # or discord.com/invite/
+    r"discordapp(?:[\.,]|dot)com(?:\/|slash)invite|"  # or discordapp.com/invite/
+    r"discord(?:[\.,]|dot)me|"                        # or discord.me
+    r"discord(?:[\.,]|dot)io"                         # or discord.io.
+    r")(?:[\/]|slash)"                                # / or 'slash'
+    r"([a-zA-Z0-9]+)",                                # the invite code itself
+    flags=re.IGNORECASE)
+
+
 class Utils(HasteBin):
 
     @staticmethod
@@ -43,7 +54,7 @@ class Utils(HasteBin):
 
     @staticmethod
     def get_invites(string):
-        return re.findall(r"(?:https?://)?discord(?:app\.com/invite|\.gg)/?[a-zA-Z0-9]+/?", string)
+        return INVITE_RE.findall(string)
 
     @staticmethod
     def get_random_strings(length):
