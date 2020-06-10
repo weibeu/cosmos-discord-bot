@@ -146,7 +146,8 @@ class Leaderboards(Cog):
             return await self.global_leaderboards(ctx, stats)
         filter_ = f"{profile.guild_filter}.{filter_}"
         name = f"{ctx.guild.name} {name}".upper()
-        entries = await self.__filter(ctx.guild.get_member, ctx.guild.fetch_member, await self.fetch_top(filter_))
+        async with ctx.loading():
+            entries = await self.__filter(ctx.guild.get_member, ctx.guild.fetch_member, await self.fetch_top(filter_))
         await self.__show_leaderboards(ctx, entries, name, parser)
 
     async def __global_xp_entry_parser(self, *args, **kwargs):
@@ -194,6 +195,7 @@ class Leaderboards(Cog):
             parser = self.__fermions_parser
         else:
             raise ValueError
-        entries = await self.__filter(self.bot.get_user, self.bot.fetch_user, await self.fetch_top(filter_))
+        async with ctx.loading():
+            entries = await self.__filter(self.bot.get_user, self.bot.fetch_user, await self.fetch_top(filter_))
         name = f"Cosmos Universe {name}".upper()
         await self.__show_leaderboards(ctx, entries, name, parser, True)
