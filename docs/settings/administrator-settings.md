@@ -44,6 +44,7 @@ Sets preset for commands to display certain preset message including images or f
 
 * kick
 * ban
+* serverboost
 
 ```yaml
 Aliases:
@@ -51,6 +52,18 @@ Aliases:
 
 Usage:
 ;preset <command_name> <image_url> [text]
+```
+
+### ;preset serverboost
+
+Set customized preset message for loggers when someone boosts the server.
+
+```yaml
+Aliases:
+- serverboosts
+
+Usage:
+;preset serverboost <message>
 ```
 
 ### ;preset remove

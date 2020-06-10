@@ -12,6 +12,7 @@ class AdministratorSettings(Cog):
     PRESET_COMMANDS = [
         "kick",
         "ban",
+        "serverboost",
     ]
 
     async def cog_check(self, ctx):
@@ -71,6 +72,7 @@ class AdministratorSettings(Cog):
         Commands supporting presets:
             - kick
             - ban
+            - serverboost
 
         """
         if command_name.lower() not in self.PRESET_COMMANDS:
@@ -80,6 +82,13 @@ class AdministratorSettings(Cog):
             command_name.lower(), image_url=image_url, text=text
         )
         await ctx.send_line(f"✅    Provided presets has been set for {command_name} command.")
+
+    @preset.command(name="serverboost", aliases=["serverboosts"])
+    async def server_boost(self, ctx, *, message):
+        """Set customized preset message for loggers when someone boosts the server."""
+        guild_profile = await ctx.fetch_guild_profile()
+        await guild_profile.set_preset("serverboost", message=message)
+        await ctx.send_line(f"✅    Preset message for server boost loggers has been set.")
 
     @preset.command(name="remove", aliases=["clear", "delete"])
     async def remove_preset(self, ctx, command_name):
