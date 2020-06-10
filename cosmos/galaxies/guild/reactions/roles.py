@@ -39,6 +39,16 @@ class ReactionRoles(Reactions):
             if not role:
                 return
             member = await guild_profile.guild.fetch_member(payload.user_id)
+
+            if not rr.permanent:
+                if role in member.roles:
+                    await member.remove_roles(role, reason="Removed reaction role.")
+                    try:
+                        await message.remove_reaction(payload.emoji, member)
+                    except discord.Forbidden:
+                        pass
+                    finally:
+                        return
             if not rr.stack:
                 # Check if member already has any of this reaction roles when stack = False.
                 if set(member.roles) & set(rr.roles):
@@ -82,14 +92,20 @@ class ReactionRoles(Reactions):
 
     # noinspection PyTypeChecker
     @reaction_roles.command(name="add", aliases=["setup", "set"])
-    async def add_roles(self, ctx, message: typing.Union[
-            discord.Message, str] = None, stack: typing.Optional[bool] = True, *, roles: converters.RoleConvertor):
+    async def add_roles(
+            self, ctx, message: typing.Union[discord.Message, str] = None, stack: typing.Optional[bool] = True,
+            permanent: typing.Optional[bool] = False, *, roles: converters.RoleConvertor):
         """Setup reaction roles over any custom message you wish or you may skip this parameter to let bot post
         a embed displaying list of provided roles.
 
         The stack parameter determines if these roles can be stacked over member or not. Defaults to True or Yes,
         meaning members can have more than one of these roles. Pass 'no' to restrict and let them have only one
         of these roles.
+
+        The permanent parameter determines if these roles once added, can be auto removed by members or not.
+        Defaults to False or No. Meaning, members can remove this role anytime by clicking on the corresponding
+        reaction if they already have this role. Specify no if you want to refrain them from automatically
+        removing it.
 
         To use custom message, you can pass its shareable URL which can be obtained by right clicking over your custom
         message and click `Copy Message Link` from the floating menu. If you're using this command in same channel your
@@ -127,7 +143,7 @@ class ReactionRoles(Reactions):
         else:
             for _, reaction in zip(roles, message.reactions):
                 await message.add_reaction(reaction.emoji)
-        await ctx.guild_profile.reactions.add_roles(message.id, roles, stack)
+        await ctx.guild_profile.reactions.add_roles(message.id, roles, stack, permanent)
         await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")
 
     @reaction_roles.command(name="remove", aliases=["delete"])

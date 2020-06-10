@@ -32,7 +32,9 @@ Usage:
 
 Setup reaction roles over any custom message you wish or you may skip this parameter to let bot post a embed displaying list of provided roles.
 
-The stack parameter determines if these roles can be stacked over member or not. Defaults to True or Yes, meaning members can have more than one of these roles. Pass 'no' to restrict and let them have only one of these roles.
+The **`stack`** parameter determines if these roles can be stacked over member or not. Defaults to True or Yes, meaning members can have more than one of these roles. Pass 'no' to restrict and let them have only one of these roles.
+
+The **`permanent`** parameter determines if these roles once added, can be auto removed by members or not. Defaults to False or No. Meaning, members can remove this role anytime by clicking on the corresponding reaction if they already have this role. Specify no if you want to refrain them from automatically removing it.
 
 To use custom message, you can pass its shareable URL which can be obtained by right clicking over your custom message and click \`Copy Message Link\` from the floating menu. If you're using this command in same channel your message is present, you can simply pass its message ID.
 
@@ -44,7 +46,7 @@ Aliases:
 - set
 
 Usage:
-;reaction role add [message] [stack=yes] <roles...>
+;reaction role add [message] [stack=yes] [permanent=no] <roles...>
 
 Examples:
 # For stacked roles. [Members can have more than one or all of these roles.]
@@ -55,6 +57,11 @@ Examples:
 
 # Use the default embed message.
 ;reaction role add "Select your regional role" no @Asia @UK @NA
+
+# To set permanent stacked roles. [Members will not be able to remove it by themselves.]
+;reaction role add 706571261114843146 yes yes @role1 @role2 @role3
+# To set permanent unstacked roles.
+;reaction role add 706571261114843146 no yes @role1 @role2 @role3
 ```
 
 #### ;reaction role remove
