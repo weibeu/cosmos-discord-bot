@@ -48,6 +48,13 @@ Aliases:
 
 Usage:
 ;triggers create <trigger> [actions...]
+
+Examples:
+# Create trigger to automatically warn and delete the message for discord invites.
+;triggers create discord_invites warn delete
+
+# Trigger to automatically mute someone when they mass mention.
+;triggers create mass_mentions mute
 ```
 
 ### ;triggers remove
