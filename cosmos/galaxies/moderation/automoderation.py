@@ -29,6 +29,7 @@ class AutoModeration(Cog):
     trigger can have multiple actions set.
 
     Available Triggers:
+        - links -- Triggers when message contains any URL or links.
         - spoilers -- Triggers when a member sends any kind of spoiler content.
         - emoji_spam -- Triggers when there are lots of emotes in a single message.
         - banned_words -- Triggers when a message contains any of the banned or blacklisted words.
@@ -93,6 +94,11 @@ class AutoModeration(Cog):
         trigger = guild_profile.auto_moderation.triggers.get("spoilers")
         if trigger:
             if [_ for _ in message.attachments if _.is_spoiler()] or self.bot.utilities.is_spoiler(message.content):
+                await trigger.dispatch(message=message, member=message.author)
+
+        links = guild_profile.auto_moderation.triggers.get("links")
+        if links:
+            if self.bot.utilities.find_urls(message.content):
                 await trigger.dispatch(message=message, member=message.author)
 
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)

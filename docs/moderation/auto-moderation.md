@@ -8,6 +8,7 @@ Server Administrators can create different triggers and specify various actions 
 
 #### Available Triggers:
 
+* `links` -- Triggers when message contains any URL or links.
 * `spoilers` -- Triggers when a member sends any kind of spoiler content.
 * `emoji_spam` -- Triggers when there are lots of emotes in a single message.
 * `banned_words` -- Triggers when a message contains any of the banned or blacklisted words.
