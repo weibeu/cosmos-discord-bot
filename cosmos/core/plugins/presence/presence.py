@@ -20,11 +20,6 @@ class Presence(Admin):
         self.plugin.data.messages.streaming.append(release_meta)
         self.update_presence.start()
 
-    def cog_unload(self):
-        self.bot.log.info("Stopping presence rotation.")
-        self.update_presence.stop()
-        self.bot.loop.create_task(self.set_presence())
-
     async def set_presence(self, activity_type=None, message=None, **kwargs):
         if activity_type is None and message is None:
             await self.bot.change_presence(activity=None)
