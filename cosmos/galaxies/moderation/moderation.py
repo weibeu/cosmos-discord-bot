@@ -223,9 +223,18 @@ class Moderation(Cog):
         except discord.Forbidden:
             pass
         async for message in ctx.channel.history(limit=30):
+            delete = False
+            if count > delete_max:
+                return
+
             if message.author.id == self.bot.user.id:
-                if count > delete_max:
-                    return
+                delete = True
+
+            context = await self.bot.get_context(message)
+            if context.valid:
+                delete = True
+
+            if delete:
                 await message.delete()
                 count += 1
 
