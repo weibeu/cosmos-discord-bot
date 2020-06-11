@@ -122,7 +122,8 @@ class Levels(GuildBaseCog):
     @commands.has_permissions(administrator=True)
     async def reset_user_levels(self, ctx, channel: ChannelConverter = "both"):
         """WARNING: This resets everyone's XP of specified channel, either text or voice. If no channel is specified
-        it resets both, everyone's Text and Voice XP.
+        it resets both, everyone's Text and Voice XP. This will not effect existing awards like role or points
+        that has already been awarded to members.
 
         """
         if not await ctx.confirm():

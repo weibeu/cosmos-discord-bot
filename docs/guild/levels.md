@@ -75,7 +75,7 @@ Usage:
 
 ### ;level resetall
 
-**WARNING:** This resets everyone's XP of specified channel, either text or voice. If no channel is specified it resets both, everyone's Text and Voice XP.
+**WARNING:** This resets everyone's XP of specified channel, either text or voice. If no channel is specified it resets both, everyone's Text and Voice XP. This will not effect existing awards like role or points that has already been awarded to members.
 
 ```yaml
 Aliases:
