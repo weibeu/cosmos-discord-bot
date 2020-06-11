@@ -60,8 +60,11 @@ class Presence(Admin):
     @tasks.loop(seconds=UPDATE_INTERVAL)
     async def update_presence(self):
         args = self._get_args()
-        await self.set_presence(*args)
-        await asyncio.sleep(self.plugin.data.configs.interval)
+        # noinspection PyBroadException
+        try:
+            await self.set_presence(*args)
+        except Exception:
+            await asyncio.sleep(self.plugin.data.configs.interval)
 
     @update_presence.before_loop
     async def before_update_presence(self):
