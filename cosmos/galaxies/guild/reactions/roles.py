@@ -49,6 +49,22 @@ class ReactionRoles(Reactions):
                         pass
                     finally:
                         return
+                else:
+                    if not rr.stack:
+                        try:
+                            to_remove = tuple(set(rr.roles) & set(member.roles))[0]
+                        except IndexError:
+                            pass
+                        else:
+                            await member.remove_roles(to_remove, reason="Member doesn't wants this role anymore.")
+                        finally:
+                            await member.add_roles(role, reason="Issued reaction role.")
+                        try:
+                            await message.remove_reaction(payload.emoji, member)
+                        except discord.Forbidden:
+                            pass
+                        finally:
+                            return
             if not rr.stack:
                 # Check if member already has any of this reaction roles when stack = False.
                 if set(member.roles) & set(rr.roles):
