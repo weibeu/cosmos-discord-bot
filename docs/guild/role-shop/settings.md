@@ -62,3 +62,15 @@ Usage:
 ;givepoints <points> <member>
 ```
 
+### ;roleshop resetall
+
+WARNING: This command will reset everyone's roleshop points. This will not affect already owned roleshop roles.
+
+```yaml
+Aliases:
+- reseteveryone
+
+Usage:
+;roleshop resetall
+```
+

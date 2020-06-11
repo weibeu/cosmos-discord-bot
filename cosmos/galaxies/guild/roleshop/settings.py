@@ -81,3 +81,21 @@ class RoleShopSettings(RoleShopBase):
             await ctx.guild_profile.roleshop.set_points(role.id, new_points)
 
             await ctx.send_line(f"✅    {role.name} points has been changed to {new_points}.")
+
+    @RoleShopBase.role_shop.command(name="resetall", aliases=["reseteveryone"])
+    @has_permissions(administrator=True)
+    async def reset_user_points(self, ctx):
+        """WARNING: This command will reset everyone's roleshop points. This will not affect already owned roleshop
+        roles.
+
+        """
+        if not await ctx.confirm():
+            return
+        if not await ctx.confirm(f"⚠    Are you really sure to reset EVERYONE's roleshop points?"):
+            return
+
+        profile = await ctx.fetch_member_profile()
+        await profile.reset_everyone_points()
+        for profile in self.bot.profile_cache.lfu.values():
+            profile.guild_profiles.pop(ctx.guild.id, None)
+        await ctx.send_line(f"✅    Everyone's roleshop points has been reset. Let's start fresh!")

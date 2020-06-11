@@ -84,3 +84,10 @@ class GuildMemberProfile(GuildPoints, MemberExperience):
         await self.collection.update_many({}, {"$unset": {
             f"{self.guild_filter}.stats.xp.{channel}": ""
         }})
+
+    async def reset_everyone_points(self):
+        if not self.member.guild_permissions.administrator:
+            raise NotImplementedError
+        await self.collection.update_many({}, {"$unset": {
+            f"{self.guild_filter}.points.points": ""
+        }})
