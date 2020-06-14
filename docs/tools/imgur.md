@@ -8,6 +8,9 @@ description: Another utility plugin which provides few commands to directly inte
 
 Uploads provided URL or attached image to imgur.com and returns the direct URL of the image.
 
+You can also specify either an **emoji** or **mention** someone to upload their avatar to imgur. If no URL is specified, returns the imgur URL of the user's avatar.
+
+
 ```yaml
 Aliases:
 - imgurfy

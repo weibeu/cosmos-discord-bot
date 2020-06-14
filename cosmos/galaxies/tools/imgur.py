@@ -1,6 +1,9 @@
 from discord.ext import commands
 
+import typing
+import discord
 import mimetypes
+
 from .. import Cog
 from ...core.utilities import api
 
@@ -12,12 +15,23 @@ class Imgur(Cog):
         super().__init__()
         self.plugin = plugin
 
+    @Cog.cooldown(1, 5, type=Cog.bucket_type.user)
     @Cog.command(name="imgur", aliases=["imgurfy", "imgurify"])
-    async def imgur(self, ctx, url=None):
-        """Uploads provided URL or attached image to imgur.com and returns the direct URL of the image."""
+    async def imgur(self, ctx, url: typing.Union[discord.Member, discord.Emoji, discord.PartialEmoji, str] = None):
+        """Uploads provided URL or attached image to imgur.com and returns the direct URL of the image.
+        You can also specify either an emoji or mention someone to upload their avatar to imgur. If no URL is
+        specified, returns the imgur URL of the user's avatar.
+
+        """
         if not (url or ctx.message.attachments):
-            raise commands.BadArgument
+            url = str(ctx.author.avatar_url)
+
+        if isinstance(url, discord.Member):
+            url = str(url.avatar_url_as(static_format="png"))
+        if isinstance(url, (discord.Emoji, discord.PartialEmoji)):
+            url = str(url.url)
         url = url or ctx.message.attachments[0].url
+
         try:
             type_ = mimetypes.guess_type(url)
             if type_[0] in ("video/mp4", ):
