@@ -9,11 +9,14 @@ class OneLinePrimary(Primary):
         self._bot = bot
         assert len(content) <= 256, "Content should be less than or equal to 256 in length."
         icon_url = kwargs.get("icon_url")
+        author_url = kwargs.get("author_url")
         if icon_url:
             super().__init__(**kwargs)
             self.set_author(name=content, icon_url=icon_url, url=kwargs.get("author_url") or EmptyEmbed)
         else:
             super().__init__(title=content, **kwargs)
+            if author_url:
+                self.set_author(name=content, url=author_url or EmptyEmbed)
 
     @property
     def bot(self):
