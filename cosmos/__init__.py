@@ -1,4 +1,5 @@
 from .core import Cosmos
+from .core import utilities
 from .core.functions import exceptions
 
 

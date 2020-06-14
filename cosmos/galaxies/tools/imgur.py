@@ -1,6 +1,7 @@
 from discord.ext import commands
 
 from .. import Cog
+from ...core.utilities import api
 
 
 class Imgur(Cog):
@@ -16,7 +17,10 @@ class Imgur(Cog):
         if not (url or ctx.message.attachments):
             raise commands.BadArgument
         url = url or ctx.message.attachments[0].url
-        image = await self.bot.utilities.imgur.upload(image=url)
+        try:
+            image = await self.bot.utilities.imgur.upload(image=url)
+        except api.ImgurHTTPException:
+            return await ctx.send_line("❌    Failed to upload provided image or URL to imgur.")
         return await ctx.send_line(
             "Click here to open the image in your browser.", content=f"<{image.url}>",
             icon_url=self.bot.theme.images.share, author_url=image.url)
