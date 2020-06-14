@@ -1,3 +1,4 @@
+import datetime as dt
 import aiohttp
 
 
@@ -8,10 +9,23 @@ class ImgurHTTPException(Exception):
 
 class ImgurImage(object):
 
-    def __init__(self, *, title, animated, link, **_kwargs):
+    def __init__(self, *, title, animated, link, datetime=None, **kwargs):
         self.title = title
         self.animated = animated
         self.url = link
+        self.__set_meta(kwargs)
+        self.datetime = datetime
+
+    @property
+    def timestamp(self):
+        try:
+            return dt.datetime.fromtimestamp(self.datetime)
+        except TypeError:
+            pass
+
+    def __set_meta(self, data):
+        for name, value in data.items():
+            self.__setattr__(name, value)
 
 
 class ImgurHTTPClient(object):
@@ -45,12 +59,31 @@ class ImgurHTTPClient(object):
         json = await self.request('/upload/', data=body)
         return json["data"]
 
+    async def fetch_meta(self, hash_):
+        json = await self.request(f'/image/{hash_}', method="GET")
+        return json["data"]
+
 
 class ImgurClient(object):
 
     def __init__(self, client_id):
         self.id = client_id
         self.http = ImgurHTTPClient(self)
+
+    @staticmethod
+    def get_image_hash(image):
+        url = image.url if isinstance(image, ImgurImage) else image
+        if "imgur.com" in url:
+            try:
+                return url.split("/")[-1].split(".")[0]
+            except IndexError:
+                pass
+        return image
+
+    async def fetch_meta(self, hash_):
+        hash_ = self.get_image_hash(hash_)
+        data = await self.http.fetch_meta(hash_)
+        return ImgurImage(**data)
 
     async def upload(self, image, video=None, title=str()):
         data = await self.http.upload(title=title, image=image, video=video)
