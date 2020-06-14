@@ -309,3 +309,103 @@ class Moderation(Cog):
                     self.bot.theme.images.no_entry)
         except AttributeError:
             pass
+
+    @Cog.group(name="purge", aliases=['prune'])
+    @check_mod(manage_messages=True)
+    async def purge(self, ctx, search=100):
+        """Removes and purges messages which meets specified criteria. To specify any criteria, consider using
+        its sub-commands. If this primary command is used, performs the default purge which removes last
+        specified number of messages.
+
+        """
+        if not ctx.invoked_subcommand:
+            await self.do_removal(ctx, search, lambda m: m)
+
+    @staticmethod
+    async def do_removal(ctx, limit, predicate, *, before=None, after=None):
+        if limit > 2000:
+            return await ctx.send_line(f"❌    Too many messages specified to search for.")
+
+        if before is None:
+            before = ctx.message
+        else:
+            before = discord.Object(id=before)
+
+        if after is not None:
+            after = discord.Object(id=after)
+
+        try:
+            deleted = await ctx.channel.purge(limit=limit, before=before, after=after, check=predicate)
+        except discord.Forbidden:
+            return await ctx.send_line("❌    I do not have permissions to delete messages.")
+
+        await ctx.send_line(f"✅    Successfully purged {len(deleted)} messages.", delete_after=5)
+
+    @purge.command()
+    async def text(self, ctx, search=100):
+        """Removes text, ignores files."""
+        await self.do_removal(ctx, search, lambda e: not e.files)
+
+    @purge.command()
+    async def embeds(self, ctx, search=100):
+        """Removes messages that have embeds in them."""
+        await self.do_removal(ctx, search, lambda e: len(e.embeds))
+
+    @purge.command()
+    async def files(self, ctx, search=100):
+        """Removes messages that have attachments in them."""
+        await self.do_removal(ctx, search, lambda e: len(e.attachments))
+
+    @purge.command()
+    async def images(self, ctx, search=100):
+        """Removes messages that have embeds or attachments."""
+        await self.do_removal(ctx, search, lambda e: len(e.embeds) or len(e.attachments))
+
+    @purge.command(name='all')
+    async def _remove_all(self, ctx, search=100):
+        """Removes all messages."""
+        await self.do_removal(ctx, search, lambda e: True)
+
+    @purge.command()
+    async def user(self, ctx, member: discord.Member, search=100):
+        """Removes all messages by the member."""
+        await self.do_removal(ctx, search, lambda e: e.author == member)
+
+    @purge.command()
+    async def contains(self, ctx, *, substr: str):
+        """Removes all messages containing a substring.
+        The substring must be at least 3 characters long.
+        """
+        if len(substr) < 3:
+            await ctx.send_line('❌    The substring length must be at least 3 characters.')
+        else:
+            await self.do_removal(ctx, 100, lambda e: substr in e.content)
+
+    @purge.command(name='bot')
+    async def _bot(self, ctx, prefix=None, search=100):
+        """Removes a bot user's messages and messages with their optional prefix."""
+
+        def predicate(m):
+            return (m.webhook_id is None and m.author.bot) or (prefix and m.content.startswith(prefix))
+
+        await self.do_removal(ctx, search, predicate)
+
+    @purge.command(name='emoji')
+    async def _emoji(self, ctx, search=100):
+        """Removes all messages containing custom emoji."""
+        await self.do_removal(ctx, search, lambda m: self.bot.utilities.count_emojis(m.content))
+
+    @purge.command(name='reactions')
+    async def _reactions(self, ctx, search=100):
+        """Removes all reactions from messages that have them."""
+
+        if search > 2000:
+            return await ctx.send_line(f'❌    Too many messages specified to search for.')
+
+        total_reactions = 0
+        async for message in ctx.history(limit=search, before=ctx.message):
+            if len(message.reactions):
+                total_reactions += sum(r.count for r in message.reactions)
+                await message.clear_reactions()
+
+        await ctx.send_line(f'❌    Successfully removed {total_reactions} reactions.')
