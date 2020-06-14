@@ -1,4 +1,4 @@
-from .api.hastebin import HasteBin
+from .api import HasteBin
 
 import os
 import re

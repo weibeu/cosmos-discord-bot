@@ -128,3 +128,13 @@ class CosmosMetaInformation(Config):
 
     NAME = "info"
     PATH = "cfg/core/information.yaml"
+
+
+class ImgurConfigs(Config):
+
+    NAME = "imgur"
+    PATH = "cfg/api/imgur.yaml"
+
+    def __init__(self):
+        super().__init__()
+        self.client_id = os.getenv("IMGUR_CLIENT_ID") or self.client_id

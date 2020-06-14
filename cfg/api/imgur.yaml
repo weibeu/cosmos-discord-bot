@@ -1,0 +1,4 @@
+# ! Imgur API configs.
+
+
+client_id: ""    # ENV: IMGUR_CLIENT_ID
