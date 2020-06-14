@@ -37,8 +37,8 @@ class InitialTasks(commands.Bot):
         self.version = version
         self.release = release
         self._init_time()
-        self._init_utilities()
         self._init_configs()
+        self._init_utilities()
         super().__init__(
             command_prefix=self.__get_prefix, case_insensitive=True, help_command=CosmosHelp()
         )
