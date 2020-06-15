@@ -45,6 +45,7 @@
 ## TOOLS
 
 * [Tags](tools/tags.md)
+* [Imgur](tools/imgur.md)
 * [Haste Bin](tools/haste-bin.md)
 * [Utilities](tools/utilities.md)
 
