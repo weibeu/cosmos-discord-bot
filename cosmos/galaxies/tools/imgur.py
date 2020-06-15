@@ -1,5 +1,3 @@
-from discord.ext import commands
-
 import typing
 import discord
 import mimetypes
@@ -32,13 +30,15 @@ class Imgur(Cog):
             url = str(url.url)
         url = url or ctx.message.attachments[0].url
 
+        type_ = mimetypes.guess_type(url)
+        if type_[0] in ("video/mp4",):
+            media = dict(video=url)
+        else:
+            media = dict(image=url)
+
         try:
-            type_ = mimetypes.guess_type(url)
-            if type_[0] in ("video/mp4", ):
-                media = dict(video=url)
-            else:
-                media = dict(image=url)
-            image = await self.bot.utilities.imgur.upload(**media)
+            async with ctx.loading():
+                image = await self.bot.utilities.imgur.upload(**media)
         except api.ImgurHTTPException:
             return await ctx.send_line("❌    Failed to upload provided image or URL to imgur.")
         return await ctx.send_line(
