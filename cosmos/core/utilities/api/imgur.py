@@ -85,6 +85,6 @@ class ImgurClient(object):
         data = await self.http.fetch_meta(hash_)
         return ImgurImage(**data)
 
-    async def upload(self, image, video=None, title=str()):
+    async def upload(self, image=None, video=None, title=str()):
         data = await self.http.upload(title=title, image=image, video=video)
         return ImgurImage(**data)
