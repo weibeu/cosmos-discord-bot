@@ -17,7 +17,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * TOOLS
 * FUN
 
-#### Plugins
+### Plugins
 
 * [AdministratorSettings](settings/administrator-settings.md)
 * [AutoModeration](moderation/auto-moderation.md)
@@ -43,7 +43,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [Utilities](tools/utilities.md)
 * [Welcome](guild/welcome/)
 
-#### **Primary** Commands
+### **Primary** Commands
 
 The following table displays entire list of primary commands and their basic syntax to use. Click on the command to know more about it including their **sub-commands**.
 
@@ -54,7 +54,7 @@ The following table displays entire list of primary commands and their basic syn
 You can also mention the bot and use the same as a prefix to invoke any of the commands.  
 **Example:** `@Cosmos2406 ...`
 
-**Understanding the syntax**
+#### **Understanding the syntax**
 
 All of the usages provided for each commands and sub-commands follow a certain syntax, very much similar to the way these commands will be actually used.  
 Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md) which can be the default prefix, `;` or any of the custom prefixes you have set. Following with the Primary Command, optional sub-command and arguments.
@@ -63,6 +63,8 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 
 * The arguments under `<argument>` are required arguments.
 * The arguments under `[argument]` are optional arguments.
+
+**!! Do not include `<>` or `[]` while actually making the commands.**
 
 | Command | Short Description | Usage |
 | :---: | :---: | :---: |
