@@ -12,5 +12,6 @@ class HasteBin(Cog):
     @Cog.command(name="hastebin", aliases=["haste"])
     async def haste(self, ctx, *, content):
         """Posts the provided content to https://hastebin.com/ and displays a shareable link."""
-        url = await self.bot.utilities.haste(content)
+        async with ctx.loading():
+            url = await self.bot.utilities.haste(content)
         await ctx.send_line(f"🔗    {url}")
