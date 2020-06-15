@@ -26,6 +26,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [DeadMemes](fun/dead-memes.md)
 * [GuildSettings](guild/guild-settings/)
 * [HasteBin](tools/haste-bin.md)
+* [Imgur](tools/imgur.md)
 * [Leaderboards](profile/leaderboards.md)
 * [Levels](guild/levels.md)
 * [Logger](moderation/logger.md)
@@ -77,6 +78,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [fermions](https://cosmos.thecosmos.space/profile/economy#fermions) | Displays number of Fermions you have. | `;fermions` |
 | [givepoints](https://cosmos.thecosmos.space/guild/role-shop/settings.md#givepoints) | Generate and give points to specified member. | `;givepoints <points> <member>` |
 | [hastebin](https://cosmos.thecosmos.space/tools/haste-bin#hastebin) | Posts the provided content to [https://hastebin.com/](https://hastebin.com/) and displays a shareable link. | `;hastebin <content>` |
+| [imgur](https://cosmos.thecosmos.space/tools/imgur#imgur) | Uploads provided URL or attached image to imgur.com and returns the direct URL of the image. | `;imgur [url]` |
 | [kick](https://cosmos.thecosmos.space/moderation/moderation#kick) | Kicks specified member from the server. | `;kick <member> [reason]` |
 | [leaderboards](https://cosmos.thecosmos.space/profile/leaderboards.md#leaderboards) | Displays top members with maximum chat experience points. | `;leaderboards` |
 | [level](https://cosmos.thecosmos.space/levels#level) | Displays current level and experience points. | `;level [member]` |
@@ -89,6 +91,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [preset](https://cosmos.thecosmos.space/settings/administrator-settings#preset) | Sets preset for commands to display certain preset message. | `;preset <command_name> <image_url> [text]` |
 | [profile](https://cosmos.thecosmos.space/profile/profile#profile) | Displays your Cosmos Profile or of specified member. | `;profile [user]` |
 | [propose](https://cosmos.thecosmos.space/profile/marriage#propose) | Lets you propose them. | `;propose <user>` |
+| [purge](https://cosmos.thecosmos.space/moderation/moderation#purge) | Removes and purges messages which meets specified criteria. | `;purge [search=100]` |
 | [reaction](https://cosmos.thecosmos.space/reaction-roles#reaction) | It contains multiple reaction based sub-commands. | `;reaction` |
 | [reactor](https://cosmos.thecosmos.space/reactor#reactor) | Displays reactor settings of current or specified channel. | `;reactor [channel]` |
 | [rep](https://cosmos.thecosmos.space/profile/profile#rep) | Add a reputation point to specified member. | `;rep [user]` |

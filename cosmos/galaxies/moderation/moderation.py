@@ -310,7 +310,7 @@ class Moderation(Cog):
         except AttributeError:
             pass
 
-    @Cog.group(name="purge", aliases=['prune'])
+    @Cog.group(name="purge", aliases=["prune"], invoke_without_command=True)
     @check_mod(manage_messages=True)
     async def purge(self, ctx, search=100):
         """Removes and purges messages which meets specified criteria. To specify any criteria, consider using
@@ -318,8 +318,7 @@ class Moderation(Cog):
         specified number of messages.
 
         """
-        if not ctx.invoked_subcommand:
-            await self.do_removal(ctx, search, lambda m: m)
+        await self.do_removal(ctx, search, lambda m: True)
 
     @staticmethod
     async def do_removal(ctx, limit, predicate, *, before=None, after=None):
@@ -336,52 +335,59 @@ class Moderation(Cog):
 
         try:
             deleted = await ctx.channel.purge(limit=limit, before=before, after=after, check=predicate)
+            await ctx.message.delete()
         except discord.Forbidden:
             return await ctx.send_line("❌    I do not have permissions to delete messages.")
 
         await ctx.send_line(f"✅    Successfully purged {len(deleted)} messages.", delete_after=5)
 
-    @purge.command()
+    @purge.command(name="text", aliases=["texts"])
+    @check_mod(manage_messages=True)
     async def text(self, ctx, search=100):
-        """Removes text, ignores files."""
-        await self.do_removal(ctx, search, lambda e: not e.files)
+        """Removes all of the messages containing only texts, ignores files or any attachments."""
+        await self.do_removal(ctx, search, lambda e: not e.attachments)
 
-    @purge.command()
+    @purge.command(name="embeds", aliases=["embed"])
+    @check_mod(manage_messages=True)
     async def embeds(self, ctx, search=100):
-        """Removes messages that have embeds in them."""
+        """Removes messages that have embeds in them. Embed messages are sent by webhooks and other bots."""
         await self.do_removal(ctx, search, lambda e: len(e.embeds))
 
-    @purge.command()
+    @purge.command(name="files", aliases=["file"])
+    @check_mod(manage_messages=True)
     async def files(self, ctx, search=100):
         """Removes messages that have attachments in them."""
         await self.do_removal(ctx, search, lambda e: len(e.attachments))
 
-    @purge.command()
+    @purge.command(name="images", aliases=["image"])
+    @check_mod(manage_messages=True)
     async def images(self, ctx, search=100):
         """Removes messages that have embeds or attachments."""
         await self.do_removal(ctx, search, lambda e: len(e.embeds) or len(e.attachments))
 
-    @purge.command(name='all')
+    @purge.command(name="all", aliases=["everything"])
+    @check_mod(manage_messages=True)
     async def _remove_all(self, ctx, search=100):
-        """Removes all messages."""
+        """Another alias to the primary purge command which deletes any of the messages for provided search limit."""
         await self.do_removal(ctx, search, lambda e: True)
 
-    @purge.command()
+    @purge.command(name="user", aliases=["member"])
+    @check_mod(manage_messages=True)
     async def user(self, ctx, member: discord.Member, search=100):
-        """Removes all messages by the member."""
+        """Removes all messages sent by the specified member."""
         await self.do_removal(ctx, search, lambda e: e.author == member)
 
-    @purge.command()
+    @purge.command(name="contains", aliases=["has"])
+    @check_mod(manage_messages=True)
     async def contains(self, ctx, *, substr: str):
-        """Removes all messages containing a substring.
-        The substring must be at least 3 characters long.
-        """
+        """Removes all messages containing a substring. The substring must be at least 3 characters long."""
         if len(substr) < 3:
-            await ctx.send_line('❌    The substring length must be at least 3 characters.')
+            await ctx.send_line("❌    The substring length must be at least of 3 characters.")
         else:
             await self.do_removal(ctx, 100, lambda e: substr in e.content)
 
-    @purge.command(name='bot')
+    @purge.command(name="bot")
+    @check_mod(manage_messages=True)
     async def _bot(self, ctx, prefix=None, search=100):
         """Removes a bot user's messages and messages with their optional prefix."""
 
@@ -390,17 +396,19 @@ class Moderation(Cog):
 
         await self.do_removal(ctx, search, predicate)
 
-    @purge.command(name='emoji')
+    @purge.command(name="emoji", aliases=["emojis", "emotes", "emote"])
+    @check_mod(manage_messages=True)
     async def _emoji(self, ctx, search=100):
         """Removes all messages containing custom emoji."""
         await self.do_removal(ctx, search, lambda m: self.bot.utilities.count_emojis(m.content))
 
-    @purge.command(name='reactions')
+    @purge.command(name="reactions", aliases=["reaction"])
+    @check_mod(manage_messages=True)
     async def _reactions(self, ctx, search=100):
         """Removes all reactions from messages that have them."""
 
         if search > 2000:
-            return await ctx.send_line(f'❌    Too many messages specified to search for.')
+            return await ctx.send_line(f"❌    Too many messages specified to search for.")
 
         total_reactions = 0
         async for message in ctx.history(limit=search, before=ctx.message):
@@ -408,4 +416,4 @@ class Moderation(Cog):
                 total_reactions += sum(r.count for r in message.reactions)
                 await message.clear_reactions()
 
-        await ctx.send_line(f'❌    Successfully removed {total_reactions} reactions.')
+        await ctx.send_line(f"❌    Successfully removed {total_reactions} reactions.")

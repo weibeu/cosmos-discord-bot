@@ -104,3 +104,151 @@ Usage:
 ;unmute <member>
 ```
 
+## ;purge
+
+Removes and purges messages which meets specified criteria. To specify any criteria, consider using its sub-commands. If this primary command is used, performs the default purge which removes last specified number of messages.
+
+```yaml
+Aliases:
+- prune
+
+Usage:
+;purge [search=100]
+```
+
+### ;purge text
+
+Removes all of the messages containing only texts, ignores files or any attachments.
+
+```yaml
+Aliases:
+- text
+
+Usage:
+;purge text [search=100]
+```
+
+### ;purge embeds
+
+Removes messages that have embeds in them. Embed messages are sent by webhooks and other bots.
+
+```yaml
+Aliases:
+- embed
+
+Usage:
+;purge embeds [search=100]
+```
+
+### ;purge embeds
+
+Removes messages that have embeds in them. Embed messages are sent by webhooks and other bots.
+
+```yaml
+Aliases:
+- embed
+
+Usage:
+;purge embeds [search=100]
+```
+
+### ;purge files
+
+Removes messages that have attachments in them.
+
+```yaml
+Aliases:
+- file
+
+Usage:
+;purge files [search=100]
+```
+
+### ;purge images
+
+Removes messages that have embeds or attachments.
+
+```yaml
+Aliases:
+- image
+
+Usage:
+;purge images [search=100]
+```
+
+### ;purge all
+
+Another alias to the primary purge command which deletes any of the messages for provided search limit.
+
+```yaml
+Aliases:
+- everything
+
+Usage:
+;purge all [search=100]
+```
+
+### ;purge user
+
+Removes all messages sent by the specified member.
+
+```yaml
+Aliases:
+- member
+
+Usage:
+;purge user <user> [search=100]
+
+Examples:
+;purge user @thecosmos#7777 20
+```
+
+### ;purge contains
+
+Removes all messages containing a substring. The substring must be at least 3 characters long.
+
+```yaml
+Aliases:
+- has
+
+Usage:
+;purge contains <sub string>
+```
+
+### ;purge bot
+
+Removes a bot user's messages and messages with their optional prefix.
+
+```yaml
+Usage:
+;purge bot [prefix] [search=100]
+
+Examples:
+;purge bot ! 20
+```
+
+### ;purge emoji
+
+Removes all messages containing custom emoji.
+
+```yaml
+Aliases:
+- emojis
+- emotes
+- emote
+
+Usage:
+;purge emoji [search=100]
+```
+
+### ;purge reactions
+
+Removes all reactions from messages that have them.
+
+```yaml
+Aliases:
+- reaction
+
+Usage:
+;purge reactions [search=100]
+```
