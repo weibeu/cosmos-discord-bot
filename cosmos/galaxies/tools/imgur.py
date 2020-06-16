@@ -22,7 +22,7 @@ class Imgur(Cog):
 
         """
         if not (url or ctx.message.attachments):
-            url = str(url.avatar_url_as(static_format="png"))
+            url = str(ctx.author.avatar_url_as(static_format="png"))
 
         if isinstance(url, discord.Member):
             url = str(url.avatar_url_as(static_format="png"))
