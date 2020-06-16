@@ -54,8 +54,19 @@ class RoleShopPoints(RoleShopBase):
             res = f"⏳    You can redeem daily points again in {author_profile.next_daily_points.humanize()}."
             return await ctx.send_line(res)
 
-        daily_points = await author_profile.take_daily_points(target_profile)
-        res = f"🗓    {daily_points} daily points were given to {target_name}."
+        old_streak = author_profile.points_daily_streak
+        points = await author_profile.take_daily_points(target_profile)
+        new_streak = author_profile.points_daily_streak
+        res = f"🗓    {points} daily points were given to {target_name}."
+
+        if old_streak > 0:
+            if not new_streak:
+                res = f"{res} | ☹ x{old_streak} Streak expired."
+            else:
+                res = f"{res} | 🌟 x{new_streak} Streak!"
+        else:
+            res = f"{res} | Keep up the streaks!"
+
         await ctx.send_line(res)
 
     @points.command(name="credit", aliases=["transfer", "give"])

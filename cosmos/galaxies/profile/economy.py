@@ -77,7 +77,7 @@ class Economy(Cog):
             else:
                 res = f"{res} | 🌟 x{new_streak} Streak!"
         else:
-            res = f"{res} | Keep the streaks!"
+            res = f"{res} | Keep up the streaks!"
 
         await ctx.send_line(res)
 

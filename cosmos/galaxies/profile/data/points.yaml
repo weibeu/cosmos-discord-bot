@@ -4,3 +4,5 @@ buffer_cooldown: 54    # Time after which User is removed from buffer.
 
 default_daily: 40
 daily_cooldown: 20    # Cooldown after which User can take another daily in hours.
+streak_buffer: 26     # Time after which the daily streak expires. In hours.
+

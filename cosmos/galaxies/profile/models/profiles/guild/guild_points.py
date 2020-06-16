@@ -2,6 +2,7 @@ import asyncio
 import random
 from abc import ABC
 
+import math
 import arrow
 
 from .base import GuildMemberProfileBase
@@ -9,9 +10,12 @@ from .base import GuildMemberProfileBase
 
 class GuildPoints(GuildMemberProfileBase, ABC):
 
+    __STREAK_MULTIPLIER = 10
+
     def __init__(self, **kwargs):
         raw_points = kwargs.get("points", dict())
         self.points = raw_points.get("points", 0)
+        self.points_daily_streak = raw_points.get("daily_streak", 0)
         self.points_daily_timestamp = raw_points.get("daily_timestamp")
 
         self.in_points_buffer = False
@@ -28,6 +32,13 @@ class GuildPoints(GuildMemberProfileBase, ABC):
         self.in_points_buffer = False
 
     @property
+    def on_points_daily_streak(self):
+        streak_buffer = self.get_future_arrow(self.points_daily_timestamp, hours=self.plugin.data.points.streak_buffer)
+        if arrow.utcnow() > streak_buffer:
+            return False
+        return True
+
+    @property
     def next_daily_points(self):
         return self.get_future_arrow(self.points_daily_timestamp, hours=self.plugin.data.points.daily_cooldown)
 
@@ -39,10 +50,19 @@ class GuildPoints(GuildMemberProfileBase, ABC):
 
     async def take_daily_points(self, target_profile=None):
         profile = target_profile or self
-        profile.points += self.plugin.data.points.default_daily
+        points = self.plugin.data.points.default_daily
+
+        if self.on_points_daily_streak:
+            self.points_daily_streak += 1
+            points += round(math.log(self.points_daily_streak) ** math.sqrt(self.__STREAK_MULTIPLIER))
+        else:
+            self.points_daily_streak = 0
+
+        profile.points += points
         self.points_daily_timestamp = arrow.utcnow()
-        await self.collection.update_one(
-            self.document_filter,
-            {"$set": {f"{self.guild_filter}.points.daily_timestamp": self.points_daily_timestamp.datetime}}
-        )
-        return self.plugin.data.points.default_daily
+
+        await self.collection.update_one(self.document_filter, {"$set": {
+            f"{self.guild_filter}.points.daily_timestamp": self.points_daily_timestamp.datetime,
+            f"{self.guild_filter}.points.daily_streak": self.points_daily_streak,
+        }})
+        return points
