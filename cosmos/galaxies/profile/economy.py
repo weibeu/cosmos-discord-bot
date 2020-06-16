@@ -65,8 +65,20 @@ class Economy(Cog):
         if not author_profile.can_take_daily_bosons:
             res = f"⏳    You can take your dailies again {author_profile.next_daily_bosons.humanize()}."
             return await ctx.send_line(res)
-        await author_profile.take_daily_bosons(target_profile)
-        res = f"🗓    {self.plugin.data.boson.default_daily} daily Bosons were given to {target_name}."
+
+        old_streak = author_profile.boson_daily_streak
+        bosons = await author_profile.take_daily_bosons(target_profile)
+        new_streak = author_profile.boson_daily_streak
+        res = f"🗓    {bosons} daily Bosons were given to {target_name}."
+
+        if old_streak > 0:
+            if not new_streak:
+                res = f"{res} | ☹ x{old_streak} Streak expired."
+            else:
+                res = f"{res} | 🌟 x{new_streak} Streak!"
+        else:
+            res = f"{res} | Keep the streaks!"
+
         await ctx.send_line(res)
 
     @Cog.command(name="fermions", aliases=["fermion"])

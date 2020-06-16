@@ -1,3 +1,4 @@
+import math
 import arrow
 import asyncio
 import random
@@ -9,9 +10,12 @@ from ..base import ProfileModelsBase
 
 class Boson(ProfileModelsBase, ABC):
 
+    __STREAK_MULTIPLIER = 7
+
     def __init__(self, **kwargs):
         raw_currency = kwargs.get("currency", dict())
         self._bosons = raw_currency.get("bosons", 0)
+        self.boson_daily_streak = raw_currency.get("bosons_daily_streak", 0)
         self.boson_daily_timestamp = self.get_arrow(raw_currency.get("boson_daily_timestamp"))
 
         self.in_boson_buffer = False
@@ -38,16 +42,35 @@ class Boson(ProfileModelsBase, ABC):
         return arrow.utcnow() > self.next_daily_bosons
 
     @property
+    def on_bosons_daily_streak(self):
+        streak_buffer = self.get_future_arrow(self.boson_daily_timestamp, hours=self.plugin.data.boson.streak_buffer)
+        if arrow.utcnow() > streak_buffer:
+            return False
+        return True
+
+    @property
     def next_daily_bosons(self):
         return self.get_future_arrow(self.boson_daily_timestamp, hours=self.plugin.data.boson.daily_cooldown)
 
     async def take_daily_bosons(self, target_profile=None):
         profile = target_profile or self
-        profile._bosons += self.plugin.data.boson.default_daily
+        bosons = self.plugin.data.boson.default_daily
+
+        if self.on_bosons_daily_streak:
+            self.boson_daily_streak += 1
+            bosons += round(math.log(self.boson_daily_streak) ** math.sqrt(self.__STREAK_MULTIPLIER))
+        else:
+            self.boson_daily_streak = 0
+
+        profile._bosons += bosons
         self.boson_daily_timestamp = arrow.utcnow()
-        await self.collection.update_one(
-            self.document_filter, {"$set": {"currency.boson_daily_timestamp": self.boson_daily_timestamp.datetime}}
-        )
+
+        await self.collection.update_one(self.document_filter, {"$set": {
+            "currency.boson_daily_timestamp": self.boson_daily_timestamp.datetime,
+            "currency.bosons_daily_streak": self.boson_daily_streak,
+        }})
+
+        return bosons
 
 
 class Fermion(ProfileModelsBase, ABC):
