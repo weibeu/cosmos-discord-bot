@@ -13,6 +13,7 @@ Stats:
 - chat
 - voice
 - points
+- streaks
 
 Aliases:
 - leaderboard
@@ -40,6 +41,7 @@ Stats:
 - reps
 - bosons
 - fermions
+- streaks
 
 Aliases:
 - globals

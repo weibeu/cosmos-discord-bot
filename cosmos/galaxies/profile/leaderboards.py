@@ -23,7 +23,7 @@ class StatsConverter(commands.Converter):
 class GuildStatsConverter(StatsConverter):
 
     STATS = [
-        "text", "chat", "voice", "points"
+        "text", "chat", "voice", "points", "streaks",
     ]
 
     async def convert(self, ctx, argument):
@@ -36,7 +36,7 @@ class GuildStatsConverter(StatsConverter):
 class GlobalStatsConverter(StatsConverter):
 
     STATS = [
-        "text", "chat", "voice", "bosons", "fermions", "reputations", "reps",
+        "text", "chat", "voice", "bosons", "fermions", "reputations", "reps", "streaks",
     ]
 
 
@@ -146,6 +146,10 @@ class Leaderboards(Cog):
             filter_ = "points.points"
             name = "Points Leaderboards"
             parser = self.__points_parser
+        elif stats == "streaks":
+            filter_ = "points.daily_streak"
+            name = "Points Daily Streak Leaderboards"
+            parser = self.__streaks_parser
         else:
             # noinspection PyTypeChecker
             return await self.global_leaderboards(ctx, stats)
@@ -174,6 +178,10 @@ class Leaderboards(Cog):
         key, value = await self.__entry_parser(*args, **kwargs)
         return key, f"`FERMIONS:` {value}"
 
+    async def __streaks_parser(self, *args, **kwargs):
+        key, value = await self.__entry_parser(*args, **kwargs)
+        return key, f"`DAILY STREAKS:` {value}"
+
     @leaderboards.command(name="global", aliases=["cosmos", "globals"])
     async def global_leaderboards(self, ctx, stats: GlobalStatsConverter = "chat"):
         """Displays top users with maximum chat experience earned globally across all servers."""
@@ -198,6 +206,10 @@ class Leaderboards(Cog):
             filter_ = "currency.fermions"
             name = "Fermions Leaderboards"
             parser = self.__fermions_parser
+        elif stats == "streaks":
+            filter_ = "currency.bosons_daily_streak"
+            name = "Bosons Daily Streak Leaderboards"
+            parser = self.__streaks_parser
         else:
             raise ValueError
         async with ctx.loading():
