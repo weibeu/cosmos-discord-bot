@@ -142,9 +142,11 @@ class ReactionRoles(Reactions):
         if not isinstance(message, discord.Message):
             message = message or "Reaction Roles"
             embed = ctx.embeds.primary()
-            embed.set_author(name=message)
-            embed.description = "```css\nReact to the emote corresponding to the role you wish to have.```\n"
-            embed.description += "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes]) + "\n​"
+            embed.set_author(name=message, icon_url=self.bot.theme.images.diabetes)
+            # embed.description = "```css\nReact to the emote corresponding to the role you wish to have.```\n"
+            for role, emote in roles_emotes:
+                embed.add_field(name=f"{emote}    {role.name}", value=f"`COLOR:` {role.mention}")
+            # embed.description += "\n".join([f"{emote} {role.mention}" for role, emote in roles_emotes]) + "\n​"
             embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
             message = await ctx.send(embed=embed)
         if len(message.reactions) < len(roles):
