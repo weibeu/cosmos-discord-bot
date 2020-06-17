@@ -17,6 +17,10 @@ class Template(commands.Converter):
     async def convert(self, ctx, argument):
         if set(re.findall(r"{([^}]+)\}", argument)) - set(MessageTemplateMember.__slots__):
             raise InvalidVariable
+        try:
+            argument.format(**MessageTemplateMember(ctx.author).__dict__)
+        except ValueError:
+            raise InvalidVariable
         return argument
 
 
