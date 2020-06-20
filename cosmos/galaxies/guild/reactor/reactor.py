@@ -43,6 +43,7 @@ class Reactor(GuildBaseCog):
         await ctx.send(embed=embed)
 
     @_reactor.command(name="set", aliases=["setup"])
+    @commands.bot_has_permissions(add_reactions=True, external_emojis=True)
     async def set_reactor(
             self, ctx, channel: typing.Optional[discord.TextChannel] = None, *emotes: typing.Union[discord.Emoji, str]):
         """Setup reactor in current or specified channel using provided emotes. You can only use the emotes which
@@ -50,6 +51,8 @@ class Reactor(GuildBaseCog):
 
         """
         channel = channel or ctx.channel
+        if not channel.permissions_for(ctx.me).add_reactions:
+            return await ctx.send_line(f"❌    Please permit me to add reactions in {channel} first.")
         test_message = await ctx.send_line(f"👇    This is how bot will react to messages in #{channel}.")
         for emote in emotes:
             try:
@@ -76,6 +79,8 @@ class Reactor(GuildBaseCog):
     async def enable_reactor(self, ctx, channel: discord.TextChannel = None):
         """Enable reactor if it was set of current or specified channel."""
         channel = channel or ctx.channel
+        if not channel.permissions_for(ctx.me).add_reactions:
+            return await ctx.send_line(f"❌    Please permit me to add reactions in {channel} first.")
         reactor = ctx.guild_profile.reactors.get_reactor(channel.id)
         if not reactor:
             return await ctx.send_line(f"❌    There's no reactor enabled in #{channel} yet.")

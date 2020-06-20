@@ -83,6 +83,8 @@ class Starboard(Settings):
         """Set starboard in server for specified number of stars in specified channel."""
         stars = stars or self.plugin.data.settings.default_star_count
         channel = channel or ctx.channel
+        if not channel.permissions_for(ctx.me).send_messages:
+            return await ctx.send_line(f"❌    Please permit me to send messages in {channel} first.")
         if not await ctx.confirm():
             return
         await ctx.guild_profile.set_starboard(channel, stars)

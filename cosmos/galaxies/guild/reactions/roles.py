@@ -1,4 +1,5 @@
 from cosmos.core.utilities import converters
+from discord.ext import commands
 from cosmos import exceptions
 
 import typing
@@ -108,6 +109,7 @@ class ReactionRoles(Reactions):
 
     # noinspection PyTypeChecker
     @reaction_roles.command(name="add", aliases=["setup", "set"])
+    @commands.bot_has_permissions(manage_roles=True, add_reactions=True, manage_messages=True, external_emojis=True)
     async def add_roles(
             self, ctx, message: typing.Union[discord.Message, str] = None, stack: typing.Optional[bool] = True,
             permanent: typing.Optional[bool] = False, *, roles: converters.RoleConvertor):
@@ -154,7 +156,7 @@ class ReactionRoles(Reactions):
                 await message.clear_reactions()
             except discord.Forbidden:
                 return await ctx.send_line(
-                    f"❌    The reactions on messages is less than the number of roles you want to use.")
+                    f"❌    The reactions on messages is less than roles you want to use.")
             else:
                 for _, emote in roles_emotes:
                     await message.add_reaction(emote)

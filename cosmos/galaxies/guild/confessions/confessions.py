@@ -68,6 +68,8 @@ class SecretConfessions(Cog):
 
         """
         channel = channel or ctx.channel
+        if not channel.permissions_for(ctx.me).send_messages:
+            return await ctx.send_line(f"❌    Please permit me to send messages in {channel} first.")
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.set_confessions_channel(channel)
         await ctx.send_line(f"✅    Secret confessions has been set in {channel}.")

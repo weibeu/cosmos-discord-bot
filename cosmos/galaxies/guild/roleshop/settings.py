@@ -20,6 +20,7 @@ class RoleShopSettings(RoleShopBase):
         await ctx.send_line(f"✅    Gave {points} points to {member.display_name}.")
 
     @RoleShopBase.role_shop.command(name="create")
+    @commands.bot_has_permissions(manage_roles=True)
     @has_permissions(manage_roles=True)
     async def create_role(self, ctx, points: int, *, role: typing.Union[discord.Role, str]):
         """Create a new or use specified role for the Role Shop."""

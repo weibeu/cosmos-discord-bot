@@ -65,10 +65,12 @@ class Logger(LoggerEvents):
         response = await menu.wait_for_response()
         return response.entry
 
-    @logger.command(name="enable", aliases=["create"])
+    @logger.command(name="enable", aliases=["create", "set"])
     async def enable_logger(self, ctx, channel: typing.Optional[discord.TextChannel], *, name: NameConvertor = None):
         """Enables logger in specified channel. Logger name should always start with `on_`."""
         channel = channel or ctx.channel
+        if not channel.permissions_for(ctx.me).send_messages:
+            return await ctx.send_line(f"❌    Please permit me to send messages in {channel} first.")
         guild_profile = await ctx.fetch_guild_profile()
         loggers = [name for name in self.loggers if not guild_profile.get_logger(name)]
         name = name or await self.__get_logger_name_from_menu(ctx, loggers)

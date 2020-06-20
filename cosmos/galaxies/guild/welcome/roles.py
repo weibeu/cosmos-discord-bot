@@ -2,6 +2,8 @@ from .base import WelcomeBase
 
 import discord
 
+from discord.ext import commands
+
 
 class WelcomeRoles(WelcomeBase):
     """Assign roles to new members right after they join your server.
@@ -36,6 +38,7 @@ class WelcomeRoles(WelcomeBase):
         await ctx.send(embed=embed)
 
     @welcome_roles.command(name="set", aliases=["setup", "add"])
+    @commands.bot_has_permissions(manage_roles=True)
     async def set_welcome_roles(self, ctx, *roles: discord.Role):
         """Set roles which will be assigned to every new members joining your server."""
         await ctx.guild_profile.set_welcome_roles(roles)

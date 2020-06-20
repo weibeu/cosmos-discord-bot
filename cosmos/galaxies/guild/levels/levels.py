@@ -170,6 +170,7 @@ class Levels(GuildBaseCog):
         await ctx.send(embed=embed)
 
     @rewards.command(name="set")
+    @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(administrator=True)
     async def set_rewards(self, ctx, level: int, channel: typing.Optional[ChannelConverter] = "text",
                           points: typing.Optional[int] = 0, *, roles: converters.RoleConvertor()):

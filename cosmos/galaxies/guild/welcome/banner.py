@@ -70,6 +70,8 @@ class WelcomeBanner(WelcomeBase):
 
         """
         channel = channel or ctx.channel
+        if not channel.permissions_for(ctx.me).send_messages:
+            return await ctx.send_line(f"❌    Please permit me to send messages in {channel} first.")
         banner_format = banner_url.split(".")[-1]
         if banner_format not in self.plugin.data.settings.banner_formats:
             return await ctx.send_line("❌    Please use supported image format.")

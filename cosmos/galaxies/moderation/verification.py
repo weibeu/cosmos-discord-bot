@@ -43,6 +43,7 @@ class UserVerification(Cog):
         """Primary command to setup several verification methods."""
 
     @verification.group(name="role", invoke_without_command=True)
+    @commands.bot_has_permissions(manage_roles=True)
     async def verification_role(self, ctx, *, role: discord.Role):
         """Set the role which will be assigned to unverified members to keep them locked away from accessing normal
         channels and let them go through the verification process.

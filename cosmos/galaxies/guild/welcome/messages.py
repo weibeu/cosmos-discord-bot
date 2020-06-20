@@ -86,6 +86,8 @@ class WelcomeMessage(WelcomeBase):
 
         """
         channel = channel or ctx.channel
+        if not channel.permissions_for(ctx.me).send_messages:
+            return await ctx.send_line(f"❌    Please permit me to send messages in {channel} first.")
         await ctx.guild_profile.set_welcome_message(message, channel)
         await ctx.send_line(f"✅    Welcome messages has been set in #{channel} channel.")
 
