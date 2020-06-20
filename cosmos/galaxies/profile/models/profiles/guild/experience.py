@@ -10,7 +10,7 @@ from .level import UserLevel, MemberLevel
 class UserExperience(UserLevel, ABC):
 
     CHAT_XP_CONSTRAIN = 1
-    VOICE_XP_CONSTRAIN = 17
+    VOICE_XP_CONSTRAIN = 23
 
     def __init__(self, **kwargs):
         raw_xp = kwargs.get("stats", dict()).get("xp", dict())
