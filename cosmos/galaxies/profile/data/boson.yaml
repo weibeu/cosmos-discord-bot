@@ -6,3 +6,4 @@ max_limit: 9223372036854775807
 default_daily: 23
 daily_cooldown: 20    # Cooldown after which User can take another daily in hours.
 streak_buffer: 31     # Time after which the daily streak expires. In hours.
+target_bonus: 7      # Extra bonus points awarded when member dailies to someone else.

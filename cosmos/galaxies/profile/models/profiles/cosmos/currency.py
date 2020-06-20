@@ -60,8 +60,11 @@ class Boson(ProfileModelsBase, ABC):
         return self.get_future_arrow(self.boson_daily_timestamp, hours=self.plugin.data.boson.daily_cooldown)
 
     async def take_daily_bosons(self, target_profile=None):
+
+        bonus = self.plugin.data.boson.target_bonus if target_profile else 0
+
         profile = target_profile or self
-        bosons = self.plugin.data.boson.default_daily
+        bosons = self.plugin.data.boson.default_daily + bonus
 
         if self.on_bosons_daily_streak:
             self.boson_daily_streak += 1
@@ -69,7 +72,7 @@ class Boson(ProfileModelsBase, ABC):
         else:
             self.boson_daily_streak = 0
 
-        profile._bosons += bosons
+        profile.give_bosons(bosons)
         self.boson_daily_timestamp = arrow.utcnow()
 
         await self.collection.update_one(self.document_filter, {"$set": {
@@ -77,7 +80,7 @@ class Boson(ProfileModelsBase, ABC):
             "currency.bosons_daily_streak": self.boson_daily_streak,
         }})
 
-        return bosons
+        return bosons, bonus
 
 
 class Fermion(ProfileModelsBase, ABC):

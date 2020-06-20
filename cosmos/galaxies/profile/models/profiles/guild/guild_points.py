@@ -56,8 +56,11 @@ class GuildPoints(GuildMemberProfileBase, ABC):
         return arrow.utcnow() > self.next_daily_points
 
     async def take_daily_points(self, target_profile=None):
+
+        bonus = self.plugin.data.points.target_bonus if target_profile else 0
+
         profile = target_profile or self
-        points = self.plugin.data.points.default_daily
+        points = self.plugin.data.points.default_daily + bonus
 
         if self.on_points_daily_streak:
             self.points_daily_streak += 1
@@ -65,11 +68,11 @@ class GuildPoints(GuildMemberProfileBase, ABC):
         else:
             self.points_daily_streak = 0
 
-        profile.points += points
+        profile.give_points(points)
         self.points_daily_timestamp = arrow.utcnow()
 
         await self.collection.update_one(self.document_filter, {"$set": {
             f"{self.guild_filter}.points.daily_timestamp": self.points_daily_timestamp.datetime,
             f"{self.guild_filter}.points.daily_streak": self.points_daily_streak,
         }})
-        return points
+        return points, bonus
