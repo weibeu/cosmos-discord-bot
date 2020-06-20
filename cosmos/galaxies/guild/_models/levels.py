@@ -76,7 +76,10 @@ class Levels(object):
         if not reward:
             return
 
-        profile.give_points(reward.points)
+        try:
+            profile.give_points(reward.points)
+        except OverflowError:
+            pass
 
         stack = self.get_stack_meta(channel)
         if not stack:

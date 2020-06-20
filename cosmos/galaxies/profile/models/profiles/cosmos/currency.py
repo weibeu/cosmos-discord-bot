@@ -25,11 +25,18 @@ class Boson(ProfileModelsBase, ABC):
         return self._bosons
 
     def give_bosons(self, bosons: int):
+        if self.bosons + bosons > self.plugin.data.boson.max_limit:
+            raise OverflowError
+
         self._bosons += int(bosons)
 
     async def give_default_bosons(self):
         bosons = random.randint(self.plugin.data.boson.default_min, self.plugin.data.boson.default_max)
-        self.give_bosons(bosons)
+
+        try:
+            self.give_bosons(bosons)
+        except OverflowError:
+            return
 
         self.in_boson_buffer = True
         await asyncio.sleep(self.plugin.data.boson.buffer_cooldown)

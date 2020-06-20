@@ -16,7 +16,10 @@ class RoleShopSettings(RoleShopBase):
         if member.bot:
             return await ctx.send_line("❌    You can't give points to robots.")
         profile = await ctx.fetch_member_profile(member.id)
-        profile.give_points(points)
+        try:
+            profile.give_points(points)
+        except OverflowError:
+            return await ctx.send_line("❌    They can't have such insane number of points.")
         await ctx.send_line(f"✅    Gave {points} points to {member.display_name}.")
 
     @RoleShopBase.role_shop.command(name="create")

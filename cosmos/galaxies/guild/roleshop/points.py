@@ -81,5 +81,8 @@ class RoleShopPoints(RoleShopBase):
         if author_profile.points < points:
             return await ctx.send_line("❌    Sorry but you don't have enough points to complete this transaction.")
         author_profile.give_points(-points)
-        target_profile.give_points(points)
+        try:
+            target_profile.give_points(points)
+        except OverflowError:
+            return await ctx.send_line("❌    They can't have such insane number of points.")
         await ctx.send_line(f"📤    {ctx.author.name}, you gave {points} points to {member.display_name}.")

@@ -45,7 +45,12 @@ class Economy(Cog):
             res = "❌    Sorry but you don't have enough Bosons to complete this transaction."
             return await ctx.send_line(res)
         author_profile.give_bosons(-bosons)
-        target_profile.give_bosons(bosons)
+
+        try:
+            target_profile.give_bosons(bosons)
+        except OverflowError:
+            return await ctx.send_line("❌    They can't have such insane number of bosons.")
+
         res = f"📤    {ctx.author.name}, you gave {bosons} Bosons to {user.name}."
         await ctx.send_line(res)
 

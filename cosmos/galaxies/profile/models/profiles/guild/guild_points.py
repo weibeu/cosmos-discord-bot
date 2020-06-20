@@ -21,11 +21,18 @@ class GuildPoints(GuildMemberProfileBase, ABC):
         self.in_points_buffer = False
 
     def give_points(self, points: int):
+        if self.points + points > self.plugin.data.points.max_limit:
+            raise OverflowError
+
         self.points += points
 
     async def give_default_points(self):
         points = random.randint(self.plugin.data.points.default_min, self.plugin.data.points.default_max)
-        self.give_points(points)
+
+        try:
+            self.give_points(points)
+        except OverflowError:
+            return
 
         self.in_points_buffer = True
         await asyncio.sleep(self.plugin.data.points.buffer_cooldown)
