@@ -14,6 +14,14 @@ class FakeGuildMember(discord.Object):
     def __str__(self):
         return str(self.id)
 
+    @property
+    def name(self):
+        return self.__str__()
+
+    @property
+    def avatar_url(self):
+        return str()
+
 
 async def _has_permissions(ctx, perms):
     ch = ctx.channel
@@ -125,16 +133,13 @@ class Moderation(Cog):
         All of the Timestamps are displayed in UTC.
 
         """
-        try:
-            _id = member.id
-        except AttributeError:
-            _id = member
-        profile = await ctx.fetch_member_profile(_id)
+        member = member if isinstance(member, discord.Member) else FakeGuildMember(member)
+        profile = await ctx.fetch_member_profile(member.id)
         if not profile.moderation_logs:
             return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
         paginator = ctx.get_field_paginator(
             profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False, per_page=7)
-        paginator.embed.description = f"**User:** `{member}`\n**User ID:** `{_id}`"
+        paginator.embed.description = f"**User:** `{member}`\n**User ID:** `{member.id}`"
         paginator.embed.set_author(name="Moderation Logs", icon_url=member.avatar_url)
         await paginator.paginate()
         # TODO: Add moderation logs limits.
