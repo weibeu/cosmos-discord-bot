@@ -77,7 +77,7 @@ class Economy(Cog):
         except OverflowError:
             return await ctx.send_line(f"❌    {target_name} can't have such insane number of bosons.")
         new_streak = author_profile.boson_daily_streak
-        res = f"{'🗓' if bonus else '⭐'}    {bosons} daily Bosons were given to {target_name}."
+        res = f"{'⭐' if bonus else '🗓'}    {bosons} daily Bosons were given to {target_name}."
 
         if old_streak > 0:
             if not new_streak:

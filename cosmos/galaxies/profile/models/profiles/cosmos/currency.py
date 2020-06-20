@@ -60,10 +60,10 @@ class Boson(ProfileModelsBase, ABC):
         return self.get_future_arrow(self.boson_daily_timestamp, hours=self.plugin.data.boson.daily_cooldown)
 
     async def take_daily_bosons(self, target_profile=None):
-
-        bonus = self.plugin.data.boson.target_bonus if target_profile else 0
-
         profile = target_profile or self
+
+        bonus = self.plugin.data.boson.target_bonus if self.id != target_profile.id else 0
+
         bosons = self.plugin.data.boson.default_daily + bonus
 
         if self.on_bosons_daily_streak:

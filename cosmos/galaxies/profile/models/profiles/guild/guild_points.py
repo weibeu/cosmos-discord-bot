@@ -56,10 +56,10 @@ class GuildPoints(GuildMemberProfileBase, ABC):
         return arrow.utcnow() > self.next_daily_points
 
     async def take_daily_points(self, target_profile=None):
-
-        bonus = self.plugin.data.points.target_bonus if target_profile else 0
-
         profile = target_profile or self
+
+        bonus = self.plugin.data.points.target_bonus if self.id != target_profile.id else 0
+
         points = self.plugin.data.points.default_daily + bonus
 
         if self.on_points_daily_streak:

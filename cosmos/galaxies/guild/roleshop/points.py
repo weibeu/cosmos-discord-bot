@@ -60,7 +60,7 @@ class RoleShopPoints(RoleShopBase):
         except OverflowError:
             return await ctx.send_line(f"❌    {target_name} can't have such insane number of points.")
         new_streak = author_profile.points_daily_streak
-        res = f"{'🗓' if bonus else '⭐'}    {points} daily points were given to {target_name}."
+        res = f"{'⭐' if bonus else '🗓'}    {points} daily points were given to {target_name}."
 
         if old_streak > 0:
             if not new_streak:
