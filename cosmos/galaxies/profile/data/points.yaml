@@ -1,5 +1,5 @@
 default_min: 1
-default_max: 7
+default_max: 6
 buffer_cooldown: 70    # Time after which User is removed from buffer.
 max_limit: 2147483647
 
