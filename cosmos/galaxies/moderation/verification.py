@@ -34,6 +34,8 @@ class UserVerification(Cog):
         if not guild_profile.verification.role:
             return
         if guild_profile.verification.reaction_message_id == payload.message_id:
+            if guild_profile.verification.role not in payload.member.roles:
+                return
             await payload.member.remove_roles(guild_profile.verification.role)
 
             self.bot.dispatch("member_verification", guild_profile, payload.member)
