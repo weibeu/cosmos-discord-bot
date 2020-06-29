@@ -60,8 +60,11 @@ class AutoModeration(Cog):
         if not message.guild or message.author == self.bot.user:
             return
 
-        if message.author.guild_permissions.administrator:
-            return
+        try:
+            if message.author.guild_permissions.administrator:
+                return
+        except AttributeError:
+            pass
 
         guild_profile = await self.bot.guild_cache.get_profile(message.guild.id)
 
