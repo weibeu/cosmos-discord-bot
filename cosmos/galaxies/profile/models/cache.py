@@ -107,11 +107,14 @@ class ProfileCache(object):
         for asset in assets:
             self.bot.loop.create_task(asset)
 
-    @tasks.loop(seconds=UPDATE_TASK_COOLDOWN)
-    async def update_database(self):
+    async def write_profiles(self):
         for profile in self.lfu.values():
             self.plugin.batch.queue_update(*profile.to_update_document())
         await self.plugin.batch.write(ordered=False)
+
+    @tasks.loop(seconds=UPDATE_TASK_COOLDOWN)
+    async def update_database(self):
+        await self.write_profiles()
 
     @update_database.before_loop
     async def before_update_task(self):
