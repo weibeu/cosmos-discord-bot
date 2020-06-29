@@ -104,7 +104,7 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
             self.document_filter, {"$set": {"birthday": birthday.datetime}}
         )
 
-    def to_update_document(self) -> tuple:
+    def to_update_document(self, shutdown=False) -> tuple:
         # self.cache_voice_xp()
         updates = {
             "currency.bosons": self.bosons,
@@ -112,7 +112,14 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
             "stats.xp.voice": self._voice_xp,
         }
 
+        if shutdown:
+            self.close_voice_activity()
+
         for profile in self.guild_profiles.values():
+
+            if shutdown:
+                profile.close_voice_activity()
+
             updates.update(profile.to_update_document())
 
             try:
