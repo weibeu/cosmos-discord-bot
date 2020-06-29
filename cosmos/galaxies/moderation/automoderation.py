@@ -60,7 +60,8 @@ class AutoModeration(Cog):
         if not message.guild or message.author == self.bot.user:
             return
 
-        # TODO: Ignore admins and moderators.
+        if message.author.guild_permissions.administrator:
+            return
 
         guild_profile = await self.bot.guild_cache.get_profile(message.guild.id)
 
