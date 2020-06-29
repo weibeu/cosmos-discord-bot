@@ -105,7 +105,7 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         )
 
     def to_update_document(self) -> tuple:
-        self.cache_voice_xp()
+        # self.cache_voice_xp()
         updates = {
             "currency.bosons": self.bosons,
             "stats.xp.chat": self.xp,

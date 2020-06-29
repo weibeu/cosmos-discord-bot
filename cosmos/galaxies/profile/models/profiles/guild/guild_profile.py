@@ -29,7 +29,7 @@ class GuildMemberProfile(GuildPoints, MemberExperience):
         self.moderation_logs = kwargs.get("logs", dict()).get("moderation", list())
 
     def to_update_document(self):
-        self.cache_voice_xp()
+        # self.cache_voice_xp()
         return {
             f"{self.guild_filter}.stats.xp.chat": self.xp,
             f"{self.guild_filter}.stats.xp.voice": self._voice_xp,
