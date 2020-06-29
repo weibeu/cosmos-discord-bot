@@ -28,3 +28,12 @@ class Cosmos(InitialTasks):
 
     async def on_error(self, event_method, *args, **kwargs):
         self.dispatch("event_error", event_method, sys.exc_info())
+
+    async def close(self):
+        profile = self.get_galaxy("PROFILE")
+        try:
+            await profile.cache.write_profiles(shutdown=True)
+        except AttributeError:
+            pass
+
+        return await super().close()
