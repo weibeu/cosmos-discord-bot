@@ -5,20 +5,25 @@ from .. import Cog
 from discord.ext import commands
 
 
+class InvalidTriggerOrAction(commands.CommandError):
+
+    handled = True
+
+
 class ActionConvertor(commands.Converter):
 
     async def convert(self, ctx, argument):
         try:
             return getattr(triggers.AutoModerationActions, argument.lower()).__name__
         except AttributeError:
-            raise commands.BadArgument(f"❌    Action {argument} isn't supported yet.")
+            raise InvalidTriggerOrAction(f"❌    Action {argument} isn't supported yet.")
 
 
 class TriggerConvertor(commands.Converter):
 
     async def convert(self, ctx, argument):
         if argument.lower() not in triggers.__triggers__:
-            raise commands.BadArgument(f"❌    Trigger or violation {argument} isn't supported yet.")
+            raise InvalidTriggerOrAction(f"❌    Trigger or violation {argument} isn't supported yet.")
         return argument.lower()
 
 
@@ -128,7 +133,7 @@ class AutoModeration(Cog):
 
     @create_trigger.error
     async def create_trigger_error(self, ctx, error):
-        if isinstance(error, commands.BadArgument):
+        if isinstance(error, InvalidTriggerOrAction):
             return await ctx.send_line(str(error))
 
     @triggers.command(name="remove", aliases=["delete"])
