@@ -105,8 +105,8 @@ class AutoModeration(Cog):
             if [_ for _ in message.attachments if _.is_spoiler()] or self.bot.utilities.is_spoiler(message.content):
                 await trigger.dispatch(message=message, member=message.author)
 
-        links = guild_profile.auto_moderation.triggers.get("links")
-        if links:
+        trigger = guild_profile.auto_moderation.triggers.get("links")
+        if trigger:
             if self.bot.utilities.find_urls(message.content):
                 await trigger.dispatch(message=message, member=message.author)
 
