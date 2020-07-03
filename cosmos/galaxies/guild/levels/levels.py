@@ -70,6 +70,8 @@ class Levels(GuildBaseCog):
             member = profile.member
         except AttributeError:
             member = profile.user
+        if not member:
+            member = await self.bot.fetch_user(profile.id)
         payload = {
             "name": member.name, "discriminator": f"#{member.discriminator}", "avatar_url": str(member.avatar_url),
             "text_rank": await profile.get_text_rank(),
