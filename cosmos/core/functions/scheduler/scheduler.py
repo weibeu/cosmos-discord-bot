@@ -25,10 +25,14 @@ class Scheduler(object):
 
     async def schedule(self, callback, to, **kwargs):
         task = ScheduledTask(self, callback, to, kwargs)
-        self.tasks.append(task)
 
-        if task.timedelta.seconds > self.bot.configs.scheduler.persist_at:
-            await self.collection.insert_one(task.document)
+        if task.timedelta.seconds < self.bot.configs.scheduler.persist_at:
+            return await task.dispatch_when_ready()
+
+        await self.collection.insert_one(task.document)
+
+        if task.invoke_at <= self.bot.configs.scheduler.passive_after:
+            self.tasks.append(task)
 
         return task
 
