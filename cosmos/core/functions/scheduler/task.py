@@ -6,8 +6,8 @@ import datetime
 
 class ScheduledTask(object):
 
-    def __init__(self, _id, scheduler, callback, invoke_at, kwargs, created_at=None, **_kwargs):
-        self.id = _id
+    def __init__(self, scheduler, callback, invoke_at, kwargs, created_at=None, _id=None, **_kwargs):
+        self.id = _id or bson.ObjectId()
         self.scheduler = scheduler
         self.callback = callback
         self.invoke_at = invoke_at
@@ -31,10 +31,7 @@ class ScheduledTask(object):
         else:
             self.scheduler.bot.loop.create_task(object_(self, *args, **kwargs))
 
-        try:
-            self.scheduler.tasks.remove(self)
-        except ValueError:
-            pass
+        self.scheduler.remove(self)
 
     async def dispatch_when_ready(self, *args, **kwargs):
         await asyncio.sleep(self.timedelta.seconds)
@@ -49,7 +46,7 @@ class ScheduledTask(object):
 
     @classmethod
     def from_document(cls, scheduler, document):
-        return cls(bson.objectid.ObjectId(), scheduler, **document)
+        return cls(scheduler, **document)
 
     @property
     def timedelta(self):

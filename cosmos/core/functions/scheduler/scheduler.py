@@ -36,5 +36,15 @@ class Scheduler(object):
 
         return task
 
+    async def remove(self, task):
+        try:
+            self.tasks.remove(task)
+        except ValueError:
+            pass
+        if task.timedelta.seconds <= self.bot.configs.scheduler.persist_at:
+            return
+
+        await self.collection.delete_one({"_id": task.id})
+
     async def fetch_task(self, **kwargs):
         ...
