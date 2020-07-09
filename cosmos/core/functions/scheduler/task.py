@@ -12,6 +12,9 @@ class ScheduledTask(object):
         self.created_at = created_at or datetime.datetime.utcnow()
         self.kwargs = kwargs
 
+        if self.invoke_at <= self.created_at:
+            raise ValueError("The task must be scheduled to future.")
+
     def __call__(self, *args, **kwargs):
         if self.callback.startswith("on_"):
             return self.scheduler.bot.dispatch(self.callback, self, *args, **kwargs)
