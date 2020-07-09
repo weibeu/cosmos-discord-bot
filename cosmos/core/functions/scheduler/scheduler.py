@@ -4,6 +4,8 @@ from .task import ScheduledTask
 
 class Scheduler(object):
 
+    REFRESH_TASKS_AT = 24
+
     def __init__(self, bot):
         self.bot = bot
         self.collection = self.bot.db[self.bot.configs.scheduler.collection]
@@ -23,6 +25,10 @@ class Scheduler(object):
             {"invoke_at": {"$lt": self.bot.configs.scheduler.passive_after}}
         ).to_list(None)}
         await self.initialize_tasks()
+
+    @tasks.loop(hours=REFRESH_TASKS_AT)
+    async def refresh_tasks(self):
+        await self.__fetch_tasks()
 
     async def initialize_tasks(self):
         for task in self.tasks:
