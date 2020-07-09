@@ -58,7 +58,7 @@ class Profile(Cog):
 
     @profile_birthday.command(name="set")
     async def set_profile_birthday(self, ctx, *, birthday: str):
-        """Set your birthday to show up on the Cosmos Profile."""
+        """Set your birthday to show up on the Cosmos Profile. [DD-MM-YYYY]."""
         profile = await self.cache.get_profile(ctx.author.id)
         await profile.set_birthday(birthday)
         res = f"Your birthday is set to {profile.birthday.strftime('%A, %B %e, %Y')}."

@@ -97,7 +97,13 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
 
     async def set_birthday(self, birthday):
         if isinstance(birthday, str):
-            birthday = arrow.get(birthday)
+            try:
+                birthday = arrow.get(birthday, "DD-MM-YYYY")
+            except arrow.parser.ParserMatchError:
+                try:
+                    birthday = arrow.get(birthday, "DD/MM/YYYY")
+                except arrow.parser.ParserMatchError:
+                    birthday = arrow.get(birthday, "D MMMM YYYY")
         self.birthday = birthday
 
         await self.collection.update_one(

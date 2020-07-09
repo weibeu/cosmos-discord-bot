@@ -54,11 +54,16 @@ Usage:
 
 #### ;profile birthday set
 
-Set your birthday to show up on the Cosmos Profile.
+Set your birthday to show up on the Cosmos Profile. [DD-MM-YYYY].
 
 ```yaml
 Usage:
 ;profile birthday set <birthday>
+
+Examples:
+;profile birthday set 31-12-1997
+;profile birthday set 31/12/1997
+;profile birthday set 31 December 1997
 ```
 
 ## ;rep
