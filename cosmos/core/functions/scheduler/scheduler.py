@@ -22,6 +22,11 @@ class Scheduler(object):
         self.tasks = [ScheduledTask.from_document(self, document) for document in await self.collection.find(
             {"invoke_at": {"$lt": self.bot.configs.scheduler.passive_after}}
         ).to_list(None)]
+        await self.initialize_tasks()
+
+    async def initialize_tasks(self):
+        for task in self.tasks:
+            await task.dispatch_when_ready()
 
     async def schedule(self, callback, to, **kwargs):
         task = ScheduledTask(self, callback, to, kwargs)
