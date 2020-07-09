@@ -7,7 +7,7 @@ class Scheduler(object):
     def __init__(self, bot):
         self.bot = bot
         self.collection = self.bot.db[self.bot.configs.scheduler.collection]
-        self.tasks = []
+        self.tasks = set()
         self.callbacks = {}
         self.bot.loop.create_task(self.__fetch_tasks())
 
@@ -19,9 +19,9 @@ class Scheduler(object):
         self.callbacks[object_.__name__] = object_
 
     async def __fetch_tasks(self):
-        self.tasks = [ScheduledTask.from_document(self, document) for document in await self.collection.find(
+        self.tasks = {ScheduledTask.from_document(self, document) for document in await self.collection.find(
             {"invoke_at": {"$lt": self.bot.configs.scheduler.passive_after}}
-        ).to_list(None)]
+        ).to_list(None)}
         await self.initialize_tasks()
 
     async def initialize_tasks(self):
@@ -37,14 +37,14 @@ class Scheduler(object):
         await self.collection.insert_one(task.document)
 
         if task.invoke_at <= self.bot.configs.scheduler.passive_after:
-            self.tasks.append(task)
+            self.tasks.add(task)
 
         return task
 
     async def remove(self, task):
         try:
             self.tasks.remove(task)
-        except ValueError:
+        except KeyError:
             pass
         if task.timedelta.seconds <= self.bot.configs.scheduler.persist_at:
             return
