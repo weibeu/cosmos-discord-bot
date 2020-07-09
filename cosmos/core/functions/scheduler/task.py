@@ -1,3 +1,4 @@
+import bson
 import arrow
 import asyncio
 import datetime
@@ -5,7 +6,8 @@ import datetime
 
 class ScheduledTask(object):
 
-    def __init__(self, scheduler, callback, invoke_at, kwargs, created_at=None, **_kwargs):
+    def __init__(self, _id, scheduler, callback, invoke_at, kwargs, created_at=None, **_kwargs):
+        self.id = _id
         self.scheduler = scheduler
         self.callback = callback
         self.invoke_at = invoke_at
@@ -38,13 +40,13 @@ class ScheduledTask(object):
     @property
     def document(self):
         return {
-            "callback": self.callback, "invoke_at": self.invoke_at,
+            "_id": self.id, "callback": self.callback, "invoke_at": self.invoke_at,
             "created_at": self.created_at, "kwargs": dict(self.kwargs),
         }
 
     @classmethod
     def from_document(cls, scheduler, document):
-        return cls(scheduler, **document)
+        return cls(bson.objectid.ObjectId(), scheduler, **document)
 
     @property
     def timedelta(self):
