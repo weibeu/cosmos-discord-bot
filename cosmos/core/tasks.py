@@ -32,6 +32,7 @@ class InitialTasks(commands.Bot):
         self.plugins = None
         self.theme = None
         self.image_processor = None
+        self.scheduler = None
         self.profile_cache = None    # Intended to be overridden by profile galaxy.
         self.guild_cache = None    # Intended to be overridden by guild galaxy.
         self.version = version
@@ -50,6 +51,7 @@ class InitialTasks(commands.Bot):
         self._init_plugins()
         self._init_theme()
         self._init_image_processor()
+        self._init_scheduler()
         self._init_misc_tasks()
 
     @Time.calc_time
@@ -117,6 +119,11 @@ class InitialTasks(commands.Bot):
         self.log.info("Initialising image processor client.")
         self.image_processor = ImageProcessorClient(
             self.configs.image_processor.base_url, loop=self.loop)
+
+    @Time.calc_time
+    def _init_scheduler(self):
+        self.log.info("Initializing schedulers.")
+        self.scheduler = Scheduler(self)
 
     def _init_misc_tasks(self):
         self.get_command("help").inescapable = True    # Dynamically mark help command as inescapable.

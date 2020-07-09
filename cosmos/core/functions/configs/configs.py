@@ -1,6 +1,7 @@
 import os
 
 import discord
+import datetime
 
 from .config import Config
 from ..exceptions.initial import FatalError
@@ -138,3 +139,18 @@ class ImgurConfigs(Config):
     def __init__(self):
         super().__init__()
         self.client_id = os.getenv("IMGUR_CLIENT_ID") or self.client_id
+
+
+class SchedulerConfigs(Config):
+
+    NAME = "scheduler"
+    PATH = "cfg/core/scheduler.yaml"
+
+    def __init__(self):
+        super().__init__()
+        # noinspection PyTypeChecker
+        self._passive_after = datetime.timedelta(days=self._passive_after)
+
+    @property
+    def passive_after(self):
+        return datetime.datetime.utcnow() + self._passive_after

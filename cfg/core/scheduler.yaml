@@ -1,0 +1,6 @@
+# ! Configs for scheduler function.
+
+collection: "scheduledTasks"
+
+persist_at: 60        # Minimum number of seconds for a task to be persisted in DB.
+_passive_after: 30    # Minimum number of days for a task to be ignored.
