@@ -31,7 +31,7 @@ class ScheduledTask(object):
         else:
             self.scheduler.bot.loop.create_task(object_(self, *args, **kwargs))
 
-        self.scheduler.remove(self)
+        self.scheduler.remove_task(self)
 
     async def dispatch_when_ready(self, *args, **kwargs):
         await asyncio.sleep(self.timedelta.seconds)

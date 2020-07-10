@@ -47,7 +47,7 @@ class Scheduler(object):
 
         return task
 
-    async def remove(self, task):
+    async def remove_task(self, task):
         try:
             self.tasks.remove(task)
         except KeyError:
