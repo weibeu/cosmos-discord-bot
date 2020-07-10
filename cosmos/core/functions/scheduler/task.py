@@ -25,14 +25,14 @@ class ScheduledTask(object):
 
     def __call__(self, *args, **kwargs):
         if self.callback.startswith("on_"):
-            return self.scheduler.bot.dispatch(self.callback, self, *args, **kwargs, **self.kwargs)
-
-        try:
-            object_ = self.scheduler.callbacks[self.callback]
-        except KeyError:
-            raise ValueError(f"No callback '{self.callback}' is registered yet.")
+            self.scheduler.bot.dispatch(self.callback, self, *args, **kwargs, **self.kwargs)
         else:
-            self.scheduler.bot.loop.create_task(object_(self, *args, **kwargs, **self.kwargs))
+            try:
+                object_ = self.scheduler.callbacks[self.callback]
+            except KeyError:
+                raise ValueError(f"No callback '{self.callback}' is registered yet.")
+            else:
+                self.scheduler.bot.loop.create_task(object_(self, *args, **kwargs, **self.kwargs))
 
         self.scheduler.remove_task(self)
 
