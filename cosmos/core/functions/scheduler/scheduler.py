@@ -57,5 +57,7 @@ class Scheduler(object):
 
         await self.collection.delete_one({"_id": task.id})
 
-    async def fetch_task(self, **kwargs):
-        ...
+    async def fetch_tasks(self, **kwargs):
+        return {ScheduledTask.from_document(self, document) for document in await self.collection.find(
+            {f"kwargs.{k}": v for k, v in kwargs.items()}
+        ).to_list(None)}
