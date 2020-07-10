@@ -18,6 +18,8 @@ class Scheduler(object):
             raise ValueError("Provided callback object is not callable.")
         if object_.__name__.startswith("on_"):
             raise ValueError("Callback name shouldn't start with 'on_'.")
+        if object_.__name__ in self.callbacks:
+            raise ValueError("Callback with such name is already registered.")
         self.callbacks[object_.__name__] = object_
 
     async def __fetch_tasks(self):
