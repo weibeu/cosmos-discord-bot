@@ -48,10 +48,10 @@ class InitialTasks(commands.Bot):
         self._init_database()
         self._init_caches()
         self._init_emotes()
+        self._init_scheduler()
         self._init_plugins()
         self._init_theme()
         self._init_image_processor()
-        self._init_scheduler()
         self._init_misc_tasks()
 
     @Time.calc_time
