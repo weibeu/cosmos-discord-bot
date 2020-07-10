@@ -46,7 +46,7 @@ class Scheduler(object):
 
         task = ScheduledTask(self, callback, to, kwargs)
 
-        if task.timedelta.seconds < self.bot.configs.scheduler.persist_at:
+        if task.life.seconds < self.bot.configs.scheduler.persist_at:
             task.dispatch_when_ready()
             return task
 
@@ -62,7 +62,7 @@ class Scheduler(object):
             self.tasks.remove(task)
         except KeyError:
             pass
-        if task.timedelta.seconds <= self.bot.configs.scheduler.persist_at:
+        if task.life.seconds < self.bot.configs.scheduler.persist_at:
             return
 
         await self.collection.delete_one({"_id": task.id})

@@ -37,7 +37,7 @@ class ScheduledTask(object):
         self.scheduler.remove_task(self)
 
     async def __dispatch_when_ready(self, *args, **kwargs):
-        await asyncio.sleep(self.timedelta.seconds)
+        await asyncio.sleep(self.delta.seconds)
         self.__call__(*args, **kwargs)
 
     def dispatch_when_ready(self, *args, **kwargs):
@@ -55,8 +55,12 @@ class ScheduledTask(object):
         return cls(scheduler, **document)
 
     @property
-    def timedelta(self):
+    def life(self):
         return self.invoke_at - self.created_at
+
+    @property
+    def delta(self):
+        return self.invoke_at - datetime.datetime.utcnow()
 
     @property
     def humanize(self):
