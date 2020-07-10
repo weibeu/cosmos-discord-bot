@@ -1,3 +1,5 @@
+from . import time
+
 from discord.ext import commands
 
 
@@ -24,3 +26,15 @@ class CosmosUserProfileConverter(commands.Converter):
         if not (user := await commands.UserConverter().convert(ctx, argument)):
             raise commands.BadArgument
         return await ctx.bot.profile_cache.get_profile(user.id)
+
+
+class HumanDatetimeConverter(commands.Converter):
+
+    async def convert(self, ctx, argument):
+        argument = argument.lower()
+        try:
+            if argument.lower().startswith("in"):
+                return time.HumanDateTimeMixin.from_human_timedelta(argument.lstrip("in "))
+            return time.HumanDateTimeMixin.from_human(argument)
+        except ValueError:
+            raise commands.BadArgument
