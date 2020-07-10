@@ -33,9 +33,12 @@ class ScheduledTask(object):
 
         self.scheduler.remove_task(self)
 
-    async def dispatch_when_ready(self, *args, **kwargs):
+    async def __dispatch_when_ready(self, *args, **kwargs):
         await asyncio.sleep(self.timedelta.seconds)
         self.__call__(*args, **kwargs)
+
+    def dispatch_when_ready(self, *args, **kwargs):
+        self.scheduler.bot.loop.create_task(self.__dispatch_when_ready(*args, **kwargs))
 
     @property
     def document(self):
