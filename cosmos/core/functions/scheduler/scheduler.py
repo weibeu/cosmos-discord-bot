@@ -47,7 +47,8 @@ class Scheduler(object):
         task = ScheduledTask(self, callback, to, kwargs)
 
         if task.timedelta.seconds < self.bot.configs.scheduler.persist_at:
-            return task.dispatch_when_ready()
+            task.dispatch_when_ready()
+            return task
 
         await self.collection.insert_one(task.document)
 
