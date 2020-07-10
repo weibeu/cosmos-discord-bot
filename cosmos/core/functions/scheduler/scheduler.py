@@ -37,6 +37,13 @@ class Scheduler(object):
             await task.dispatch_when_ready()
 
     async def schedule(self, callback, to, **kwargs):
+        if not isinstance(callback, str):
+            try:
+                self.register_callback(callback)
+            except TypeError:
+                pass
+            callback = callback.__name__
+
         task = ScheduledTask(self, callback, to, kwargs)
 
         if task.timedelta.seconds < self.bot.configs.scheduler.persist_at:
