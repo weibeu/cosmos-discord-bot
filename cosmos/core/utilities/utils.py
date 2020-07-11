@@ -70,3 +70,12 @@ class Utils(HasteBin):
     #     if value >= start:
     #         return humanize.naturalsize(value, gnu=True)
     #     return value
+
+    def get_random_elements(self, iterable, elements=1):
+        try:
+            return random.sample(iterable, elements)
+        except ValueError:
+            elements -= 1
+            if not elements:
+                return []
+            return self.get_random_elements(iterable, elements - 1)

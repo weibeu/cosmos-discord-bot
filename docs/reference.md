@@ -94,6 +94,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [profile](https://cosmos.thecosmos.space/profile/profile#profile) | Displays your Cosmos Profile or of specified member. | `;profile [user]` |
 | [propose](https://cosmos.thecosmos.space/profile/marriage#propose) | Lets you propose them. | `;propose <user>` |
 | [purge](https://cosmos.thecosmos.space/moderation/moderation#purge) | Removes and purges messages which meets specified criteria. | `;purge [search=100]` |
+| [rafflepoints](https://cosmos.thecosmos.space/guild/role-shop/settings.md#rafflepoints) | Raffles points among the members who react to the confetti reaction to specified number of winners. | `;rafflepoints <points> [winners=1] [end]` |
 | [reaction](https://cosmos.thecosmos.space/reaction-roles#reaction) | It contains multiple reaction based sub-commands. | `;reaction` |
 | [reactor](https://cosmos.thecosmos.space/reactor#reactor) | Displays reactor settings of current or specified channel. | `;reactor [channel]` |
 | [rep](https://cosmos.thecosmos.space/profile/profile#rep) | Add a reputation point to specified member. | `;rep [user]` |

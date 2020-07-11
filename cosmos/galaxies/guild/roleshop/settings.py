@@ -1,7 +1,10 @@
 import discord
 import typing
+import asyncio
+import datetime
 
 from discord.ext import commands
+from ....core.utilities import converters
 from .base import RoleShopBase, DeletedRole
 from discord.ext.commands import has_permissions
 
@@ -21,6 +24,37 @@ class RoleShopSettings(RoleShopBase):
         except OverflowError:
             return await ctx.send_line("❌    They can't have such insane number of points.")
         await ctx.send_line(f"✅    Gave {points} points to {member.display_name}.")
+
+    @RoleShopBase.command(name="rafflepoints", aliases=["rafflepoint"])
+    @has_permissions(administrator=True)
+    async def raffle_points(
+            self, ctx, points: int, winners: typing.Optional[int] = 1, *, end: converters.HumanTimeDeltaConverter = None
+    ):
+        """Raffles points among the members who react to the confetti reaction to specified number of winners.
+        Defaults to 1 winner. By default, raffle will last till 7 seconds. If you want it to last for desired
+        time then you should specify when it should end.
+
+        """
+        message = await ctx.send_line(
+            f"React to participate in raffle worth {points} points.", self.bot.theme.images.confetti)
+        await message.add_reaction(self.bot.emotes.misc.animated_heart)
+        wait_for = (end.datetime - datetime.datetime.utcnow()).seconds if end else 7
+        await asyncio.sleep(wait_for)
+        message = await ctx.channel.fetch_message(message.id)
+        users = [_ for _ in await message.reactions[0].users().flatten() if not _.bot]
+        if not users:
+            return await ctx.send_line(f"☹    Did you all really let it go that easily?")
+        winners = self.bot.utilities.get_random_elements([_ for _ in users if not _.bot], winners)
+
+        content = str()
+        for winner in winners:
+            profile = await ctx.fetch_member_profile(winner.id, ctx.guild.id)
+            profile.give_points(points)
+            content += f" {winner.mention}"
+
+        await ctx.send_line(
+            f"Congratulations to the winners for winning the raffle with {points} points.",
+            self.bot.theme.images.prize, content=content)
 
     @RoleShopBase.role_shop.command(name="create")
     @commands.bot_has_permissions(manage_roles=True)
