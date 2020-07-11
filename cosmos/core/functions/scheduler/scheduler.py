@@ -13,14 +13,15 @@ class Scheduler(object):
         self.callbacks = {}
         self.bot.loop.create_task(self.__fetch_tasks())
 
-    def register_callback(self, object_):
+    def register_callback(self, object_, name=None):
+        name = name or object_.__name__
         if not callable(object_):
             raise ValueError("Provided callback object is not callable.")
-        if object_.__name__.startswith("on_"):
+        if name.startswith("on_"):
             raise ValueError("Callback name shouldn't start with 'on_'.")
-        if object_.__name__ in self.callbacks:
+        if name in self.callbacks:
             raise TypeError("Callback with such name is already registered.")
-        self.callbacks[object_.__name__] = object_
+        self.callbacks[name] = object_
 
     async def __fetch_tasks(self):
         self.tasks = {ScheduledTask.from_document(self, document) for document in await self.collection.find(
