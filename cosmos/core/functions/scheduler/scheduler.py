@@ -68,7 +68,21 @@ class Scheduler(object):
 
         await self.collection.delete_one({"_id": task.id})
 
+    def get_tasks(self, **kwargs):
+        tasks_ = set()
+        for t in self.tasks:
+            # if len(set(task.kwargs.keys()) & set(kwargs.keys())) == len(kwargs):
+            try:
+                if all([t[k] == v for k, v in kwargs.items()]):
+                    tasks_.add(t)
+            except KeyError:
+                pass
+        return tasks_
+
     async def fetch_tasks(self, **kwargs):
-        return {ScheduledTask.from_document(self, document) for document in await self.collection.find(
+        tasks_ = [ScheduledTask.from_document(self, document) for document in await self.collection.find(
             {f"kwargs.{k}": v for k, v in kwargs.items()}
-        ).to_list(None)}
+        ).to_list(None)]
+        tasks_.extend(self.get_tasks(**kwargs))
+        tasks_.sort(key=lambda t: t.invoke_at)
+        return tasks_
