@@ -95,6 +95,10 @@ class HumanDateTimeMixin(object):
     def humanize(self):
         return self.arrow.humanize()
 
+    @property
+    def delta(self):
+        return self.datetime - datetime.datetime.utcnow()
+
 
 def parse_human_timedelta(string):
     match = TIME_DELTA_REG.match(string)
