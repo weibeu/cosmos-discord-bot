@@ -73,7 +73,7 @@ class Scheduler(object):
         for t in self.tasks:
             # if len(set(task.kwargs.keys()) & set(kwargs.keys())) == len(kwargs):
             try:
-                if all([t[k] == v for k, v in kwargs.items()]):
+                if all([t.kwargs[k] == v for k, v in kwargs.items()]):
                     tasks_.add(t)
             except KeyError:
                 pass
