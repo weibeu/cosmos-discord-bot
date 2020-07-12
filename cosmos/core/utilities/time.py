@@ -120,6 +120,6 @@ def parse_human_timedelta(string):
 
 def parse_human_datetime(string):
     try:
-        dateutil.parser.parse(string, fuzzy_with_tokens=True)
+        return dateutil.parser.parse(string, fuzzy_with_tokens=True)
     except (TypeError, Exception):
         raise ValueError
