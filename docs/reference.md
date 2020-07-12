@@ -35,6 +35,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [Profile](profile/profile.md)
 * [ReactionRoles](guild/reaction-roles.md)
 * [Reactor](guild/reactor.md)
+* [Reminder](tools/reminder.md)
 * [RoleShop](guild/role-shop/)
 * [Secret Confessions](guild/secret-confessions.md)
 * [Starboard](guild/starboard.md)
@@ -97,6 +98,8 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [rafflepoints](https://cosmos.thecosmos.space/guild/role-shop/settings.md#rafflepoints) | Raffles points among the members who react to the confetti reaction to specified number of winners. | `;rafflepoints <points> [winners=1] [end]` |
 | [reaction](https://cosmos.thecosmos.space/reaction-roles#reaction) | It contains multiple reaction based sub-commands. | `;reaction` |
 | [reactor](https://cosmos.thecosmos.space/reactor#reactor) | Displays reactor settings of current or specified channel. | `;reactor [channel]` |
+| [reminder](https://cosmos.thecosmos.space/tools/reminder#reminder) | Set reminder to get notified at specified time in future in the same channel in which you created the reminder. | `;remind [when]` |
+| [reminders](https://cosmos.thecosmos.space/tools/reminder#reminders) | Displays list of reminders which has been created by you. | `;reminders` |
 | [rep](https://cosmos.thecosmos.space/profile/profile#rep) | Add a reputation point to specified member. | `;rep [user]` |
 | [roleshop](https://cosmos.thecosmos.space/role-shop#roleshop) | Displays all of the roles which can be purchased from role shop. | `;roleshop` |
 | [spongebobmock](https://cosmos.thecosmos.space/dead-memes#spongebobmock) | Spongebob mocks provided message or text and sends it back. | `;spongebobmock <message>` |

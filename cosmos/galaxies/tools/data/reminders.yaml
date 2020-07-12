@@ -1,1 +1,6 @@
-max_reminders: 15
+max_reminders: 15    # Max number of reminders normal users can create.
+max_life: 500        # Max life of reminders that can be created by normal users. In days.
+bullets:
+    - high_priority
+    - high_importance
+    - asterisk
