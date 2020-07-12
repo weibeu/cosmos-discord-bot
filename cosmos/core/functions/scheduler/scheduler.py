@@ -80,12 +80,12 @@ class Scheduler(object):
         return tasks_
 
     async def fetch_tasks(self, **kwargs):
-        tasks_ = {ScheduledTask.from_document(self, document) for document in await self.collection.find(
+        tasks_ = [ScheduledTask.from_document(self, document) for document in await self.collection.find(
             {f"kwargs.{k}": v for k, v in kwargs.items()}
-        ).to_list(None)}
-        tasks_.update({
-            t for t in self.get_tasks(**kwargs) if t.life.seconds <= self.bot.configs.scheduler.persist_at
-        })
-        tasks_ = list(tasks_)
+        ).to_list(None)]
+        # tasks_.update({
+        #     t for t in self.get_tasks(**kwargs) if t.life.seconds <= self.bot.configs.scheduler.persist_at
+        # })
+        # tasks_ = list(tasks_)
         tasks_.sort(key=lambda t: t.invoke_at)
         return tasks_
