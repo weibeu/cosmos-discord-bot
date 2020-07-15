@@ -41,7 +41,9 @@ class RoleShopSettings(RoleShopBase):
         wait_for = (end.datetime - datetime.datetime.utcnow()).seconds if end else 7
         await asyncio.sleep(wait_for)
         message = await ctx.channel.fetch_message(message.id)
-        users = [_ for _ in await message.reactions[0].users().flatten() if not _.bot]
+        users = [
+            _ for _ in await message.reactions[0].users().flatten() if not (_.bot or _.guild_permissions.manage_roles)
+        ]
         if not users:
             return await ctx.send_line(f"☹    Did you all really let it go that easily?")
         winners = self.bot.utilities.get_random_elements([_ for _ in users if not _.bot], winners)
