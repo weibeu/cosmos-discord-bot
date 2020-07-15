@@ -79,10 +79,15 @@ class Scheduler(object):
                 pass
         return tasks_
 
-    async def fetch_tasks(self, **kwargs):
-        tasks_ = [ScheduledTask.from_document(self, document) for document in await self.collection.find(
-            {f"kwargs.{k}": v for k, v in kwargs.items()}
-        ).to_list(None)]
+    async def fetch_tasks(self, callback, **kwargs):
+        if not isinstance(callback, str):
+            callback = callback.__name__
+        filter_ = dict(callback=callback)
+        filter_.update({f"kwargs.{k}": v for k, v in kwargs.items()})
+        tasks_ = [
+            ScheduledTask.from_document(self, document) for document in
+            await self.collection.find(filter_).to_list(None)
+        ]
         # tasks_.update({
         #     t for t in self.get_tasks(**kwargs) if t.life.seconds <= self.bot.configs.scheduler.persist_at
         # })

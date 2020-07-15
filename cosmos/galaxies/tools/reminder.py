@@ -42,7 +42,7 @@ class Reminder(Cog):
         self.bot.scheduler.register_callback(self.__remind)
 
     async def get_reminders(self, user_id):
-        return list(await self.bot.scheduler.fetch_tasks(user_id=user_id))
+        return list(await self.bot.scheduler.fetch_tasks(self.__remind, user_id=user_id))
 
     async def __remind(self, task, user_id, channel_id, message):
         try:
