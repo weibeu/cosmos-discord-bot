@@ -1,1 +1,3 @@
 max_roles: 50
+max_raffles: 5         # Max number of raffles live at same time.
+max_raffle_life: 28    # Max life of raffle that can be created in normal servers. In days.
