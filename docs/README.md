@@ -48,6 +48,7 @@ Hosting Cosmos bot requires efficient and expensive servers which keeps Cosmos b
 
 * [Patreon](https://www.patreon.com/__thecosmos)
 * [PayPal](https://paypal.me/thecosmoss/)
+* [Ko-Fi](https://ko-fi.com/thecosmos)
 
 {% hint style="info" %}
 [Visit our community](https://discord.gg/7CrQEyP) to claim your rewards and perks you get for your support.
