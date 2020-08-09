@@ -58,4 +58,4 @@
 
 * [FAQs](extras/faqs.md)
 * [Donors and Supporters](extras/donors-and-supporters.md)
-
+* [Privacy Policy](extras/privacy-policy.md)

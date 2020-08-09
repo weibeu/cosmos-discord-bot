@@ -12,9 +12,10 @@ We are really thankful to all of our supporters and caretakers. Without them, Co
 
 ![](../.gitbook/assets/quark.png)
 
-* **Катюша Каблашников**
+* **Katyusha Kablashnikov**
 
 ## Patreon Neutrinos
 
 ![](../.gitbook/assets/neutrino.png)
 
+* **William_CTO**
