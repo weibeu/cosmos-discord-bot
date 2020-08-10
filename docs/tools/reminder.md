@@ -12,7 +12,7 @@ You can specify when in number of formats. To include a message with reminder, j
 after you specify the when parameter.
 
 To set your reminder with a time difference, begin with 'in '. Otherwise normally specify the date
-and time you want to set reminder to.
+and time you want to set reminder to. However this is not necessary anymore.
 
 **Note:** Reminders smaller than 60 seconds will not be persisted. Meaning if the bot restarts or the universe
 explodes and resets during this duration then, such reminders will not be triggered.

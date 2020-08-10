@@ -89,7 +89,7 @@ class Reminder(Cog):
         after you specify the when parameter.
 
         To set your reminder with a time difference, begin with 'in '. Otherwise normally specify the date
-        and time you want to set reminder to.
+        and time you want to set reminder to. However this is not necessary anymore.
 
         Note: Reminders smaller than 60 seconds will not be persisted. Meaning if the bot restarts or the universe
         explodes and resets during this duration then, such reminders will not be triggered.
@@ -136,7 +136,7 @@ class Reminder(Cog):
         value = f'**Location**: <#{task.kwargs["channel_id"]}>\n' \
                 f'**ID**: `{task.id}`'
         if task.kwargs["message"]:
-            value = f'*{task.kwargs["message"]}*\n' + value
+            value = f'*{task.kwargs["message"].strip()}*\n' + value
         return key, value
 
     @Cog.group(name="reminders", invoke_without_command=True)

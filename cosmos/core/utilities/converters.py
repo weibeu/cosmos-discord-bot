@@ -62,6 +62,9 @@ class HumanDatetimeConverter(HumanTimeDeltaConverter):
         try:
             if argument.lower().startswith("in"):
                 return await super().convert(ctx, argument.lstrip("in "))
-            return time.HumanDateTimeMixin.from_human(argument)
-        except ValueError:
-            raise commands.BadArgument
+            return await super().convert(ctx, argument)
+        except (ValueError, commands.BadArgument):
+            try:
+                return time.HumanDateTimeMixin.from_human(argument)
+            except ValueError:
+                raise commands.BadArgument
