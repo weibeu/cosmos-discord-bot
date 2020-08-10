@@ -73,6 +73,7 @@ class Scheduler(object):
 
         if task.invoke_at <= self.bot.configs.scheduler.passive_after:
             self.tasks.add(task)
+            task.dispatch_when_ready()
 
         return task
 
