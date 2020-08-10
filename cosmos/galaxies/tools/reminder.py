@@ -66,7 +66,7 @@ class Reminder(Cog):
         try:
             channel = self.bot.get_channel(channel_id) or await self.bot.fetch_channel(channel_id)
             user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
-        except discord.NotFound:
+        except (discord.NotFound, discord.Forbidden):
             return
         period = "." if not message.endswith(".") else str()
         if message:
