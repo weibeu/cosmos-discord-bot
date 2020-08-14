@@ -45,7 +45,9 @@ class WelcomeBanner(WelcomeBase):
         if guild.theme.color:
             options["border_color"] = options["font_color"] = options["avatar_border_color"] = str(guild.theme.color)
         banner_bytes = await self.bot.image_processor.discord.get_welcome_banner(
-            guild.welcome_banner_url, str(member.avatar_url), member.name, guild.welcome_banner_text, **options)
+            guild.welcome_banner_url, str(member.avatar_url),
+            member.name, member.discriminator, guild.welcome_banner_text, **options
+        )
         file = discord.File(BytesIO(banner_bytes), filename=f"{guild.plugin.data.settings.banner_name}.{banner_format}")
         if guild.welcome_message:
             await channel.send(guild.welcome_message.format(**MessageTemplateMember(member).__dict__), file=file)
