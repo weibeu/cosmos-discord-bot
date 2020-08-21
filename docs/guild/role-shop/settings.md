@@ -67,6 +67,8 @@ Usage:
 Raffles points among the members who react to the confetti reaction to specified number of winners.
 Defaults to 1 winner. By default, raffle will last till 7 seconds. If you want it to last for desired time then you should specify when it should end.
 
+**NOTE:** It ignores members with "Manage Roles" permissions.
+
 ```yaml
 Aliases:
 - rafflepoint
