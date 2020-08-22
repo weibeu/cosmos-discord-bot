@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from discord.ext import commands
 
+import io
 import arrow
 import discord
 import random
@@ -30,6 +31,10 @@ class DeadMemes(Cog):
     """Contains worst dead shittiest dankest memes commands. Yo wait you can disable it LMAO."""
 
     INESCAPABLE = False
+
+    def __init__(self, plugin):
+        super().__init__()
+        self.plugin = plugin
 
     @staticmethod
     def mock(text, diversity_bias=0.5, random_seed=None):
@@ -76,3 +81,11 @@ class DeadMemes(Cog):
         embed.set_footer(text=f"#{target.channel} | {guild.name}", icon_url=guild.icon_url)
         embed.timestamp = target.created_at
         await ctx.send(embed=embed)
+
+    @Cog.command(name="rip")
+    async def rip(self, ctx, member: discord.Member = None):
+        """Sends the worst and shittiest rip meme."""
+        member = member or ctx.author
+        meme_bytes = await self.bot.image_processor.memes.rip(member.name, str(member.avatar_url))
+        file = discord.File(io.BytesIO(meme_bytes), filename="rip.png")
+        await ctx.send(file=file)

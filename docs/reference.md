@@ -101,6 +101,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [reminder](https://cosmos.thecosmos.space/tools/reminder#reminder) | Set reminder to get notified at specified time in future in the same channel in which you created the reminder. | `;remind [when]` |
 | [reminders](https://cosmos.thecosmos.space/tools/reminder#reminders) | Displays list of reminders which has been created by you. | `;reminders` |
 | [rep](https://cosmos.thecosmos.space/profile/profile#rep) | Add a reputation point to specified member. | `;rep [user]` |
+| [rip](https://cosmos.thecosmos.space/ead-memes#rip) | Sends the worst and shittiest rip meme. | `;rip [member]` |
 | [roleshop](https://cosmos.thecosmos.space/role-shop#roleshop) | Displays all of the roles which can be purchased from role shop. | `;roleshop` |
 | [spongebobmock](https://cosmos.thecosmos.space/dead-memes#spongebobmock) | Spongebob mocks provided message or text and sends it back. | `;spongebobmock <message>` |
 | [starboard](https://cosmos.thecosmos.space/starboard#starboard) | Configure Starboard in server. | `;starboard <sub-command> ...` |

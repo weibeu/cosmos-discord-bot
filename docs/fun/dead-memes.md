@@ -19,3 +19,12 @@ Examples:
 # Any older discord message.
 ;spongebobmock https://discordapp.com/channels/336642139381301249/381963689470984203/706812508131819571
 ```
+
+## ;rip
+
+Sends the worst and shittiest rip meme.
+
+```yaml
+Usage:
+;rip [member]
+```
