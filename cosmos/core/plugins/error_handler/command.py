@@ -36,9 +36,9 @@ class CommandErrorHandler(Cog):
         self.plugin = plugin
 
     @staticmethod
-    async def __send_response(ctx, emote_url, content):
+    async def __send_response(ctx, emote_url, content, **kwargs):
         try:
-            return await ctx.send_line(content, emote_url, color=discord.Color(0xFF1744))
+            return await ctx.send_line(content, emote_url, color=discord.Color(0xFF1744), **kwargs)
         except discord.Forbidden:
             pass
 
@@ -88,7 +88,11 @@ class CommandErrorHandler(Cog):
                 f"You're missing {error.missing_perms[0].replace('_', ' ').title()} permissions to run that command.")
 
         elif isinstance(error, commands.PrivateMessageOnly):
-            await self.__send_response(ctx, images.feedback, "That command can only be used in my DMs.")
+            dm_channel = ctx.author.dm_channel or await ctx.author.create_dm()
+            await self.__send_response(
+                ctx, images.feedback, "That command can only be used in my DMs.",
+                author_url=f"https://discord.com/channels/@me/{dm_channel.id}"
+            )
 
         elif isinstance(error, commands.CheckFailure):
             await self.__send_response(ctx, images.denied, "You're not allowed to use that command.")
