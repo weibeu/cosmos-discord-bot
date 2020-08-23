@@ -78,11 +78,23 @@ class Starboard(Settings):
             if count == starboard.count:
                 embed = guild_profile.theme.get_embed()
                 embed.set_author(name=message.author, icon_url=message.author.avatar_url)
+                try:
+                    embed_ = message.embeds[0]
+                except IndexError:
+                    embed_ = None
                 if message.content:
-                    embed.description = f"{self.bot.emotes.misc.next}    {message.content}"
+                    description = message.content
+                else:
+                    description = embed_.description if (embed_ and embed_.description) else str()
                 if message.attachments:
                     embed.set_image(url=message.attachments[0].url)
+                else:
+                    try:
+                        embed.set_image(url=embed_.image.url)
+                    except (AttributeError, TypeError):
+                        pass
                 embed.timestamp = message.created_at
+                embed.description = f"{self.bot.emotes.misc.next}    {description}" if description else str()
                 embed.add_field(name="Original Message", value=f"[Jump!]({message.jump_url})")
                 embed.add_field(name="Channel", value=message.channel.mention)
                 embed.add_field(name="Stars Meta", value=f"⭐ **{count}**")
