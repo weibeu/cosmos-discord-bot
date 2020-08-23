@@ -103,6 +103,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [rep](https://cosmos.thecosmos.space/profile/profile#rep) | Add a reputation point to specified member. | `;rep [user]` |
 | [rip](https://cosmos.thecosmos.space/ead-memes#rip) | Sends the worst and shittiest rip meme. | `;rip [member]` |
 | [roleshop](https://cosmos.thecosmos.space/role-shop#roleshop) | Displays all of the roles which can be purchased from role shop. | `;roleshop` |
+| [shotquote](https://cosmos.thecosmos.space/dead-memes#shotquote) | This command generates and sends an image which somehow looks similar to message as it was sent by them. | `;shotquote <from_> [message]` |
 | [spongebobmock](https://cosmos.thecosmos.space/dead-memes#spongebobmock) | Spongebob mocks provided message or text and sends it back. | `;spongebobmock <message>` |
 | [starboard](https://cosmos.thecosmos.space/starboard#starboard) | Configure Starboard in server. | `;starboard <sub-command> ...` |
 | [tag](https://cosmos.thecosmos.space/tools/tags#tag) | Retrieves and displays specified tag and all of its contents. | `;tag <name>` |

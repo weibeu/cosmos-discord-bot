@@ -16,15 +16,15 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from discord.ext import commands
 
-import io
 import arrow
-import discord
 import random
 import typing
+import discord
+import datetime
 
 from .. import Cog
+from discord.ext import commands
 
 
 class DeadMemes(Cog):
@@ -87,5 +87,33 @@ class DeadMemes(Cog):
         """Sends the worst and shittiest rip meme."""
         member = member or ctx.author
         meme_bytes = await self.bot.image_processor.memes.rip(member.name, str(member.avatar_url))
-        file = discord.File(io.BytesIO(meme_bytes), filename="rip.png")
+        file = self.bot.utilities.get_discord_file(meme_bytes, "rip.png")
+        await ctx.send(file=file)
+
+    @Cog.command(name="shotquote", aliases=["quoteshot"])
+    async def shot_quote(self, ctx, from_: typing.Union[discord.Message, discord.Member], message=None):
+        """This command generates and sends an image which somehow looks similar to message as it was sent by them.
+        You can either specify any existing message to produce its screenshot like image or mention someone along
+        with any custom text to make them say whatever you want!
+
+        """
+        if isinstance(from_, discord.Member):
+            if not message:
+                return await ctx.send_line("❌    Please specify any content which you want them to say.")
+            author = from_
+            content = message
+            message = ctx.message
+        else:
+            author = from_.author
+            content = from_.content
+            message = from_
+        if (datetime.datetime.now() - message.created_at).days <= 1:
+            timestamp = message.created_at.strftime("Today at %I:%M %p")
+        elif (datetime.datetime.now() - message.created_at).days <= 6:
+            timestamp = message.created_at.strftime("%A at %I:%M %p")
+        else:
+            timestamp = message.created_at.strftime("%m/%d/%Y")
+        screenshot_bytes = await self.bot.image_processor.discord.ss_message(
+            author.display_name, content, str(author.avatar_url), author.color.to_rgb(), timestamp)
+        file = self.bot.utilities.get_discord_file(screenshot_bytes, "screenshot.png")
         await ctx.send(file=file)

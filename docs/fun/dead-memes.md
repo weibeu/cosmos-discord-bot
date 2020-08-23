@@ -28,3 +28,18 @@ Sends the worst and shittiest rip meme.
 Usage:
 ;rip [member]
 ```
+
+## ;shotquote
+This command generates and sends an image which somehow looks similar to message as it was sent by them. You can either specify any existing message to produce its screenshot like image or mention someone along with any custom text to make them say whatever you want!
+
+```yaml
+Aliases:
+- quoteshot
+
+Usage:
+;shotquote <from_> [message]
+
+Examples:
+;shotquote https://discordapp.com/channels/390134592507609088/401070542947352616/747013489050255380
+;shotquote @someone I am nooooooob.
+```
