@@ -20,8 +20,9 @@ from .api import HasteBin
 
 import os
 import re
-
+import io
 import random
+import discord
 import string as strings
 
 
@@ -97,3 +98,7 @@ class Utils(HasteBin):
             if not elements:
                 return []
             return self.get_random_elements(iterable, elements - 1)
+
+    @staticmethod
+    def get_discord_file(bytes_, filename=None, **kwargs):
+        return discord.File(io.BytesIO(bytes_), filename=filename, **kwargs)
