@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from .models.profiles import CosmosUserProfile
 from discord.ext import commands
 
+import arrow
 import discord
 
 from .. import Cog
@@ -54,7 +55,7 @@ class GuildStatsConverter(StatsConverter):
 class GlobalStatsConverter(StatsConverter):
 
     STATS = [
-        "text", "chat", "voice", "bosons", "fermions", "reputations", "reps", "streaks",
+        "text", "chat", "voice", "bosons", "fermions", "reputations", "reps", "streaks", "marriages", "relationships",
     ]
 
 
@@ -109,37 +110,37 @@ class Leaderboards(Cog):
         return __documents
 
     @staticmethod
-    async def __entry_parser(ctx, document, documents, show_discriminator=False, voice=False):
-        _xp = document['attribute']
-        _xp = _xp / CosmosUserProfile.VOICE_XP_CONSTRAIN if voice else _xp / CosmosUserProfile.CHAT_XP_CONSTRAIN
-        xp = f"**{round(_xp)}**"
+    async def __entry_parser(ctx, document, documents, show_discriminator=False):
         rank = documents.index(document) + 1
         user = document["user"]
         username = str(user) if show_discriminator else user.name
         if rank == 1:
-            entry = f"🥇    {username}", xp
+            entry = f"🥇    {username}"
         elif rank == 2:
-            entry = f"🥈    {username}", xp
+            entry = f"🥈    {username}"
         elif rank == 3:
-            entry = f"🥉    {username}", xp
+            entry = f"🥉    {username}"
         else:
-            entry = f"#**{rank}**    {username}", xp
+            entry = f"#**{rank}**    {username}"
 
         if user.id == ctx.author.id:
-            entry = f"{ctx.emotes.misc.favorite}    **{username}**", entry[1]
+            entry = f"{ctx.emotes.misc.favorite}    **{username}**"
 
-        return entry
+        return entry, document['attribute']
 
-    async def __xp_entry_parser(self, ctx, document, documents, *args, **kwargs):
-        key, value = await self.__entry_parser(ctx, document, documents, *args, show_discriminator=True, **kwargs)
-        return key, f"`TOTAL XP:` {value}"
+    async def __xp_entry_parser(self, ctx, document, documents):
+        key, xp = await self.__entry_parser(ctx, document, documents, show_discriminator=True)
+        xp = xp / CosmosUserProfile.CHAT_XP_CONSTRAIN
+        return key, f"`TOTAL XP:` **{round(xp)}**"
 
     async def __voice_xp_entry_parser(self, *args, **kwargs):
-        return await self.__xp_entry_parser(*args, voice=True, **kwargs)
+        key, xp = await self.__entry_parser(*args, **kwargs)
+        xp = xp / CosmosUserProfile.VOICE_XP_CONSTRAIN
+        return key, f"`TOTAL XP:` **{round(xp)}**"
 
     async def __points_parser(self, *args, **kwargs):
         key, value = await self.__entry_parser(*args, show_discriminator=True, **kwargs)
-        return key, f"`POINTS:` {value}"
+        return key, f"`POINTS:` **{value}**"
 
     async def __show_leaderboards(self, ctx, entries, name, parser, global_=False):
         paginator = ctx.get_field_paginator(entries, entry_parser=parser, inline=False, per_page=9)
@@ -179,26 +180,30 @@ class Leaderboards(Cog):
 
     async def __global_xp_entry_parser(self, *args, **kwargs):
         key, value = await self.__entry_parser(*args, **kwargs)
-        return key, f"`TOTAL GLOBAL XP:` {value}"
+        return key, f"`TOTAL GLOBAL XP:` **{value}**"
 
     async def __global_voice_xp_entry_parser(self, *args, **kwargs):
-        return await self.__global_xp_entry_parser(*args, voice=True, **kwargs)
+        return await self.__global_xp_entry_parser(*args, **kwargs)
 
     async def __bosons_parser(self, *args, **kwargs):
         key, value = await self.__entry_parser(*args, **kwargs)
-        return key, f"`BOSONS:` {value}"
+        return key, f"`BOSONS:` **{value}**"
 
     async def __reps_parser(self, *args, **kwargs):
         key, value = await self.__entry_parser(*args, **kwargs)
-        return key, f"`REPUTATION POINTS:` {value}"
+        return key, f"`REPUTATION POINTS:` **{value}**"
 
     async def __fermions_parser(self, *args, **kwargs):
         key, value = await self.__entry_parser(*args, **kwargs)
-        return key, f"`FERMIONS:` {value}"
+        return key, f"`FERMIONS:` **{value}**"
 
     async def __streaks_parser(self, *args, **kwargs):
         key, value = await self.__entry_parser(*args, **kwargs)
-        return key, f"`DAILY STREAKS:` {value}"
+        return key, f"`DAILY STREAKS:` **{value}**"
+
+    async def __marriages_parser(self, *args, **kwargs):
+        key, value = await self.__entry_parser(*args, **kwargs)
+        return key, f"`MARRIED:` **{arrow.get(value).humanize()}.**"
 
     @leaderboards.command(name="global", aliases=["cosmos", "globals"])
     async def global_leaderboards(self, ctx, stats: GlobalStatsConverter = "chat"):
@@ -228,6 +233,10 @@ class Leaderboards(Cog):
             filter_ = "currency.bosons_daily_streak"
             name = "Bosons Daily Streak Leaderboards"
             parser = self.__streaks_parser
+        elif stats in ("marriages", "relationships"):
+            filter_ = "relationship.marriage.timestamp"
+            name = "Eternal Relationship Leaderboards"
+            parser = self.__marriages_parser
         else:
             raise ValueError
         async with ctx.loading():
