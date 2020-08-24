@@ -78,14 +78,14 @@ class Leaderboards(Cog):
         super().__init__()
         self.plugin = plugin
 
-    async def fetch_top(self, filter_, limit=111):
+    async def fetch_top(self, filter_, limit=111, sort=-1):
         pipeline = [
             {"$project": {"_id": False, "user_id": True, filter_: True}},
             {"$match": {filter_: {"$exists": True}}},
             {"$group": {
                 "_id": "$user_id", "attribute": {"$max": f"${filter_}"}
             }},
-            {"$sort": {"attribute": -1}}, {"$limit": limit}
+            {"$sort": {"attribute": sort}}, {"$limit": limit}
         ]
         return await self.plugin.cache.collection.aggregate(pipeline).to_list(None)
 
@@ -209,6 +209,8 @@ class Leaderboards(Cog):
     async def global_leaderboards(self, ctx, stats: GlobalStatsConverter = "chat"):
         """Displays top users with maximum chat experience earned globally across all servers."""
 
+        sort_type = -1
+
         if stats in ("chat", "text"):
             filter_ = "stats.xp.chat"
             name = "Chat XP Leaderboards"
@@ -237,9 +239,12 @@ class Leaderboards(Cog):
             filter_ = "relationship.marriage.timestamp"
             name = "Eternal Relationship Leaderboards"
             parser = self.__marriages_parser
+            sort_type = 1
         else:
             raise ValueError
         async with ctx.loading():
-            entries = await self.__filter(self.bot.get_user, self.bot.fetch_user, await self.fetch_top(filter_))
+            entries = await self.__filter(
+                self.bot.get_user, self.bot.fetch_user, await self.fetch_top(filter_, sort=sort_type)
+            )
         name = f"Cosmos Universe {name}".upper()
         await self.__show_leaderboards(ctx, entries, name, parser, True)
