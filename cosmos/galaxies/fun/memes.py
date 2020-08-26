@@ -91,7 +91,7 @@ class DeadMemes(Cog):
         await ctx.send(file=file)
 
     @Cog.command(name="shotquote", aliases=["quoteshot"])
-    async def shot_quote(self, ctx, from_: typing.Union[discord.Message, discord.Member], message=None):
+    async def shot_quote(self, ctx, from_: typing.Union[discord.Message, discord.Member], *, message=None):
         """This command generates and sends an image which somehow looks similar to message as it was sent by them.
         You can either specify any existing message to produce its screenshot like image or mention someone along
         with any custom text to make them say whatever you want!
