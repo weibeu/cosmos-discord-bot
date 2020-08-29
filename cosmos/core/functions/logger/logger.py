@@ -31,8 +31,8 @@ class Logger(object):
         self.path = self.bot.configs.logger.path.format(**self.bot.time.now().__dict__)
         self.file_name = self.bot.configs.logger.file_name.format(**self.bot.time.now().__dict__)
         self.level = getattr(logging, self.bot.configs.logger.level)
-        self._logger = logging.getLogger(self.name)
-        self._logger.setLevel(self.level)
+        self.logger = logging.getLogger(self.name)
+        self.logger.setLevel(self.level)
 
     def set_file_handler(self):
         if not os.path.exists(self.path):
@@ -45,29 +45,29 @@ class Logger(object):
         print("Done.")
         logger_format = logging.Formatter(fmt=self.default_format, datefmt=self.default_date_format, style=self.style)
         handler.setFormatter(logger_format)
-        self._logger.addHandler(handler)
+        self.logger.addHandler(handler)
 
     def set_stdout_handler(self):
         handler = logging.StreamHandler()
-        self._logger.addHandler(handler)
+        self.logger.addHandler(handler)
 
     def set_level(self, level):
-        self._logger.setLevel(level)
+        self.logger.setLevel(level)
 
     def info(self, message: str):
-        return self._logger.info(message)
+        return self.logger.info(message)
 
     def debug(self, message: str):
-        return self._logger.debug(message)
+        return self.logger.debug(message)
 
     def error(self, message: str):
-        return self._logger.error(message)
+        return self.logger.error(message)
 
     def warn(self, message: str):
         return self.warning(message)
 
     def warning(self, message: str):
-        return self._logger.warning(message)
+        return self.logger.warning(message)
 
     def exception(self, message: str):
-        return self._logger.exception(message)
+        return self.logger.exception(message)
