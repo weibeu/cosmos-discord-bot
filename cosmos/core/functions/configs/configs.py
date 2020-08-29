@@ -172,3 +172,9 @@ class SchedulerConfigs(Config):
     @property
     def passive_after(self):
         return datetime.datetime.utcnow() + self._passive_after
+
+
+class ServerConfigs(Config):
+
+    NAME = "server"
+    PATH = "cfg/core/server.yaml"

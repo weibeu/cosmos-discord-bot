@@ -51,8 +51,9 @@ class InitialTasks(commands.Bot):
         self.theme = None
         self.image_processor = None
         self.scheduler = None
-        self.profile_cache = None    # Intended to be overridden by profile galaxy.
-        self.guild_cache = None    # Intended to be overridden by guild galaxy.
+        self.server = None
+        self.profile_cache = None    # Intended to be overridden by PROFILE galaxy.
+        self.guild_cache = None    # Intended to be overridden by GUILD galaxy.
         self.version = version
         self.release = release
         self._init_time()
@@ -71,6 +72,7 @@ class InitialTasks(commands.Bot):
         self._init_theme()
         self._init_image_processor()
         self._init_misc_tasks()
+        self._init_server()
 
     @Time.calc_time
     def _init_time(self):
@@ -142,6 +144,11 @@ class InitialTasks(commands.Bot):
     def _init_scheduler(self):
         self.log.info("Initializing schedulers.")
         self.scheduler = Scheduler(self)
+
+    @Time.calc_time
+    def _init_server(self):
+        self.log.info("Initializing cosmos server.")
+        self.server = CosmosServer(self)
 
     def _init_misc_tasks(self):
         self.get_command("help").inescapable = True    # Dynamically mark help command as inescapable.
