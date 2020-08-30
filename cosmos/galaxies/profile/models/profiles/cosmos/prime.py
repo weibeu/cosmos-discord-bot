@@ -16,11 +16,31 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .cache import ProfileCache
-from .profiles.cosmos import CosmosPrimeTier
+from ..base import ProfileModelsBase
+
+from abc import ABC
+from enum import Enum
 
 
-__all__ = [
-    "ProfileCache",
-    "CosmosPrimeTier",
-]
+class CosmosPrimeTier(Enum):
+
+    NONE = 0
+    NEUTRINO = 1
+    QUARK = 5
+    STRING = 15
+
+
+class CosmosPrime(ProfileModelsBase, ABC):
+
+    @property
+    def is_prime(self):
+        return self.prime_tier >= CosmosPrimeTier.QUARK
+
+    def __init__(self, **kwargs):
+        self.prime_tier = kwargs.get("prime_tier", CosmosPrimeTier.NONE)
+
+    async def make_prime(self, tier=CosmosPrimeTier.QUARK, make=True):
+        self.prime_tier = tier if make else CosmosPrimeTier.NONE
+
+        await self.collection.update_one(
+            self.document_filter, {"$set": {"prime_tier": self.prime_tier.value}})

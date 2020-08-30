@@ -16,6 +16,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from ...galaxies.profile.models import CosmosPrimeTier
+
 from . import time
 
 from discord.ext import commands
@@ -68,3 +70,12 @@ class HumanDatetimeConverter(HumanTimeDeltaConverter):
                 return time.HumanDateTimeMixin.from_human(argument)
             except ValueError:
                 raise commands.BadArgument
+
+
+class CosmosPrimeTierConverter(commands.Converter):
+
+    async def convert(self, ctx, argument):
+        try:
+            return CosmosPrimeTier(int(argument))
+        except (TypeError, ValueError):
+            raise commands.BadArgument

@@ -22,13 +22,14 @@ from abc import ABC
 import arrow
 
 from .tags import UserTags
+from .prime import CosmosPrime
 from .family import Relationship
 from .currency import Boson, Fermion
 
 from ..guild import GuildMemberProfile, UserExperience
 
 
-class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, ABC):
+class CosmosUserProfile(CosmosPrime, Boson, Fermion, UserExperience, Relationship, UserTags, ABC):
 
     @property
     def plugin(self):
@@ -43,14 +44,6 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         return self._id
 
     @property
-    def is_prime(self):
-        return self._is_prime
-
-    @is_prime.setter
-    def is_prime(self, value):
-        self._is_prime = value
-
-    @property
     def description(self):
         return self._description or self.plugin.data.profile.default_description
 
@@ -59,6 +52,7 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         return cls(plugin, **document)
 
     def __init__(self, plugin, **kwargs):
+        CosmosPrime.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
         UserExperience.__init__(self, **kwargs)
@@ -66,7 +60,6 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         UserTags.__init__(self, kwargs.get("tags", dict()))
         self.__plugin = plugin
         self._id: int = kwargs["user_id"]
-        self._is_prime = kwargs.get("is_prime", False)
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
         self.rep_timestamp = self.get_arrow(raw_reputation.get("timestamp"))
@@ -80,12 +73,6 @@ class CosmosUserProfile(Boson, Fermion, UserExperience, Relationship, UserTags, 
         self.__collection = self.plugin.collection
         if self.plugin.data.profile.fetch_guild_profiles:
             self.plugin.bot.create_task(self.__fetch_guild_profiles())    # TODO: Fetch profiles of all guilds.
-
-    async def make_prime(self, make=True):
-        self.is_prime = make
-
-        await self.collection.update_one(
-            self.document_filter, {"$set": {"is_prime": make}})
 
     @property
     def can_rep(self):

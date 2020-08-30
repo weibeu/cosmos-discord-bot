@@ -16,7 +16,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from cosmos.core.utilities.converters import CosmosUserProfileConverter, CosmosGuildConverter
+from cosmos.core.utilities.converters import CosmosUserProfileConverter
+from cosmos.core.utilities.converters import CosmosGuildConverter
+from cosmos.core.utilities.converters import CosmosPrimeTier
+from cosmos.core.utilities.converters import CosmosPrimeTierConverter
 
 import typing
 
@@ -28,10 +31,13 @@ from discord.ext import commands
 class AdminCommands(Admin):
 
     @Admin.command(name="giveprime")
-    async def give_prime(self, ctx, *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]):
+    async def give_prime(
+            self, ctx, tier: typing.Optional[CosmosPrimeTierConverter] = CosmosPrimeTier.NONE,
+            *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]
+    ):
         if not await ctx.confirm():
             return
-        await target.make_prime()
+        await target.make_prime(tier=tier)
         await ctx.send_line(f"🎉    {target.name} has been given prime.")
 
     @give_prime.error
