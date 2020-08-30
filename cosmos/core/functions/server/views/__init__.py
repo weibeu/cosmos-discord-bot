@@ -15,6 +15,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from .dbl import DBLHook
 from .base import BaseView
+from .base import ViewsMeta
 
 
 __all__ = [

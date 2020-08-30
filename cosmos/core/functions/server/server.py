@@ -19,9 +19,16 @@ from aiohttp import web
 
 class CosmosServer(object):
 
+    @web.middleware
+    async def __verify_authorization(self, request, handler):
+        if isinstance(handler, views.ViewsMeta):
+            if request.headers.get(handler.HEADER) != handler.authorization_key:
+                raise web.HTTPForbidden
+        return await handler(request)
+
     def get_app(self):
         app = web.Application(logger=self.bot.log.logger, middlewares=[
-
+            self.__verify_authorization,
         ], loop=self.bot.loop)
         app["COSMOS"] = self.bot
         return app
