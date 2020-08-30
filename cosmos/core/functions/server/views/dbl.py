@@ -23,4 +23,9 @@ class DBLHook(base.BaseView):
     TYPE = base.ViewTypes.WEBHOOK
 
     async def post(self):
-        return web.Response(text=f"Hello world! {repr(self.bot)}")
+        json = await self.request.json()
+        self.bot.log.info(f"[{self.NAME}] Received payload: {json}.")
+        user_id = int(json["user"])
+        user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
+        self.bot.dispatch("dbl_vote", user)
+        return web.Response()

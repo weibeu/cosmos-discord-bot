@@ -29,6 +29,11 @@ class Economy(Cog):
         self.plugin = plugin
         self.cache = self.plugin.cache
 
+    @Cog.listener()
+    async def on_dbl_vote(self, user):
+        profile = await self.cache.get_profile(user.id)
+        profile.give_bosons(self.plugin.data.boson.dbl_vote_reward)
+
     @Cog.group(name="bosons", aliases=["boson", "$"], invoke_without_command=True)
     async def bosons(self, ctx, *, user: discord.Member = None):
         """Displays Bosons earned by you or specified member."""
