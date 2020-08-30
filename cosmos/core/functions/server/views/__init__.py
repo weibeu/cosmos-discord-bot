@@ -14,6 +14,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from .dbl import DBLHook
+from .base import BaseView
 
 
 __all__ = [

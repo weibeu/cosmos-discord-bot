@@ -39,4 +39,6 @@ class __ViewsMeta(ABCMeta):
 
 class BaseView(web.View, metaclass=__ViewsMeta):
 
-    pass
+    @property
+    def bot(self):
+        return self.request.app["COSMOS"]

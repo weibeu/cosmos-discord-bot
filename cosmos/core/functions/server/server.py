@@ -20,7 +20,11 @@ from aiohttp import web
 class CosmosServer(object):
 
     def get_app(self):
-        return web.Application(logger=self.bot.log.logger, loop=self.bot.loop)
+        app = web.Application(logger=self.bot.log.logger, middlewares=[
+
+        ], loop=self.bot.loop)
+        app["COSMOS"] = self.bot
+        return app
 
     async def _init_app(self):
         configs = self.bot.configs.server

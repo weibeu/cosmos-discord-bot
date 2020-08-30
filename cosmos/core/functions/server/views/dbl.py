@@ -23,4 +23,4 @@ class DBLHook(base.BaseView):
     TYPE = base.ViewTypes.WEBHOOK
 
     async def get(self):
-        return web.Response(text="Hello world!")
+        return web.Response(text=f"Hello world! {repr(self.bot)}")
