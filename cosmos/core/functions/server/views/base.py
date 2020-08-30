@@ -46,7 +46,3 @@ class BaseView(web.View, metaclass=ViewsMeta):
     @property
     def bot(self):
         return self.request.app["COSMOS"]
-
-    @property
-    def authorization_key(self):
-        return getattr(self.bot.configs.server, f"{self.NAME}_KEY")

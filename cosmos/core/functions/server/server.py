@@ -22,7 +22,7 @@ class CosmosServer(object):
     @web.middleware
     async def __verify_authorization(self, request, handler):
         if isinstance(handler, views.ViewsMeta):
-            if request.headers.get(handler.HEADER) != handler.authorization_key:
+            if request.headers.get(handler.HEADER) != getattr(self.bot.configs.server, f"{handler.NAME}_KEY"):
                 raise web.HTTPForbidden
         return await handler(request)
 

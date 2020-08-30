@@ -22,5 +22,5 @@ class DBLHook(base.BaseView):
     ROUTE = "/dbl/"
     TYPE = base.ViewTypes.WEBHOOK
 
-    async def get(self):
+    async def post(self):
         return web.Response(text=f"Hello world! {repr(self.bot)}")
