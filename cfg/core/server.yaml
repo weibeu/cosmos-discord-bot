@@ -2,3 +2,7 @@
 
 host: 0.0.0.0
 port: 8000
+
+# Few secret keys required to request to endpoints.
+
+DBLHOOK_KEY: ""    # ENV: DBLHOOK_KEY

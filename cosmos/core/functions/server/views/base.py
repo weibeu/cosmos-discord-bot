@@ -13,9 +13,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from abc import ABCMeta
 from enum import Enum
 from aiohttp import web
-from abc import ABCMeta
 
 
 class ViewTypes(Enum):
@@ -26,14 +26,16 @@ class ViewTypes(Enum):
 
 class __ViewsMeta(ABCMeta):
 
-    TYPE = ViewTypes.ANY
+    NAME = str()
     ROUTE = str()
+    TYPE = ViewTypes.ANY
 
     def __init__(cls, name, *args, **kwargs):
         if name != "BaseView":
             if not cls.ROUTE:
                 raise ValueError("A view must have valid ROUTE attribute.")
             cls.ROUTE = cls.TYPE.value + cls.ROUTE
+            cls.NAME = cls.NAME.upper() or cls.__name__.upper()
         super().__init__(name, *args, **kwargs)
 
 
@@ -42,3 +44,7 @@ class BaseView(web.View, metaclass=__ViewsMeta):
     @property
     def bot(self):
         return self.request.app["COSMOS"]
+
+    @property
+    def authorization(self):
+        return getattr(self.bot.configs.server, f"{self.NAME}_KEY")
