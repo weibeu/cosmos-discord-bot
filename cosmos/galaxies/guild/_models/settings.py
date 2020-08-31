@@ -401,12 +401,6 @@ class GuildSettings(WelcomeSettings, LoggerSettings, GuildPermissions, ABC):
 
         self.collection.update_one(self.document_filter, {"$unset": {"settings.confessions_channel": ""}})
 
-    async def make_prime(self, make=True):
-        self.is_prime = make
-
-        await self.collection.update_one(
-            self.document_filter, {"$set": {"is_prime": make}})
-
     def __set_starboard(self, channel, count=None):
         count = count or self.plugin.data.settings.default_star_count
         self.starboard = GuildStarboard(channel, count)

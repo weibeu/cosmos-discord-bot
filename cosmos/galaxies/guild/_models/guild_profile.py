@@ -17,12 +17,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from .levels import Levels
+from .prime import CosmosGuildPrime
 from .settings import GuildSettings
 from .roleshop import GuildRoleShop
 from .reactions import GuildReactions
 
 
-class CosmosGuild(GuildSettings, GuildRoleShop):
+class CosmosGuild(CosmosGuildPrime, GuildSettings, GuildRoleShop):
 
     @property
     def plugin(self):
@@ -42,7 +43,7 @@ class CosmosGuild(GuildSettings, GuildRoleShop):
     def __init__(self, plugin, **kwargs):
         self.__plugin = plugin
         self.__id = kwargs["guild_id"]
-        self.is_prime = kwargs.get("is_prime", False)
+        CosmosGuildPrime.__init__(self, **kwargs)
         GuildSettings.__init__(self, **kwargs)
         GuildRoleShop.__init__(self, **kwargs)
         self.levels = Levels(self, **kwargs)

@@ -16,9 +16,23 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .user_profile import CosmosUserProfile
+from abc import ABC
+
+from .base import CosmosGuildBase
 
 
-__all__ = [
-    "CosmosUserProfile",
-]
+class CosmosGuildPrime(CosmosGuildBase, ABC):
+
+    @property
+    def is_prime(self):
+        return self.prime_tier >= self.plugin.bot.PrimeTier.QUARK
+
+    def __init__(self, **kwargs):
+        self.prime_tier = kwargs.get("prime_tier", self.plugin.bot.PrimeTier.NONE)
+
+    async def make_prime(self, tier=None, make=True):
+        tier = tier or self.plugin.bot.PrimeTier.QUARK
+        self.prime_tier = tier if make else self.plugin.bot.PrimeTier.NONE
+
+        await self.collection.update_one(
+            self.document_filter, {"$set": {"prime_tier": self.prime_tier.value}})

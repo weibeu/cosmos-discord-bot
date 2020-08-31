@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from discord import LoginFailure
 
 import sys
+import enum
 
 from .tasks import InitialTasks
 from .functions import CosmosContext
@@ -55,3 +56,10 @@ class Cosmos(InitialTasks):
             pass
 
         return await super().close()
+
+    class PrimeTier(enum.Enum):
+
+        NONE = 0
+        NEUTRINO = 1
+        QUARK = 5
+        STRING = 15

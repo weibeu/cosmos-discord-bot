@@ -22,14 +22,14 @@ from abc import ABC
 import arrow
 
 from .tags import UserTags
-from .prime import CosmosPrime
 from .family import Relationship
 from .currency import Boson, Fermion
 
+from ..prime import CosmosUserPrime
 from ..guild import GuildMemberProfile, UserExperience
 
 
-class CosmosUserProfile(CosmosPrime, Boson, Fermion, UserExperience, Relationship, UserTags, ABC):
+class CosmosUserProfile(CosmosUserPrime, Boson, Fermion, UserExperience, Relationship, UserTags, ABC):
 
     @property
     def plugin(self):
@@ -52,7 +52,7 @@ class CosmosUserProfile(CosmosPrime, Boson, Fermion, UserExperience, Relationshi
         return cls(plugin, **document)
 
     def __init__(self, plugin, **kwargs):
-        CosmosPrime.__init__(self, **kwargs)
+        CosmosUserPrime.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
         UserExperience.__init__(self, **kwargs)

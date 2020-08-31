@@ -16,31 +16,23 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from ..base import ProfileModelsBase
-
 from abc import ABC
-from enum import Enum
+
+from .base import ProfileModelsBase
 
 
-class CosmosPrimeTier(Enum):
-
-    NONE = 0
-    NEUTRINO = 1
-    QUARK = 5
-    STRING = 15
-
-
-class CosmosPrime(ProfileModelsBase, ABC):
+class CosmosUserPrime(ProfileModelsBase, ABC):
 
     @property
     def is_prime(self):
-        return self.prime_tier >= CosmosPrimeTier.QUARK
+        return self.prime_tier >= self.plugin.bot.PrimeTier.QUARK
 
     def __init__(self, **kwargs):
-        self.prime_tier = kwargs.get("prime_tier", CosmosPrimeTier.NONE)
+        self.prime_tier = kwargs.get("prime_tier", self.plugin.bot.PrimeTier.NONE)
 
-    async def make_prime(self, tier=CosmosPrimeTier.QUARK, make=True):
-        self.prime_tier = tier if make else CosmosPrimeTier.NONE
+    async def make_prime(self, tier=None, make=True):
+        tier = tier or self.plugin.bot.PrimeTier.QUARK
+        self.prime_tier = tier if make else self.plugin.bot.PrimeTier.NONE
 
         await self.collection.update_one(
             self.document_filter, {"$set": {"prime_tier": self.prime_tier.value}})

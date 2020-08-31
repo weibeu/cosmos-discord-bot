@@ -16,10 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from cosmos.core.utilities.converters import CosmosUserProfileConverter
+from cosmos.core.utilities.converters import PrimeTierConverter
 from cosmos.core.utilities.converters import CosmosGuildConverter
-from cosmos.core.utilities.converters import CosmosPrimeTier
-from cosmos.core.utilities.converters import CosmosPrimeTierConverter
+from cosmos.core.utilities.converters import CosmosUserProfileConverter
 
 import typing
 
@@ -32,7 +31,7 @@ class AdminCommands(Admin):
 
     @Admin.command(name="giveprime")
     async def give_prime(
-            self, ctx, tier: typing.Optional[CosmosPrimeTierConverter] = CosmosPrimeTier.NONE,
+            self, ctx, tier: typing.Optional[PrimeTierConverter] = None,
             *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]
     ):
         if not await ctx.confirm():
