@@ -38,5 +38,5 @@ class Config(ABC):
             if self.raw[config] == "":
                 self.raw[config] = None
             if config.endswith("_KEY"):
-                self.raw[config] = os.getenv(config) or config
+                self.raw[config] = os.getenv(config) or self.raw[config]
             self.__setattr__(config, self.raw[config])
