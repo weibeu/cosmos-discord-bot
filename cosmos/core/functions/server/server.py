@@ -23,7 +23,7 @@ class CosmosServer(object):
     async def __verify_authorization(self, request, handler):
         if isinstance(handler, views.ViewsMeta):
             self.bot.log.info(f"{request.method} [{handler.NAME}].")
-            if request.headers.get(handler.HEADER) != getattr(self.bot.configs.server, f"{handler.NAME}_KEY"):
+            if request.headers.get(handler.HEADER) != getattr(self.bot.configs.server, f"{handler.NAME}_KEY", None):
                 self.bot.log.info(f"{request.method} [{handler.NAME}] HTTPForbidden.")
                 raise web.HTTPForbidden
         return await handler(request)
