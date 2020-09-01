@@ -57,7 +57,8 @@ class Cosmos(InitialTasks):
 
         return await super().close()
 
-    class PrimeTier(enum.Enum):
+    @enum.unique
+    class PrimeTier(enum.IntEnum):
 
         NONE = 0
         NEUTRINO = 1
