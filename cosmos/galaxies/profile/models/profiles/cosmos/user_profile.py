@@ -33,7 +33,7 @@ class CosmosUserProfile(CosmosUserPrime, Boson, Fermion, UserExperience, Relatio
 
     @property
     def plugin(self):
-        return self.__plugin
+        return self._plugin
 
     @property
     def collection(self):
@@ -58,7 +58,7 @@ class CosmosUserProfile(CosmosUserPrime, Boson, Fermion, UserExperience, Relatio
         UserExperience.__init__(self, **kwargs)
         Relationship.__init__(self, **kwargs)
         UserTags.__init__(self, kwargs.get("tags", dict()))
-        self.__plugin = plugin
+        self._plugin = plugin
         self._id: int = kwargs["user_id"]
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)

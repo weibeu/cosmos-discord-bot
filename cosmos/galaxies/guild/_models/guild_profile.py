@@ -27,7 +27,7 @@ class CosmosGuild(CosmosGuildPrime, GuildSettings, GuildRoleShop):
 
     @property
     def plugin(self):
-        return self.__plugin
+        return self._plugin
 
     @property
     def id(self):
@@ -41,7 +41,7 @@ class CosmosGuild(CosmosGuildPrime, GuildSettings, GuildRoleShop):
         return await self.plugin.bot.profile_cache.get_guild_profile(_id, self.id)
 
     def __init__(self, plugin, **kwargs):
-        self.__plugin = plugin
+        self._plugin = plugin
         self.__id = kwargs["guild_id"]
         CosmosGuildPrime.__init__(self, **kwargs)
         GuildSettings.__init__(self, **kwargs)
