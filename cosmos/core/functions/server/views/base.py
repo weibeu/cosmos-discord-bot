@@ -42,6 +42,7 @@ class ViewsMeta(ABCMeta):
 class BaseView(web.View, metaclass=ViewsMeta):
 
     HEADER = "Authorization"
+    DISPATCH_EVENT = str()
 
     @property
     def bot(self):
