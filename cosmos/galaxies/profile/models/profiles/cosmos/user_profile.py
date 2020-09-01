@@ -52,13 +52,13 @@ class CosmosUserProfile(CosmosUserPrime, Boson, Fermion, UserExperience, Relatio
         return cls(plugin, **document)
 
     def __init__(self, plugin, **kwargs):
+        self._plugin = plugin
         CosmosUserPrime.__init__(self, **kwargs)
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
         UserExperience.__init__(self, **kwargs)
         Relationship.__init__(self, **kwargs)
         UserTags.__init__(self, kwargs.get("tags", dict()))
-        self._plugin = plugin
         self._id: int = kwargs["user_id"]
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
