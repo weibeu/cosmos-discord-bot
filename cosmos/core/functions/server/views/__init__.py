@@ -13,11 +13,14 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .dbl import DBLHook
 from .base import BaseView
 from .base import ViewsMeta
+
+from .dbl import DBLHook
+from .patreon import PatreonHook
 
 
 __all__ = [
     DBLHook,
+    PatreonHook,
 ]

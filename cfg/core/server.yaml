@@ -5,4 +5,5 @@ port: 7000
 
 # Few secret keys required to request to endpoints.
 
-DBLHOOK_KEY: ""    # ENV: DBLHOOK_KEY
+DBLHOOK_KEY: ""               # ENV: DBLHOOK_KEY
+PATREON_WEBHOOK_SECRET: ""    # ENV: PATREON_WEBHOOK_SECRET
