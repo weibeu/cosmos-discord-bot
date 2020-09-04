@@ -47,3 +47,6 @@ class BaseView(web.View, metaclass=ViewsMeta):
     @property
     def bot(self):
         return self.request.app["COSMOS"]
+
+    async def _fetch_discord_user(self, user_id):
+        return self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)

@@ -27,6 +27,6 @@ class DBLHook(base.BaseView):
         json = await self.request.json()
         self.bot.log.info(f"Received [{self.NAME}] payload: {json}.")
         user_id = int(json["user"])
-        user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
+        user = self._fetch_discord_user(user_id)
         self.bot.dispatch(self.DISPATCH_EVENT, user)
         return web.Response()
