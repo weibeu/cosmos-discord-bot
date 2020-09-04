@@ -60,7 +60,9 @@ class Cosmos(InitialTasks):
     @enum.unique
     class PrimeTier(enum.IntEnum):
 
+        FORMER = -1
         NONE = 0
+
         NEUTRINO = 1
         QUARK = 5
         STRING = 15
