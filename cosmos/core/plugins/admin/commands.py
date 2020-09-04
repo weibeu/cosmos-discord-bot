@@ -31,13 +31,19 @@ class AdminCommands(Admin):
 
     @Admin.command(name="giveprime")
     async def give_prime(
-            self, ctx, tier: typing.Optional[PrimeTierConverter] = None,
-            *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]
+            self, ctx, user: CosmosUserProfileConverter,
+            server: typing.Optional[CosmosGuildConverter] = None,
+            tier: typing.Optional[PrimeTierConverter] = None,
     ):
         if not await ctx.confirm():
             return
-        await target.make_prime(tier=tier)
-        await ctx.send_line(f"🎉    {target.name} has been given prime.")
+        extra = str()
+        guild_id = None
+        if server:
+            guild_id = server.id
+            extra = f"and {server.guild.name}"
+        await user.make_prime(tier=tier, guild_id=guild_id)
+        await ctx.send_line(f"🎉    {target.name} {extra} has been given prime.")
 
     @give_prime.error
     async def give_prime_error(self, ctx, error):
@@ -45,10 +51,10 @@ class AdminCommands(Admin):
             return await ctx.send_line(f"❌    A dark argument was passed.")
 
     @Admin.command(name="removeprime")
-    async def remove_prime(self, ctx, *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]):
+    async def remove_prime(self, ctx, *, user: CosmosUserProfileConverter):
         if not await ctx.confirm():
             return
-        await target.make_prime(make=False)
+        await user.remove_prime()
         await ctx.send_line(f"✅    Removed prime from {target.name}.")
 
     @remove_prime.error
