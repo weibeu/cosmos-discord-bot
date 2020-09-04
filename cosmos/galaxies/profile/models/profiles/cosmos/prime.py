@@ -28,7 +28,7 @@ class CosmosUserPrime(ProfileModelsBase, ABC):
         return self.prime_tier >= self.plugin.bot.PrimeTier.QUARK
 
     def __init__(self, **kwargs):
-        self.prime_tier = kwargs.get("tier", self.plugin.bot.PrimeTier.NONE)
+        self.prime_tier = self.plugin.bot.PrimeTier(kwargs.get("tier", 0))
         self.prime_guild = None
         self.plugin.bot.loop.create_task(self.__fetch_prime_guild(kwargs.get("guild")))
 
