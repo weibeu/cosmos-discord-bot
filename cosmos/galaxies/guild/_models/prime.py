@@ -25,14 +25,13 @@ class CosmosGuildPrime(CosmosGuildBase, ABC):
 
     @property
     def is_prime(self):
-        return self.prime_tier >= self.plugin.bot.PrimeTier.QUARK
+        return self.prime_owner and self.prime_owner.is_prime
 
     def __init__(self, **kwargs):
-        self.prime_tier = kwargs.get("prime_tier", self.plugin.bot.PrimeTier.NONE)
+        self.prime_owner = None
 
-    async def make_prime(self, tier=None, make=True):
-        tier = tier or self.plugin.bot.PrimeTier.QUARK
-        self.prime_tier = tier if make else self.plugin.bot.PrimeTier.NONE
-
-        await self.collection.update_one(
-            self.document_filter, {"$set": {"prime_tier": self.prime_tier.value}})
+    async def __fetch_prime_owner(self):
+        if document := await self.plugin.bot.get_galaxy("PROFILE").collection.find_one(
+                {"prime.guild": self.id}, projection={"user_id": True}
+        ):
+            self.prime_owner = await self.plugin.bot.profile_cache.get_profile(document.get("user_id"))

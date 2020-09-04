@@ -23,9 +23,9 @@ import arrow
 
 from .tags import UserTags
 from .family import Relationship
+from .prime import CosmosUserPrime
 from .currency import Boson, Fermion
 
-from ..prime import CosmosUserPrime
 from ..guild import GuildMemberProfile, UserExperience
 
 
@@ -53,7 +53,7 @@ class CosmosUserProfile(CosmosUserPrime, Boson, Fermion, UserExperience, Relatio
 
     def __init__(self, plugin, **kwargs):
         self._plugin = plugin
-        CosmosUserPrime.__init__(self, **kwargs)
+        CosmosUserPrime.__init__(self, **kwargs.get("prime", dict()))
         Boson.__init__(self, **kwargs)
         Fermion.__init__(self, **kwargs)
         UserExperience.__init__(self, **kwargs)
