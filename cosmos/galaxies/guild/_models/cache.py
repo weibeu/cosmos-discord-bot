@@ -58,7 +58,7 @@ class GuildCache(object):
                 profile = CosmosGuild.from_document(self.plugin, profile_filter)
                 self.lru.set(guild_id, profile)
                 await self.create_profile(profile_filter)
-            await profile.fetch_prime_owner()
+        await profile.fetch_prime_owner()
         return profile
 
     # TODO: Find a way to call create_profile. It gets invoked several times at the same instant under get_profile.
