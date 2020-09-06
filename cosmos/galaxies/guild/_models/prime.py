@@ -23,6 +23,8 @@ from .base import CosmosGuildBase
 
 class CosmosGuildPrime(CosmosGuildBase, ABC):
 
+    # TODO: Permanently persist prime owners in the cache.
+
     @property
     def is_prime(self):
         return self.prime_owner and self.prime_owner.is_prime
