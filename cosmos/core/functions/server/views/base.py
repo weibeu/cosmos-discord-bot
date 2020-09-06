@@ -48,5 +48,5 @@ class BaseView(web.View, metaclass=ViewsMeta):
     def bot(self):
         return self.request.app["COSMOS"]
 
-    async def _fetch_cosmos_user_profile(self, user_id):
+    async def fetch_cosmos_user_profile(self, user_id):
         return await self.bot.profile_cache.get_profile(user_id)

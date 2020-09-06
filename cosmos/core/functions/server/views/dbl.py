@@ -27,6 +27,6 @@ class DBLHook(base.BaseView):
         json = await self.request.json()
         self.bot.log.info(f"Received [{self.NAME}] payload: {json}.")
         user_id = int(json["user"])
-        profile = self._fetch_cosmos_user_profile(user_id)
+        profile = await self.fetch_cosmos_user_profile(user_id)
         self.bot.dispatch(self.DISPATCH_EVENT, profile)
         return web.Response()
