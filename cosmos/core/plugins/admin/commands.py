@@ -55,7 +55,7 @@ class AdminCommands(Admin):
         if not await ctx.confirm():
             return
         await user.remove_prime()
-        await ctx.send_line(f"✅    Removed prime from {target.name}.")
+        await ctx.send_line(f"✅    Removed prime from {user.name}.")
 
     @remove_prime.error
     async def remove_prime_error(self, ctx, error):
