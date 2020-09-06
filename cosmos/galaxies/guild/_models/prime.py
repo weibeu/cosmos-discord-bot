@@ -29,9 +29,8 @@ class CosmosGuildPrime(CosmosGuildBase, ABC):
 
     def __init__(self, **kwargs):
         self.prime_owner = None
-        self.plugin.bot.loop.create_task(self.__fetch_prime_owner())
 
-    async def __fetch_prime_owner(self):
+    async def fetch_prime_owner(self):
         if document := await self.plugin.bot.get_galaxy("PROFILE").collection.find_one(
                 {"prime.guild": self.id}, projection={"user_id": True}
         ):
