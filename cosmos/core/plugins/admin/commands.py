@@ -43,7 +43,7 @@ class AdminCommands(Admin):
             guild_id = server.id
             extra = f"and {server.guild.name}"
         await user.make_prime(tier=tier, guild_id=guild_id)
-        await ctx.send_line(f"🎉    {target.name} {extra} has been given prime.")
+        await ctx.send_line(f"🎉    {user.user.name} {extra} has been given prime.")
 
     @give_prime.error
     async def give_prime_error(self, ctx, error):
