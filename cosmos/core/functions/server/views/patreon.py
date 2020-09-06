@@ -76,5 +76,6 @@ class PatreonHook(base.BaseView):
         self.bot.log.info(f"Received [{self.NAME}] payload: {json}.")
         trigger = self.request.headers["X-Patreon-Event"].replace(":", "_")
         event = self.DISPATCH_EVENT.format(trigger=trigger)
+        self.bot.log.info(f"Dispatching Event [on_{event}].")
         self.bot.dispatch(event, PatreonUser(self, json))
         return web.Response()
