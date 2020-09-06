@@ -31,6 +31,28 @@ class Profile(Cog):
         if self.plugin.data.profile.__dict__.get("cache_all"):
             self.bot.loop.create_task(self.cache.prepare())
 
+    @Cog.listener()
+    async def on_patreon_members_pledge_create(self, user):
+        profile = await user.fetch_cosmos_user_profile()
+        await profile.make_prime(tier=user.tier)
+        if not user.is_former:
+            try:
+                fermions = self.plugin.data.fermions.prime_benifits[user.tier.name]
+            except KeyError:
+                pass
+            else:
+                await profile.give_fermions(fermions)
+
+    @Cog.listener()
+    async def on_patreon_members_pledge_delete(self, user):
+        profile = await user.fetch_cosmos_user_profile()
+        await profile.remove_prime()
+
+    @Cog.listener()
+    async def on_patreon_members_pledge_update(self, user):
+        profile = await user.fetch_cosmos_user_profile()
+        await profile.make_prime(tier=user.tier)
+
     @Cog.group(invoke_without_command=True)
     async def profile(self, ctx, *, user: discord.Member = None):
         """Displays your Cosmos Profile or of specified member."""
