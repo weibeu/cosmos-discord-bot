@@ -57,19 +57,24 @@ class DictCache(dict, Cache, ABC):
         super().__init__()
 
 
-class TTLCache(cachetools.TTLCache, Cache, ABC):
+class CachetoolsCache(ABC, cachetools.Cache, Cache):
+
+    pass
+
+
+class TTLCache(ABC, CachetoolsCache, cachetools.TTLCache):
 
     def __init__(self, max_size: int = 50000, ttl: int = 60, **kwargs):
         super().__init__(max_size, ttl, **kwargs)
 
 
-class LRUCache(cachetools.LRUCache, Cache, ABC):
+class LRUCache(ABC, CachetoolsCache, cachetools.LRUCache):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
-class LFUCache(cachetools.LFUCache, Cache, ABC):
+class LFUCache(ABC, CachetoolsCache, cachetools.LFUCache):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
