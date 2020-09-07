@@ -86,6 +86,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [leaderboards](https://cosmos.thecosmos.space/profile/leaderboards.md#leaderboards) | Displays top members with maximum chat experience points. | `;leaderboards` |
 | [level](https://cosmos.thecosmos.space/levels#level) | Displays current level and experience points. | `;level [member]` |
 | [logger](https://cosmos.thecosmos.space/moderation/logger#logger) | Displays list of loggers enabled in different channels. | `;logger` |
+| [makeprime](https://cosmos.thecosmos.space/settings/administrator-settings#makeprime) | Command to grant prime membership to any of the servers you're administrator of. | `;makeprime [server]` |
 | [moderators](https://cosmos.thecosmos.space/settings/administrator-settings#moderators) | Displays list of roles and members who has been assigned as special moderators. | `;moderators` |
 | [modlogs](https://cosmos.thecosmos.space/moderation/moderation#modlogs) | Displays all of the moderation logs of specified member. | `;modlogs <member>` |
 | [mute](https://cosmos.thecosmos.space/moderation/moderation#mute) | Mutes specified member from voice and also adds the muted role. | `;mute <member> [reason]` |

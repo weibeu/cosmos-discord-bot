@@ -79,3 +79,17 @@ Usage:
 ;preset remove <command_name>
 ```
 
+### ;makeprime
+
+Command to grant prime membership to any of the servers you're administrator of.
+
+You must already have a valid prime subscription before using this command. This same prime tier will get linked to specified server. Assumes current server if no server is explicitly specified.
+
+```yaml
+Aliases:
+- claimprime
+- redeemprime
+
+Usage:
+;makeprime [server]
+```

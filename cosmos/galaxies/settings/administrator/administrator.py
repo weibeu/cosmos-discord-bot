@@ -22,6 +22,7 @@ import discord
 from ... import Cog
 
 from discord.ext import commands
+from cosmos.core.utilities import converters
 
 
 class AdministratorSettings(Cog):
@@ -116,3 +117,18 @@ class AdministratorSettings(Cog):
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.remove_preset(command_name)
         await ctx.send_line(f"✅    Presets has been removed from {command_name} command.")
+
+    @Cog.checks.prime_user()
+    @Cog.command(name="makeprime", aliases=["claimprime", "redeemprime"])
+    async def make_prime(self, ctx, server: converters.CosmosGuildConverter = None):
+        """Command to grant prime membership to any of the servers you're administrator of.
+        You must already have a valid prime subscription before using this command. This same prime tier
+        will get linked to specified server. Assumes current server if no server is explicitly specified.
+
+        """
+        user = await ctx.fetch_cosmos_user_profile()
+        server = server or await ctx.fetch_guild_profile()
+        if not await ctx.confirm(f"Are you sure to link your prime with {server.guild.name}?"):
+            return
+        await user.make_prime(tier=user.tier, guild_id=server.id)
+        await ctx.send_line(f"🎉    {server.guild.name} has been given prime.")
