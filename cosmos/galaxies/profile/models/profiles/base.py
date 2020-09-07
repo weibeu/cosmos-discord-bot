@@ -25,6 +25,10 @@ import datetime
 class ProfileModelsBase(ABC):
 
     @property
+    def _cache_permanent_persist_(self):
+        return self.is_prime
+
+    @property
     def name(self):
         return self.user.name
 

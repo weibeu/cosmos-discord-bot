@@ -59,7 +59,13 @@ class DictCache(dict, Cache, ABC):
 
 class CachetoolsCache(ABC, cachetools.Cache, Cache):
 
-    pass
+    PERMANENT_ATTRIBUTE = "_cache_permanent_persist_"
+
+    def _is_permanent(self, value):
+        return bool(getattr(value, self.PERMANENT_ATTRIBUTE, False))
+
+    def getsizeof(self, value):
+        return 0 if self._is_permanent(value) else 1
 
 
 class TTLCache(ABC, CachetoolsCache, cachetools.TTLCache):
