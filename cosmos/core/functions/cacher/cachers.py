@@ -24,40 +24,30 @@ import itertools
 import cachetools
 
 
-class Cache(object):
-
-    __metaclass__ = ABC
+class _CacheBase(ABC):
 
     @abstractmethod
-    def update(self, *args, **kwargs):
+    def __setitem__(self, key, value):
         raise NotImplementedError
 
     @abstractmethod
-    def pop(self, *args, **kwargs):
+    def __getitem__(self, item):
         raise NotImplementedError
 
     @abstractmethod
-    def keys(self, *args, **kwargs):
+    def __delitem__(self, key):
         raise NotImplementedError
 
     @abstractmethod
-    def get(self, key: str or int):
+    def __iter__(self):
         raise NotImplementedError
 
-    def set(self, key: str or int, data):
-        self.update({key: data})
-
-    def remove(self, key: str or int):
-        if key in self.keys():
-            self.pop(key)
+    @abstractmethod
+    def __len__(self):
+        raise NotImplementedError
 
 
-class DictCache(dict, Cache, ABC):
-
-    pass
-
-
-class CachetoolsCache(ABC, cachetools.Cache, Cache):
+class Cache(_CacheBase):
 
     PERMANENT_ATTRIBUTE = "_cache_permanent_persist_"
 
@@ -96,22 +86,50 @@ class CachetoolsCache(ABC, cachetools.Cache, Cache):
         return itertools.chain(iter(self.__permanent_elements), super().__iter__())
 
     def __len__(self):
-        return len(self.__data) + len(self.__permanent_elements)
+        return super().__len__() + len(self.__permanent_elements)
+
+    @abstractmethod
+    def update(self, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def pop(self, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def keys(self, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def get(self, key: str or int):
+        raise NotImplementedError
+
+    def set(self, key: str or int, data):
+        self.update({key: data})
+
+    def remove(self, key: str or int):
+        if key in self.keys():
+            self.pop(key)
 
 
-class TTLCache(cachetools.TTLCache, CachetoolsCache, ABC):
+class DictCache(dict, Cache, ABC):
+
+    pass
+
+
+class TTLCache(cachetools.TTLCache, Cache, ABC):
 
     def __init__(self, max_size: int = 50000, ttl: int = 60, **kwargs):
         super().__init__(max_size, ttl, **kwargs)
 
 
-class LRUCache(cachetools.LRUCache, CachetoolsCache, ABC):
+class LRUCache(cachetools.LRUCache, Cache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
-class LFUCache(cachetools.LFUCache, CachetoolsCache, ABC):
+class LFUCache(cachetools.LFUCache, Cache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
