@@ -16,10 +16,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import pickle
 from abc import ABC, abstractmethod
 
+import pickle
 import aioredis
+import itertools
 import cachetools
 
 
@@ -53,13 +54,15 @@ class Cache(object):
 
 class DictCache(dict, Cache, ABC):
 
-    def __init__(self):
-        super().__init__()
+    pass
 
 
 class CachetoolsCache(ABC, cachetools.Cache, Cache):
 
     PERMANENT_ATTRIBUTE = "_cache_permanent_persist_"
+
+    def __repr__(self):
+        return f"PERMANENT={repr(self.__permanent_elements)} | CACHE={super().__repr__()}"
 
     def _is_permanent(self, value):
         return bool(getattr(value, self.PERMANENT_ATTRIBUTE, False))
@@ -67,20 +70,48 @@ class CachetoolsCache(ABC, cachetools.Cache, Cache):
     def getsizeof(self, value):
         return 0 if self._is_permanent(value) else 1
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__permanent_elements = dict()
 
-class TTLCache(ABC, CachetoolsCache, cachetools.TTLCache):
+    def __setitem__(self, key, value):
+        if not self._is_permanent(value):
+            return super().__setitem__(key, value)
+        self.__permanent_elements[key] = value
+
+    def __getitem__(self, key):
+        if not self._is_permanent(self.__permanent_elements.get(key)):
+            return super().__getitem__(key)
+        return self.__permanent_elements[key]
+
+    def __delitem__(self, key):
+        if not self._is_permanent(self.__permanent_elements.get(key)):
+            return super().__delitem__(key)
+        del self.__permanent_elements[key]
+
+    def __contains__(self, key):
+        return super().__contains__(key) or key in self.__permanent_elements
+
+    def __iter__(self):
+        return itertools.chain(iter(self.__permanent_elements), super().__iter__())
+
+    def __len__(self):
+        return len(self.__data) + len(self.__permanent_elements)
+
+
+class TTLCache(ABC, cachetools.TTLCache, CachetoolsCache):
 
     def __init__(self, max_size: int = 50000, ttl: int = 60, **kwargs):
         super().__init__(max_size, ttl, **kwargs)
 
 
-class LRUCache(ABC, CachetoolsCache, cachetools.LRUCache):
+class LRUCache(ABC, cachetools.LRUCache, CachetoolsCache):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
-class LFUCache(ABC, CachetoolsCache, cachetools.LFUCache):
+class LFUCache(ABC, cachetools.LFUCache, CachetoolsCache):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
