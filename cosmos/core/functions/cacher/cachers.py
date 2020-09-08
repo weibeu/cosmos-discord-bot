@@ -99,19 +99,19 @@ class CachetoolsCache(ABC, cachetools.Cache, Cache):
         return len(self.__data) + len(self.__permanent_elements)
 
 
-class TTLCache(ABC, cachetools.TTLCache, CachetoolsCache):
+class TTLCache(cachetools.TTLCache, CachetoolsCache, ABC):
 
     def __init__(self, max_size: int = 50000, ttl: int = 60, **kwargs):
         super().__init__(max_size, ttl, **kwargs)
 
 
-class LRUCache(ABC, cachetools.LRUCache, CachetoolsCache):
+class LRUCache(cachetools.LRUCache, CachetoolsCache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
-class LFUCache(ABC, cachetools.LFUCache, CachetoolsCache):
+class LFUCache(cachetools.LFUCache, CachetoolsCache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
