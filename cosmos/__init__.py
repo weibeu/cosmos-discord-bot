@@ -22,7 +22,7 @@ from .core.functions import exceptions
 
 
 __release__ = "Babu"
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 
 def get_bot():
