@@ -39,7 +39,7 @@ class Cache(MutableMapping):
         self.__permanent_elements = dict()
 
     def __repr__(self):
-        return f"PERMANENT={repr(self.__permanent_elements)} | CACHE={super().__repr__()}"
+        return f"<PERMANENT={repr(self.__permanent_elements)} | CACHE={super().__repr__()}>"
 
     def __setitem__(self, key, value):
         if not self._is_permanent(value):
