@@ -74,8 +74,16 @@ class Cache(MutableMapping):
         except KeyError:
             return default
 
+    def pop(self, key, default=None):
+        try:
+            if not self._is_permanent(self.__permanent_elements.get(key)):
+                return super().pop(key)
+            return self.__permanent_elements.pop(key)
+        except KeyError:
+            return default
+
     def remove(self, key: str or int):
-        self.pop(key, None)
+        self.pop(key)
 
 
 class DictCache(Cache, ABC):
