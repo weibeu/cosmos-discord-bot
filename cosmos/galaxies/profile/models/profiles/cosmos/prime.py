@@ -33,19 +33,29 @@ class CosmosUserPrime(ProfileModelsBase, ABC):
         self.plugin.bot.loop.create_task(self.__fetch_prime_guild(kwargs.get("guild")))
 
     async def __fetch_prime_guild(self, guild_id):
-        self.prime_guild = await self.plugin.bot.guild_cache.get_profile(guild_id) if guild_id else None
+        if not guild_id:
+            return
+        self.prime_guild = await self.plugin.bot.guild_cache.get_profile(guild_id)
+
+    async def __update_prime_guild_state(self):
+        try:
+            await self.prime_guild.fetch_prime_owner()
+        except AttributeError:
+            pass
 
     def __garbage_collect(self):
         self.plugin.bot.profile_cache.lfu.remove(self.id)
 
     async def make_prime(self, tier=None, guild_id=None):
         tier = tier or self.plugin.bot.PrimeTier.QUARK
+        await self.__fetch_prime_guild(guild_id)
 
-        update = {"prime.guild": guild_id} if guild_id else dict()
+        update = {"prime.guild": self.prime_guild.id} if self.prime_guild else dict()
         update.update({"prime.tier": tier.value})
         await self.collection.update_one(self.document_filter, {"$set": update})
 
         self.__garbage_collect()
+        await self.__update_prime_guild_state()
 
     # Maybe or maybe not remove the user from permanent cache when their prime sub ends.
     # Problem is when their prime sub ends, they will still exist in permanent cache with __cache_permanent_persist_
@@ -61,3 +71,4 @@ class CosmosUserPrime(ProfileModelsBase, ABC):
         }})
 
         self.__garbage_collect()
+        await self.__update_prime_guild_state()
