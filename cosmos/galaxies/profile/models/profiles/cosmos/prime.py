@@ -35,21 +35,29 @@ class CosmosUserPrime(ProfileModelsBase, ABC):
     async def __fetch_prime_guild(self, guild_id):
         self.prime_guild = await self.plugin.bot.guild_cache.get_profile(guild_id) if guild_id else None
 
-    async def make_prime(self, tier=None, guild_id=None):
-        self.prime_tier = tier or self.plugin.bot.PrimeTier.QUARK
-        await self.__fetch_prime_guild(guild_id)
+    def __garbage_collect(self):
+        self.plugin.bot.profile_cache.lfu.remove(self.id)
 
-        update = {"prime.guild": self.prime_guild.id} if self.prime_guild else dict()
-        update.update({"prime.tier": self.prime_tier.value})
+    async def make_prime(self, tier=None, guild_id=None):
+        tier = tier or self.plugin.bot.PrimeTier.QUARK
+
+        update = {"prime.guild": guild_id} if guild_id else dict()
+        update.update({"prime.tier": tier.value})
         await self.collection.update_one(self.document_filter, {"$set": update})
 
-    # TODO: Maybe or maybe not remove the user from permanent cache when their prime sub ends.
+        self.__garbage_collect()
+
+    # Maybe or maybe not remove the user from permanent cache when their prime sub ends.
+    # Problem is when their prime sub ends, they will still exist in permanent cache with __cache_permanent_persist_
+    # flag set to False. Since its set to False, cache will try to return it from the actual cache. But certainly
+    # it won't exist there. Apparently this situation can happen vice-versa as well.
 
     async def remove_prime(self):
-        self.prime_tier = self.plugin.bot.PrimeTier.FORMER
-        self.prime_guild = None
+        tier = self.plugin.bot.PrimeTier.FORMER
 
         await self.collection.update_one(self.document_filter, {"$set": {
-            "prime.tier": self.prime_tier.value,
-            "prime.guild": self.prime_guild
+            "prime.tier": tier.value,
+            "prime.guild": None
         }})
+
+        self.__garbage_collect()
