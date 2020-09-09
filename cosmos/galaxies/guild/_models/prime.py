@@ -23,8 +23,6 @@ from .base import CosmosGuildBase
 
 class CosmosGuildPrime(CosmosGuildBase, ABC):
 
-    # TODO: Permanently persist prime owners in the cache.
-
     @property
     def is_prime(self):
         return self.prime_owner and self.prime_owner.is_prime
@@ -38,7 +36,9 @@ class CosmosGuildPrime(CosmosGuildBase, ABC):
                 {"prime.guild": self.id}, projection={"user_id": True}
         ):
             self.prime_owner = await self.plugin.bot.profile_cache.get_profile(document.get("user_id"))
-            self.__is_prime_owner_fetched = True
+        else:
+            self.prime_owner = None
+        self.__is_prime_owner_fetched = True
 
     async def fetch_prime_owner(self):
         if self.__is_prime_owner_fetched:
