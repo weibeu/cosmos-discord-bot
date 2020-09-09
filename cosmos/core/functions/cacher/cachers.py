@@ -61,7 +61,6 @@ class Cache(_CacheBase):
         return 0 if self._is_permanent(value) else 1
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.__permanent_elements = dict()
 
     def __setitem__(self, key, value):
@@ -117,19 +116,19 @@ class DictCache(dict, Cache, ABC):
     pass
 
 
-class TTLCache(cachetools.TTLCache, Cache, ABC):
+class TTLCache(Cache, cachetools.TTLCache, ABC):
 
     def __init__(self, max_size: int = 50000, ttl: int = 60, **kwargs):
         super().__init__(max_size, ttl, **kwargs)
 
 
-class LRUCache(cachetools.LRUCache, Cache, ABC):
+class LRUCache(Cache, cachetools.LRUCache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
 
 
-class LFUCache(cachetools.LFUCache, Cache, ABC):
+class LFUCache(Cache, cachetools.LFUCache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
         super().__init__(max_size, **kwargs)
