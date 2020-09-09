@@ -16,43 +16,18 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from abc import ABC, abstractmethod
-
-import pickle
 import aioredis
+import pickle
 import itertools
 import cachetools
 
-
-class _CacheBase(ABC):
-
-    @abstractmethod
-    def __setitem__(self, key, value):
-        raise NotImplementedError
-
-    @abstractmethod
-    def __getitem__(self, item):
-        raise NotImplementedError
-
-    @abstractmethod
-    def __delitem__(self, key):
-        raise NotImplementedError
-
-    @abstractmethod
-    def __iter__(self):
-        raise NotImplementedError
-
-    @abstractmethod
-    def __len__(self):
-        raise NotImplementedError
+from abc import ABC
+from collections.abc import MutableMapping
 
 
-class Cache(_CacheBase):
+class Cache(MutableMapping):
 
     PERMANENT_ATTRIBUTE = "_cache_permanent_persist_"
-
-    def __repr__(self):
-        return f"PERMANENT={repr(self.__permanent_elements)} | CACHE={super().__repr__()}"
 
     def _is_permanent(self, value):
         return bool(getattr(value, self.PERMANENT_ATTRIBUTE, False))
@@ -62,6 +37,9 @@ class Cache(_CacheBase):
 
     def __init__(self, *args, **kwargs):
         self.__permanent_elements = dict()
+
+    def __repr__(self):
+        return f"PERMANENT={repr(self.__permanent_elements)} | CACHE={super().__repr__()}"
 
     def __setitem__(self, key, value):
         if not self._is_permanent(value):
@@ -87,31 +65,21 @@ class Cache(_CacheBase):
     def __len__(self):
         return super().__len__() + len(self.__permanent_elements)
 
-    @abstractmethod
-    def update(self, *args, **kwargs):
-        raise NotImplementedError
-
-    @abstractmethod
-    def pop(self, *args, **kwargs):
-        raise NotImplementedError
-
-    @abstractmethod
-    def keys(self, *args, **kwargs):
-        raise NotImplementedError
-
-    @abstractmethod
-    def get(self, key: str or int):
-        raise NotImplementedError
-
     def set(self, key: str or int, data):
         self.update({key: data})
+
+    def get(self, key: str or int, default=None):
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            return default
 
     def remove(self, key: str or int):
         if key in self.keys():
             self.pop(key)
 
 
-class DictCache(dict, Cache, ABC):
+class DictCache(Cache, ABC):
 
     pass
 
@@ -119,19 +87,22 @@ class DictCache(dict, Cache, ABC):
 class TTLCache(Cache, cachetools.TTLCache, ABC):
 
     def __init__(self, max_size: int = 50000, ttl: int = 60, **kwargs):
-        super().__init__(max_size, ttl, **kwargs)
+        Cache.__init__(self, **kwargs)
+        cachetools.TTLCache.__init__(self, max_size, ttl, **kwargs)
 
 
 class LRUCache(Cache, cachetools.LRUCache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
-        super().__init__(max_size, **kwargs)
+        Cache.__init__(self, **kwargs)
+        cachetools.LRUCache.__init__(self, max_size, **kwargs)
 
 
 class LFUCache(Cache, cachetools.LFUCache, ABC):
 
     def __init__(self, max_size: int = 50000, **kwargs):
-        super().__init__(max_size, **kwargs)
+        Cache.__init__(self, **kwargs)
+        cachetools.LFUCache.__init__(self, max_size, **kwargs)
 
 
 class AsyncDictCache(DictCache, ABC):
@@ -139,13 +110,13 @@ class AsyncDictCache(DictCache, ABC):
     def __init__(self):
         super().__init__()
 
-    async def get(self, key: str):
+    async def get(self, key: str, default=None):
         # byte = super().get(key)
         # if byte:
         #    data = pickle.loads(byte)
         # else:
         #    data = None
-        return super().get(key, dict())
+        return super().get(key, default=default)
 
     async def set(self, key: str, data):
         # byte = pickle.dumps(data)
