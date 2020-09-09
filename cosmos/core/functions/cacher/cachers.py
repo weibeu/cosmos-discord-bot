@@ -86,7 +86,7 @@ class Cache(MutableMapping):
         self.pop(key)
 
 
-class DictCache(Cache, dict, ABC):
+class DictCache(dict, Cache):
 
     pass
 
