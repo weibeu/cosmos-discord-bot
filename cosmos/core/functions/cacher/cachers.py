@@ -75,8 +75,7 @@ class Cache(MutableMapping):
             return default
 
     def remove(self, key: str or int):
-        if key in self.keys():
-            self.pop(key)
+        self.pop(key, None)
 
 
 class DictCache(Cache, ABC):
