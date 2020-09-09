@@ -130,5 +130,5 @@ class AdministratorSettings(Cog):
         server = server or await ctx.fetch_guild_profile()
         if not await ctx.confirm(f"Are you sure to link your prime with {server.guild.name}?"):
             return
-        await user.make_prime(tier=user.tier, guild_id=server.id)
+        await user.make_prime(tier=user.prime_tier, guild_id=server.id)
         await ctx.send_line(f"🎉    {server.guild.name} has been given prime.")
