@@ -43,6 +43,8 @@ class CosmosUserPrime(ProfileModelsBase, ABC):
         update.update({"prime.tier": self.prime_tier.value})
         await self.collection.update_one(self.document_filter, {"$set": update})
 
+    # TODO: Maybe or maybe not remove the user from permanent cache when their prime sub ends.
+
     async def remove_prime(self):
         self.prime_tier = self.plugin.bot.PrimeTier.FORMER
         self.prime_guild = None
