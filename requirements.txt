@@ -10,4 +10,5 @@ image-processor-client
 motor
 pyyaml
 sentry-sdk
+python-dotenv
 python-dateutil

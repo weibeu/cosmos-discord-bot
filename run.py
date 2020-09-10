@@ -16,10 +16,12 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-
 from cosmos import get_bot
+from dotenv import load_dotenv
+
 
 if __name__ == "__main__":
+    load_dotenv(".env")
     bot = get_bot()
     try:
         bot.eh.sentry.init(**bot.configs.sentry.raw)  # Initialise sentry for deeper integration.
