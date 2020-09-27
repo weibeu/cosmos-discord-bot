@@ -15,6 +15,7 @@
   * [Points](guild/role-shop/points.md)
   * [Settings](guild/role-shop/settings.md)
 * [Reaction Roles](guild/reaction-roles.md)
+* [Giveaway](guild/giveaway.md)
 * [Reactor](guild/reactor.md)
 * [Starboard](guild/starboard.md)
 * [Secret Confessions](guild/secret-confessions.md)

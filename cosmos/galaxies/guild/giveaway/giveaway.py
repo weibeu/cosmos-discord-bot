@@ -25,7 +25,7 @@ from discord.ext.commands import MissingPermissions
 
 
 _MESSAGE_TRIGGER_REGEX = re.compile(
-    r"(?:.+(?:\s?))?(?:participate|hosting|sponsor(?:ing)?)\s?(?:in|for)?"
+    r"(?:.+(?:\s?))?(?:participate|host(?:ing)?|sponsor(?:ing)?)\s?(?:in|for|this)?\s?"
     r"(?:[*][*]\s?)(.+(?:\s?))(?:[*][*]\s?)giveaway(?:.+(?:\s?))?", re.IGNORECASE
 )
 
@@ -36,7 +36,14 @@ class _FakeContext(object):
 
 
 class Giveaway(GuildBaseCog):
-    """Create interactive giveaways in your server."""
+    """Create interactive giveaways in your server.
+
+    There are two ways you can host a giveaway in your server. You may either make use of the ;giveaway command
+    or include some special syntax in your own message to make bot trigger for the giveaway over this message.
+
+    SYNTAX: ... participate in **{reward}** giveaway ...
+
+    """
 
     def __init__(self, plugin):
         super().__init__(plugin)
