@@ -3,8 +3,7 @@ description: Create interactive giveaways in your server.
 ---
 
 # Giveaway
-
-Configure Starboard in server.
+Create interactive giveaways in your server.
 
 There are two ways you can host a giveaway in your server. You may either make use of the [`;giveaway`](#giveaway) command or include some special syntax in your own message to make bot trigger for the giveaway over this message.
 
