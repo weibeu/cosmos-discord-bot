@@ -1,0 +1,3 @@
+max_giveaways: 5        # Max number of active giveaways in the server at any given time.
+max_life: 28            # Max life of giveaways that can be created in normal servers. In days.
+default_life: 2days     # Default giveaway life when its not specified. In days.
