@@ -47,7 +47,7 @@ class Giveaway(GuildBaseCog):
 
     def __init__(self, plugin):
         super().__init__(plugin)
-        self.bot.scheduler.register_callback(self.__giveaway_prize)
+        self.bot.scheduler.register_callback(self.__giveaway_reward)
 
     async def cog_check(self, ctx):
         await super().cog_check(ctx)
@@ -55,7 +55,7 @@ class Giveaway(GuildBaseCog):
             raise MissingPermissions(["manage_guild"])
         return True
 
-    async def __giveaway_prize(self, _task, *, channel_id, reward, **kwargs):
+    async def __giveaway_reward(self, _task, *, channel_id, reward, **kwargs):
         embed = self.bot.theme.embeds.one_line.primary
         try:
             channel = self.bot.get_channel(channel_id) or await self.bot.fetch_channel(channel_id)
@@ -78,7 +78,7 @@ class Giveaway(GuildBaseCog):
         ))
 
     async def get_giveaways(self, guild_id):
-        return list(await self.bot.scheduler.fetch_tasks(self.__giveaway_prize, guild_id=guild_id))
+        return list(await self.bot.scheduler.fetch_tasks(self.__giveaway_reward, guild_id=guild_id))
 
     async def create_giveaway(self, reward, channel, message=None, winners=1, duration=None):
         if not duration:
@@ -92,12 +92,14 @@ class Giveaway(GuildBaseCog):
             message = await channel.send(embed=embed)
         await message.add_reaction(self.bot.emotes.misc.confetti)
         await self.bot.scheduler.schedule(
-            "__giveaway_prize", duration.datetime, winners=winners, reward=reward,
+            "__giveaway_reward", duration.datetime, winners=winners, reward=reward,
             channel_id=channel.id, message_id=message.id, guild_id=channel.guild.id
         )
 
     @GuildBaseCog.listener()
     async def on_message(self, message):
+        if message.author.bot:
+            return 
         try:
             reward = _MESSAGE_TRIGGER_REGEX.findall(message.content)[0]
         except IndexError:
