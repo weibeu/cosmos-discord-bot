@@ -34,6 +34,7 @@ class Presence(Admin):
         self.rotate = self.plugin.data.configs.rotate
         # Inject version and release.
         release_meta = f"{self.bot.release} - {self.bot.version}"
+        # guilds_meta = f"in {len(self.bot.guilds)} servers."
         self.plugin.data.messages.playing.append(release_meta)
         self.plugin.data.messages.streaming.append(release_meta)
         self.update_presence.start()
@@ -87,3 +88,4 @@ class Presence(Admin):
     @update_presence.before_loop
     async def before_update_presence(self):
         await self.bot.wait_until_ready()
+        # self.plugin.data.messages.streaming.append(guilds_meta)
