@@ -17,5 +17,3 @@ We are really thankful to all of our supporters and caretakers. Without them, Co
 ## Patreon Neutrinos
 
 ![](../.gitbook/assets/neutrino.png)
-
-* **William_CTO**

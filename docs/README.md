@@ -30,8 +30,6 @@ Go through the above link to invite Cosmos to your server which is hosted by us.
 
 [`https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8`](https://discordapp.com/oauth2/authorize?client_id=390176338729893889&scope=bot&permissions=8)
 
-Another option would be to self host Cosmos bot on your own server which lets you customize it whatever the way you want. For more help with self hosting, check full step by step guide for [self hosting](getting-started.md#self-hosting).
-
 ## The Community
 
 For any kind of help and support regarding Cosmos or anything else, you're welcome to [join our discord server](https://discord.gg/7CrQEyP).
