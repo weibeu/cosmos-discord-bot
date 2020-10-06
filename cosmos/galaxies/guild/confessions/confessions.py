@@ -57,6 +57,8 @@ class SecretConfessions(Cog):
         '😹', '😻', '😼', '😽', '🙀', '😿', '😾'
     ]
 
+    # TODO: Hash the USER ID. And optionally support replies to confessions.
+
     @Cog.cooldown(1, 420, Cog.bucket_type.user)
     @Cog.group(name="confessions", aliases=["confession", "confess"], invoke_without_command=True)
     @commands.dm_only()
