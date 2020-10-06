@@ -16,5 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from .base import BaseAPIHTTPClient, APIHTTPExceptionBase
 from .hastebin import HasteBin
 from .imgur import ImgurClient, ImgurHTTPException

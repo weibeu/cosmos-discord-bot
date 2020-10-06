@@ -16,13 +16,14 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from . import BaseAPIHTTPClient, APIHTTPExceptionBase
+
 import datetime as dt
-import aiohttp
 
 
-class ImgurHTTPException(Exception):
+class ImgurHTTPException(APIHTTPExceptionBase):
 
-    ...
+    pass
 
 
 class ImgurImage(object):
@@ -46,15 +47,12 @@ class ImgurImage(object):
             self.__setattr__(name, value)
 
 
-class ImgurHTTPClient(object):
+class ImgurHTTPClient(BaseAPIHTTPClient):
 
     API_BASE_URL = "https://api.imgur.com/3"
+    BASE_EXCEPTION = ImgurHTTPException
 
-    def __init__(self, client):
-        self.client = client
-        self.session = aiohttp.ClientSession()
-
-    def __get_headers(self):
+    def _get_headers(self):
         return {
             "Authorization": f"Client-ID {self.client.id}",
         }
@@ -64,13 +62,9 @@ class ImgurHTTPClient(object):
         return {key: value for key, value in body.items() if value}
 
     async def request(self, route, method="POST", data=None, **kwargs):
-        url = f"{self.API_BASE_URL}{route}"
         data = self.__fix_body(data or dict())
-        async with self.session.request(
-                method, url, data=data, headers=self.__get_headers(), **kwargs) as response:
-            if response.status != 200:
-                raise ImgurHTTPException
-            return await response.json()
+        response = await super().request(route, method, data=data)
+        return await response.json()
 
     async def upload(self, title=None, image=None, video=None):
         body = dict(title=title, image=image, video=video)
