@@ -178,3 +178,13 @@ class ServerConfigs(Config):
 
     NAME = "server"
     PATH = "cfg/core/server.yaml"
+
+
+class TMDBConfigs(Config):
+
+    NAME = "tmdb"
+    PATH = "cfg/api/tmdb.yaml"
+
+    def __init__(self):
+        super().__init__()
+        self.access_token = os.getenv("TMDB_ACCESS_TOKEN") or self.access_token

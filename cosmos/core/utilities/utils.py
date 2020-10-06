@@ -102,3 +102,9 @@ class Utils(HasteBin):
     @staticmethod
     def get_discord_file(bytes_, filename=None, **kwargs):
         return discord.File(io.BytesIO(bytes_), filename=filename, **kwargs)
+
+    @staticmethod
+    def localize_number(number):
+        import locale
+        locale.setlocale(locale.LC_ALL, 'en-US')
+        return locale.format_string("%d", number, grouping=True)
