@@ -63,8 +63,7 @@ class ImgurHTTPClient(BaseAPIHTTPClient):
 
     async def request(self, route, method="POST", data=None, **kwargs):
         data = self.__fix_body(data or dict())
-        response = await super().request(route, method, data=data)
-        return await response.json()
+        return await super().request(route, method, data=data)
 
     async def upload(self, title=None, image=None, video=None):
         body = dict(title=title, image=image, video=video)

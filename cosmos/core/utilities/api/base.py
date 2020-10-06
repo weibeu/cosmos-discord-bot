@@ -42,6 +42,7 @@ class BaseAPIHTTPClient(object, metaclass=_APIMeta):
     def __new__(cls, *args, **kwargs):
         if not cls.API_BASE_URL:
             raise ValueError(f"No API_BASE_URL specified in class {cls}.")
+        return super().__new__(cls)
 
     @abc.abstractmethod
     def _get_headers(self):
@@ -56,4 +57,7 @@ class BaseAPIHTTPClient(object, metaclass=_APIMeta):
                 raise self.BASE_EXCEPTION(
                     f"[{self.__class__.__name__}] API server response with status code: {response.status}."
                 )
-            return response
+            try:
+                return await response.json()
+            except aiohttp.ContentTypeError:
+                return await response.read()
