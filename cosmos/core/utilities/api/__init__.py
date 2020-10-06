@@ -18,4 +18,5 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from .base import BaseAPIHTTPClient, APIHTTPExceptionBase
 from .hastebin import HasteBin
+from .tmdb import TMDBClient, TMDBAPIException
 from .imgur import ImgurClient, ImgurHTTPException

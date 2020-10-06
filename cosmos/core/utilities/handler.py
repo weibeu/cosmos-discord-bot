@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from . import handlers
 
 from .utils import Utils
+from .api import TMDBClient
 from .api import ImgurClient
 
 
@@ -27,4 +28,5 @@ class Utility(Utils):
     def __init__(self, bot):
         self.bot = bot
         self.file_handler = handlers.FileHandler()
+        self.tmdb = TMDBClient(self.bot.configs.tmdb.access_token)
         self.imgur = ImgurClient(self.bot.configs.imgur.client_id)

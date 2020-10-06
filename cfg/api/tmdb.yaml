@@ -1,0 +1,4 @@
+# ! TMDB API configs.
+
+access_token: ""    # ENV: TMDB_ACCESS_TOKEN
+brand_icon_url: "https://i.imgur.com/g4OWt37.png"
