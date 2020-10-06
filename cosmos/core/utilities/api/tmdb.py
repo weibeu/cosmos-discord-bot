@@ -26,6 +26,35 @@ class TMDBAPIException(Exception):
     pass
 
 
+class Cast(object):
+
+    def __init__(self, *, character, name, **_kwargs):
+        self.name = name
+        self.character = character
+
+
+class Crew(object):
+
+    def __init__(self, *, department, job, name, **_kwargs):
+        self.name = name
+        self.job = job
+        self.department = department
+
+
+class Credits(object):
+
+    def __init__(self, *, cast, crew, **_kwargs):
+        self.cast = [Cast(**_) for _ in cast]
+        self.crew = [Crew(**_) for _ in crew]
+        self.director = self.__get_director()
+
+    def __get_director(self):
+        try:
+            return [crew for crew in self.crew if crew.job.upper() == "DIRECTOR"][0]
+        except IndexError:
+            return
+
+
 class PartialMovie(object):
 
     DEFAULT_SIZE = "original"
@@ -47,6 +76,7 @@ class PartialMovie(object):
         self.nsfw = adult
         self.overview = overview
         self.poster = self._get_image_url(poster_path)
+        self.credits = kwargs.get("credits")
 
 
 class Movie(PartialMovie):
@@ -85,6 +115,9 @@ class TMDBHTTPClient(BaseAPIHTTPClient):
         data = await self.request("/search/movie", method="GET", params=params)
         return data.get("results") or []
 
+    async def fetch_movie_credits(self, movie_id):
+        return await self.request(f"/movie/{movie_id}/credits", method="GET")
+
 
 class TMDBClient(object):
 
@@ -92,17 +125,18 @@ class TMDBClient(object):
         self.access_token = access_token
         self.http = TMDBHTTPClient(self)
 
-    async def fetch_movie(self, movie_id) -> Movie:
+    async def fetch_movie(self, movie_id, fetch_credits=False) -> Movie:
         data = await self.http.fetch_movie_data(movie_id)
-        return Movie(**data)
+        credits_ = await self.http.fetch_movie_credits(movie_id) if fetch_credits else None
+        return Movie(**data, credits=Credits(**credits_))
 
     async def search_movie(self, query) -> list:
         results = await self.http.search_movie(query)
         return [PartialMovie(**_) for _ in results]
 
-    async def fetch_movie_from_search(self, query) -> Movie:
+    async def fetch_movie_from_search(self, query, fetch_credits=True) -> Movie:
         results = await self.search_movie(query)
         try:
-            return await self.fetch_movie(results[0].id)
+            return await self.fetch_movie(results[0].id, fetch_credits)
         except IndexError:
             pass

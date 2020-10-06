@@ -38,6 +38,7 @@ class MoviesSearch(Cog):
             text=f"{movie.votes} Votes | {movie.status}",
             icon_url=self.bot.configs.tmdb.brand_icon_url
         )
+        embed.add_field(name=f"{self.bot.emotes.misc.director}    Director", value=movie.credits.director.name)
         embed.add_field(name=f"{self.bot.emotes.misc.two_hearts}    Genres", value=", ".join(movie.genres))
         if movie.revenue:
             embed.add_field(
