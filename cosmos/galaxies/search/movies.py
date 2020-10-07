@@ -29,6 +29,7 @@ class MoviesSearch(Cog):
         self.plugin = plugin
 
     async def __display_movie(self, movie, channel):
+        emotes = self.bot.emotes.misc
         embed = self.bot.theme.embeds.primary()
         embed.set_thumbnail(url=movie.poster or EmptyEmbed)
         embed.description = movie.overview
@@ -41,20 +42,29 @@ class MoviesSearch(Cog):
             icon_url=self.bot.configs.tmdb.brand_icon_url
         )
         if movie.credits.director:
-            embed.add_field(name=f"{self.bot.emotes.misc.director}    Director", value=movie.credits.director.name)
+            embed.add_field(name=f"{emotes.director}    Director", value=movie.credits.director.name)
+        if movie.credits.writer:
+            embed.add_field(name=f"{emotes.draw}    Writer", value=movie.credits.writer.name)
+        if movie.credits.screenplay:
+            embed.add_field(name=f"{emotes.film_reel}    Screenplay", value=movie.credits.screenplay.name)
         if movie.genres:
-            embed.add_field(name=f"{self.bot.emotes.misc.two_hearts}    Genres", value=", ".join(movie.genres))
-        if movie.revenue:
-            embed.add_field(
-                name=f"{self.bot.emotes.misc.cash}    Total Revenue",
-                value=f"${self.bot.utilities.localize_number(movie.revenue)}"
-            )
+            embed.add_field(name=f"{emotes.two_hearts}    Genres", value=", ".join(movie.genres))
+        # if movie.revenue:
+        #     embed.add_field(
+        #         name=f"{emotes.cash}    Total Revenue",
+        #         value=f"${self.bot.utilities.localize_number(movie.revenue)}"
+        #     )
         if movie.release_date:
             embed.timestamp = movie.release_date
-        if movie.productions:
+        # if movie.productions:
+        #     embed.add_field(
+        #         name=f"{emotes.documentary}    Productions",
+        #         value=" • ".join(movie.productions), inline=False
+        #     )
+        if movie.credits.cast:
             embed.add_field(
-                name=f"{self.bot.emotes.misc.documentary}    Productions",
-                value=" • ".join(movie.productions), inline=False
+                name=f"{emotes.hero}    Top Billed Cast", inline=False,
+                value=", ".join(c.name for c in movie.credits.cast[:7])
             )
         return await channel.send(embed=embed)
 

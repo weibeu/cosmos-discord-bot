@@ -28,8 +28,9 @@ class TMDBAPIException(Exception):
 
 class Cast(object):
 
-    def __init__(self, *, character, name, **_kwargs):
+    def __init__(self, *, character, name, order, **_kwargs):
         self.name = name
+        self.order = order
         self.character = character
 
 
@@ -44,13 +45,15 @@ class Crew(object):
 class Credits(object):
 
     def __init__(self, *, cast, crew, **_kwargs):
-        self.cast = [Cast(**_) for _ in cast]
+        self.cast = sorted([Cast(**_) for _ in cast], key=lambda c: c.order)
         self.crew = [Crew(**_) for _ in crew]
-        self.director = self.__get_director()
+        self.director = self.__get_crew_with_job("DIRECTOR")
+        self.writer = self.__get_crew_with_job("WRITER")
+        self.screenplay = self.__get_crew_with_job("SCREENPLAY")
 
-    def __get_director(self):
+    def __get_crew_with_job(self, job):
         try:
-            return [crew for crew in self.crew if crew.job.upper() == "DIRECTOR"][0]
+            return [crew for crew in self.crew if crew.job.upper() == job.upper()][0]
         except IndexError:
             return
 
@@ -83,7 +86,8 @@ class Movie(PartialMovie):
 
     def __init__(
             self, *, genres, homepage, budget, imdb_id, release_date,
-            revenue, vote_count, production_companies, status, **kwargs
+            revenue, vote_count, production_companies, status,
+            spoken_languages, production_countries, **kwargs
     ):
         super().__init__(**kwargs)
         self.homepage = homepage
@@ -93,8 +97,10 @@ class Movie(PartialMovie):
         self.revenue = revenue
         self.votes = vote_count
         self.status = status
-        self.productions = [p["name"] for p in production_companies]
         self.release_date = self._get_datetime(release_date)
+        self.productions = [p["name"] for p in production_companies]
+        self.languages = [l["name"] for l in spoken_languages]
+        self.countries = [c["name"] for c in production_countries]
 
 
 class TMDBHTTPClient(BaseAPIHTTPClient):
