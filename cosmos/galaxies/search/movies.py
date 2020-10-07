@@ -63,7 +63,7 @@ class MoviesSearch(Cog):
         #     )
         if movie.credits.cast:
             embed.add_field(
-                name=f"{emotes.hero}    Top Billed Cast", inline=False,
+                name=f"{emotes.hero}    Top Billed Cast", inline=len(embed.fields) % 2 == 0,
                 value=", ".join(c.name for c in movie.credits.cast[:7])
             )
         return await channel.send(embed=embed)
