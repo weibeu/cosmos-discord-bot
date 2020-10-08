@@ -46,6 +46,7 @@
 
 * [Tags](tools/tags.md)
 * [Reminder](tools/reminder.md)
+* [Urban Dictionary](tools/urban-dictionary.md)
 * [Imgur](tools/imgur.md)
 * [Haste Bin](tools/haste-bin.md)
 * [Utilities](tools/utilities.md)

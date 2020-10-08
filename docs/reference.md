@@ -44,6 +44,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [Starboard](guild/starboard.md)
 * [Tags](tools/tags.md)
 * [TVShowsSearch](search/tvshows.md)
+* [UrbanDictionary](tools/urban-dictionary.md)
 * [UserVerification](moderation/user-verification.md)
 * [Utilities](tools/utilities.md)
 * [Welcome](guild/welcome/)
@@ -119,6 +120,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [theme](https://cosmos.thecosmos.space/guild-settings/theme#theme) | Configure theme settings. | `;theme <sub-command> ...` |
 | [triggers](https://cosmos.thecosmos.space/moderation/auto-moderation#triggers) | Displays all of the active triggers along with their actions. | `;triggers` |
 | [unban](https://cosmos.thecosmos.space/moderation/moderation#unban) | Un bans user from their discord ID. | `;unban <user_id> [reason]` |
+| [urban](https://cosmos.thecosmos.space/tools/urban-dictionary#urban) | Displays meaning and example usage of the specified word. | `;urban <word>` |
 | [unmute](https://cosmos.thecosmos.space/moderation/moderation#unmute) | Un mutes specified member from voice and removes the muted role. | `;unmute <member>` |
 | [verification](https://cosmos.thecosmos.space/moderation/user-verification.md#verification) | Primary command to setup several verification methods. | `;verification` |
 | [warn](https://cosmos.thecosmos.space/moderation/moderation#warn) | Issues a warning to specified member. | `;warn <member> <reason>` |
