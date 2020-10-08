@@ -22,7 +22,7 @@ from . import TMDBBaseCog
 class MoviesSearch(TMDBBaseCog):
     """Plugin for many commands related to movies."""
 
-    # @TMDBBaseCog.cooldown(1, 5, type=Cog.bucket_type.user)
+    @TMDBBaseCog.cooldown(1, 5, type=TMDBBaseCog.bucket_type.user)
     @TMDBBaseCog.group(name="movie", aliases=["movies"], invoke_without_command=True)
     async def movie(self, ctx, *, name):
         """Displays the details of the first movie found in search results."""

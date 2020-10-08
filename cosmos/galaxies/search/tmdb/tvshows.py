@@ -22,7 +22,7 @@ from . import TMDBBaseCog
 class TVShowsSearch(TMDBBaseCog):
     """Plugin for many commands related to TV Shows."""
 
-    # @TMDBBaseCog.cooldown(1, 5, type=Cog.bucket_type.user)
+    @TMDBBaseCog.cooldown(1, 5, type=TMDBBaseCog.bucket_type.user)
     @TMDBBaseCog.group(name="show", aliases=["shows", "tvshow", "tvshows"], invoke_without_command=True)
     async def tvshow(self, ctx, *, name):
         """Displays the details of the first TV Show found in the search results."""
