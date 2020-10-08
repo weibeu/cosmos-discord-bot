@@ -92,7 +92,7 @@ class BaseMenu(BasePaginator):
                 except discord.Forbidden:
                     pass
                 finally:
-                    raise asyncio.TimeoutError
+                    pass
 
             response = discord.utils.get(self.entries, emote=r.emoji, page=self.current_page)
 
