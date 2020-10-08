@@ -160,11 +160,13 @@ class TMDBHTTPClient(BaseAPIHTTPClient):
             "Authorization": f"Bearer {self.client.access_token}"
         }
 
-    async def fetch_movie_data(self, id_):
-        return await self.request(f"/movie/{id_}", method="GET")
+    async def fetch_movie_data(self, id_, extras=("credits", )):
+        params = dict(append_to_response=",".join(extras))
+        return await self.request(f"/movie/{id_}", method="GET", params=params)
 
-    async def fetch_tvshow_data(self, id_):
-        return await self.request(f"/tv/{id_}", method="GET")
+    async def fetch_tvshow_data(self, id_, extras=("credits", )):
+        params = dict(append_to_response=",".join(extras))
+        return await self.request(f"/tv/{id_}", method="GET", params=params)
 
     async def search_movie(self, query):
         params = dict(query=query, include_adult="true")
@@ -194,26 +196,24 @@ class TMDBClient(object):
         self.access_token = access_token
         self.http = TMDBHTTPClient(self)
 
-    async def fetch_movie(self, movie_id, fetch_credits=False) -> Movie:
+    async def fetch_movie(self, movie_id) -> Movie:
         data = await self.http.fetch_movie_data(movie_id)
-        credits_ = await self.http.fetch_movie_credits(movie_id) if fetch_credits else None
-        return Movie(**data, credits=Credits(**credits_))
+        return Movie(**data, credits=Credits(**data.pop("credits")))
 
     async def search_movie(self, query) -> list:
         results = await self.http.search_movie(query)
         return [PartialMovie(**_) for _ in results]
 
-    async def fetch_movie_from_search(self, query, fetch_credits=True) -> Movie:
+    async def fetch_movie_from_search(self, query) -> Movie:
         results = await self.search_movie(query)
         try:
-            return await self.fetch_movie(results[0].id, fetch_credits)
+            return await self.fetch_movie(results[0].id)
         except IndexError:
             pass
 
     async def fetch_tvshow(self, tvshow_id) -> TVShow:
         data = await self.http.fetch_tvshow_data(tvshow_id)
-        credits_ = await self.http.fetch_tvshow_credits(tvshow_id)
-        return TVShow(**data, credits=Credits(**credits_))
+        return TVShow(**data, credits=Credits(**data.pop("credits")))
 
     async def search_tvshow(self, query) -> list:
         results = await self.http.search_tvshow(query)
