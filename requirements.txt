@@ -9,6 +9,7 @@ DiscordDB
 image-processor-client
 motor
 pyyaml
+asyncurban
 sentry-sdk
 python-dotenv
 python-dateutil

@@ -21,6 +21,7 @@ from .imgur import Imgur
 from .reminder import Reminder
 from .hastebin import HasteBin
 from .utilitiies import Utilities
+from .urban import UrbanDictionary
 
 
 __all__ = [
@@ -29,6 +30,7 @@ __all__ = [
     Reminder,
     HasteBin,
     Utilities,
+    UrbanDictionary,
 ]
 
 
