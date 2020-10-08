@@ -36,7 +36,7 @@ class UrbanDictionary(Cog):
         try:
             word = sorted(await self.urban.search(
                 word
-            ), key=lambda w: w.votes["up"] / w.votes["down"], reverse=True)[0]
+            ), key=lambda w: w.votes["up"] / w.votes["down"] or w.votes["up"] or 1, reverse=True)[0]
         except IndexError:
             return await ctx.send_line(f"❌    No definitions found of the specified word.")
         embed = self.bot.theme.embeds.primary()
