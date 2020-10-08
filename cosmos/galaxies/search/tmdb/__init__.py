@@ -16,15 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .tmdb import MoviesSearch
-from .tmdb import TVShowsSearch
-
-
-__all__ = [
-    MoviesSearch,
-    TVShowsSearch,
-]
-
-
-def setup(bot):
-    bot.plugins.setup(__file__)
+from .base import TMDBBaseCog
+from .movies import MoviesSearch
+from .tvshows import TVShowsSearch
