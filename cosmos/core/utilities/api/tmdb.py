@@ -21,6 +21,13 @@ from . import BaseAPIHTTPClient
 import datetime
 
 
+def _get_datetime(string):
+    try:
+        return datetime.datetime.strptime(string, "%Y-%m-%d")
+    except (ValueError, TypeError):
+        return
+
+
 class TMDBAPIException(Exception):
 
     pass
@@ -66,13 +73,6 @@ class PartialMovie(object):
     def _get_image_url(self, path, size=DEFAULT_SIZE):
         return self.IMAGE_BASE_URL.format(size=size, file_path=path)
 
-    @staticmethod
-    def _get_datetime(string):
-        try:
-            return datetime.datetime.strptime(string, "%Y-%m-%d")
-        except (ValueError, TypeError):
-            return
-
     def __init__(self, *, poster_path, adult, overview, original_title, **kwargs):
         self.id = kwargs["id"]
         self.title = original_title
@@ -97,10 +97,57 @@ class Movie(PartialMovie):
         self.revenue = revenue
         self.votes = vote_count
         self.status = status
-        self.release_date = self._get_datetime(release_date)
+        self.release_date = _get_datetime(release_date)
         self.productions = [p["name"] for p in production_companies]
-        self.languages = [l["name"] for l in spoken_languages]
+        self.languages = [lang["name"] for lang in spoken_languages]
         self.countries = [c["name"] for c in production_countries]
+
+
+class PartialTVShow(PartialMovie):
+
+    def __init__(self, *, first_air_date, **kwargs):
+        super().__init__(adult=None, original_title=kwargs.get("title"), **kwargs)
+        self.first_air_date = _get_datetime(first_air_date)
+
+
+class TVShowEpisode(object):
+
+    def __init__(self, *, air_date, episode_number, name, overview, season_number, **_kwargs):
+        self.air_date = _get_datetime(air_date)
+        self.episode_number = episode_number
+        self.name = name
+        self.overview = overview
+        self.season_number = season_number
+
+
+class TVShowSeason(TVShowEpisode):
+
+    def __init__(self, *, episode_count, **kwargs):
+        super().__init__(**kwargs)
+        self.episode_count = episode_count
+
+
+class TVShow(Movie, PartialTVShow):
+
+    def __init__(
+            self, *, created_by, in_production, last_air_date, last_episode_to_air,
+            next_episode_to_air, number_of_episodes, number_of_seasons, seasons, status, **kwargs
+    ):
+        Movie.__init__(
+            self, budget=None, imdb_id=None, release_date=None, revenue=None,
+            status=status, spoken_languages=tuple(), production_countries=tuple(), **kwargs
+        )
+        PartialTVShow.__init__(self, **kwargs)
+        self.creators = [c["name"] for c in created_by]
+        self.in_production = in_production
+        self.last_air_date = _get_datetime(last_air_date)
+        self.last_episode = TVShowEpisode(**last_episode_to_air)
+        self.next_episode = TVShowEpisode(**next_episode_to_air) if next_episode_to_air else None
+        self.episodes_count = number_of_episodes
+        self.seasons_count = number_of_seasons
+        self.seasons = seasons
+        self.status = status
+        self.type = kwargs.get("type")
 
 
 class TMDBHTTPClient(BaseAPIHTTPClient):
@@ -116,13 +163,29 @@ class TMDBHTTPClient(BaseAPIHTTPClient):
     async def fetch_movie_data(self, id_):
         return await self.request(f"/movie/{id_}", method="GET")
 
+    async def fetch_tvshow_data(self, id_):
+        return await self.request(f"/tv/{id_}", method="GET")
+
     async def search_movie(self, query):
         params = dict(query=query, include_adult="true")
         data = await self.request("/search/movie", method="GET", params=params)
         return data.get("results") or []
 
+    async def search_tvshow(self, query):
+        params = dict(query=query, include_adult="true")
+        data = await self.request("/search/tv", method="GET", params=params)
+        return data.get("results") or []
+
+    async def search_any(self, query):
+        params = dict(query=query, include_adult="true")
+        data = await self.request("/search/multi", method="GET", params=params)
+        return data.get("results") or []
+
     async def fetch_movie_credits(self, movie_id):
         return await self.request(f"/movie/{movie_id}/credits", method="GET")
+
+    async def fetch_tvshow_credits(self, tvshow_id):
+        return await self.request(f"/tv/{tvshow_id}/credits", method="GET")
 
 
 class TMDBClient(object):
@@ -144,5 +207,21 @@ class TMDBClient(object):
         results = await self.search_movie(query)
         try:
             return await self.fetch_movie(results[0].id, fetch_credits)
+        except IndexError:
+            pass
+
+    async def fetch_tvshow(self, tvshow_id) -> TVShow:
+        data = await self.http.fetch_tvshow_data(tvshow_id)
+        credits_ = await self.http.fetch_tvshow_credits(tvshow_id)
+        return TVShow(**data, credits=Credits(**credits_))
+
+    async def search_tvshow(self, query) -> list:
+        results = await self.http.search_tvshow(query)
+        return [PartialTVShow(**_) for _ in results]
+
+    async def fetch_tvshow_from_search(self, query) -> TVShow:
+        results = await self.search_tvshow(query)
+        try:
+            return await self.fetch_tvshow(results[0].id)
         except IndexError:
             pass
