@@ -52,8 +52,8 @@
 
 ## SEARCH
 
-* [MoviesSearch](search/movies.md)
-* [TVShowsSearch](search/tvshows.md)
+* [Movies Search](search/movies.md)
+* [TVShows Search](search/tvshows.md)
 
 ## FUN
 
