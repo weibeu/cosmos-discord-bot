@@ -33,6 +33,20 @@ class UrbanDictionary(Cog):
     async def __entry_parser(_ctx, word, _words):
         return word.definition
 
+    async def __before_show_page(self, paginator, words, page):
+        try:
+            word = words[page - 1]
+        except IndexError:
+            return
+        paginator.embed.clear_fields()
+        paginator.embed.add_field(
+            name=f"{self.bot.emotes.misc.test_tube}    Example", value=word.example
+        )
+        paginator.embed.set_footer(
+            text=f"{word.votes['up']} Up Votes | {word.votes['down']} Down Votes",
+            icon_url=self.bot.theme.images.rating,
+        )
+
     @Cog.cooldown(1, 3, type=Cog.bucket_type.user)
     @Cog.group("urban", aliases=["dictionary", "ud"], invoke_without_command=True)
     async def urban_dictionary(self, ctx, *, word):
@@ -45,16 +59,13 @@ class UrbanDictionary(Cog):
             words = []
         if not words:
             return await ctx.send_line(f"❌    No definitions found of the specified word.")
-        paginator = ctx.get_paginator(entries=words, per_page=1, entry_parser=self.__entry_parser)
+        paginator = ctx.get_paginator(
+            entries=words, per_page=1, entry_parser=self.__entry_parser,
+            show_footer=False, before_show_page=self.__before_show_page
+        )
         paginator.embed.set_author(
             name=f"{word.title()} | Urban Dictionary",
             icon_url="https://i.imgur.com/ysoHI9n.png", url=words[0].permalink
         )
         # paginator.embed.description = word.definition
-        if words[0].example:
-            paginator.embed.add_field(name=f"{self.bot.emotes.misc.test_tube}    Example", value=words[0].example)
-        paginator.embed.set_footer(
-            text=f"{words[0].votes['up']} Up Votes | {words[0].votes['down']} Down Votes",
-            icon_url=self.bot.theme.images.rating,
-        )
         await paginator.paginate()
