@@ -15,6 +15,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * PROFILE
 * SETTING
 * TOOLS
+* SEARCH
 * FUN
 
 ### Plugins
@@ -33,6 +34,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [Logger](moderation/logger.md)
 * [Marriage](profile/marriage.md)
 * [Moderation](moderation/moderation.md)
+* [MoviesSearch](search/movies.md)
 * [Profile](profile/profile.md)
 * [ReactionRoles](guild/reaction-roles.md)
 * [Reactor](guild/reactor.md)
@@ -41,6 +43,7 @@ Cosmos bot uses modular approach for each of its functions and commands. Each of
 * [Secret Confessions](guild/secret-confessions.md)
 * [Starboard](guild/starboard.md)
 * [Tags](tools/tags.md)
+* [TVShowsSearch](search/tvshows.md)
 * [UserVerification](moderation/user-verification.md)
 * [Utilities](tools/utilities.md)
 * [Welcome](guild/welcome/)
@@ -91,6 +94,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [makeprime](https://cosmos.thecosmos.space/settings/administrator-settings#makeprime) | Command to grant prime membership to any of the servers you're administrator of. | `;makeprime [server]` |
 | [moderators](https://cosmos.thecosmos.space/settings/administrator-settings#moderators) | Displays list of roles and members who has been assigned as special moderators. | `;moderators` |
 | [modlogs](https://cosmos.thecosmos.space/moderation/moderation#modlogs) | Displays all of the moderation logs of specified member. | `;modlogs <member>` |
+| [movie](https://cosmos.thecosmos.space/search/movies#movie) | Displays the details of the first movie found in search results. | `;movie <name>` |
 | [mute](https://cosmos.thecosmos.space/moderation/moderation#mute) | Mutes specified member from voice and also adds the muted role. | `;mute <member> [reason]` |
 | [points](https://cosmos.thecosmos.space/role-shop/points#points) | Displays Guild Points earned by you or specified member. | `;points [member]` |
 | [prefix](https://cosmos.thecosmos.space/guild-settings/prefix#prefix) | Displays currently set custom prefixes. | `;prefix` |
@@ -107,6 +111,7 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [rip](https://cosmos.thecosmos.space/ead-memes#rip) | Sends the worst and shittiest rip meme. | `;rip [member]` |
 | [roleshop](https://cosmos.thecosmos.space/role-shop#roleshop) | Displays all of the roles which can be purchased from role shop. | `;roleshop` |
 | [shotquote](https://cosmos.thecosmos.space/dead-memes#shotquote) | This command generates and sends an image which somehow looks similar to message as it was sent by them. | `;shotquote <from_> [message]` |
+| [show](https://cosmos.thecosmos.space/search/tvhows#show) | Displays the details of the first TV Show found in the search results. | `;show <name>` |
 | [spongebobmock](https://cosmos.thecosmos.space/dead-memes#spongebobmock) | Spongebob mocks provided message or text and sends it back. | `;spongebobmock <message>` |
 | [starboard](https://cosmos.thecosmos.space/starboard#starboard) | Configure Starboard in server. | `;starboard <sub-command> ...` |
 | [tag](https://cosmos.thecosmos.space/tools/tags#tag) | Retrieves and displays specified tag and all of its contents. | `;tag <name>` |

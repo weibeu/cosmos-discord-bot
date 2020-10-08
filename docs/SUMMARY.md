@@ -50,6 +50,11 @@
 * [Haste Bin](tools/haste-bin.md)
 * [Utilities](tools/utilities.md)
 
+## SEARCH
+
+* [MoviesSearch](search/movies.md)
+* [TVShowsSearch](search/tvshows.md)
+
 ## FUN
 
 * [Dead Memes](fun/dead-memes.md)
