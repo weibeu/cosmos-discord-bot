@@ -106,7 +106,7 @@ class Movie(PartialMovie):
 class PartialTVShow(PartialMovie):
 
     def __init__(self, *, first_air_date, **kwargs):
-        super().__init__(adult=None, original_title=kwargs.get("title"), **kwargs)
+        super().__init__(adult=None, original_title=kwargs["name"], **kwargs)
         self.first_air_date = _get_datetime(first_air_date)
 
 
