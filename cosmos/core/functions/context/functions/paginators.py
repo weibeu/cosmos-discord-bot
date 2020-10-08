@@ -36,7 +36,10 @@ class BasePaginator(object):
     async def _default_entry_parser(ctx, entry, _):
         return entry
 
-    def __init__(self, ctx, entries, per_page=12, timeout=90, show_author=False, inline=True, is_menu=False, **kwargs):
+    def __init__(
+            self, ctx, entries, per_page=12, timeout=90, show_author=False,
+            show_footer=True, inline=True, is_menu=False, **kwargs
+    ):
         self.ctx = ctx
         self.loop = self.ctx.bot.loop
         self.emotes = self.ctx.bot.emotes
@@ -50,12 +53,14 @@ class BasePaginator(object):
         self.on_function_page = False
         self.timeout = timeout
         self.show_author = show_author
+        self.show_footer = show_footer
         self.inline = inline
         self.is_menu = is_menu
         self.show_entry_count = kwargs.get("show_entry_count", False)
         self.show_controllers = kwargs.get("show_controllers", True)
         self.show_return = kwargs.get("show_return", True)
         self.entry_parser = kwargs.get("entry_parser") or self._default_entry_parser
+        self.before_show_page = kwargs.get("before_show_page")
         self.reaction_bullets = []
         self.controllers = [
             (self.emotes.misc.backward, self.first_page),
@@ -97,6 +102,9 @@ class BasePaginator(object):
         return self.entries[base:base + self.per_page]
 
     async def show_page(self, page, first=False, **kwargs):
+        if self.before_show_page:
+            await self.before_show_page(self, self.entries, page)
+
         self.current_page = page
         entries = self.get_page(page)
         para = []
@@ -117,11 +125,12 @@ class BasePaginator(object):
                 para.append(prefix)
 
         if self.max_pages > 1:
-            if self.show_entry_count:
-                text = f"Displaying {page} of {self.max_pages} pages and {len(entries)} entries."
-            else:
-                text = f"Displaying {page} of {self.max_pages} pages."
-            self.embed.set_footer(text=text)
+            if self.show_footer:
+                if self.show_entry_count:
+                    text = f"Displaying {page} of {self.max_pages} pages and {len(entries)} entries."
+                else:
+                    text = f"Displaying {page} of {self.max_pages} pages."
+                self.embed.set_footer(text=text)
 
         if self.show_author:
             self.embed.set_author(name=self.ctx.author.name, icon_url=self.ctx.author.avatar_url)
@@ -184,7 +193,8 @@ class BasePaginator(object):
             if reaction.emoji == emote:
                 self.match = function
                 if (emote, function) in self.functions:
-                    self.embed.set_footer()
+                    if self.show_footer:
+                        self.embed.set_footer()
                     if self.show_return:
                         self.loop.create_task(self.message.add_reaction(self.emotes.misc.return_))
                     self.on_function_page = True
@@ -255,11 +265,12 @@ class FieldPaginator(BasePaginator):
                 self.embed.add_field(name=key, value=value, inline=self.inline)
 
         if self.max_pages > 1:
-            if self.show_entry_count:
-                text = f"Displaying {page} of {self.max_pages} pages and {len(entries)} entries."
-            else:
-                text = f"Displaying {page} of {self.max_pages} pages."
-            self.embed.set_footer(text=text)
+            if self.show_footer:
+                if self.show_entry_count:
+                    text = f"Displaying {page} of {self.max_pages} pages and {len(entries)} entries."
+                else:
+                    text = f"Displaying {page} of {self.max_pages} pages."
+                self.embed.set_footer(text=text)
 
         if self.show_author:
             self.embed.set_author(name=self.ctx.author.name, icon_url=self.ctx.author.avatar_url)
