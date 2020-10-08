@@ -53,7 +53,7 @@
 ## SEARCH
 
 * [Movies Search](search/movies.md)
-* [TVShows Search](search/tvshows.md)
+* [TV Shows Search](search/tvshows.md)
 
 ## FUN
 
