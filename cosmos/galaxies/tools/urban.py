@@ -29,26 +29,32 @@ class UrbanDictionary(Cog):
         self.plugin = plugin
         self.urban = asyncurban.UrbanDictionary()
 
+    @staticmethod
+    async def __entry_parser(_ctx, word, _words):
+        return word.definition
+
     @Cog.cooldown(1, 3, type=Cog.bucket_type.user)
     @Cog.group("urban", aliases=["dictionary", "ud"], invoke_without_command=True)
     async def urban_dictionary(self, ctx, *, word):
         """Displays meaning and example usage of the specified word."""
         try:
-            word = sorted(await self.urban.search(
-                word
-            ), key=lambda w: w.votes["up"] / w.votes["down"] or w.votes["up"] or 1, reverse=True)[0]
-        except IndexError:
+            words = sorted(await self.urban.search(
+                word, limit=5
+            ), key=lambda w: w.votes["up"] / (w.votes["down"] or w.votes["up"] or 1), reverse=True)
+        except asyncurban.WordNotFoundError:
+            words = []
+        if not words:
             return await ctx.send_line(f"❌    No definitions found of the specified word.")
-        embed = self.bot.theme.embeds.primary()
-        embed.set_author(
-            name=f"{word.word} | Urban Dictionary",
-            icon_url="https://i.imgur.com/ysoHI9n.png", url=word.permalink
+        paginator = ctx.get_paginator(entries=words, per_page=1, entry_parser=self.__entry_parser)
+        paginator.embed.set_author(
+            name=f"{word.title()} | Urban Dictionary",
+            icon_url="https://i.imgur.com/ysoHI9n.png", url=words[0].permalink
         )
-        embed.description = word.definition
-        if word.example:
-            embed.add_field(name=f"{self.bot.emotes.misc.test_tube}    Example", value=word.example)
-        embed.set_footer(
-            text=f"{word.votes['up']} Up Votes | {word.votes['down']} Down Votes",
+        # paginator.embed.description = word.definition
+        if words[0].example:
+            paginator.embed.add_field(name=f"{self.bot.emotes.misc.test_tube}    Example", value=words[0].example)
+        paginator.embed.set_footer(
+            text=f"{words[0].votes['up']} Up Votes | {words[0].votes['down']} Down Votes",
             icon_url=self.bot.theme.images.rating,
         )
-        await ctx.send(embed=embed)
+        await paginator.paginate()
