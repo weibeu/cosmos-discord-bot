@@ -26,36 +26,40 @@ class TMDBBaseCog(Cog):
     def __init__(self, plugin):
         super().__init__()
         self.plugin = plugin
+        self.emotes = None
+
+    @Cog.listener()
+    async def on_ready(self):
+        self.emotes = self.bot.emotes.misc
 
     def _get_embed(self, instance, icon):
-        emotes = self.bot.emotes.misc
         embed = self.bot.theme.embeds.primary()
         embed.set_thumbnail(url=instance.poster or EmptyEmbed)
         embed.description = instance.overview
         embed.set_author(name=instance.title, url=instance.homepage or EmptyEmbed, icon_url=icon)
         if instance.credits.director:
-            embed.add_field(name=f"{emotes.director}    Director", value=instance.credits.director.name)
+            embed.add_field(name=f"{self.emotes.director}    Director", value=instance.credits.director.name)
         if instance.credits.writer:
-            embed.add_field(name=f"{emotes.draw}    Writer", value=instance.credits.writer.name)
+            embed.add_field(name=f"{self.emotes.draw}    Writer", value=instance.credits.writer.name)
         if instance.credits.screenplay:
-            embed.add_field(name=f"{emotes.film_reel}    Screenplay", value=instance.credits.screenplay.name)
+            embed.add_field(name=f"{self.emotes.film_reel}    Screenplay", value=instance.credits.screenplay.name)
         if instance.genres:
-            embed.add_field(name=f"{emotes.two_hearts}    Genres", value=", ".join(instance.genres))
+            embed.add_field(name=f"{self.emotes.two_hearts}    Genres", value=", ".join(instance.genres))
         # if instance.revenue:
         #     embed.add_field(
-        #         name=f"{emotes.cash}    Total Revenue",
+        #         name=f"{self.emotes.cash}    Total Revenue",
         #         value=f"${self.bot.utilities.localize_number(instance.revenue)}"
         #     )
         if instance.release_date:
             embed.timestamp = instance.release_date
         # if instance.productions:
         #     embed.add_field(
-        #         name=f"{emotes.documentary}    Productions",
+        #         name=f"{self.emotes.documentary}    Productions",
         #         value=" • ".join(instance.productions), inline=False
         #     )
         if instance.credits.cast:
             embed.add_field(
-                name=f"{emotes.hero}    Top Billed Cast", inline=len(embed.fields) % 2 == 0,
+                name=f"{self.emotes.hero}    Top Billed Cast", inline=False,    # len(embed.fields) % 2 == 0,
                 value=", ".join(c.name for c in instance.credits.cast[:7])
             )
         embed.set_footer(
