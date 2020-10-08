@@ -108,11 +108,11 @@ Every command begins with a pre-defined [prefix](guild/guild-settings/prefix.md)
 | [reminder](https://cosmos.thecosmos.space/tools/reminder#reminder) | Set reminder to get notified at specified time in future in the same channel in which you created the reminder. | `;remind [when]` |
 | [reminders](https://cosmos.thecosmos.space/tools/reminder#reminders) | Displays list of reminders which has been created by you. | `;reminders` |
 | [rep](https://cosmos.thecosmos.space/profile/profile#rep) | Add a reputation point to specified member. | `;rep [user]` |
-| [rip](https://cosmos.thecosmos.space/ead-memes#rip) | Sends the worst and shittiest rip meme. | `;rip [member]` |
+| [rip](https://cosmos.thecosmos.space/fun/dead-memes#rip) | Sends the worst and shittiest rip meme. | `;rip [member]` |
 | [roleshop](https://cosmos.thecosmos.space/role-shop#roleshop) | Displays all of the roles which can be purchased from role shop. | `;roleshop` |
-| [shotquote](https://cosmos.thecosmos.space/dead-memes#shotquote) | This command generates and sends an image which somehow looks similar to message as it was sent by them. | `;shotquote <from_> [message]` |
+| [shotquote](https://cosmos.thecosmos.space/fun/dead-memes#shotquote) | This command generates and sends an image which somehow looks similar to message as it was sent by them. | `;shotquote <from_> [message]` |
 | [show](https://cosmos.thecosmos.space/search/tvhows#show) | Displays the details of the first TV Show found in the search results. | `;show <name>` |
-| [spongebobmock](https://cosmos.thecosmos.space/dead-memes#spongebobmock) | Spongebob mocks provided message or text and sends it back. | `;spongebobmock <message>` |
+| [spongebobmock](https://cosmos.thecosmos.space/fun/dead-memes#spongebobmock) | Spongebob mocks provided message or text and sends it back. | `;spongebobmock <message>` |
 | [starboard](https://cosmos.thecosmos.space/starboard#starboard) | Configure Starboard in server. | `;starboard <sub-command> ...` |
 | [tag](https://cosmos.thecosmos.space/tools/tags#tag) | Retrieves and displays specified tag and all of its contents. | `;tag <name>` |
 | [tags](https://cosmos.thecosmos.space/tools/tags#tags) | Displays list of custom tags created and owned by you. | `;tags` |
