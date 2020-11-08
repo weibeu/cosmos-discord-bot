@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from image_processor_client import Client as ImageProcessorClient
 
 from discordDB import DiscordDB
+from discord import Intents
 from discord.ext import commands
 
 from .functions import *
@@ -60,7 +61,7 @@ class InitialTasks(commands.Bot):
         self._init_configs()
         self._init_utilities()
         super().__init__(
-            command_prefix=self.__get_prefix, case_insensitive=True, help_command=CosmosHelp()
+            command_prefix=self.__get_prefix, case_insensitive=True, help_command=CosmosHelp(), intentes=Intents.all()
         )
         self._init_logger()
         self._init_exception_handler()
