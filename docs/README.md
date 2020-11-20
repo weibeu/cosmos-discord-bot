@@ -7,7 +7,7 @@
 Cosmos is a general purpose bot made for [Discord](https://discordapp.com/). It has been developed taking care of everyone's needs and interests. Designed to help server administrators with managing their communities as well as includes plugins and features for all of the casual discord users.  
 It is an open source project actively being developed updated frequently with adding new and exciting features along with the important fixes whenever required. Need a feature it doesn't has? We are open to your suggestions and will look forward to implement them.
 
-### !! Welcome features not working for now. We are waiting for Discord to whitelist our application for special gateway intents.
+### !! Welcome features not working for now. We are waiting for Discord to whitelist our application for special gateway intents. Thanks for your patience.
 
 ## Key Features
 
