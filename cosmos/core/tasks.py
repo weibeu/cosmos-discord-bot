@@ -39,6 +39,12 @@ class InitialTasks(commands.Bot):
                     raise AttributeError("Attribute self.guild_cache isn't overridden by guild galaxy.")
         return commands.when_mentioned_or(*prefixes)(bot, message)
 
+    @staticmethod
+    def __get_intents():
+        intents = Intents.default()
+        intents.members = True
+        return intents
+
     def __init__(self, *, version=str(), release=str()):
         self.time = None
         self.configs = None
@@ -61,7 +67,8 @@ class InitialTasks(commands.Bot):
         self._init_configs()
         self._init_utilities()
         super().__init__(
-            command_prefix=self.__get_prefix, case_insensitive=True, help_command=CosmosHelp(), intents=Intents.all()
+            command_prefix=self.__get_prefix, case_insensitive=True,
+            help_command=CosmosHelp(), intents=self.__get_intents(),
         )
         self._init_logger()
         self._init_exception_handler()
