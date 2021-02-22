@@ -164,7 +164,7 @@ class AutoModeration(Cog):
         await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been removed.")
 
     @Cog.group(name="banword", aliases=["bannedwords", "banwords"], invoke_without_command=True)
-    async def ban_word(self, ctx, word=None):
+    async def ban_word(self, ctx, *, word=None):
         """Blacklists or bans specified word. To make it work, first set `banned_words` Auto Moderation trigger."""
         guild_profile = await ctx.fetch_guild_profile()
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
