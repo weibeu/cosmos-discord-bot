@@ -129,11 +129,11 @@ class AutoModeration(Cog):
 
     @Cog.listener()
     async def on_message(self, message):
-        return self._moderate_message(message)
+        return await self._moderate_message(message)
 
     @Cog.listener()
     async def on_raw_message_edit(self, payload):
-        return self._moderate_message(
+        return await self._moderate_message(
             payload.cached_message or await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
         )
 
