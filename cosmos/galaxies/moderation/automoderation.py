@@ -78,8 +78,7 @@ class AutoModeration(Cog):
             raise commands.MissingPermissions(["administrator"])
         return True
 
-    @Cog.listener()
-    async def on_message(self, message):
+    async def _moderate_message(self, message):
         if not message.guild or message.author == self.bot.user:
             return
 
@@ -127,6 +126,16 @@ class AutoModeration(Cog):
         if trigger:
             if self.bot.utilities.find_urls(message.content):
                 await trigger.dispatch(message=message, member=message.author)
+
+    @Cog.listener()
+    async def on_message(self, message):
+        return self._moderate_message(message)
+
+    @Cog.listener()
+    async def on_raw_message_edit(self, payload):
+        return self._moderate_message(
+            payload.cached_message or await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+        )
 
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
