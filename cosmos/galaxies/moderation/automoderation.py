@@ -94,7 +94,12 @@ class AutoModeration(Cog):
         if trigger:
             try:
                 # if set(message.content.lower().split()) & trigger.words:
-                if [word for word in trigger.words if word.lower() in message.content.lower()]:    # TODO: Use RE.
+                # TODO: Use regex.
+                if [
+                    word for word in trigger.words if
+                    word.lower() in message.content.lower() or
+                    word.lower() in self.bot.utilities.clean_markdown(message.content).lower()
+                ]:
                     await trigger.dispatch(message=message, member=message.author)
             except AttributeError:
                 pass    # No banned word set.
