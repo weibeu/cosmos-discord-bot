@@ -17,8 +17,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from .models.automoderation import triggers
-
 from .. import Cog
+
+import itertools
 
 from discord.ext import commands
 
@@ -95,10 +96,14 @@ class AutoModeration(Cog):
             try:
                 # if set(message.content.lower().split()) & trigger.words:
                 # TODO: Use regex.
+                content = message.content.lower()
+                clean_content = self.bot.utilities.clean_markdown(message.content).lower()
                 if [
                     word for word in trigger.words if
-                    word.lower() in message.content.lower() or
-                    word.lower() in self.bot.utilities.clean_markdown(message.content).lower()
+                    word.lower() in content or
+                    word.lower() in clean_content or
+                    word.lower() in str().join(k for k, v in itertools.groupby(content)) or
+                    word.lower() in str().join(k for k, v in itertools.groupby(clean_content))
                 ]:
                     await trigger.dispatch(message=message, member=message.author)
             except AttributeError:
