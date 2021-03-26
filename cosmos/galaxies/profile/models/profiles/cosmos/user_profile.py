@@ -204,7 +204,7 @@ class CosmosUserProfile(CosmosUserPrime, Boson, Fermion, UserExperience, Relatio
         profile = self.guild_profiles.get(guild_id)
         if not profile:
             document = await self.collection.find_one(
-                self.document_filter, {f"guilds.{guild_id}": ""}
+                self.document_filter, projection={f"guilds.{guild_id}": True}
             ) or dict()
             document = document.get("guilds", dict()).get(str(guild_id), dict())
             profile = GuildMemberProfile.from_document(self, guild_id, document)

@@ -1,3 +1,4 @@
 # ! Configs for image processor client used to connect to image processing server.
 
-base_url: "http://127.0.0.1:5000"    # If left empty, image_processor_client will try to use default server.
+base_url: "http://127.0.0.1:5000"    # ENV: IMAGE_PROCESSOR_API_BASE_URL
+# If left empty, image_processor_client will try to use default server.

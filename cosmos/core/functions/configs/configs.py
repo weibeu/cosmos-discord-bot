@@ -142,6 +142,10 @@ class ImageProcessorClientConfig(Config):
     NAME = "image_processor"
     PATH = "cfg/core/image_processor.yaml"
 
+    def __init__(self):
+        super().__init__()
+        self.base_url = os.getenv("IMAGE_PROCESSOR_API_BASE_URL") or self.base_url
+
 
 class CosmosMetaInformation(Config):
 

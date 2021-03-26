@@ -26,13 +26,13 @@ import datetime
 import dateutil.parser
 
 
-TIME_DELTA_REG = re.compile("""(?:(?P<years>[0-9])(?:years?|y))?                   # e.g. 2y
-                               (?:(?P<months>[0-9]{1,2})(?:months?|mo))?           # e.g. 2months
-                               (?:(?P<weeks>[0-9]{1,4})(?:weeks?|w))?              # e.g. 10w
-                               (?:(?P<days>[0-9]{1,5})(?:days?|d))?                # e.g. 14d
-                               (?:(?P<hours>[0-9]{1,5})(?:hours?|h))?              # e.g. 12h
-                               (?:(?P<minutes>[0-9]{1,5})(?:minutes?|mins?|m))?    # e.g. 10m
-                               (?:(?P<seconds>[0-9]{1,5})(?:seconds?|s))?          # e.g. 15s
+TIME_DELTA_REG = re.compile(r"""(?:(?P<years>[0-9])\s?(?:years?|y))?                       # e.g. 2y
+                               (?:(?P<months>[0-9]{1,2})\s?(?:months?|mo))?                # e.g. 2months
+                               (?:(?P<weeks>[0-9]{1,4})\s?(?:weeks?|w))?                   # e.g. 10w
+                               (?:(?P<days>[0-9]{1,5})\s?(?:days?|d))?                     # e.g. 14d
+                               (?:(?P<hours>[0-9]{1,5})\s?(?:hours?|h|hrs))?               # e.g. 12h
+                               (?:(?P<minutes>[0-9]{1,5})\s?(?:minutes?|mins?|m))?         # e.g. 10m
+                               (?:(?P<seconds>[0-9]{1,5})\s?(?:seconds?|s))?               # e.g. 15s
                             """, re.VERBOSE)
 
 

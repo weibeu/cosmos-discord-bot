@@ -17,8 +17,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from .models.automoderation import triggers
-
 from .. import Cog
+
+import itertools
 
 from discord.ext import commands
 
@@ -78,8 +79,7 @@ class AutoModeration(Cog):
             raise commands.MissingPermissions(["administrator"])
         return True
 
-    @Cog.listener()
-    async def on_message(self, message):
+    async def _moderate_message(self, message):
         if not message.guild or message.author == self.bot.user:
             return
 
@@ -95,7 +95,16 @@ class AutoModeration(Cog):
         if trigger:
             try:
                 # if set(message.content.lower().split()) & trigger.words:
-                if [word for word in trigger.words if word.lower() in message.content.lower()]:    # TODO: Use RE.
+                # TODO: Use regex.
+                content = message.content.lower()
+                clean_content = self.bot.utilities.clean_markdown(message.content).lower()
+                if [
+                    word for word in trigger.words if
+                    word.lower() in content or
+                    word.lower() in clean_content or
+                    word.lower() in str().join(k for k, v in itertools.groupby(content)) or
+                    word.lower() in str().join(k for k, v in itertools.groupby(clean_content))
+                ]:
                     await trigger.dispatch(message=message, member=message.author)
             except AttributeError:
                 pass    # No banned word set.
@@ -127,6 +136,16 @@ class AutoModeration(Cog):
         if trigger:
             if self.bot.utilities.find_urls(message.content):
                 await trigger.dispatch(message=message, member=message.author)
+
+    @Cog.listener()
+    async def on_message(self, message):
+        return await self._moderate_message(message)
+
+    @Cog.listener()
+    async def on_raw_message_edit(self, payload):
+        return await self._moderate_message(
+            payload.cached_message or await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+        )
 
     @Cog.group(name="triggers", aliases=["trigger", "violation", "violations"], invoke_without_command=True)
     async def triggers(self, ctx):
@@ -164,7 +183,7 @@ class AutoModeration(Cog):
         await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been removed.")
 
     @Cog.group(name="banword", aliases=["bannedwords", "banwords"], invoke_without_command=True)
-    async def ban_word(self, ctx, word=None):
+    async def ban_word(self, ctx, *, word=None):
         """Blacklists or bans specified word. To make it work, first set `banned_words` Auto Moderation trigger."""
         guild_profile = await ctx.fetch_guild_profile()
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
