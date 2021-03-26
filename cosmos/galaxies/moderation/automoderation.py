@@ -219,4 +219,15 @@ class AutoModeration(Cog):
         await guild_profile.auto_moderation.clear_banned_words()
         await ctx.send_line(f"✅    List of banned words in this server has been cleared.")
 
+    async def remove_banned_words(self, word):
+        trigger = self.triggers["banned_words"]
+        trigger.words.remove(word)
+
+        document_filter = self.__profile.document_filter.copy()
+        document_filter.update({"settings.auto_moderation.triggers.name": trigger.name})
+
+        return await self.__profile.collection.update_one(
+            document_filter, {"$pull": {"settings.auto_moderation.triggers.$.words": word}}
+        )
+        
     # TODO: Command to set auto mute timer.
