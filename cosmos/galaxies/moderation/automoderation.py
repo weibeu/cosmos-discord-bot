@@ -219,4 +219,21 @@ class AutoModeration(Cog):
         await guild_profile.auto_moderation.clear_banned_words()
         await ctx.send_line(f"✅    List of banned words in this server has been cleared.")
 
+    @ban_word.command(name="remove", aliases=["pop", "pull"])
+    async def remove_banned_words(self, ctx, *, word=None):
+        """Removes given word from the currently blacklisted or banned words."""
+        if not word:
+            return await ctx.send_line(f"❌    You haven't provided a word to be removed.")
+        if not await ctx.confirm():
+            return
+        guild_profile = await ctx.fetch_guild_profile()
+        trigger = guild_profile.auto_moderation.triggers.get("banned_words")
+        if not trigger:
+            return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")
+        try:
+            await guild_profile.auto_moderation.remove_banned_words(word)
+        except KeyError:
+            return await ctx.send_line(f"❌    '{word}' does not exist in the list of banned words in this server.")
+        await ctx.send_line(f"✅    '{word}' has been removed from the list of banned words in this server.")
+
     # TODO: Command to set auto mute timer.
