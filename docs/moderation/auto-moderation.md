@@ -95,3 +95,16 @@ Usage:
 ;banword clear
 ```
 
+### ;banword remove
+
+Removes given word from the currently blacklisted or banned words.
+
+```yaml
+Aliases:
+- pop
+- pull
+
+Usage:
+;banword remove <word>
+```
+

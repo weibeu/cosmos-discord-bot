@@ -247,6 +247,17 @@ class AutoModerationSettings(object):
             document_filter, {"$unset": {"settings.auto_moderation.triggers.$.words": ""}}
         )
 
+    async def remove_banned_words(self, word):
+        trigger = self.triggers["banned_words"]
+        trigger.words.remove(word)
+
+        document_filter = self.__profile.document_filter.copy()
+        document_filter.update({"settings.auto_moderation.triggers.name": trigger.name})
+
+        return await self.__profile.collection.update_one(
+            document_filter, {"$pull": {"settings.auto_moderation.triggers.$.words": word}}
+        )
+
     async def set_auto_mute_timer(self, minutes):
         self.auto_mute_timer = minutes
         await self.__profile.collection.update_one(
