@@ -6,7 +6,7 @@ description: Leaderboard commands over various properties of user profile.
 
 ## ;leaderboards
 
-Displays top members with maximum chat experience points or specified stats. You can also specify any fromm global stats to directly check the the global leaderboards.
+Displays top members with maximum chat experience points or specified stats. You can also specify any from global stats to directly check the the global leaderboards.
 
 ```yaml
 Stats:
