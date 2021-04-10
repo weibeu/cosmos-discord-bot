@@ -26,7 +26,7 @@ class MoviesSearch(TMDBBaseCog):
     @TMDBBaseCog.group(name="movie", aliases=["movies"], invoke_without_command=True)
     async def movie(self, ctx, *, name):
         """Displays the details of the first movie found in search results."""
-        movie = await self.bot.utilities.tmdb.fetch_movie_from_search(query=name)
+        movie = await self.bot.utilities.tmdb.fetch_movie_from_search(query=name.title())
         if not movie:
             return await ctx.send_line(f"❌    No movies found matching with specified name.")
         embed = self._get_embed(movie, icon=self.bot.theme.images.movie)

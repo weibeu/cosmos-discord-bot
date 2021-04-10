@@ -26,7 +26,7 @@ class TVShowsSearch(TMDBBaseCog):
     @TMDBBaseCog.group(name="show", aliases=["shows", "tvshow", "tvshows"], invoke_without_command=True)
     async def tvshow(self, ctx, *, name):
         """Displays the details of the first TV Show found in the search results."""
-        tvshow = await self.bot.utilities.tmdb.fetch_tvshow_from_search(query=name)
+        tvshow = await self.bot.utilities.tmdb.fetch_tvshow_from_search(query=name.title())
         if not tvshow:
             return await ctx.send_line(f"❌    No TV Show found matching with specified name.")
         embed = self._get_embed(tvshow, icon=self.bot.theme.images.tvshow)
