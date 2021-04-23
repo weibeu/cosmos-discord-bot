@@ -134,8 +134,8 @@ class TVShow(Movie, PartialTVShow):
             next_episode_to_air, number_of_episodes, number_of_seasons, seasons, status, **kwargs
     ):
         Movie.__init__(
-            self, budget=None, imdb_id=None, release_date=None, revenue=None,
-            status=status, spoken_languages=tuple(), production_countries=tuple(), **kwargs
+            self, budget=None, imdb_id=None, release_date=None,
+            revenue=None, status=status, **kwargs
         )
         PartialTVShow.__init__(self, **kwargs)
         self.creators = [c["name"] for c in created_by]
@@ -198,7 +198,7 @@ class TMDBClient(object):
 
     async def fetch_movie(self, movie_id) -> Movie:
         data = await self.http.fetch_movie_data(movie_id)
-        return Movie(**data, credits=Credits(**data.pop("credits")))
+        return Movie(credits=Credits(**data.pop("credits")), **data)
 
     async def search_movie(self, query) -> list:
         results = await self.http.search_movie(query)
@@ -213,7 +213,7 @@ class TMDBClient(object):
 
     async def fetch_tvshow(self, tvshow_id) -> TVShow:
         data = await self.http.fetch_tvshow_data(tvshow_id)
-        return TVShow(**data, credits=Credits(**data.pop("credits")))
+        return TVShow(credits=Credits(**data.pop("credits")), **data)
 
     async def search_tvshow(self, query) -> list:
         results = await self.http.search_tvshow(query)
