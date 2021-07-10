@@ -33,7 +33,7 @@ class Imgur(Cog):
 
     @Cog.cooldown(1, 5, type=Cog.bucket_type.user)
     @Cog.command(name="imgur", aliases=["imgurfy", "imgurify"])
-    async def imgur(self, ctx, url: typing.Union[discord.Member, discord.Emoji, discord.PartialEmoji, str] = None):
+    async def imgur(self, ctx, url: typing.Union[discord.Member, discord.Emoji, discord.PartialEmoji, discord.Messages, str] = None):
         """Uploads provided URL or attached image to imgur.com and returns the direct URL of the image.
         You can also specify either an emoji or mention someone to upload their avatar to imgur. If no URL is
         specified, returns the imgur URL of the user's avatar.
@@ -46,10 +46,16 @@ class Imgur(Cog):
             url = str(url.avatar_url_as(static_format="png"))
         if isinstance(url, (discord.Emoji, discord.PartialEmoji)):
             url = str(url.url)
+        if isinstance(url, discord.Message ):
+            try:
+                url = url.attachments[0].url
+            except IndexError:
+                return await ctx.send_line("❌    Specified message doesn't contains any attachment to upload.")
+                      
         url = url or ctx.message.attachments[0].url
 
         type_ = mimetypes.guess_type(url)
-        if type_[0] in ("video/mp4",):
+        if type_[0] in ("video/mp4", ):
             media = dict(video=url)
         else:
             media = dict(image=url)
