@@ -33,7 +33,11 @@ class Imgur(Cog):
 
     @Cog.cooldown(1, 5, type=Cog.bucket_type.user)
     @Cog.command(name="imgur", aliases=["imgurfy", "imgurify"])
-    async def imgur(self, ctx, url: typing.Union[discord.Member, discord.Emoji, discord.PartialEmoji, discord.Messages, str] = None):
+    async def imgur(
+        self, ctx, url: typing.Union[
+            discord.Member, discord.Emoji, discord.PartialEmoji, discord.Message, str
+        ] = None
+    ):
         """Uploads provided URL or attached image to imgur.com and returns the direct URL of the image.
         You can also specify either an emoji or mention someone to upload their avatar to imgur. If no URL is
         specified, returns the imgur URL of the user's avatar.
