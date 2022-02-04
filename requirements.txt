@@ -4,7 +4,6 @@ aiohttp
 aioredis
 arrow
 cachetools
-discord.py
 DiscordDB
 image-processor-client
 motor
@@ -13,3 +12,4 @@ asyncurban
 sentry-sdk
 python-dotenv
 python-dateutil
+git+https://github.com/weibeu/python-discord.git
