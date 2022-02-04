@@ -36,12 +36,12 @@ class TVShowsSearch(TMDBBaseCog):
         embed.timestamp = tvshow.last_air_date
         if tvshow.creators and (tvshow.creators[0] != getattr(tvshow.credits.writer, "name", None)):
             embed.insert_field_at(0, name=f"{self.emotes.director}    Creators", value=", ".join(tvshow.creators))
-        if tvshow.next_episode:
+        if tvshow.next_episode and tvshow.next_episode.name:
             embed.insert_field_at(
                 2, name=f"{self.emotes.film_reel}    Upcoming Episode", value=tvshow.next_episode.name
             )
         else:
-            if tvshow.last_episode:
+            if tvshow.last_episode and tvshow.last_episode.name:
                 embed.insert_field_at(
                     2, name=f"{self.emotes.film_reel}    Last Episode", value=tvshow.last_episode.name
                 )
