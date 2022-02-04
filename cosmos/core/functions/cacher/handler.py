@@ -34,7 +34,7 @@ class CacheHandler(object):
 
     async def __fetch_redis_client(self):
         try:
-            conn = await aioredis.connection.create_connection("redis://localhost", loop=self.bot.loop)
+            conn = await aioredis.from_url("redis://localhost", loop=self.bot.loop)
             self.redis = cachers.RedisCache(conn)
         except OSError:
             # self.bot.log.debug("Unable to connect to redis server. Check if it's running.")

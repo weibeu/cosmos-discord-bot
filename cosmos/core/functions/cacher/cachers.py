@@ -153,7 +153,7 @@ class RedisCache(aioredis.Redis, ABC):
 
     def __init__(self, connection):
         self._conn = connection
-        super().__init__(self._conn)
+        super().__init__(connection_pool=self._conn)
 
     async def get(self, key: str, **kwargs):
         byte = await super().get(key)
