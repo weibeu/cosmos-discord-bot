@@ -1,0 +1,15 @@
+pymongo
+dnspython
+aiohttp
+aioredis
+arrow
+cachetools
+DiscordDB
+image-processor-client
+motor
+pyyaml
+asyncurban
+sentry-sdk
+python-dotenv
+python-dateutil
+git+https://github.com/weibeu/python-discord.git
