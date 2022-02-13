@@ -109,6 +109,11 @@ class HumanDateTimeMixin(object):
         message = cls.__get_normalized_message(message)
         return cls(datetime_, message)
 
+    @classmethod
+    def from_using_timedelta(cls, *args, **kwargs):
+        datetime_ = datetime.datetime.utcnow() + datetime.timedelta(*args, **kwargs)
+        return cls(datetime_, str())
+
     @property
     def humanize(self):
         return self.arrow.humanize()
