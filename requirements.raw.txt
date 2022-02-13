@@ -1,3 +1,4 @@
+python-discord
 pymongo
 dnspython
 aiohttp
@@ -12,4 +13,3 @@ asyncurban
 sentry-sdk
 python-dotenv
 python-dateutil
-git+https://github.com/weibeu/python-discord.git
