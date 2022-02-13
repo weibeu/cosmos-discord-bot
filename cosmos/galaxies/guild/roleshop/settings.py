@@ -23,7 +23,7 @@ import datetime
 from discord.ext import commands
 
 from ....core.functions.exceptions import GuildNotPrime
-from ....core.utilities import converters
+from ....core.utilities import converters, time
 from .base import RoleShopBase, DeletedRole
 from discord.ext.commands import has_permissions
 
@@ -86,6 +86,7 @@ class RoleShopSettings(RoleShopBase):
         time then you should specify when it should end.
 
         """
+        end = end or time.HumanDateTimeMixin.from_using_timedelta(minutes=self.plugin.data.roleshop.default_raffle_life)
         if end.delta.days >= self.plugin.data.roleshop.max_raffle_life and not ctx.guild_profile.is_prime:
             raise GuildNotPrime("Get prime to schedule raffles beyond age of universe and other features.")
         raffles = await self.get_raffles(ctx.guild.id)
