@@ -79,13 +79,21 @@ class UserExperience(UserLevel, ABC):
         return round(raw_xp / self.VOICE_XP_CONSTRAIN)
 
     def record_voice_activity(self):
-        self.__voice_activity_time = time.time()
-        self.is_speaking = True
-        self.__voice_level = self.voice_level    # Save current voice level.
+        if not self.is_speaking:
+            self.__voice_activity_time = time.time()
+            self.is_speaking = True
+            self.__voice_level = self.voice_level    # Save current voice level.
+            # print(f'opened {self.name}')
+        else:
+            pass
 
     def close_voice_activity(self):
-        self.is_speaking = False
-        self.cache_voice_xp()
+        if self.is_speaking:
+            self.is_speaking = False
+            self.cache_voice_xp()
+            # print(f'closed {self.name}')
+        else:
+            pass
 
     @property
     def delta_xp(self):
