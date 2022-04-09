@@ -42,7 +42,7 @@ class GuildMemberProfile(GuildPoints, MemberExperience):
         self._profile = profile    # CosmosUserProfile
         GuildPoints.__init__(self, **kwargs)
         MemberExperience.__init__(self, **kwargs)
-        self._guild_id = guild_id
+        self._guild_id = int(guild_id)
         self.roleshop = MemberRoleShop(self, **kwargs)
         self.moderation_logs = kwargs.get("logs", dict()).get("moderation", list())
 

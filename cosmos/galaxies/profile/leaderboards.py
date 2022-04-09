@@ -92,7 +92,7 @@ class Leaderboards(Cog):
     async def __filter(self, fetch_method, async_fetch_method, documents):
         __documents = []
         for d in documents:
-            user_id = d["_id"]
+            user_id = int(d["_id"])
             user = fetch_method(user_id)
             if not user:
                 try:

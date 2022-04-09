@@ -68,5 +68,5 @@ class ProfileModelsBase(ABC):
     @property
     def document_filter(self):
         return {
-            "user_id": self.id
+            "user_id": str(self.id)
         }

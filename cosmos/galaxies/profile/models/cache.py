@@ -70,13 +70,18 @@ class ProfileCache(object):
         self.bot.log.info(f"Loaded {profile_count} profiles to cache.")
 
     async def get_profile(self, user_id: int):
+        if isinstance(user_id, str):
+            user_id = int(user_id)
         user = self.bot.get_user(user_id)
         if user.bot:
             raise exceptions.UserIsBotError
         # profile = await self._redis.get_object(self.__collection_name, user_id)
         profile = self.lfu.get(user_id)
         if not profile:
-            profile_document = await self.collection.find_one({"user_id": user_id}, projection=self.DEFAULT_PROJECTION)
+            profile_document = await self.collection.find_one(
+                {"user_id": str(user_id)},
+                projection=self.DEFAULT_PROJECTION,
+            )
             if profile_document:
                 profile = CosmosUserProfile.from_document(self.plugin, profile_document)
                 # await self._redis.set_object(self.__collection_name, user_id, profile)
@@ -97,7 +102,7 @@ class ProfileCache(object):
             return 
         if user.bot:
             return
-        document_filter = {"user_id": user_id}
+        document_filter = {"user_id": str(user_id)}
         profile = CosmosUserProfile.from_document(self.plugin, document_filter)
         self.lfu.set(user_id, profile)    # Before db API call to prevent it from firing many times.
         if not await self.collection.find_one(document_filter):

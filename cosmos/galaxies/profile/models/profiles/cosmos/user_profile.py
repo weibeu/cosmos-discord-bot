@@ -59,7 +59,7 @@ class CosmosUserProfile(CosmosUserPrime, Boson, Fermion, UserExperience, Relatio
         UserExperience.__init__(self, **kwargs)
         Relationship.__init__(self, **kwargs)
         UserTags.__init__(self, kwargs.get("tags", dict()))
-        self._id: int = kwargs["user_id"]
+        self._id: int = int(kwargs["user_id"])
         raw_reputation = kwargs.get("reputation", dict())
         self.reps: int = raw_reputation.get("points", 0)
         self.rep_timestamp = self.get_arrow(raw_reputation.get("timestamp"))
