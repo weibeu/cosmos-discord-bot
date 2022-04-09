@@ -58,6 +58,8 @@ class GuildPoints(GuildMemberProfileBase, ABC):
 
     @property
     def on_points_daily_streak(self):
+        if not self.points_daily_timestamp:
+            return False
         streak_buffer = self.get_future_arrow(self.points_daily_timestamp, hours=self.plugin.data.points.streak_buffer)
         if arrow.utcnow() > streak_buffer:
             return False

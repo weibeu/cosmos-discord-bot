@@ -68,6 +68,8 @@ class Boson(ProfileModelsBase, ABC):
 
     @property
     def on_bosons_daily_streak(self):
+        if not self.boson_daily_timestamp:
+            return False
         streak_buffer = self.get_future_arrow(self.boson_daily_timestamp, hours=self.plugin.data.boson.streak_buffer)
         if arrow.utcnow() > streak_buffer:
             return False
