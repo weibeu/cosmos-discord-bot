@@ -36,4 +36,7 @@ class CosmosGuildPrime(CosmosGuildBase, ABC):
         if document := await self.plugin.bot.get_galaxy("PROFILE").collection.find_one(
                 {"prime.guild": self.id}, projection={"user_id": True}
         ):
-            self.prime_owner = await self.plugin.bot.profile_cache.get_profile(document.get("user_id"))
+            try:
+                self.prime_owner = await self.plugin.bot.profile_cache.get_profile(int(document["user_id"]))
+            except KeyError:
+                pass
