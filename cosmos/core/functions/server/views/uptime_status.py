@@ -23,5 +23,9 @@ class HealthStatusEndpoint(base.BaseView):
     TYPE = base.ViewTypes.STATUS
 
     @staticmethod
+    async def head():
+        return web.Response()
+
+    @staticmethod
     async def get():
         return web.Response()
