@@ -13,16 +13,15 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .base import BaseView
-from .base import ViewsMeta
-
-from .dbl import DBLHook
-from .patreon import PatreonHook
-from .uptime_status import HealthStatusEndpoint
+from . import base
+from aiohttp import web
 
 
-__all__ = [
-    DBLHook,
-    PatreonHook,
-    HealthStatusEndpoint,
-]
+class HealthStatusEndpoint(base.BaseView):
+
+    ROUTE = "/health/"
+    TYPE = base.ViewTypes.STATUS
+
+    @staticmethod
+    async def get():
+        return web.Response()

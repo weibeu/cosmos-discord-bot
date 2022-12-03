@@ -21,6 +21,7 @@ from aiohttp import web
 class ViewTypes(Enum):
 
     ANY = "/"
+    STATUS = "/status"
     WEBHOOK = "/webhooks"
 
 
